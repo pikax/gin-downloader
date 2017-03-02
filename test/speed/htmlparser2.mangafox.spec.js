@@ -5,7 +5,7 @@
  * Created by rodriguesc on 02/03/2017.
  */
 
-import htmlparser2 from '../../lib/speed/htmlparser2';
+import htmlparser2 from 'htmlparser2';
 import result from '../common';
 
 var expect = require('chai').expect;
@@ -24,9 +24,20 @@ describe('htmlparser2 mangafox ',()=> {
 
 
   it('should get all mangas by name',()=>{
-    doc.DomUtils()
+    let mangas = [];
+    let parser = new htmlparser2.Parser({
+      onopentag: (name,attrs)=>{
 
-    let selector = $('a.series_preview');
+        if(name == "a" ** attrs["class"]){
+          mangas.push(name);
+        }
+
+      },
+      onend: (x)=>{
+        done();
+      },
+      onerror: done
+    }).end(fp);
     expect(selector.length).to.be.eq(result.mangas_count);
   });
 
@@ -37,5 +48,4 @@ describe('htmlparser2 mangafox ',()=> {
     console.log(selector.length)
     expect(selector.length).to.be.greaterThan(0);
   });
-
 });
