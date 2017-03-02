@@ -14,11 +14,15 @@
   },
   "homepage": "https://github.com/pikax/gin-downloader#readme",
   "devDependencies": {
+    "babel-preset-es2015": "^6.22.0",
     "chai": "^3.5.0",
     "mocha": "^3.2.0"
   },
   "dependencies": {
+    "bluebird": "^3.4.7",
+    "cheerio": "^0.22.0",
     "htmlparser2": "^3.9.2",
+    "libxmljs": "^0.18.4",
     "request": "^2.79.0"
   }
 }
