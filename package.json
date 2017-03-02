@@ -12,5 +12,13 @@
   "bugs": {
     "url": "https://github.com/pikax/gin-downloader/issues"
   },
-  "homepage": "https://github.com/pikax/gin-downloader#readme"
+  "homepage": "https://github.com/pikax/gin-downloader#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "htmlparser2": "^3.9.2",
+    "request": "^2.79.0"
+  }
 }
