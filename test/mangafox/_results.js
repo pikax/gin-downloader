@@ -6,4 +6,6 @@ export default {
   mangas_count : 18671,
   manga_name : "Gintama",
 
+    chapter_count : 55,
+
 }

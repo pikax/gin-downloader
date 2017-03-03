@@ -14,7 +14,7 @@ import fs from 'fs';
 
 
 describe('parse & extract mangafox ',()=>{
-  const path = './test/common/mangafox.html';
+  const path = './test/common/mangas.html';
 
   let fp;
 
