@@ -14,7 +14,7 @@ import {find} from  'lodash';
 var expect = require('chai').expect;
 
 describe('htmlparser2 mangafox ',()=> {
-  const path = './test/common/mangafox.html';
+  const path = './test/common/mangas.html';
 
   let doc;
 

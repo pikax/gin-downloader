@@ -20,10 +20,7 @@
   },
   "dependencies": {
     "bluebird": "^3.4.7",
-    "cheerio": "^0.22.0",
-    "htmlparser2": "^3.9.2",
-    "libxmljs": "^0.18.4",
     "lodash": "^4.17.4",
-    "request": "^2.79.0"
+    "osmosis": "^1.1.2"
   }
 }
