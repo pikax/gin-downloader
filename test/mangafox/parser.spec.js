@@ -9,6 +9,8 @@ import osmosis from 'osmosis'
 var url = require('url');
 
 
+import _ from 'lodash';
+
 import parser from './../../lib/mangafox/parser'
 
 const expect = require('chai').expect;
@@ -141,6 +143,21 @@ describe('MangaFox',()=> {
 				done()
 			});
 	});
+
+	  it('should parse chapters',done=>{
+	        let osm = osmosis.parse(fpGintama);
+        // let osm = osmosis.get("http://mangafox.me/manga/gintama")
+
+  
+        let result = [];
+        parser.parseChapters(osm)
+            .data(x=>result.push(x))
+            .error(done)
+            .done(()=>{
+                expect(result.length).eq(results.chapter_count);
+                done()
+            });
+    })
 
 
 
