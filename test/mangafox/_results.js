@@ -26,7 +26,7 @@ export default {
   mangas_count : 18671,
   manga_name : manga.title,
 
-    chapter_count : 55,
+    chapter_count : 628,
 
   manga
 
