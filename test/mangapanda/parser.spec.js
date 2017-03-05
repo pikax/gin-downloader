@@ -131,32 +131,13 @@ describe('MangaPanda',()=> {
     });
 
 	it('it should parse images from chapter',done=>{
-		// let uri = 'http://mangafox.me/manga/the_journey_of_flower/v01/c004/6.html';
+		let uri = 'http://www.mangapanda.com/gintama/626';
 
-		done("mangafox return unavailable page after to many requests");
 
-		return;
 		//wont work because
 		let osm = osmosis.get(uri);
 
-		osm
-			.find('#top_bar > div.r.m > div.l > select.m > option@value')
-			.set('path')
-			.delay(900)
-
-			.get((x,data)=> url.resolve(uri,`${data.path}.html`))
-
-			//
-			// .find('div.read_img')
-			// .follow('a')
-
-
-			.find('div#viewer > div.read_img')
-			.set({
-				img: 'img@src'
-			})
-
-
+		parser.parseImages(osm)
 			.data(x=>console.log(x))
 			.log(console.log)
 			.error(console.log)
