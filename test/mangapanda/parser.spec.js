@@ -9,7 +9,7 @@ import osmosis from 'osmosis'
 var url = require('url');
 
 
-import parser from './../../lib/mangafox/parser'
+import parser from './../../lib/mangapanda/parser'
 
 const expect = require('chai').expect;
 
@@ -19,10 +19,10 @@ const readFile = Promise.promisify(require("fs").readFile);
 
 
 
-describe('MangaFox',()=> {
-    let mangas = './test/mangafox/html/mangas.html';
-		let gintama = './test/mangafox/html/Gintama.html';
-		let latest = './test/mangafox/html/latest.html';
+describe('MangaPanda',()=> {
+    let mangas = './test/mangapanda/html/mangas.html';
+		let gintama = './test/mangapanda/html/Gintama.html';
+		let latest = './test/mangapanda/html/latest.html';
 
 
     let fpMangas;
@@ -67,7 +67,10 @@ describe('MangaFox',()=> {
 
 	    let manga = {};
 	    parser.parseInfo(osm)
-		    .data(x=>manga=x)
+		    .data(x=>{
+			    console.log(x)
+			    manga=x;
+		    })
 		    .log(console.log)
 		    .error(console.log)
 		    .debug(console.log)
@@ -78,8 +81,8 @@ describe('MangaFox',()=> {
 					expect(manga.csv_title).to.be.eq(results.manga.csv_title);
 			    expect(manga.image).to.contain(results.manga.image);
 
-			    expect(manga.artists).to.be.deep.eq(results.manga.artists);
-			    expect(manga.authors).to.be.deep.eq(results.manga.authors);
+			    expect(manga.artist).to.be.eq(results.manga.artist);
+			    expect(manga.author).to.be.eq(results.manga.author);
 			    expect(manga.genres).to.be.deep.eq(results.manga.genres);
 			    done()
 		    });
@@ -89,14 +92,14 @@ describe('MangaFox',()=> {
     it('should parse latest',done=>{
 	    let osm = osmosis.parse(fpLatest);
 
-
+	    let count = 0;
 	    parser.parseLatest(osm)
-
-		    .data(x=>console.log(x))
+		    .data(x=>++count)
 		    .log(console.log)
 		    .error(console.log)
 		    .debug(console.log)
 		    .done(()=>{
+			    expect(count).to.be.greaterThan(10);
 
 			    done()
 		    });
@@ -104,6 +107,28 @@ describe('MangaFox',()=> {
 
     });
 
+
+    it('should parse chapters',done=>{
+
+	    let osm = osmosis.parse(fpGintama);
+
+	    let count = 0
+	    parser.parseChapters(osm)
+		    .data(x=>{
+		    	console.log(x);
+		    	++count
+		    })
+		    .log(console.log)
+		    .error(console.log)
+		    .debug(console.log)
+		    .done(()=>{
+			    expect(count).to.be.greaterThan(10);
+
+			    done()
+		    });
+
+
+    });
 
 	it('it should parse images from chapter',done=>{
 		// let uri = 'http://mangafox.me/manga/the_journey_of_flower/v01/c004/6.html';
