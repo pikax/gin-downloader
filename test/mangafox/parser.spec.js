@@ -26,7 +26,6 @@ describe('MangaFox',()=> {
 		let gintama = './test/mangafox/html/Gintama.html';
 		let latest = './test/mangafox/html/latest.html';
 
-
     let fpMangas;
 		let fpGintama;
 		let fpLatest;
@@ -144,8 +143,9 @@ describe('MangaFox',()=> {
 			});
 	});
 
-	  it('should parse chapters',done=>{
-	        let osm = osmosis.parse(fpGintama);
+
+    it('should parse chapters',done=>{
+        let osm = osmosis.parse(fpGintama);
         // let osm = osmosis.get("http://mangafox.me/manga/gintama")
 
   
@@ -158,7 +158,5 @@ describe('MangaFox',()=> {
                 done()
             });
     })
-
-
 
 });
