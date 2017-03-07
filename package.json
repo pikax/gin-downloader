@@ -4,10 +4,10 @@
   "description": "download manga from public websites",
   "main": "index.js",
   "scripts": {
-    "cover": "cross-env NODE_ENV=test istanbul cover node_modules/mocha/bin/_mocha  -- -R spec",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
+    "cover": "cross-env NODE_ENV=test istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
+    "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
     "coveralls": "npm run coverage -- --report lcovonly ",
-    "test": "mocha"
+    "test2": "mocha"
   },
   "repository": "https://github.com/pikax/gin-downloader.git",
   "author": "pikax",
