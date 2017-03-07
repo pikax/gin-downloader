@@ -49,6 +49,8 @@ describe('MangaPanda parser',()=> {
 
         // let osm = osmosis.get('http://mangafox.me/manga');
         let count = 0;
+        osm = parser.findMangas(osm);
+
         parser.parseMangas(osm)
             .data(x=>{
                 ++count;
@@ -113,7 +115,8 @@ describe('MangaPanda parser',()=> {
 	    let osm = osmosis.parse(fpGintama);
 
 	    let count = 0
-	    parser.parseChapters(osm)
+        osm = parser.findChapters(osm);
+        parser.parseChapters(osm)
 		    .data(x=>{
 		    	// console.log(x);
 		    	++count
