@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - "node"
-before_install:
-    - npm install node-gyp mocha -g
+before_script:
+      - npm install -g mocha
 after_success:
   - node ./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info
