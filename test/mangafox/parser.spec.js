@@ -69,14 +69,14 @@ describe('MangaFox',()=> {
 	    let manga = {};
 	    parser.parseInfo(osm)
 		    .data(x=>manga=x)
-		    .log(console.log)
-		    .error(console.log)
-		    .debug(console.log)
+            // .log(console.log)
+            // .debug(console.log)
+            .error(console.log)
 		    .done(()=>{
 
 			    expect(manga.title).to.be.eq(results.manga.title);
 			    expect(manga.released).to.be.eq(results.manga.released);
-					expect(manga.csv_title).to.be.eq(results.manga.csv_title);
+				expect(manga.csv_title).to.be.eq(results.manga.csv_title);
 			    expect(manga.image).to.contain(results.manga.image);
 
 			    expect(manga.artists).to.be.deep.eq(results.manga.artists);
@@ -90,16 +90,19 @@ describe('MangaFox',()=> {
     it('should parse latest',done=>{
 	    let osm = osmosis.parse(fpLatest);
 
+	    //todo implement test
 
 	    parser.parseLatest(osm)
 
-		    .data(x=>console.log(x))
-		    .log(console.log)
-		    .error(console.log)
-		    .debug(console.log)
+		    // .data(x=>console.log(x))
+
+
+            // .log(console.log)
+            // .debug(console.log)
+            .error(console.log)
 		    .done(()=>{
 
-			    done()
+			    done("implement test")
 		    });
 
 
@@ -134,9 +137,9 @@ describe('MangaFox',()=> {
 
 
 			.data(x=>console.log(x))
-			.log(console.log)
-			.error(console.log)
-			.debug(console.log)
+            // .log(console.log)
+            // .debug(console.log)
+            .error(console.log)
 			.done(()=>{
 
 				done()

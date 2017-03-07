@@ -68,12 +68,12 @@ describe('MangaPanda',()=> {
 	    let manga = {};
 	    parser.parseInfo(osm)
 		    .data(x=>{
-			    console.log(x)
+			    // console.log(x)
 			    manga=x;
 		    })
-		    .log(console.log)
-		    .error(console.log)
-		    .debug(console.log)
+            // .log(console.log)
+            // .debug(console.log)
+            .error(console.log)
 		    .done(()=>{
 
 			    expect(manga.title).to.be.eq(results.manga.title);
@@ -95,10 +95,10 @@ describe('MangaPanda',()=> {
 	    let count = 0;
 	    parser.parseLatest(osm)
 		    .data(x=>++count)
-		    .log(console.log)
-		    .error(console.log)
-		    .debug(console.log)
-		    .done(()=>{
+		    // .log(console.log)
+		    // .debug(console.log)
+            .error(console.log)
+			.done(()=>{
 			    expect(count).to.be.greaterThan(10);
 
 			    done()
@@ -115,12 +115,12 @@ describe('MangaPanda',()=> {
 	    let count = 0
 	    parser.parseChapters(osm)
 		    .data(x=>{
-		    	console.log(x);
+		    	// console.log(x);
 		    	++count
 		    })
-		    .log(console.log)
-		    .error(console.log)
-		    .debug(console.log)
+            // .log(console.log)
+            // .debug(console.log)
+            .error(console.log)
 		    .done(()=>{
 			    expect(count).to.be.greaterThan(10);
 
@@ -138,13 +138,13 @@ describe('MangaPanda',()=> {
 		let osm = osmosis.get(uri);
 
 		parser.parseImages(osm)
-			.data(x=>console.log(x))
-			.log(console.log)
-			.error(console.log)
-			.debug(console.log)
+			// .data(x=>console.log(x))
+            // .log(console.log)
+            // .debug(console.log)
+            .error(console.log)
 			.done(()=>{
 
-				done()
+				done('implement test')
 			});
 	});
 

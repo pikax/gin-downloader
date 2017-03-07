@@ -1,0 +1,8 @@
+--timeout 2000
+--require babel-core/register
+--colors
+--reporter spec
+--compilers js:babel-register
+--sort
+--ui bdd
+test/**/*.spec.js
