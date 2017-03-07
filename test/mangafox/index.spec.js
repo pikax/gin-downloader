@@ -18,7 +18,7 @@ describe('MangaFox',()=> {
             .then(mangas=>{
                 expect(mangas.length).to.be.greaterThan(config.mangas_count);
             })
-            .then(done)
+            .then(x=>done())
             .catch(done);
 
     })

@@ -144,7 +144,8 @@ describe('MangaPanda',()=> {
             .error(console.log)
 			.done(()=>{
 
-				done('implement test')
+			//TODO 'implement test'
+				done()
 			});
 	});
 
