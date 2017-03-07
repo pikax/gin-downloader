@@ -1,8 +1,7 @@
 language: node_js
 node_js:
-  - "0.10"
-
+  - "node"
 before_install:
-    - npm install mocha -g
+    - npm install node-gyp mocha -g
 after_success:
-  - npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls
+  - node ./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info
