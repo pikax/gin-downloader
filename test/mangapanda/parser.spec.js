@@ -145,7 +145,7 @@ describe('MangaPanda',()=> {
 			.done(()=>{
 
 			//TODO 'implement test'
-				done()
+				done('implement test')
 			});
 	});
 
