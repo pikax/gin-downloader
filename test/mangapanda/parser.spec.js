@@ -19,7 +19,7 @@ const readFile = Promise.promisify(require("fs").readFile);
 
 
 
-describe('MangaPanda',()=> {
+describe('MangaPanda parser',()=> {
     let mangas = './test/mangapanda/html/mangas.html';
 		let gintama = './test/mangapanda/html/Gintama.html';
 		let latest = './test/mangapanda/html/latest.html';
@@ -133,22 +133,21 @@ describe('MangaPanda',()=> {
 	it('it should parse images from chapter',done=>{
 		let uri = 'http://www.mangapanda.com/gintama/626';
 
-
-		//wont work because
 		let osm = osmosis.get(uri);
 
+		let imgs = [];
 		parser.parseImages(osm)
-			// .data(x=>console.log(x))
+			.data(x=>imgs.push(x))
             // .log(console.log)
             // .debug(console.log)
             .error(console.log)
 			.done(()=>{
 
-			//TODO 'implement test'
-				done('implement test')
+				expect(imgs.length).to.be.greaterThan(19);
+				expect(imgs[0].img).to.contain(results.image_url);
+
+				done();
 			});
 	});
-
-
 
 });

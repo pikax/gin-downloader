@@ -21,11 +21,13 @@ let manga = {
 
 
 export default {
-  mangas_count : 4404,
-  manga_name : manga.title,
-
+  	mangas_count : 4404,
+	manga_name : manga.title,
 	chapter_count : 55,
 
-  manga
+  	manga,
+
+
+	image_url : "mangapanda.com/gintama/626/gintama",
 
 }
