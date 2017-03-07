@@ -1,25 +1,8 @@
 language: node_js
-
-env:
-    - CXX=g++-4.8
-
 node_js:
-    - "0.10"
-    - "0.12"
-    - 4
-    - 6
-
-addons:
-    apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - g++-4.8
-
-sudo: false
+  - "0.10"
 
 before_install:
-    - $CXX --version
-    - npm install node-gyp mocha -g
+    - npm install mocha -g
 after_success:
   - npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls
