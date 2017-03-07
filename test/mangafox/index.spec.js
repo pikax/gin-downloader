@@ -9,11 +9,10 @@ import config from "./_results";
 const expect = require('chai').expect;
 
 
-describe('MangaFox',()=> {
+describe('MangaFox live',()=> {
 
 
     it('should get all mangas',done=>{
-
         site.getAllMangas()
             .then(mangas=>{
                 expect(mangas.length).to.be.greaterThan(config.mangas_count);

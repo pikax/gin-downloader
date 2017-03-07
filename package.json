@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "coveralls": "npm run coverage -- --report lcovonly ",
+    "test:watch" : "mocha --colors --watch",
     "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec"
   },
   "repository": "https://github.com/pikax/gin-downloader.git",

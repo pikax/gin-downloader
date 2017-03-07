@@ -21,7 +21,7 @@ const readFile = Promise.promisify(require("fs").readFile);
 
 
 
-describe('MangaFox',()=> {
+describe('MangaFox parser',()=> {
     let mangas = './test/mangafox/html/mangas.html';
 		let gintama = './test/mangafox/html/Gintama.html';
 		let latest = './test/mangafox/html/latest.html';
