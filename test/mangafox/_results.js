@@ -28,6 +28,7 @@ export default {
 
     chapter_count : 628,
 
-  manga
+  manga,
+    image_src : "http://h.mfcdn.net/store/manga/551/01-001.0/compressed/Gintama_v01_ch01_p01.jpg"
 
 }
