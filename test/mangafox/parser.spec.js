@@ -2,7 +2,7 @@
  * Created by rodriguesc on 03/03/2017.
  */
 
-import results  from './_results';
+import results from './_results';
 
 
 import osmosis from 'osmosis'
@@ -21,146 +21,149 @@ const readFile = Promise.promisify(require("fs").readFile);
 
 
 
-describe('MangaFox parser',()=> {
+describe('MangaFox offline', () => {
     let mangas = './test/mangafox/html/mangas.html';
-		let gintama = './test/mangafox/html/Gintama.html';
-		let latest = './test/mangafox/html/latest.html';
+    let gintama = './test/mangafox/html/Gintama.html';
+    let latest = './test/mangafox/html/latest.html';
+    let chapter = './test/mangafox/html/ch001.html';
 
     let fpMangas;
-		let fpGintama;
-		let fpLatest;
+    let fpGintama;
+    let fpLatest;
+    let fpChapter;
 
-    before(done=>{
-        let pm =  readFile(mangas)
-            .then(x=>fpMangas = x);
+    before(done => {
+        let pm = readFile(mangas)
+            .then(x => fpMangas = x);
 
         let gm = readFile(gintama)
-            .then(x=>fpGintama =x);
+            .then(x => fpGintama = x);
 
         let gl = readFile(latest)
-	        .then(x=>fpLatest =x);
+            .then(x => fpLatest = x);
 
-	    Promise.all(pm,gm,gl)
-            .then(x=>done());
+        let ch = readFile(chapter)
+            .then(x => fpChapter = x);
+
+        Promise.all(pm, gm, gl, ch)
+            .then(x => done());
     })
 
 
-    it('should parse and get all mangas',done=>{
-        let osm = osmosis.parse(fpMangas);
-
-        // let osm = osmosis.get('http://mangafox.me/manga');
-        let count = 0;
-        parser.parseMangas(osm)
-            .data(x=>{
-                ++count;
-            })
-            .error(done)
-            .done(()=>{
-                expect(count).eq(results.mangas_count);
-                done();
-            });
-    });
-
-
-    it('it should parse manga info',done=>{
-	    let osm = osmosis.parse(fpGintama);
-	    // let osm = osmosis.get('http://mangafox.me/manga/gintama');
-
-	    let manga = {};
-	    parser.parseInfo(osm)
-		    .data(x=>manga=x)
-            // .log(console.log)
-            // .debug(console.log)
-            .error(console.log)
-		    .done(()=>{
-
-			    expect(manga.title).to.be.eq(results.manga.title);
-			    expect(manga.released).to.be.eq(results.manga.released);
-				expect(manga.csv_title).to.be.eq(results.manga.csv_title);
-			    expect(manga.image).to.contain(results.manga.image);
-
-			    expect(manga.artists).to.be.deep.eq(results.manga.artists);
-			    expect(manga.authors).to.be.deep.eq(results.manga.authors);
-			    expect(manga.genres).to.be.deep.eq(results.manga.genres);
-			    done()
-		    });
-    });
-
-
-    it('should parse latest',done=>{
-	    let osm = osmosis.parse(fpLatest);
-
-	    //todo implement test
-
-	    parser.parseLatest(osm)
-
-		    // .data(x=>console.log(x))
-
-
-            // .log(console.log)
-            // .debug(console.log)
-            .error(console.log)
-		    .done(()=>{
-
-			    done()
-		    });
-
+    describe('parse', () => {
 
     });
 
 
-	it('it should parse images from chapter',done=>{
-		// let uri = 'http://mangafox.me/manga/the_journey_of_flower/v01/c004/6.html';
+    describe('info', () => {
+        it('should parse and get all mangas', done => {
+            let osm = osmosis.parse(fpMangas);
 
-		done();
-		// done("mangafox return unavailable page after to many requests");
-
-		return;
-		//wont work because
-		let osm = osmosis.get(uri);
-
-		osm
-			.find('#top_bar > div.r.m > div.l > select.m > option@value')
-			.set('path')
-			.delay(900)
-
-			.get((x,data)=> url.resolve(uri,`${data.path}.html`))
-
-			//
-			// .find('div.read_img')
-			// .follow('a')
+            let count = 0;
+            parser.mangas(osm)
+                .data(x => {
+                    ++count;
+                })
+                .error(done)
+                .done(() => {
+                    expect(count).eq(results.mangas_count);
+                    done();
+                });
+        });
 
 
-			.find('div#viewer > div.read_img')
-			.set({
-				img: 'img@src'
-			})
+        it('it should parse full manga info', done => {
+            let osm = osmosis.parse(fpGintama);
+
+            let manga = {};
+            parser.mangaInfo(osm)
+                .data(x => manga = x)
+                // .log(console.log)
+                // .debug(console.log)
+                .error(console.log)
+                .done(() => {
+
+                    expect(manga.title).to.be.eq(results.manga.title);
+                    expect(manga.released).to.be.eq(results.manga.released);
+                    expect(manga.csv_title).to.be.eq(results.manga.csv_title);
+                    expect(manga.image).to.contain(results.manga.image);
+
+                    expect(manga.artists).to.be.deep.eq(results.manga.artists);
+                    expect(manga.authors).to.be.deep.eq(results.manga.authors);
+                    expect(manga.genres).to.be.deep.eq(results.manga.genres);
+                    done()
+                });
+        });
 
 
-			.data(x=>console.log(x))
-            // .log(console.log)
-            // .debug(console.log)
-            .error(console.log)
-			.done(()=>{
+        it('should parse latest', done => {
+            let osm = osmosis.parse(fpLatest);
 
-				done()
-			});
-	});
+            //todo implement test
+
+            let chaps = [];
+
+            parser.latest(osm)
+                .data(x => chaps.push(x))
 
 
-    it('should parse chapters',done=>{
-        let osm = osmosis.parse(fpGintama);
-        // let osm = osmosis.get("http://mangafox.me/manga/gintama")
+                // .log(console.log)
+                // .debug(console.log)
+                .error(console.log)
+                .done(() => {
+
+                    expect(chaps.length).to.be.greaterThan(100);
+                    done()
+                });
+
+
+        });
+
+
+        it('it should resolve all images from chapter', done => {
+            let osm = osmosis.parse(fpChapter);
+            let paths = [];
+
+            parser.imagesPath(osm)
+                .data(x => paths.push(x))
+                .error(console.log)
+                .done(() => {
+                    expect(paths.length).to.be.eq(58);
+                    done()
+                });
+        })
+
+        it('it should parse image from chapter', done => {
+            let osm = osmosis.parse(fpChapter);
+            let img = {};
+            parser.image(osm)
+                .data(x => img = x)
+                .error(console.log)
+                .done(() => {
+                    expect(img).to.exist;
+                    expect(img.src).to.exist;
+                    expect(img.src).to.contain(results.image_src)
+                    done();
+                });
+        });
+
+
+        it('should parse chapters', done => {
+            let osm = osmosis.parse(fpGintama);
+
+            let result = [];
+            parser.chapters(osm)
+                .data(x => result.push(x))
+                .error(done)
+                .done(() => {
+                    expect(result.length).eq(results.chapter_count);
+                    done()
+                });
+        })
+    })
+
+
 
   
-        let result = [];
-        parser.parseChapters(osm)
-            .data(x=>result.push(x))
-            .error(done)
-            .done(()=>{
-                expect(result.length).eq(results.chapter_count);
-                done()
-            });
-    })
 
 });
