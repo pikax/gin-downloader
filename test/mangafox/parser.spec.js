@@ -59,29 +59,20 @@ describe('MangaFox offline', () => {
         it('should parse and get all mangas', done => {
             let osm = osmosis.parse(fpMangas);
 
-            let count = 0;
-            parser.mangas(osm)
-                .data(x => {
-                    ++count;
+            osm = parser.mangas(osm)
+                .then(x => {
+                    expect(x.length).eq(results.mangas_count);
                 })
-                .error(done)
-                .done(() => {
-                    expect(count).eq(results.mangas_count);
-                    done();
-                });
+                .then(done)
+                .catch(done);
         });
 
 
         it('it should parse full manga info', done => {
             let osm = osmosis.parse(fpGintama);
 
-            let manga = {};
             parser.mangaInfo(osm)
-                .data(x => manga = x)
-                // .log(console.log)
-                // .debug(console.log)
-                .error(console.log)
-                .done(() => {
+                .then(manga => {
 
                     expect(manga.title).to.be.eq(results.manga.title);
                     expect(manga.released).to.be.eq(results.manga.released);
@@ -91,8 +82,9 @@ describe('MangaFox offline', () => {
                     expect(manga.artists).to.be.deep.eq(results.manga.artists);
                     expect(manga.authors).to.be.deep.eq(results.manga.authors);
                     expect(manga.genres).to.be.deep.eq(results.manga.genres);
-                    done()
-                });
+                })
+                .then(done)
+                .catch(done);
         });
 
 
@@ -104,17 +96,12 @@ describe('MangaFox offline', () => {
             let chaps = [];
 
             parser.latest(osm)
-                .data(x => chaps.push(x))
-
-
-                // .log(console.log)
-                // .debug(console.log)
-                .error(console.log)
-                .done(() => {
+                .then(chaps => {
 
                     expect(chaps.length).to.be.greaterThan(100);
-                    done()
-                });
+                })
+                .then(done)
+                .catch(done);
 
 
         });
@@ -122,43 +109,37 @@ describe('MangaFox offline', () => {
 
         it('it should resolve all images from chapter', done => {
             let osm = osmosis.parse(fpChapter);
-            let paths = [];
 
-            parser.imagesPath(osm)
-                .data(x => paths.push(x))
-                .error(console.log)
-                .done(() => {
+            parser.imagesPaths(osm)
+                .then((paths) => {
                     expect(paths.length).to.be.eq(58);
-                    done()
-                });
+                })
+                .then(done)
+                .catch(done);
         })
 
         it('it should parse image from chapter', done => {
             let osm = osmosis.parse(fpChapter);
-            let img = {};
             parser.image(osm)
-                .data(x => img = x)
-                .error(console.log)
-                .done(() => {
+                .then((img) => {
                     expect(img).to.exist;
                     expect(img.src).to.exist;
                     expect(img.src).to.contain(results.image_src)
-                    done();
-                });
+                })
+                .then(done)
+                .catch(done);
         });
 
 
         it('should parse chapters', done => {
             let osm = osmosis.parse(fpGintama);
 
-            let result = [];
             parser.chapters(osm)
-                .data(x => result.push(x))
-                .error(done)
-                .done(() => {
-                    expect(result.length).eq(results.chapter_count);
-                    done()
-                });
+                .then((chaps) => {
+                    expect(chaps.length).eq(results.chapter_count);
+                })
+                .then(done)
+                .catch(done);
         })
     })
 
