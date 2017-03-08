@@ -23,7 +23,7 @@ let manga = {
 
 
 export default {
-  mangas_count : 18671,
+    mangas_count: 18715,
   manga_name : manga.title,
 
     chapter_count : 628,

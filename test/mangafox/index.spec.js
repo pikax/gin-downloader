@@ -13,11 +13,11 @@ describe('MangaFox live',()=> {
 
 
     it('should get all mangas',done=>{
-        site.getAllMangas()
+        site.mangas()
             .then(mangas=>{
-                expect(mangas.length).to.be.greaterThan(config.mangas_count);
+                expect(mangas.length).to.be.gte(config.mangas_count);
             })
-            .then(x=>done())
+            .then(done)
             .catch(done);
 
     });

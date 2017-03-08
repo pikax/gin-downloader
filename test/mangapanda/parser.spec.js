@@ -19,7 +19,7 @@ const readFile = Promise.promisify(require("fs").readFile);
 
 
 
-describe('MangaPanda parser', () => {
+describe('MangaPanda manga', () => {
     let mangas = './test/mangapanda/html/mangas.html';
     let gintama = './test/mangapanda/html/Gintama.html';
     let latest = './test/mangapanda/html/latest.html';
