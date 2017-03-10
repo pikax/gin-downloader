@@ -54,24 +54,35 @@ describe('MangaPanda live', () => {
       .catch(done);
   });
 
+
+  it('should parse all images', done =>{
+    site.images('http://www.mangapanda.com/gintama/41')
+      .then(images=>{
+        expect(images).to.exist;
+        expect(images.length).to.be.eq(23);
+        expect(images[0].src).to.contain('mangapanda.com/gintama/41/gintama');
+      })
+      .then(done)
+      .catch(done);
+  });
+
   it('should get Gintama : chapter 1', done => {
     let title = 'Gintama';
-    let chapter = 1;
+    let chapter = 41;
 
+    try{
+      site.resolve(title,chapter)
+      .then(images=>{
+        expect(images).to.exist;
+        expect(images.length).to.be.eq(23);
+        expect(images[0].src).to.contain('mangapanda.com/gintama/41/gintama');
+      })
+      .then(done)
+      .catch(done);
 
-    //site.mangas()
-    //  .then(x => {
-    //    let gintama = find(x, { title });
-
-    //    expect(gintama).to.exist;
-    //    return gintama;
-    //  })
-    //  .then(x => {
-
-    //  })
-
-
-    done('not implemented');
+    }catch (e){
+      done(e);
+    }
   });
 
 });
