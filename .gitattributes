@@ -1,1 +1,1 @@
-tests/*/html/ export-ignore
+tests/*/html/*.html linguist-vendored
