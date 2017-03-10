@@ -14,8 +14,9 @@
   ],
   "main": "index.js",
   "scripts": {
-    "coveralls": "npm run coverage -- --report lcovonly ",
-    "test:watch" : "mocha --colors --watch",
+    "nyc": "nyc node_modules/mocha/bin/_mocha",
+    "test:watch": "mocha --colors --watch",
+    "mocha" : "mocha --colors",
     "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec"
   },
   "repository": "https://github.com/pikax/gin-downloader.git",
@@ -32,6 +33,7 @@
     "chai": "^3.5.0",
     "coveralls": "^2.12.0",
     "cross-env": "^3.2.3",
+    "eslint": "^3.17.1",
     "istanbul": "v1",
     "istanbul-coveralls": "^1.0.3",
     "mocha": "^3.2.0",

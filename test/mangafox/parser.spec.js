@@ -5,20 +5,20 @@
 import results from './_results';
 
 
-import osmosis from 'osmosis'
+import osmosis from 'osmosis';
 var url = require('url');
 
 
 import _ from 'lodash';
 
-import manga from './../../lib/mangafox/parser'
+import manga from './../../lib/mangafox/parser';
 
 import { parser, resolver } from './../../lib/mangafox/parser';
 
 const expect = require('chai').expect;
 
-const Promise = require("bluebird");
-const readFile = Promise.promisify(require("fs").readFile);
+const Promise = require('bluebird');
+const readFile = Promise.promisify(require('fs').readFile);
 
 
 
@@ -49,11 +49,36 @@ describe('MangaFox offline', () => {
 
     Promise.all(pm, gm, gl, ch)
       .then(x => done());
-  })
+  });
 
 
-  describe('parse', () => {
+  describe('resolver', () => {
 
+    it('should resolve image path chapter', done=>{
+      let osm = osmosis.parse(fpChapter);
+
+      osm = resolver.resolveImagesPaths(osm);
+
+      resolveArray(osm)
+        .then(x=>{
+          expect(x.length).to.be.eq(58);
+        })
+        .then(done)
+        .catch(done);
+    });
+
+    it('should parse image from chapter', done=>{
+      let osm = osmosis.parse(fpChapter);
+
+      osm = resolver.resolveImage(osm);
+
+      resolveObject(osm)
+        .then(x=>{
+          expect(x.src).to.contain(results.image_url);
+        })
+        .then(done)
+        .catch(done);
+    });
   });
 
 
@@ -93,7 +118,6 @@ describe('MangaFox offline', () => {
     it('should parse latest', done => {
       let osm = osmosis.parse(fpLatest);
 
-      let chaps = [];
       manga.latest(osm)
         .then(chaps => {
           expect(chaps.length).to.be.greaterThan(100);
@@ -114,7 +138,7 @@ describe('MangaFox offline', () => {
         })
         .then(done)
         .catch(done);
-    })
+    });
 
     it('it should parse image from chapter', done => {
       let osm = osmosis.parse(fpChapter);
@@ -122,12 +146,11 @@ describe('MangaFox offline', () => {
         .then((img) => {
           expect(img).to.exist;
           expect(img.src).to.exist;
-          expect(img.src).to.contain(results.image_src)
+          expect(img.src).to.contain(results.image_src);
         })
         .then(done)
         .catch(done);
     });
-
 
     it('should parse chapters', done => {
       let osm = osmosis.parse(fpGintama);
@@ -139,43 +162,5 @@ describe('MangaFox offline', () => {
         .then(done)
         .catch(done);
     });
-
-    it('it should parse images from chapter', done => {
-      done();
-      return;
-
-      let uri = 'http://mangafox.me/manga/ansatsu_kyoushitsu/v01/c001/1.html';
-
-      let osm = osmosis.get(uri);
-
-      let imgs = [];
-      ////osm = resolver.resolveImagesPaths(osm);
-
-      ////osm = osm.follow('path')
-
-      ////osm = resolver.resolveImage(osm);
-
-      //osm = osm.find('#top_bar > div.r.m > div.l > select.m > option:not(:last-child)')
-      //  .follow('@value');
-
-      osm = resolver.resolveImage(osm);
-
-       osm.data(x => imgs.push(x))
-         .log(console.log)
-         .debug(console.log)
-        .error(console.log)
-        .done(() => {
-
-          expect(imgs.length).to.be.greaterThan(19);
-          expect(imgs[0].img).to.contain(results.image_url);
-
-          done();
-        });
-    });
-  })
-
-
-
-
-
+  });
 });
