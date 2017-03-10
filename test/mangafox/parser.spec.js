@@ -6,13 +6,13 @@ import results from './_results';
 
 
 import osmosis from 'osmosis';
+import {resolveArray, resolveObject} from '../../lib/common/helper';
 var url = require('url');
 
 
 import _ from 'lodash';
 
 import manga from './../../lib/mangafox/parser';
-
 import { parser, resolver } from './../../lib/mangafox/parser';
 
 const expect = require('chai').expect;
@@ -74,7 +74,7 @@ describe('MangaFox offline', () => {
 
       resolveObject(osm)
         .then(x=>{
-          expect(x.src).to.contain(results.image_url);
+          expect(x.src).to.contain(results.image_src);
         })
         .then(done)
         .catch(done);
