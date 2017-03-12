@@ -6,8 +6,16 @@
 import site from './../../lib/mangapanda';
 import config from './_results';
 
-const expect = require('chai').expect;
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 
+chai.use(chaiAsPromised);
+
+// Then either:
+const expect = chai.expect;
+// or:
+chai.should();
+// according to your preference of assertion style
 
 
 describe('MangaPanda live', () => {
@@ -54,7 +62,6 @@ describe('MangaPanda live', () => {
       .catch(done);
   });
 
-
   it('should parse all images', done =>{
     site.images('http://www.mangapanda.com/gintama/41')
       .then(images=>{
@@ -66,23 +73,51 @@ describe('MangaPanda live', () => {
       .catch(done);
   });
 
+
+  it('should not find manga by name',done=>{
+    let name = 'my stupid name';
+    let chapter = 1;
+
+    site.resolve(name,chapter)
+      .should.eventually.be.rejectedWith(Error)
+      .notify(done);
+  });
+
+
+  it('should not find chapter ',done=>{
+    let name = 'Gintama';
+    let chapter = 'oooraklhsdaosdjnalmshd';
+
+    site.resolve(name,chapter)
+      .should.eventually.be.rejectedWith(Error)
+      .notify(done);
+  });
+
+
+
+  it('should not find chapter ',done=>{
+    let name = 'Gintama';
+    let chapter = 'oooraklhsdaosdjnalmshd';
+
+    site.resolve(name,chapter)
+      .should.eventually.be.rejectedWith(Error)
+      .notify(done);
+  });
+
+
   it('should get Gintama : chapter 1', done => {
-    let title = 'Gintama';
+    let name = 'Gintama';
     let chapter = 41;
 
-    try{
-      site.resolve(title,chapter)
+    site.resolve(name,chapter)
       .then(images=>{
         expect(images).to.exist;
         expect(images.length).to.be.eq(23);
         expect(images[0].src).to.contain('mangapanda.com/gintama/41/gintama');
       })
-      .then(done)
-      .catch(done);
+        .catch(done)
+      .then(done);
 
-    }catch (e){
-      done(e);
-    }
   });
 
 });
