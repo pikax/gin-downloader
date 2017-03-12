@@ -7,11 +7,22 @@ import site from './../../lib/mangafox';
 import config from './_results';
 import { find } from 'lodash';
 
-const expect = require('chai').expect;
+
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+
+chai.use(chaiAsPromised);
+
+// Then either:
+const expect = chai.expect;
+// or:
+chai.should();
+// according to your preference of assertion style
+
+//TODO change to should assertion
 
 
 describe('MangaFox live', () => {
-
 
   it('should get all mangas', done => {
     site.mangas()
@@ -55,23 +66,15 @@ describe('MangaFox live', () => {
   });
 
   it('should get Gintama : chapter 1', done => {
-    let title = 'Gintama';
-    let chapter = 1;
+    let name = 'Gintama';
+    let chapter = 41;
 
-
-    //site.mangas()
-    //  .then(x => {
-    //    let gintama = find(x, { title });
-
-    //    expect(gintama).to.exist;
-    //    return gintama;
-    //  })
-    //  .then(x => {
-
-    //  })
-
-    done();
-    //done('not implemented');
+    site.resolve(name,chapter)
+      .then(images=>{
+        expect(images).to.exist;
+        expect(images.length).to.be.eq(23);
+        expect(images[0].src).to.contain('mangapanda.com/gintama/41/gintama');
+        done();
+      });
   });
-
 });

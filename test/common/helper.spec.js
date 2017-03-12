@@ -2,10 +2,20 @@
  * Created by rodriguesc on 10/03/2017.
  */
 
-import {resolveArray,resolveObject} from './../../lib/common/helper';
+import {resolveArray,resolveObject,resolveOsmosis} from './../../lib/common/helper';
 import osmosis from 'osmosis';
 
-const expect = require('chai').expect;
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+
+chai.use(chaiAsPromised);
+
+// Then either:
+const expect = chai.expect;
+// or:
+chai.should();
+// according to your preference of assertion style
+
 
 
 describe('Helper.js',()=>{
@@ -47,6 +57,32 @@ describe('Helper.js',()=>{
       .then(done)
       .catch(done);
   });
+  //
+  //it('should create osmosis',done=>{
+  //  let uri = 'https://github.com/';
+  //  //
+  //  //osmosis.get(uri)
+  //  //  .find('a.header-logo-invertocat')
+  //  //  .set('href','@href')
+  //  //  .data(x=>{
+  //  //    x.should.exist;
+  //  //    x.href.should.be.eq(uri);
+  //  //    done();
+  //  //  })
+  //  //  .end();
+  //
+  //  resolveOsmosis(uri)
+  //    .then(osm=>{
+  //      return osm.find('a.header-logo-invertocat').set('href','@href');
+  //    })
+  //    .then(resolveObject)
+  //    .then(x=>{
+  //      x.should.exist;
+  //      x.href.should.be.eq(uri);
+  //    })
+  //    .should.eventually.notify(done);
+  //
+  //});
 
 });
 

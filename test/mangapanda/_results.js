@@ -3,7 +3,7 @@
  */
 
 let manga = {
-  image: 'http://s5.mangapanda.com/cover/gintama/gintama-l0.jpg',
+  image: 'mangapanda.com/cover/gintama/gintama-l0.jpg',
   title: 'Gintama',
   csv_title: '',
   released: '2003',
