@@ -1,4 +1,9 @@
 # Created by .ignore support plugin (hsz.mobi)
+#mocha
+watch
+#visualstudio
+.vs
+
 ### Node template
 # Logs
 logs
