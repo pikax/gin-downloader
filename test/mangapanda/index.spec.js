@@ -67,7 +67,10 @@ describe('MangaPanda live', () => {
       .then(images=>{
         expect(images).to.exist;
         expect(images.length).to.be.eq(23);
-        expect(images[0].src).to.contain('mangapanda.com/gintama/41/gintama');
+        return images[0];
+      })
+      .then(img=>{
+        expect(img).to.contain('mangapanda.com/gintama/41/gintama');
       })
       .then(done)
       .catch(done);
@@ -105,7 +108,7 @@ describe('MangaPanda live', () => {
   });
 
 
-  it('should get Gintama : chapter 1', done => {
+  it('should get Gintama : chapter 41', done => {
     let name = 'Gintama';
     let chapter = 41;
 
@@ -113,10 +116,12 @@ describe('MangaPanda live', () => {
       .then(images=>{
         expect(images).to.exist;
         expect(images.length).to.be.eq(23);
-        expect(images[0].src).to.contain('mangapanda.com/gintama/41/gintama');
+        return images[0];
       })
-        .catch(done)
-      .then(done);
+      .then(img=>{
+        expect(img).to.contain('mangapanda.com/gintama/41/gintama');
+      })
+      .should.eventually.notify(done);
 
   });
 
