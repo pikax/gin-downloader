@@ -53,7 +53,6 @@ describe('MangaFox offline', () => {
 
 
   describe('resolver', () => {
-
     it('should resolve image path chapter', done=>{
       let osm = osmosis.parse(fpChapter);
 

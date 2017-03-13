@@ -65,16 +65,19 @@ describe('MangaFox live', () => {
       .catch(done);
   });
 
-  it('should get Gintama : chapter 1', done => {
+  it('should get Gintama : chapter 41', done => {
     let name = 'Gintama';
     let chapter = 41;
 
     site.resolve(name,chapter)
       .then(images=>{
         expect(images).to.exist;
-        expect(images.length).to.be.eq(23);
-        expect(images[0].src).to.contain('mangapanda.com/gintama/41/gintama');
-        done();
-      });
+        expect(images.length).to.be.eq(24);
+
+        images[0].then(img=>{
+          expect(img).to.contain('mfcdn.net/store/manga/551/06-041.0/compressed/M7_Gintama_ch041_00.jpg');
+        });
+      })
+      .should.eventually.notify(done);
   });
 });
