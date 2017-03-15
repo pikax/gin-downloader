@@ -35,6 +35,42 @@ describe('MangaFox live', () => {
 
   });
 
+  it('should get info', done => {
+    let manga = 'http://mangafox.me/manga/gintama';
+    site.info(manga)
+      .then(x => {
+        expect(x).to.exist;
+
+        expect(x.released).to.be.eq(config.manga.released);
+
+        expect(x.artists).to.be.deep.eq(config.manga.artists);
+        expect(x.authors).to.be.deep.eq(config.manga.authors);
+        expect(x.genres).to.be.deep.eq(config.manga.genres);
+      })
+      .should.eventually.notify(done);
+  });
+
+
+  it('should not find manga by name',done=>{
+    let name = 'my stupid name';
+    let chapter = 1;
+
+    site.resolve(name,chapter)
+      .should.eventually.be.rejectedWith(Error)
+      .notify(done);
+  });
+
+
+  it('should not find chapter ',done=>{
+    let name = 'Gintama';
+    let chapter = 'oooraklhsdaosdjnalmshd';
+
+    site.resolve(name,chapter)
+      .should.eventually.be.rejectedWith(Error)
+      .notify(done);
+  });
+
+
   it('should get chapters', done => {
     let manga = 'http://mangafox.me/manga/gintama';
 
@@ -59,7 +95,6 @@ describe('MangaFox live', () => {
         expect(x).to.exist;
         expect(x.length).to.be.gte(20);
         //TODO add chapter verification
-
       })
       .then(done)
       .catch(done);

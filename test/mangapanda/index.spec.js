@@ -2,12 +2,14 @@
  * Created by rodriguesc on 07/03/2017.
  */
 
-
 import site from './../../lib/mangapanda';
 import config from './_results';
 
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+
+
+import results from './_results';
 
 chai.use(chaiAsPromised);
 
@@ -31,6 +33,30 @@ describe('MangaPanda live', () => {
       .catch(done);
 
   });
+
+
+
+  it('should get info', done => {
+    let manga = 'http://www.mangapanda.com/gintama';
+    site.info(manga)
+      .then(x => {
+        expect(x).to.exist;
+
+        expect(x.title).to.be.eq(results.manga.title);
+        expect(x.released).to.be.eq(results.manga.released);
+        expect(x.csv_title).to.be.eq(results.manga.csv_title);
+        expect(x.status).to.be.eq(results.manga.status);
+
+        expect(x.artist).to.be.eq(results.manga.artist);
+        expect(x.author).to.be.deep.eq(results.manga.author);
+        expect(x.genres).to.be.deep.eq(results.manga.genres);
+
+      })
+      .should.eventually.notify(done);
+
+  });
+
+
 
   it('should get chapters', done => {
     let manga = 'http://www.mangapanda.com/gintama';
@@ -85,17 +111,6 @@ describe('MangaPanda live', () => {
       .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });
-
-
-  it('should not find chapter ',done=>{
-    let name = 'Gintama';
-    let chapter = 'oooraklhsdaosdjnalmshd';
-
-    site.resolve(name,chapter)
-      .should.eventually.be.rejectedWith(Error)
-      .notify(done);
-  });
-
 
 
   it('should not find chapter ',done=>{
