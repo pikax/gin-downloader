@@ -99,50 +99,6 @@ describe('MangaPanda offline', () => {
         .catch(done);
     });
 
-    it('should image',done=>{
-      let osm = osmosis.parse(fpGintama);
-
-      manga.mangaImage(osm)
-        .should.eventually.have.property('image')
-        .with.contain(results.manga.image)
-        .notify(done);
-
-    });
-
-
-    //it('should parse info',done=>{
-    //  let osm = osmosis.parse(fpGintama);
-    //  //
-    //  //title  : 'tr > td[2] > h2.aname',
-    //  //
-    //  //  csv_title : 'tr[2] td[2]',
-    //  //
-    //  //  released : 'tr[3] td[2]',
-    //  //  status  :'tr[4] td[2]',
-    //  //
-    //  //  author : 'tr[5] td[2]',
-    //  //  artist : 'tr[6] td[2]',
-    //  //
-    //  //  genres : ['span.genretags'],
-    //
-    //  let manga = results.manga;
-    //
-    //  //manga.mangaInfo(osm)
-    //  //  .should.eventually.have.deepEqual(new {
-    //  //    manga.title,
-    //  //  manga.csv_title,
-    //  //  manga.released,
-    //  //  manga.status,
-    //  //  manga.author,
-    //  //  manga.artist,
-    //  //  manga.genres
-    //  //});
-    //
-    //  osm.should.eventually.be.eq()
-    //    .notify(done);
-    //});
-
-
     it('it should parse full manga info', done => {
       let osm = osmosis.parse(fpGintama);
 

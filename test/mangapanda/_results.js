@@ -2,7 +2,7 @@
  * Created by rodriguesc on 02/03/2017.
  */
 
-let manga = {
+const manga = {
   image: 'mangapanda.com/cover/gintama/gintama-l0.jpg',
   title: 'Gintama',
   csv_title: '',

@@ -93,7 +93,6 @@ describe('MangaFox offline', () => {
         .catch(done);
     });
 
-
     it('it should parse full manga info', done => {
       let osm = osmosis.parse(fpGintama);
 

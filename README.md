@@ -8,4 +8,14 @@
 
 
 
-download manga from public websites
+download manga and get info form multiple manga sites
+
+
+
+### Supported websites
+- [x] MangaFox
+- [x] MangaPanda
+- [ ] MangaHere
+- [ ] Bato.to
+- [ ] MangaUpdates **only info**
+- [ ] MyAnimeList **only info**

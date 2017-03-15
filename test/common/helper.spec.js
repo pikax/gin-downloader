@@ -7,6 +7,7 @@ import osmosis from 'osmosis';
 
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import {getHtml} from '../../lib/common/request';
 
 chai.use(chaiAsPromised);
 
@@ -57,32 +58,27 @@ describe('Helper.js',()=>{
       .then(done)
       .catch(done);
   });
-  //
-  //it('should create osmosis',done=>{
-  //  let uri = 'https://github.com/';
-  //  //
-  //  //osmosis.get(uri)
-  //  //  .find('a.header-logo-invertocat')
-  //  //  .set('href','@href')
-  //  //  .data(x=>{
-  //  //    x.should.exist;
-  //  //    x.href.should.be.eq(uri);
-  //  //    done();
-  //  //  })
-  //  //  .end();
-  //
-  //  resolveOsmosis(uri)
-  //    .then(osm=>{
-  //      return osm.find('a.header-logo-invertocat').set('href','@href');
-  //    })
-  //    .then(resolveObject)
-  //    .then(x=>{
-  //      x.should.exist;
-  //      x.href.should.be.eq(uri);
-  //    })
-  //    .should.eventually.notify(done);
-  //
-  //});
+
+  it('should not get html',done=>{
+    let uri = 'ht222tps://github.com/';
+    getHtml(uri,{})
+      .then(html=> osmosis.parse(html))
+      .should.eventually.be.rejectedWith(Error)
+      .notify(done);
+  });
+
+  it('should get html',done=>{
+    let uri = 'https://github.com/';
+    getHtml(uri,{})
+      .then(html=> osmosis.parse(html))
+      .then(osm=>osm.find(`//a[@class='header-logo-invertocat']`))
+      .then(x=>{
+        x.should.exist;
+        x.length.should.be.eq(1);
+      })
+      .should.eventually.notify(done);
+  });
+
 
 });
 
