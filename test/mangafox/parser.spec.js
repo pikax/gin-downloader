@@ -6,21 +6,28 @@ import results from './_results';
 
 
 import osmosis from 'osmosis';
-import {resolveArray, resolveObject} from '../../lib/common/helper';
+import { resolveObject} from '../../lib/common/helper';
+import * as libxmljs from 'libxmljs';
 var url = require('url');
 
 
 import _ from 'lodash';
 
 import manga from './../../lib/mangafox/parser';
-import { parser, resolver } from './../../lib/mangafox/parser';
-
-const expect = require('chai').expect;
+import {finder,  resolver } from './../../lib/mangafox/parser';
 
 const Promise = require('bluebird');
 const readFile = Promise.promisify(require('fs').readFile);
 
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 
+chai.use(chaiAsPromised);
+
+// Then either:
+const expect = chai.expect;
+// or:
+chai.should();
 
 
 describe('MangaFox offline', () => {
@@ -53,17 +60,12 @@ describe('MangaFox offline', () => {
 
 
   describe('resolver', () => {
-    it('should resolve image path chapter', done=>{
-      let osm = osmosis.parse(fpChapter);
+    it('should resolve image path chapter',()=>{
+      let osm = libxmljs.parseHtmlString(fpChapter);
 
-      osm = resolver.resolveImagesPaths(osm);
+      let xx = finder.findImagesPath(osm);
 
-      resolveArray(osm)
-        .then(x=>{
-          expect(x.length).to.be.eq(58);
-        })
-        .then(done)
-        .catch(done);
+      xx.should.have.have.lengthOf(58);
     });
 
     it('should parse image from chapter', done=>{
@@ -85,7 +87,7 @@ describe('MangaFox offline', () => {
     it('should parse and get all mangas', done => {
       let osm = osmosis.parse(fpMangas);
 
-      osm = manga.mangas(osm)
+      manga.mangas(osm)
         .then(x => {
           expect(x.length).eq(results.mangas_count);
         })

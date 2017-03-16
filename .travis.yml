@@ -11,5 +11,6 @@ addons:
       - g++-4.8
 before_script:
       - npm install -g mocha
+      - DEBUG=gin-downloader*
 after_script: "npm install coveralls && cat ./coverage/lcov.info | coveralls"
 

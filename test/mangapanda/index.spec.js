@@ -34,8 +34,6 @@ describe('MangaPanda live', () => {
 
   });
 
-
-
   it('should get info', done => {
     let manga = 'http://www.mangapanda.com/gintama';
     site.info(manga)
@@ -137,9 +135,5 @@ describe('MangaPanda live', () => {
         expect(img).to.contain('mangapanda.com/gintama/41/gintama');
       })
       .should.eventually.notify(done);
-
   });
-
 });
-
-
