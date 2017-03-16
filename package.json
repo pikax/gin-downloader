@@ -49,7 +49,9 @@
   "dependencies": {
     "bluebird": "^3.4.7",
     "commander": "^2.9.0",
+    "debug": "^2.6.3",
     "fs-extra": "^2.0.0",
+    "libxmljs": "^0.18.4",
     "lodash": "^4.17.4",
     "needle-retry": "^1.1.2",
     "osmosis": "^1.1.2",
