@@ -15,7 +15,7 @@ download manga and get info form multiple manga sites
 ### Supported websites
 - [x] MangaFox
 - [x] MangaPanda
-- [ ] MangaHere
+- [x] MangaHere
 - [ ] Bato.to
 - [ ] MangaUpdates **only info**
 - [ ] MyAnimeList **only info**
