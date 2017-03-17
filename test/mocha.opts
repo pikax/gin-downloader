@@ -5,4 +5,3 @@
 --compilers js:babel-register
 --sort
 --ui bdd
-test/**/*.spec.js
