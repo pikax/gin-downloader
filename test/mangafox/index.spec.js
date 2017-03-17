@@ -88,29 +88,29 @@ describe('MangaFox live', () => {
 
 
   it('should get images paths', done => {
-    let chapter ='http://mangafox.me/manga/gintama/v01/c004/4.html';
+    let chapter ='http://mangafox.me/manga/school_rumble/v14/c172/1.html';
 
     site.imagesPaths(chapter)
       .then(x => {
         expect(x).to.exist;
-        expect(x.length).to.be.gte(20);
+        expect(x.length).to.be.gte(8);
         //TODO add chapter verification
       })
       .then(done)
       .catch(done);
   });
 
-  it('should get Gintama : chapter 41', done => {
-    let name = 'Gintama';
-    let chapter = 41;
+  it('should get School : chapter 172', done => {
+    let name = 'School Rumble';
+    let chapter = 172;
 
     site.resolve(name,chapter)
       .then(images=>{
         expect(images).to.exist;
-        expect(images.length).to.be.eq(24);
+        expect(images.length).to.be.eq(8);
 
         images[0].then(img=>{
-          expect(img).to.contain('mfcdn.net/store/manga/551/06-041.0/compressed/M7_Gintama_ch041_00.jpg');
+          expect(img).to.contain('mfcdn.net/store/manga/90/14-172.0/compressed/Townsocks_School_Rumble_172_1.jpg');
         });
       })
       .should.eventually.notify(done);
