@@ -88,7 +88,7 @@ describe('MangaFox live', () => {
 
 
   it('should get images paths', done => {
-    let chapter ='http://mangafox.me/manga/school_rumble/v14/c172/1.html';
+    let chapter ='http://mangafox.me/manga/zui_wu_dao/c042/1.html';
 
     site.imagesPaths(chapter)
       .then(x => {
@@ -101,16 +101,16 @@ describe('MangaFox live', () => {
   });
 
   it('should get School : chapter 172', done => {
-    let name = 'School Rumble';
-    let chapter = 172;
+    let name = 'Zui Wu Dao';
+    let chapter = 42;
 
     site.resolve(name,chapter)
       .then(images=>{
         expect(images).to.exist;
-        expect(images.length).to.be.eq(8);
+        expect(images.length).to.be.eq(17);
 
         images[0].then(img=>{
-          expect(img).to.contain('mfcdn.net/store/manga/90/14-172.0/compressed/Townsocks_School_Rumble_172_1.jpg');
+          expect(img).to.contain('mfcdn.net/store/manga/15973/042.0/compressed/k001.jpg');
         });
       })
       .should.eventually.notify(done);
