@@ -15,6 +15,7 @@
   "main": "index.js",
   "scripts": {
     "nyc": "nyc node_modules/mocha/bin/_mocha test/**/*.spec.js",
+    "lint" : "eslint ./lib/*/**.js ./test/*/**.spec.js  --quiet; exit 0",
     "test:watch": "mocha test/**/*.spec.js --colors --watch",
     "mocha": "mocha test/**/*.spec.js --colors",
     "test": "cross-env DEBUG=gin-downloader:* istanbul cover node_modules/mocha/bin/_mocha  test/**/*.spec.js -- -R spec",
