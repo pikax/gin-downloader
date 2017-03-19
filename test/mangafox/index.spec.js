@@ -4,7 +4,7 @@
 
 
 import site from './../../lib/mangafox';
-import config from './_results';
+import results from './_results';
 import { find } from 'lodash';
 
 
@@ -27,7 +27,7 @@ describe('MangaFox live', () => {
   it('should get all mangas', done => {
     site.mangas()
       .then(mangas => {
-        expect(mangas.length).to.be.gte(config.mangas_count);
+        expect(mangas.length).to.be.gte(results.mangas_count);
         //TODO add manga verification
       })
       .then(done)
@@ -41,11 +41,11 @@ describe('MangaFox live', () => {
       .then(x => {
         expect(x).to.exist;
 
-        expect(x.released).to.be.eq(config.manga.released);
+        expect(x.released).to.be.eq(results.manga.released);
 
-        expect(x.artists).to.be.deep.eq(config.manga.artists);
-        expect(x.authors).to.be.deep.eq(config.manga.authors);
-        expect(x.genres).to.be.deep.eq(config.manga.genres);
+        expect(x.artists).to.be.deep.eq(results.manga.artists);
+        expect(x.authors).to.be.deep.eq(results.manga.authors);
+        expect(x.genres).to.be.deep.eq(results.manga.genres);
       })
       .should.eventually.notify(done);
   });
@@ -77,7 +77,7 @@ describe('MangaFox live', () => {
     site.chapters(manga)
       .then(x => {
         expect(x).to.exist;
-        expect(x.length).to.be.eq(629);
+        expect(x.length).to.be.gte(results.chapter_count);
         //TODO add chapter verification
 
       })
@@ -100,7 +100,7 @@ describe('MangaFox live', () => {
       .catch(done);
   });
 
-  it('should get School : chapter 172', done => {
+  it('should get Zui Wu Dao : chapter 42', done => {
     let name = 'Zui Wu Dao';
     let chapter = 42;
 
