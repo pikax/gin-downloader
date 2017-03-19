@@ -74,7 +74,7 @@ describe('MangaHere live', () => {
     site.chapters(manga)
       .then(x => {
         expect(x).to.exist;
-        expect(x.length).to.be.eq(629);
+        expect(x.length).to.be.gte(629);
         //TODO add chapter verification
 
       })

@@ -56,37 +56,6 @@ describe('MangaPanda offline', () => {
   });
 
 
-  describe('resolver', () => {
-    //TODO add manga tests
-
-    it('should resolve image path chapter', done=>{
-      let osm = osmosis.parse(fpChapter);
-
-      osm = resolver.resolveImagesPaths(osm);
-
-      resolveArray(osm)
-        .then(x=>{
-          expect(x.length).to.be.eq(58);
-        })
-        .then(done)
-        .catch(done);
-    });
-
-    it('should parse image from chapter', done=>{
-      let osm = osmosis.parse(fpChapter);
-
-      osm = resolver.resolveImage(osm);
-
-      resolveObject(osm)
-        .then(x=>{
-          expect(x.src).to.contain(results.image_url);
-        })
-        .then(done)
-        .catch(done);
-    });
-  });
-
-
   describe('info', () => {
     it('should parse and get all mangas', done => {
       let osm = osmosis.parse(fpMangas);

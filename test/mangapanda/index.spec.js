@@ -62,7 +62,7 @@ describe('MangaPanda live', () => {
     site.chapters(manga)
       .then(x => {
         expect(x).to.exist;
-        expect(x.length).to.be.eq(570);
+        expect(x.length).to.be.gte(results.chapter_count);
         //TODO add chapter verification
 
       })
