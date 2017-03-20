@@ -1,7 +1,7 @@
 {
   "name": "gin-downloader",
-  "version": "0.0.2",
-  "description": "download manga from public websites",
+  "version": "0.1.0",
+  "description": "Simple manga scrapper for famous online manga websites.",
   "keywords": [
     "manga",
     "downloader",
@@ -10,7 +10,8 @@
     "gin-manga",
     "manga-fox",
     "mangafox",
-    "mangapanda"
+    "mangapanda",
+    "mangahere"
   ],
   "main": "lib/index.js",
   "scripts": {
