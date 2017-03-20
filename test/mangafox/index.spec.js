@@ -35,6 +35,13 @@ describe('MangaFox live', () => {
 
   });
 
+  it('should get latest chaps', done => {
+    site.latest()
+      .should.eventually
+      .to.have.length.gte(100)
+      .notify(done);
+  });
+
   it('should get info', done => {
     let manga = 'http://mangafox.me/manga/gintama';
     site.info(manga)
