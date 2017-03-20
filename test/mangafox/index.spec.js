@@ -3,10 +3,8 @@
  */
 
 
-import site from './../../lib/mangafox';
+import site from './../../src/mangafox';
 import results from './_results';
-import { find } from 'lodash';
-
 
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';

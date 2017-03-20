@@ -3,10 +3,8 @@
  */
 
 
-import site from './../../lib/mangahere';
+import site from './../../src/mangahere';
 import config from './_results';
-import { find } from 'lodash';
-
 
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';

@@ -3,9 +3,9 @@
  */
 
 
-const mangafox = require('./dist/mangafox');
-const mangahere = require('./dist/mangahere');
-const mangapanda = require('./dist/mangapanda');
+const mangafox = require('./mangafox');
+const mangahere = require('./mangahere');
+const mangapanda = require('./mangapanda');
 
 
 

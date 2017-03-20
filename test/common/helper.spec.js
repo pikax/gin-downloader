@@ -2,12 +2,12 @@
  * Created by rodriguesc on 10/03/2017.
  */
 
-import {resolveArray,resolveObject,resolveOsmosis} from './../../lib/common/helper';
+import {resolveArray,resolveObject} from './../../src/common/helper';
 import osmosis from 'osmosis';
 
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {getHtml} from '../../lib/common/request';
+import {getHtml} from '../../src/common/request';
 
 chai.use(chaiAsPromised);
 
