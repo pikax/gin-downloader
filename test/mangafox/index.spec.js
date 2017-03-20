@@ -43,7 +43,7 @@ describe('MangaFox live', () => {
   });
 
   it('should get info', done => {
-    let manga = 'http://mangafox.me/manga/gintama';
+    let manga = 'Gintama';
     site.info(manga)
       .then(x => {
         expect(x).to.exist;
