@@ -1,2 +1,5 @@
 *.html linguist-vendored
 /test/ export-ignore
+
+lib/**/*.js text eol=crlf
+test/**/*.js text eol=crlf
