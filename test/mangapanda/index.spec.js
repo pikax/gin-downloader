@@ -42,7 +42,7 @@ describe('MangaPanda live', () => {
   });
 
   it('should get info', done => {
-    let manga = 'http://www.mangapanda.com/gintama';
+    let manga = 'Gintama';
     site.info(manga)
       .then(x => {
         expect(x).to.exist;
@@ -64,7 +64,7 @@ describe('MangaPanda live', () => {
 
 
   it('should get chapters', done => {
-    let manga = 'http://www.mangapanda.com/gintama';
+    let manga = 'Gintama';
 
     site.chapters(manga)
       .then(x => {

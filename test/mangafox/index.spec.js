@@ -79,7 +79,7 @@ describe('MangaFox live', () => {
 
 
   it('should get chapters', done => {
-    let manga = 'http://mangafox.me/manga/gintama';
+    let manga = 'Gintama';
 
     site.chapters(manga)
       .then(x => {

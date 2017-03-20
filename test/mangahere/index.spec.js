@@ -40,7 +40,7 @@ describe('MangaHere live', () => {
   });
 
   it('should get info', done => {
-    let manga = 'http://www.mangahere.co/manga/gintama';
+    let manga = 'Gintama';
     site.info(manga)
       .then(x => {
         expect(x).to.exist;
@@ -76,7 +76,7 @@ describe('MangaHere live', () => {
 
 
   it('should get chapters', done => {
-    let manga = 'http://www.mangahere.co/manga/gintama';
+    let manga = 'Gintama';
 
     site.chapters(manga)
       .then(x => {
