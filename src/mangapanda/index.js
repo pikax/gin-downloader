@@ -19,9 +19,6 @@ let uri = require('url');
 import {resolveUrl} from './names';
 
 
-export const NAME = config.name;
-
-
 const mangas = () => {
   debug('getting mangas');
   return getHtml(config.mangas_url)
@@ -61,6 +58,8 @@ const chapters = (name) =>{
     .tap(x=>debug(`chapters: ${x.length}`));
 };
 
+
+
 const images = (url) => {
   let osm = osmosis.get(url);
   osm = resolver.resolveImagesPaths(osm);
@@ -96,6 +95,8 @@ const resolve = (name, chapter)=>{
 };
 
 export default {
+  name : config.name,
+
   mangas,
   info,
   chapters,
