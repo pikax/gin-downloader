@@ -10,6 +10,7 @@ import { resolveObject} from '../../lib/common/helper';
 import * as libxmljs from 'libxmljs';
 
 import manga, {finder,  resolver } from './../../lib/mangahere/parser';
+import toName from './../../lib/mangahere/names';
 
 const Promise = require('bluebird');
 const readFile = Promise.promisify(require('fs').readFile);
@@ -74,6 +75,28 @@ describe('MangaFox offline', () => {
         })
         .then(done)
         .catch(done);
+    });
+
+
+    it('should resolve name to name',(done)=>{
+      'use strict';
+
+      let osm = libxmljs.parseHtmlString(fpMangas);
+
+      manga.mangas(osm)
+        .then(x => {
+          for(let i in x){
+            let obj= x[i];
+            let name = obj.src.slice(30,-1);
+            let origName = obj.name;
+            let processedName = toName(origName);
+
+            processedName.should.be.eq(name,obj.name);
+          }
+
+        })
+        .should.eventually.notify(done);
+
     });
   });
 

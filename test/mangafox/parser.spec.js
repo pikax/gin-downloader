@@ -15,6 +15,7 @@ import _ from 'lodash';
 
 import manga from './../../lib/mangafox/parser';
 import {finder,  resolver } from './../../lib/mangafox/parser';
+import toName from './../../lib/mangafox/names';
 
 const Promise = require('bluebird');
 const readFile = Promise.promisify(require('fs').readFile);
@@ -79,6 +80,28 @@ describe('MangaFox offline', () => {
         })
         .then(done)
         .catch(done);
+    });
+
+    it('should resolve name to name',(done)=>{
+      'use strict';
+
+      let osm = osmosis.parse(fpMangas);
+
+      manga.mangas(osm)
+        .then(x => {
+
+          for(let i in x){
+            let obj= x[i];
+            let name = obj.src.slice(25,-1);
+            let origName = obj.name;
+            let processedName = toName(origName);
+
+            processedName.should.be.eq(name,obj.name);
+          }
+
+        })
+        .should.eventually.notify(done);
+
     });
   });
 

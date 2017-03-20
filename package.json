@@ -14,8 +14,9 @@
   ],
   "main": "index.js",
   "scripts": {
+    "build": "babel lib --out-dir dist",
     "nyc": "nyc node_modules/mocha/bin/_mocha test/**/*.spec.js",
-    "lint" : "eslint ./lib/*/**.js ./test/*/**.spec.js  --quiet; exit 0",
+    "lint": "eslint ./lib/*/**.js ./test/*/**.spec.js  --quiet; exit 0",
     "test:watch": "mocha test/**/*.spec.js --colors --watch",
     "mocha": "mocha test/**/*.spec.js --colors",
     "test": "cross-env DEBUG=\"gin-downloader:*,-gin-downloader:*:verbose\" istanbul cover node_modules/mocha/bin/_mocha  test/**/*.spec.js -- -R spec",
@@ -54,6 +55,7 @@
     "fs-extra": "^2.0.0",
     "libxmljs": "^0.18.4",
     "lodash": "^4.17.4",
+    "no-case": "^2.3.1",
     "osmosis": "^1.1.2",
     "requestretry": "^1.12.0"
   }
