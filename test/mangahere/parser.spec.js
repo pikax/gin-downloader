@@ -6,11 +6,11 @@ import results from './_results';
 
 
 import osmosis from 'osmosis';
-import { resolveObject} from '../../lib/common/helper';
+import { resolveObject} from '../../src/common/helper';
 import * as libxmljs from 'libxmljs';
 
-import manga, {finder,  resolver } from './../../lib/mangahere/parser';
-import toName from './../../lib/mangahere/names';
+import manga, {finder,  resolver } from './../../src/mangahere/parser';
+import {toName} from './../../src/mangahere/names';
 
 const Promise = require('bluebird');
 const readFile = Promise.promisify(require('fs').readFile);

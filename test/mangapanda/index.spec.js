@@ -2,7 +2,7 @@
  * Created by rodriguesc on 07/03/2017.
  */
 
-import site from './../../lib/mangapanda';
+import site from './../../src/mangapanda';
 import config from './_results';
 
 import chai from 'chai';

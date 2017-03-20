@@ -6,16 +6,13 @@ import results from './_results';
 
 
 import osmosis from 'osmosis';
-import { resolveObject} from '../../lib/common/helper';
-import * as libxmljs from 'libxmljs';
-var url = require('url');
+import { resolveObject} from '../../src/common/helper';
+import libxmljs from 'libxmljs';
 
 
-import _ from 'lodash';
-
-import manga from './../../lib/mangafox/parser';
-import {finder,  resolver } from './../../lib/mangafox/parser';
-import toName from './../../lib/mangafox/names';
+import manga from './../../src/mangafox/parser';
+import {finder,  resolver } from './../../src/mangafox/parser';
+import {toName} from './../../src/mangafox/names';
 
 const Promise = require('bluebird');
 const readFile = Promise.promisify(require('fs').readFile);

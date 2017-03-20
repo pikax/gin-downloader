@@ -7,8 +7,8 @@ import results from './_results';
 
 import osmosis from 'osmosis';
 
-import manga from './../../lib/mangapanda/parser';
-import toName from './../../lib/mangapanda/names';
+import manga from './../../src/mangapanda/parser';
+import {toName} from './../../src/mangapanda/names';
 
 import libxmljs from 'libxmljs';
 
