@@ -3,4 +3,3 @@
  */
 
 //import osmosis from 'osmosis';
-"use strict";
