@@ -34,6 +34,13 @@ describe('MangaPanda live', () => {
 
   });
 
+  it('should get latest chaps', done => {
+    site.latest()
+      .should.eventually
+      .to.have.length.gte(50)
+      .notify(done);
+  });
+
   it('should get info', done => {
     let manga = 'http://www.mangapanda.com/gintama';
     site.info(manga)
