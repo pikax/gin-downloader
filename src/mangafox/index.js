@@ -6,7 +6,7 @@ const verbose = require('debug')('gin-downloader:mangafox:verbose');
 
 import osmosis from 'osmosis';
 
-import uri from 'url';
+import url from 'url';
 
 import _ from 'lodash';
 import libxmljs from 'libxmljs';
@@ -16,9 +16,6 @@ import config from './config';
 import {finder} from './parser';
 import {getHtml} from '../common/request';
 import {resolveUrl} from './names';
-
-export const NAME = config.name;
-
 
 const mangas = () => {
   debug('getting mangas');
@@ -56,31 +53,31 @@ const chapters = (name) =>{
     .tap(x=>debug(`chapters: ${x.length}`));
 };
 
-const images = (url) => {
-  debug(`getting images ${url}`);
-  return imagesPaths(url)
+const images = (uri) => {
+  debug(`getting images ${uri}`);
+  return imagesPaths(uri)
     .tap(x=>debug(`images: ${x.length}`))
     .then(x=>x.map(image))
     .tap(x=>debug(`images resolved : ${x}`));
 };
 
-const imagesPaths = (url)=>{
-  debug(`getting image paths ${url}`);
-  return getHtml(url)
+const imagesPaths = (uri)=>{
+  debug(`getting image paths ${uri}`);
+  return getHtml(uri)
     .tap(x=>verbose('html: %s', x))
     .then(html=>libxmljs.parseHtmlString(html))
     .then(x=>finder.findImagesPath(x))
-    .then(x=>x.map(t=>uri.resolve(url, t.value()+'.html')))
+    .then(x=>x.map(t=>url.resolve(uri, t.value()+'.html')))
     .tap(x=>debug(`found ${x.length} images:\n${x}`))
     ;
 };
 
-const image = (url)=>{
+const image = (uri)=>{
   const __imgID__ = /src=".*\?token[^"]*".*id=/gmi;
   const __img__ = /src=".*\?token[^"]*/gmi;
-  debug(`getting image from ${url}`);
+  debug(`getting image from ${uri}`);
 
-  return getHtml(url)
+  return getHtml(uri)
     .tap(x=>verbose('html: %s', x))
     .then(html=>html.match(__imgID__))
     .then(x=>x[0])
@@ -100,7 +97,7 @@ const resolve = (name, chapter)=>{
     .then(x=>{
       if(!x)
         throw new Error(`chapter ${chapter} not found`);
-      return images(uri.resolve(config.site, x.url));
+      return images(url.resolve(config.site, x.src));
     });
 };
 
@@ -108,6 +105,8 @@ const resolve = (name, chapter)=>{
 
 
 export default {
+  name : config.name,
+
   mangas,
   info,
   chapters,
@@ -116,3 +115,4 @@ export default {
   resolve,
   latest
 };
+

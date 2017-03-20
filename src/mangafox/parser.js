@@ -17,7 +17,7 @@ const findChapters = osm => osm.select('div#chapters')
 const parseChapters = osm => osm
   .set({
     'date': '.date',
-    'url': 'a.tips@href',
+    'src': 'a.tips@href',
     'name': 'span.title',
     'number': 'a.tips',
     'volume': 'ancestor::ul/preceding-sibling::div.slide[1] > h3.volume',
@@ -67,7 +67,7 @@ const resolveLatest = osm => parseLatest(findLatest(osm));
 
 //images paths from chapter
 const findImagesPath = osm => osm.find('//form[@id=\'top_bar\']/div/div[@class=\'l\']/select/option[position()< last()]/@value');
-const parseImagesPath = osm => osm.set('path');
+const parseImagesPath = osm => osm.set('src');
 const resolveImagesPaths = osm => parseImagesPath(findImagesPath(osm));
 
 
