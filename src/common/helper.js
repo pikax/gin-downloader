@@ -5,6 +5,13 @@
 import Promise from 'bluebird';
 
 
+import libxmljs from 'libxmljs';
+import {getHtml} from './request';
+
+
+export const parseDoc = libxmljs.parseHtmlString;
+export const getDoc= (uri)=> getHtml(uri).then(parseDoc);
+
 //resolve
 export const resolveArray = (osm) => {
   return new Promise((resolve, reject) => {
