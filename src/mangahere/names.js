@@ -10,7 +10,7 @@ import config from './config';
 export const toName = (name)=>{
   'use strict';
 
-  let n = name.replace(/[^\x00-\x7F]/g,'_')
+  let n = name.replace(/[^\x00-\x7F]/g,'_');
 
   return noCase(n.toLowerCase(),null,'_');
 };

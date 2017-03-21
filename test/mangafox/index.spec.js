@@ -43,6 +43,7 @@ describe('MangaFox live', () => {
   it('should get info', done => {
     let manga = 'Gintama';
     site.info(manga)
+      .tap(console.log)
       .then(x => {
         expect(x).to.exist;
 

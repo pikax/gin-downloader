@@ -3,6 +3,7 @@
  */
 
 import {resolveArray, resolveObject} from '../common/helper';
+import config from './config';
 
 
 //mangas from http://www.mangahere.co/mangalist/
@@ -85,11 +86,82 @@ const mangas = osm => {
     });
   return Promise.resolve(result);
 };
-const image = osm => resolveObject(resolveImage(osm));
-const imagesPaths = osm => resolveArray(resolveImagesPaths(osm));
-const latest = osm => resolveArray(resolveLatest(osm));
-const chapters = osm => resolveArray(resolveChapters(osm));
-const mangaInfo = osm => resolveObject(resolveMangaInfo(osm));
+//const latest = osm => resolveArray(resolveLatest(osm));
+//latest from http://mangafox.me/releases
+const latest = doc => {
+  const xpath = '//div[@class=\'manga_update\']/dl/dd/a';
+  return doc.find(xpath).map(x=>{
+    return {
+      name: x.text(),
+      src:x.attr('href').value(),
+    };
+  });
+};
+
+//const mangaInfo = osm => resolveObject(resolveMangaInfo(osm));
+//info from http://mangafox.me/manga/**
+const mangaInfo = doc=>{
+  let image = doc.get('//img[@class=\'img\']').attr('src').value();
+  let title = doc.get('//div[@class=\'title\']/h3').text().slice(5, -7);
+  let synonyms = doc.get('//ul[@class=\'detail_topText\']/li[3]/text()').text().split('; ');
+  let released = doc.get('//div[@id=\'title\']/table/tr[2]/td[1]/a').text();
+  let authors = [doc.get('//ul[@class=\'detail_topText\']/li[5]/a[@class=\'color_0077\']').text()];
+  let artists = [doc.get('//ul[@class=\'detail_topText\']/li[6]/a[@class=\'color_0077\']').text()];
+  let genres = doc.get('//ul[@class=\'detail_topText\']/li[4]/text()').text().split(', ');
+  let synopsis = doc.get('//ul[@class=\'detail_topText\']/li/p[last()]/text()').text();
+  let status = doc.get('//ul[@class=\'detail_topText\']/li[7]/text()[1]').text().trim();
+  let ranked = doc.get('//ul[@class=\'detail_topText\']/li[8]/text()[1]').text();
+  let rating = doc.get('//ul[@class=\'detail_topText\']/li[@id=\'rate\']/span[@id=\'current_rating\']').text();
+  let similarmanga = doc.find('//div[@class=\'box_radius mb10\'][2]/ul[@class=\'right_aside\']/li/a').map(x=>x.attr('title').value());
+
+
+  return {
+    image,
+    title,
+    synonyms,
+    released,
+    authors,
+    artists,
+    genres,
+    synopsis,
+    status,
+    ranked,
+    rating,
+    similarmanga
+  };
+};
+
+
+//const image = osm => resolveObject(resolveImage(osm));
+//images from chapter
+const image = html =>{
+  const __imgID__ = /src=".*\?token[^"]*".*id=/gmi;
+  const __img__ = /src=".*\?token[^"]*/gmi;
+
+  return html.match(__imgID__)[0].match(__img__).slice(0,5);
+};
+
+
+//const imagesPaths = osm => resolveArray(resolveImagesPaths(osm));
+const imagesPaths = doc =>{
+  const xpath = '//section[@class=\'readpage_top\']/div[@class=\'go_page clearfix\']/span[@class=\'right\']/select[@class=\'wid60\']/option/@value';
+  return doc.find(xpath)
+    .map(x=>url.resolve(config.site,x));
+};
+
+//const chapters = osm => resolveArray(resolveChapters(osm));
+const chapters = doc=>{
+  const xpath = `//span[@class='left']/a`;
+
+  return doc.find(xpath)
+    .map(x=>{
+      return {
+        number : x.text(),
+        name : x.get('following-sibling::span/following-sibling::text()') || x.text(),
+        src :x.attr('href').value(),
+      };
+    });
+};
 
 
 //const images = osm => osm;
