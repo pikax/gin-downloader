@@ -9,17 +9,10 @@ import {getDoc, parseDoc} from '../../src/common/helper';
 var libxmljs = require('libxmljs');
 
 chai.use(chaiAsPromised);
-
-// Then either:
-const expect = chai.expect;
-// or:
 chai.should();
-// according to your preference of assertion style
-
 
 
 describe('Helper.js',()=>{
-
   let manga = `<html>
 	<div>
 		<div name="1" id="chap" src="1"/>
@@ -70,7 +63,6 @@ describe('Helper.js',()=>{
     getHtml(uri,{})
       .should.eventually.exist.and.notify(done);
   })
-
 });
 
 

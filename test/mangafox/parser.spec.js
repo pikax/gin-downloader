@@ -16,10 +16,6 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
 chai.use(chaiAsPromised);
-
-// Then either:
-const expect = chai.expect;
-// or:
 chai.should();
 
 
@@ -93,14 +89,17 @@ describe('MangaFox offline', () => {
 
       let info = manga.mangaInfo(doc);
 
-      console.log(info);
-      expect(info).to.exist;
+      info.should.exist;
+      info.title.should.be.eq(results.manga.title);
+      info.released.should.be.eq(results.manga.released);
+      info.synopsis.should.contain(results.manga.synopsis);
+      info.status.should.be.eq(results.manga.status);
 
-      expect(info.released).to.be.eq(results.manga.released);
-
-      expect(info.artists).to.be.deep.eq(results.manga.artists);
-      expect(info.authors).to.be.deep.eq(results.manga.authors);
-      expect(info.genres).to.be.deep.eq(results.manga.genres);
+      info.synonyms.should.be.deep.eq(results.manga.synonyms);
+      info.authors.should.be.deep.eq(results.manga.authors);
+      info.artists.should.be.deep.eq(results.manga.artists);
+      info.genres.should.be.deep.eq(results.manga.genres);
+      info.scanlators.should.be.deep.eq(results.manga.scanlators);
     });
 
 
