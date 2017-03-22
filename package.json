@@ -1,6 +1,6 @@
 {
   "name": "gin-downloader",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Simple manga scrapper for famous online manga websites.",
   "keywords": [
     "manga",
@@ -23,7 +23,7 @@
     "test": "cross-env DEBUG=\"gin-downloader:*,-gin-downloader:*:verbose\" istanbul cover node_modules/mocha/bin/_mocha  test/**/*.spec.js -- -R spec",
     "cover": "istanbul cover node_modules/mocha/bin/_mocha ./test/mangapanda/index.spec.js"
   },
-  "repository": "https://github.com/pikax/gin-downloader.git",
+  "repository": "https://github.com/pikax/gin-downloader",
   "author": "pikax",
   "license": "MIT",
   "bugs": {
@@ -55,7 +55,6 @@
     "libxmljs": "^0.18.4",
     "lodash": "^4.17.4",
     "no-case": "^2.3.1",
-    "osmosis": "^1.1.2",
     "requestretry": "^1.12.0"
   }
 }

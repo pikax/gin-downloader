@@ -47,6 +47,8 @@ describe('MangaPanda live', () => {
       .then(x => {
         expect(x).to.exist;
 
+
+
         expect(x.title).to.be.eq(results.manga.title);
         expect(x.released).to.be.eq(results.manga.released);
         expect(x.csv_title).to.be.eq(results.manga.csv_title);
@@ -80,7 +82,7 @@ describe('MangaPanda live', () => {
 
 
   it('should get images paths', done => {
-    let chapter = 'www.mangapanda.com/gintama/1';
+    let chapter = 'http://www.mangapanda.com/gintama/1';
 
     site.imagesPaths(chapter)
       .then(x => {
@@ -94,7 +96,7 @@ describe('MangaPanda live', () => {
   });
 
   it('should parse all images', done =>{
-    site.images('http://www.mangapanda.com/gintama/41')
+    site.images('Gintama',41)
       .then(images=>{
         expect(images).to.exist;
         expect(images.length).to.be.eq(23);

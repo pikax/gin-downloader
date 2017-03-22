@@ -2,8 +2,10 @@
  * Created by rodriguesc on 03/03/2017.
  */
 
-import {resolveArray, resolveObject} from '../common/helper';
-import config from './config';
+import url from 'url';
+
+import config from './config'
+
 
 
 //mangas from http://www.mangahere.co/mangalist/
@@ -76,20 +78,20 @@ const resolveImage = osm => parseImage(findImage(osm));
 
 
 
-const mangas = osm => {
-  let result = findMangas(osm)
+const mangas = doc => {
+  const xpath= '//a[@class=\'manga_info\']';
+  return doc.find(xpath)
     .map(x=>{
       return {
         name : x.text(),
         src : x.attr('href').value()
       };
     });
-  return Promise.resolve(result);
 };
 //const latest = osm => resolveArray(resolveLatest(osm));
 //latest from http://mangafox.me/releases
 const latest = doc => {
-  const xpath = '//div[@class=\'manga_update\']/dl/dd/a';
+  const xpath = '//div[@class=\'manga_updates\']/dl/dd/a';
   return doc.find(xpath).map(x=>{
     return {
       name: x.text(),
@@ -104,7 +106,6 @@ const mangaInfo = doc=>{
   let image = doc.get('//img[@class=\'img\']').attr('src').value();
   let title = doc.get('//div[@class=\'title\']/h3').text().slice(5, -7);
   let synonyms = doc.get('//ul[@class=\'detail_topText\']/li[3]/text()').text().split('; ');
-  let released = doc.get('//div[@id=\'title\']/table/tr[2]/td[1]/a').text();
   let authors = [doc.get('//ul[@class=\'detail_topText\']/li[5]/a[@class=\'color_0077\']').text()];
   let artists = [doc.get('//ul[@class=\'detail_topText\']/li[6]/a[@class=\'color_0077\']').text()];
   let genres = doc.get('//ul[@class=\'detail_topText\']/li[4]/text()').text().split(', ');
@@ -119,7 +120,6 @@ const mangaInfo = doc=>{
     image,
     title,
     synonyms,
-    released,
     authors,
     artists,
     genres,
@@ -138,7 +138,7 @@ const image = html =>{
   const __imgID__ = /src=".*\?token[^"]*".*id=/gmi;
   const __img__ = /src=".*\?token[^"]*/gmi;
 
-  return html.match(__imgID__)[0].match(__img__).slice(0,5);
+  return html.match(__imgID__)[0].match(__img__)[0].slice(5);
 };
 
 
@@ -146,7 +146,7 @@ const image = html =>{
 const imagesPaths = doc =>{
   const xpath = '//section[@class=\'readpage_top\']/div[@class=\'go_page clearfix\']/span[@class=\'right\']/select[@class=\'wid60\']/option/@value';
   return doc.find(xpath)
-    .map(x=>url.resolve(config.site,x));
+    .map(x=>url.resolve(config.site,x.value()));
 };
 
 //const chapters = osm => resolveArray(resolveChapters(osm));
@@ -156,7 +156,7 @@ const chapters = doc=>{
   return doc.find(xpath)
     .map(x=>{
       return {
-        number : x.text(),
+        number : x.text().trim(),
         name : x.get('following-sibling::span/following-sibling::text()') || x.text(),
         src :x.attr('href').value(),
       };
@@ -177,30 +177,3 @@ const exp = {
 };
 
 export default exp;
-
-
-export const resolver = {
-  resolveImage,
-  resolveImagesPaths,
-  resolveLatest,
-  resolveChapters,
-  resolveMangaInfo,
-};
-
-export const parser = {
-  parseChapters,
-  parseSeriesInfo,
-  parseLatest,
-  parseImagesPath,
-  parseImage,
-};
-
-
-export const finder ={
-  findMangas,
-  findChapters,
-  findSeriesInfo,
-  findImage,
-  findImagesPath,
-  findLatest,
-};

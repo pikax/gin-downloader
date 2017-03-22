@@ -5,34 +5,26 @@
 const debug = require('debug')('gin-downloader:mangapanda');
 const verbose = require('debug')('gin-downloader:mangapanda:verbose');
 
-import config from './config';
-import osmosis from 'osmosis';
-import manga from './parser';
-import {resolver} from './parser';
-import {resolveArray} from '../common/helper';
-import _ from 'lodash';
-import {getHtml} from '../common/request';
-import libxmljs from 'libxmljs';
+import url from 'url';
 
-let uri = require('url');
+import config from './config';
+import manga from './parser';
+import {getHtml} from '../common/request';
 
 import {resolveUrl} from './names';
-
+import {getDoc} from '../common/helper';
 
 const mangas = () => {
   debug('getting mangas');
-  return getHtml(config.mangas_url)
-    .tap(x=>verbose(x))
-    .tap(()=>debug('got html'))
-    .then(x=>libxmljs.parseHtmlString(x))
+  return getDoc(config.mangas_url)
     .then(manga.mangas)
     .tap(x=>debug(`mangas: ${x.length}`));
 };
 
 const latest= ()=>{
   debug('getting latest');
-  let osm = osmosis.get(config.latest_url);
-  return manga.latest(osm)
+  return getDoc(config.latest_url)
+    .then(manga.latest)
     .tap(x=>debug(`found: ${x.length}`));
 };
 
@@ -42,9 +34,8 @@ const info= (name) =>{
   let src = resolveUrl(name);
 
   debug(`getting info ${src}`);
-  let osm = osmosis.get(src);
-
-  return manga.mangaInfo(osm)
+  return getDoc(src)
+    .then(manga.mangaInfo)
     .tap(x=>debug('info: %s',x));
 };
 
@@ -52,46 +43,56 @@ const chapters = (name) =>{
   debug(`getting chapters ${name}`);
   let src = resolveUrl(name);
 
-  let osm = osmosis.get(src);
-  return manga.chapters(osm)
+  return getDoc(src)
+    .then(manga.chapters)
     .catch(x=>{throw new Error('Chapters not found',x);})
     .tap(x=>debug(`chapters: ${x.length}`));
 };
 
+const images = (name, chapter) => {
+  debug(`getting images ${name}:${chapter}`);
 
-
-const images = (url) => {
-  let osm = osmosis.get(url);
-  osm = resolver.resolveImagesPaths(osm);
-
-  return resolveArray(osm)
-    .then(images=>images.map(x=>uri.resolve(url + '/',x.path)))
-    .then(x=>x.map(t=>image(t)));
+  let mangaUri = resolveUrl(name);
+  //NOTE mangapanda dont add volume to url is a simple {site}/{name}/{chapter}
+  let uri = url.resolve(mangaUri + '/', chapter.toString());
+  return imagesByUrl(uri);
 };
 
-const imagesPaths = (url)=>{
-  let osm = osmosis.get(url);
-  return manga.imagesPaths(osm);
+const imagesByUrl = (uri)=>{
+  debug(`getting images for ${uri}`);
+
+  return imagesPaths(uri)
+    .tap(x=>debug(`images: ${x.length}`))
+    .then(x=>x.map(image))
+    .tap(x=>debug(`images resolved : ${x}`));
 };
 
-const image = (url)=>{
-  const __img__ = /src=".*[^"]*" alt/gmi;
-  return getHtml(url)
-    .then(html=>html.match(__img__))
-    .then(x=>x[0].slice(5,-5));
+const imagesPaths = (uri)=>{
+  debug(`getting image paths ${uri}`);
+  return getDoc(uri)
+    .then(manga.imagesPaths)
+    .tap(x=>{
+      if(!x || x.length === 0 )
+        throw new Error('chapter not found');
+    })
+    .tap(x=>debug(`found ${x.length} images:\n${x}`));
 };
 
+const image = (uri)=>{
+
+  debug(`getting image from ${uri}`);
+
+  return getHtml(uri)
+    .tap(x=>verbose('html: %s', x))
+    .then(manga.image);
+
+};
 
 const resolve = (name, chapter)=>{
-  return chapters(name)
-    .then(chaps=>{
-      return _.find(chaps,{chapter: `${name} ${chapter}`});
-    })
-    .then(x=>{
-      if(!x)
-        throw new Error( `chapter ${chapter} not found`);
-      return images(uri.resolve(config.site, x.uri));
-    });
+  debug(`resolve ${name}:${chapter}`);
+
+  return images(name,chapter)
+    .tap(x=>debug('found %o',x));
 };
 
 export default {

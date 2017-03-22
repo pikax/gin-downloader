@@ -2,96 +2,95 @@
  * Created by rodriguesc on 05/03/2017.
  */
 
-import {resolveArray, resolveObject} from '../common/helper';
+import url from 'url';
 
-
-//mangas from http://mangafox.me/alphabetical
-const findMangas = (osm) => osm.find('//ul[@class=\'series_alpha\']/li/a');
-
-
-//chapters from http://mangafox.me/manga/**
-const findChapters = osm => osm
-    .find('table#listing tr[position()> 1]');
-const parseChapters = osm => osm
-		.set({
-  chapter : 'a',
-  uri  : 'a@href',
-  name : 'td/a/following-sibling::text()',
-  date : 'td[2]'
-});
-const resolveChapters = osm => parseChapters(findChapters(osm));
-
-
-//info from http://mangafox.me/manga/**
-const findMangaImage = osm => osm.find('#bodyust');
-const parseMangaImage = osm => osm.set({
-  image: 'div#mangaimg img@src',
-});
-const resolveMangaImage = osm => parseMangaImage(findMangaImage(osm));
-
-
-const findInfo = osm => osm.find('div#mangaproperties > table');
-const parseInfo = osm => osm.set({
-  title  : 'tr > td[2] > h2.aname',
-
-  csv_title : 'tr[2] td[2]',
-
-  released : 'tr[3] td[2]',
-  status  :'tr[4] td[2]',
-
-  author : 'tr[5] td[2]',
-  artist : 'tr[6] td[2]',
-
-  genres : ['span.genretags'],
-});
-const resolveInfo = osm => parseInfo(findInfo(osm));
-
-const resolveMangaInfo = osm => resolveInfo(resolveMangaImage(osm));
-
-
-//latest from http://mangapanda.com/latest
-const findLatest = osm => osm.find('a.chapter');
-const parseLatest = osm => osm
-	.set({
-  chapter : 'text()',
-  uri : '@href',
-
-  volume : 'following-sibling::text()',
-});
-const resolveLatest = osm => parseLatest(findLatest(osm));
-
-
-//images from chapter
-const findImage = osm => osm.find('div#imgholder > a > img@src');
-const parseImage = osm => osm.set('src');
-const resolveImage = osm => parseImage(findImage(osm));
-
-
-//images paths from chapter
-const findImagesPaths = osm => osm.find('#pageMenu > option');
-const parseImagesPaths = osm=>osm.set('path');
-const resolveImagesPaths = osm => parseImagesPaths(findImagesPaths(osm));
+import config from './config';
 
 
 
-
-
-
-const mangas = osm => {
-  let result = findMangas(osm)
+const mangas = doc => {
+  const xpath = '//ul[@class=\'series_alpha\']/li/a';
+  return doc.find(xpath)
     .map(x=>{
       return {
         name : x.text(),
-        src : x.attr('href').value()
+        src :  url.resolve(config.site,  x.attr('href').value())
       };
     });
-  return Promise.resolve(result);
 };
-const image = osm => resolveObject(resolveImage(osm));
-const imagesPaths = osm => resolveArray(resolveImagesPaths(osm));
-const latest = osm => resolveArray(resolveLatest(osm));
-const chapters = osm => resolveArray(resolveChapters(osm));
-const mangaInfo = osm => resolveObject(resolveMangaInfo(osm));
+
+//const latest = osm => resolveArray(resolveLatest(osm));
+//latest from http://mangafox.me/releases
+const latest = doc => {
+  const xpath = '//a[@class=\'chaptersrec\']';
+  return doc.find(xpath).map(x=>{
+    return {
+      name: x.text(),
+      src: url.resolve(config.site, x.attr('href').value())
+    };
+  });
+};
+
+//const mangaInfo = osm => resolveObject(resolveMangaInfo(osm));
+//info from http://mangafox.me/manga/**
+const mangaInfo = doc=>{
+  let image = doc.get('//div[@id=\'mangaimg\']/img').attr('src').value();
+  let title = doc.get('//h2[@class=\'aname\']').text();
+  let synonyms = doc.get('//div[@id=\'mangaproperties\']/table/tr[2]/td[2]').text().split(', ');
+  let released = doc.get('//div[@id=\'mangaproperties\']/table/tr[3]/td[2]').text();
+  let status = doc.get('//div[@id=\'mangaproperties\']/table/tr[4]/td[2]').text();
+  let authors = [doc.get('//div[@id=\'mangaproperties\']/table/tr[5]/td[2]').text()];
+  let artists = [doc.get('//div[@id=\'mangaproperties\']/table/tr[6]/td[2]').text()];
+  let genres = doc.find('//span[@class=\'genretags\']').map(x=>x.text());
+  let synopsis = doc.get('//div[@id=\'readmangasum\']/p').text();
+
+  let direction = doc.get('//div[@id=\'mangaproperties\']/table/tr[7]/td[2]').text();
+
+  return {
+    image,
+    title,
+    synonyms,
+    released,
+    status,
+    authors,
+    artists,
+    genres,
+    synopsis,
+    direction
+  };
+};
+
+
+//const image = osm => resolveObject(resolveImage(osm));
+//images from chapter
+const image = html =>{
+  const __img__ = /src="[^"]*" alt/gmi;
+
+  return html.match(__img__)[0].slice(5, -5).replace(/.v=\d+/,'');
+};
+
+
+//const imagesPaths = osm => resolveArray(resolveImagesPaths(osm));
+const imagesPaths = doc =>{
+  const xpath = '//select[@id=\'pageMenu\']/option/@value';
+  return doc.find(xpath)
+    .map(x=>url.resolve(config.site,x.value()));
+};
+
+
+
+//const chapters = osm => resolveArray(resolveChapters(osm));
+const chapters = doc=>{
+  const xpath = '//table[@id=\'listing\']/tr[position()> 1]';
+  return doc.find(xpath)
+    .map(x=>{
+      return {
+        number : x.get('td/a').text().trim(),
+        name : x.get('td/a/following-sibling::text()').text().slice(3) || x.text(),
+        src :x.get('td/a').attr('href').value(),
+      };
+    });
+};
 
 
 const exp = {
@@ -105,18 +104,3 @@ const exp = {
 
 export default exp;
 
-
-export const resolver = {
-  resolveImagesPaths,
-  resolveLatest,
-  resolveImage,
-  resolveChapters,
-  resolveMangaInfo,
-};
-
-export const parser = {
-  parseImagesPaths,
-  parseLatest,
-  parseImage,
-  parseChapters,
-};

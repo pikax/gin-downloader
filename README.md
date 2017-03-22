@@ -12,7 +12,6 @@ npm install gin-downloader --save
 ```
 
 Simple manga scrapper for famous online manga websites, it uses [libxmljs](https://github.com/libxmljs/libxmljs) for parsing.
-Still in early stages, I started using [osmosis](https://github.com/rchipka/node-osmosis) as a scrapper helper, but I will remove that dependency in mean time.
 
 
 ### Supported websites
