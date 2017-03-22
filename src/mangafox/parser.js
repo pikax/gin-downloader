@@ -70,7 +70,7 @@ const image = html =>{
   const __imgID__ = /src=".*\?token[^"]*".*id=/gmi;
   const __img__ = /src=".*\?token[^"]*/gmi;
 
-  return html.match(__imgID__)[0].match(__img__).slice(5);
+  return html.match(__imgID__)[0].match(__img__)[0].slice(5);
 };
 
 

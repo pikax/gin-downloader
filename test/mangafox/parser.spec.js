@@ -5,14 +5,10 @@
 import results from './_results';
 
 
-import osmosis from 'osmosis';
-import { resolveObject} from '../../src/common/helper';
-import libxmljs from 'libxmljs';
-
-
 import manga from './../../src/mangafox/parser';
 import {finder,  resolver } from './../../src/mangafox/parser';
 import {toName} from './../../src/mangafox/names';
+import {parseDoc} from '../../src/common/helper';
 
 const Promise = require('bluebird');
 const readFile = Promise.promisify(require('fs').readFile);
@@ -57,130 +53,77 @@ describe('MangaFox offline', () => {
   });
 
 
-  describe('resolver', () => {
+  describe('info', () => {
     it('should resolve image path chapter',()=>{
-      let osm = libxmljs.parseHtmlString(fpChapter);
-
-      let xx = finder.findImagesPath(osm);
-
-      xx.should.have.have.lengthOf(58);
+      let doc = parseDoc(fpChapter);
+      manga.imagesPaths(doc)
+        .should.have.have.lengthOf(58);
     });
 
-    it('should parse image from chapter', done=>{
-      let osm = osmosis.parse(fpChapter);
+    it('should parse image from chapter', ()=>{
+      manga.image(fpChapter.toString())
+        .should.contain(results.image_src);
 
-      osm = resolver.resolveImage(osm);
-
-      resolveObject(osm)
-        .then(x=>{
-          expect(x.src).to.contain(results.image_src);
-        })
-        .then(done)
-        .catch(done);
     });
 
-    it('should resolve name to name',(done)=>{
+    it('should parse and get all mangas', () => {
+      let doc = parseDoc(fpMangas);
+
+      manga.mangas(doc).should
+        .have.length.gte(results.mangas_count);
+    });
+
+    it('should resolve name to name',()=>{
       'use strict';
 
-      let osm = osmosis.parse(fpMangas);
+      let doc = parseDoc(fpMangas);
 
-      manga.mangas(osm)
-        .then(x => {
+      let mangas = manga.mangas(doc);
 
-          for(let i in x){
-            let obj= x[i];
-            let name = obj.src.slice(25,-1);
-            let origName = obj.name;
-            let processedName = toName(origName);
+      for(let i in mangas) {
+        let obj = mangas[i];
+        let name = obj.src.slice(25, -1);
+        let origName = obj.name;
+        let processedName = toName(origName);
 
-            processedName.should.be.eq(name,obj.name);
-          }
-
-        })
-        .should.eventually.notify(done);
-
+        processedName.should.be.eq(name, obj.name);
+      }
     });
-  });
+    it('it should parse full manga info', () => {
+      let doc = parseDoc(fpGintama);
 
+      let info = manga.mangaInfo(doc);
+      expect(info).to.exist;
 
-  describe('info', () => {
-    it('should parse and get all mangas', done => {
-      let osm = osmosis.parse(fpMangas);
+      expect(info.released).to.be.eq(results.manga.released);
 
-      manga.mangas(osm)
-        .then(x => {
-          expect(x.length).eq(results.mangas_count);
-        })
-        .then(done)
-        .catch(done);
-    });
-
-    it('it should parse full manga info', done => {
-      let osm = osmosis.parse(fpGintama);
-
-      manga.mangaInfo(osm)
-        .then(manga => {
-
-          expect(manga.title).to.be.eq(results.manga.title);
-          expect(manga.released).to.be.eq(results.manga.released);
-          expect(manga.csv_title).to.be.eq(results.manga.csv_title);
-          expect(manga.image).to.contain(results.manga.image);
-
-          expect(manga.artists).to.be.deep.eq(results.manga.artists);
-          expect(manga.authors).to.be.deep.eq(results.manga.authors);
-          expect(manga.genres).to.be.deep.eq(results.manga.genres);
-        })
-        .then(done)
-        .catch(done);
+      expect(info.artists).to.be.deep.eq(results.manga.artists);
+      expect(info.authors).to.be.deep.eq(results.manga.authors);
+      expect(info.genres).to.be.deep.eq(results.manga.genres);
     });
 
 
-    it('should parse latest', done => {
-      let osm = osmosis.parse(fpLatest);
+    it('should parse latest', () => {
+      let doc = parseDoc(fpLatest);
 
-      manga.latest(osm)
-        .then(chaps => {
-          expect(chaps.length).to.be.greaterThan(100);
-        })
-        .then(done)
-        .catch(done);
-
-
+      manga.latest(doc)
+        .should.have.length.to.be.greaterThan(98);
     });
 
 
-    it('it should resolve all images from chapter', done => {
-      let osm = osmosis.parse(fpChapter);
+    it('it should resolve all images from chapter', () => {
+      let doc = parseDoc(fpChapter);
 
-      manga.imagesPaths(osm)
-        .then((paths) => {
-          expect(paths.length).to.be.eq(58);
-        })
-        .then(done)
-        .catch(done);
+      manga.imagesPaths(doc)
+        .should.have.length.gte(58);
+
     });
 
-    it('it should parse image from chapter', done => {
-      let osm = osmosis.parse(fpChapter);
-      manga.image(osm)
-        .then((img) => {
-          expect(img).to.exist;
-          expect(img.src).to.exist;
-          expect(img.src).to.contain(results.image_src);
-        })
-        .then(done)
-        .catch(done);
-    });
+    it('should parse chapters', () => {
+      let doc = parseDoc(fpGintama);
 
-    it('should parse chapters', done => {
-      let osm = osmosis.parse(fpGintama);
-
-      manga.chapters(osm)
-        .then((chaps) => {
-          expect(chaps.length).eq(results.chapter_count);
-        })
-        .then(done)
-        .catch(done);
+      manga.chapters(doc)
+        .should.have.length.gte(results.chapter_count);
     });
   });
 });

@@ -2,9 +2,6 @@
  * Created by rodriguesc on 10/03/2017.
  */
 
-import {resolveArray,resolveObject} from './../../src/common/helper';
-import osmosis from 'osmosis';
-
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {getHtml} from '../../src/common/request';
@@ -35,17 +32,15 @@ describe('Helper.js',()=>{
 
   it('should not get html',done=>{
     let uri = 'ht222tps://github.com/';
-    getHtml(uri,{})
-      .then(html=> osmosis.parse(html))
+    getDoc(uri)
       .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });
 
   it('should get html',done=>{
     let uri = 'https://github.com/';
-    getHtml(uri,{})
-      .then(html=> osmosis.parse(html))
-      .then(osm=>osm.find(`//a[@class='header-logo-invertocat']`))
+    getDoc(uri)
+      .then(doc=>doc.find(`//a[@class='header-logo-invertocat']`))
       .then(x=>{
         x.should.exist;
         x.length.should.be.eq(1);

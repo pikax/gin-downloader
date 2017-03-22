@@ -5,11 +5,12 @@
 const manga = {
   image: 'mangapanda.com/cover/gintama/gintama-l0.jpg',
   title: 'Gintama',
-  csv_title: '',
+  synonyms: [ '' ],
   released: '2003',
   status : 'Ongoing',
-  author: 'Sorachi, Hideaki',
-  artist: 'Sorachi, Hideaki' ,
+  authors: [ 'Sorachi, Hideaki' ],
+  artists: [ 'Sorachi, Hideaki' ],
+  synopsis: '',
   reading_direction : 'Right to Left',
   genres:
   [ 'Action',
@@ -17,7 +18,6 @@ const manga = {
     'Sci-Fi',
     'Shounen']
 };
-
 
 
 export default {

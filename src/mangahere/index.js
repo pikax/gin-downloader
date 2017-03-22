@@ -4,17 +4,10 @@
 const debug = require('debug')('gin-downloader:mangahere');
 const verbose = require('debug')('gin-downloader:mangahere:verbose');
 
-import osmosis from 'osmosis';
-
-import uri from 'url';
-
 import _ from 'lodash';
-import libxmljs from 'libxmljs';
-
 
 import manga from './parser';
 import config from './config';
-import {finder} from './parser';
 import {getHtml} from '../common/request';
 import {resolveUrl} from './names';
 import {getDoc} from '../common/helper';
@@ -63,7 +56,7 @@ const images = (name, chapter) => {
     })
     .then(x=>{
       if(!x)
-        throw new Error($`Manga: ${name} chapter ${chapter} doesn't exists.`);
+        throw new Error(`Manga: ${name} chapter ${chapter} doesn't exists.`);
       return x.src;
     })
     .then(imagesByUrl);
