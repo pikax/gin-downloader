@@ -4,7 +4,7 @@
 
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {getHtml} from '../../src/common/request';
+import {getBytes, getHtml} from '../../src/common/request';
 import {getDoc, parseDoc} from '../../src/common/helper';
 var libxmljs = require('libxmljs');
 
@@ -64,6 +64,12 @@ describe('Helper.js',()=>{
       .notify(done);
   })
 
+  it('should get bytes',done=>{
+    let uri = 'https://github.com/';
+
+    getHtml(uri,{})
+      .should.eventually.exist.and.notify(done);
+  })
 
 });
 

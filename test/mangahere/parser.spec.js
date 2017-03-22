@@ -99,10 +99,11 @@ describe('MangaHere offline', () => {
       let doc = parseDoc(fpGintama);
 
       let info = manga.mangaInfo(doc);
+
+
       info.image.should.contain(results.manga.image);
 
-      expect(info.csv_title).to.be.eq(results.manga.csv_title);
-      expect(info.genres).to.be.eq(results.manga.genres);
+      expect(info.genres).to.be.deep.eq(results.manga.genres);
 
       expect(info.artists).to.be.deep.eq(results.manga.artists);
       expect(info.authors).to.be.deep.eq(results.manga.authors);

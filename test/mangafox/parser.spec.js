@@ -6,7 +6,6 @@ import results from './_results';
 
 
 import manga from './../../src/mangafox/parser';
-import {finder,  resolver } from './../../src/mangafox/parser';
 import {toName} from './../../src/mangafox/names';
 import {parseDoc} from '../../src/common/helper';
 
@@ -93,6 +92,8 @@ describe('MangaFox offline', () => {
       let doc = parseDoc(fpGintama);
 
       let info = manga.mangaInfo(doc);
+
+      console.log(info);
       expect(info).to.exist;
 
       expect(info.released).to.be.eq(results.manga.released);

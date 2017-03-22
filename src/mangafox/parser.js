@@ -97,6 +97,8 @@ const chapters = doc=>{
 
 
 const exp = {
+  config,
+
   image,
   imagesPaths,
   latest,

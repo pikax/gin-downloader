@@ -5,13 +5,41 @@
 let manga = {
   image: 'mhcdn.net/store/manga/551/cover.jpg',
   title: 'Gintama',
-  csv_title: 'กินทามะ; 銀魂; 银魂; 긴타마; 은혼; Gin Tama; Silver Soul; غينتاما - الروح الفضيه; Сребърна душа (Bulgarian); Gümüş Ruh (Turkish); Jiwa Perak; Серебряная душа (Russian)',
+  synonyms:
+  [ 'กินทามะ',
+    '銀魂',
+    '银魂',
+    '긴타마',
+    '은혼',
+    'Gin Tama',
+    'Silver Soul',
+    'غينتاما - الروح الفضيه',
+    'Сребърна душа (Bulgarian)',
+    'Gümüş Ruh (Turkish)',
+    'Jiwa Perak',
+    'Серебряная душа (Russian)' ],
   authors: [ 'Sorachi Hideaki' ],
   artists: [ 'Sorachi Hideaki' ],
-  genres: ['Action', 'Adventure', 'Comedy', 'Drama', 'Historical', 'Sci-fi', 'Shounen', 'Supernatural'],
-  summary: 'Sakata Gintoki is a samurai living in an era when samurai are no longer needed.\r\n                            To add to his troubles, oppressive aliens have moved in to invade.\r\n                            Gintoki lives with Kagura and Shinpachi, taking on odd jobs to make the world a better place... and to pay their rent.'
+  genres:
+  [ 'Action',
+    'Adventure',
+    'Comedy',
+    'Drama',
+    'Historical',
+    'Sci-fi',
+    'Shounen',
+    'Supernatural' ],
+  synopsis: 'Sakata Gintoki is a samurai living in an era when samurai are no longer needed.\r\n                            To add to his troubles, oppressive aliens have moved in to invade.\r\n                            Gintoki lives with Kagura and Shinpachi, taking on odd jobs to make the world a better place... and to pay their rent. ',
+  status: 'Ongoing',
+  ranked: '177th',
+  rating: '4.94',
+  similarmanga:
+  [ '13',
+    'Bankara',
+    '4 Panel Theater!',
+    'Steins;Gate - Heni Kuukan no Octet',
+    'Iincho Is Otokonoko' ]
 };
-
 
 
 export default {
