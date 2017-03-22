@@ -77,6 +77,7 @@ export const getBytes = (requestedPath, params)=> {
   return requestRetry(request)
     .catch((err)=> {
       error('request %s\nerror: %o',requestedPath,err);
+      throw err;
     });
 };
 

@@ -8,6 +8,7 @@ import results from './_results';
 
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import {toName} from '../../src/mangafox/names';
 
 chai.use(chaiAsPromised);
 
@@ -36,7 +37,7 @@ describe('MangaFox live', () => {
   it('should get latest chaps', done => {
     site.latest()
       .should.eventually
-      .to.have.length.gte(100)
+      .to.have.length.gte(98)
       .notify(done);
   });
 
@@ -56,6 +57,22 @@ describe('MangaFox live', () => {
       .should.eventually.notify(done);
   });
 
+  it('should resolve name to name',(done)=>{
+    'use strict';
+
+    site.mangas()
+      .then(mangas=>{
+        for(let i in mangas){
+          let obj= mangas[i];
+          let expected = obj.src;
+          let origName = obj.name;
+          let processedName = toName(origName);
+
+          processedName.should.be.eq(processedName,expected);
+        }
+      }).should.eventually.notify(done);
+  });
+
 
   it('should not find manga by name',done=>{
     let name = 'my stupid name';
@@ -67,11 +84,29 @@ describe('MangaFox live', () => {
   });
 
 
+
+  it('should not find get chapters',done=>{
+    let name = 'Gintamass';
+
+    site.chapters(name)
+      .should.eventually.be.rejectedWith(Error)
+      .notify(done);
+  });
+
   it('should not find chapter ',done=>{
     let name = 'Gintama';
     let chapter = 'oooraklhsdaosdjnalmshd';
 
     site.resolve(name,chapter)
+      .should.eventually.be.rejectedWith(Error)
+      .notify(done);
+  });
+
+  it('should not find images chapter ',done=>{
+    let name = 'Gintama';
+    let chapter = 'oooraklhsdaosdjnalmshd';
+
+    site.images(name,chapter)
       .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });

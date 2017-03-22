@@ -43,6 +43,10 @@ const chapters = (name) =>{
 
   return getDoc(src)
     .then(manga.chapters)
+    .tap(x=>{
+      if(!x || x.length === 0)
+        throw 'not found';
+    })
     .catch(x=>{throw new Error('Chapters not found',x);})
     .tap(x=>debug(`chapters: ${x.length}`));
 };
@@ -96,7 +100,7 @@ const resolve = (name, chapter)=>{
 };
 
 export default {
-  name : config.name,
+  config,
 
   mangas,
   info,
