@@ -5,6 +5,11 @@
 let manga = {
   image: 'http://h.mfcdn.net/store/manga/551/cover.jpg',
   title: 'Gintama',
+  released: '2003',
+  synopsis: 'Sakata Gintoki is a samurai living in an era when samurai are no longer needed',
+  status: 'Ongoing',
+  ranked: '\r\n        95th, it has 221,700 monthly views.\r\n        ',
+  rating: 'Average 4.91 / 5 out of 1050 total votes.',
   synonyms:
   [ 'กินทามะ',
     '銀魂',
@@ -18,7 +23,6 @@ let manga = {
     'Gümüş Ruh (Turkish)',
     'Jiwa Perak',
     'Серебряная душа (Russian)' ],
-  released: '2003',
   authors: [ 'Sorachi Hideaki' ],
   artists: [ 'Sorachi Hideaki' ],
   genres:
@@ -30,10 +34,6 @@ let manga = {
     'Sci-fi',
     'Shounen',
     'Supernatural' ],
-  synopsis: 'Sakata Gintoki is a samurai living in an era when samurai are no longer needed.\r\n            To add to his troubles, oppressive aliens have moved in to invade.\r\n            Gintoki lives with Kagura and Shinpachi, taking on odd jobs to make the world a better place... and to pay their rent.',
-  status: 'Ongoing',
-  ranked: '\r\n        95th, it has 221,700 monthly views.\r\n        ',
-  rating: 'Average 4.91 / 5 out of 1050 total votes.',
   scanlators: [ 'BakanaHaven' ]
 };
 

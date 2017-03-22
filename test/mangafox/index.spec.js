@@ -11,27 +11,14 @@ import chaiAsPromised from 'chai-as-promised';
 import {toName} from '../../src/mangafox/names';
 
 chai.use(chaiAsPromised);
-
-// Then either:
-const expect = chai.expect;
-// or:
 chai.should();
-// according to your preference of assertion style
-
-//TODO change to should assertion
-
 
 describe('MangaFox live', () => {
 
   it('should get all mangas', done => {
     site.mangas()
-      .then(mangas => {
-        expect(mangas.length).to.be.gte(results.mangas_count);
-        //TODO add manga verification
-      })
-      .then(done)
-      .catch(done);
-
+      .should.eventually.have.length.gte(results.mangas_count)
+      .notify(done);
   });
 
   it('should get latest chaps', done => {
@@ -44,17 +31,20 @@ describe('MangaFox live', () => {
   it('should get info', done => {
     let manga = 'Gintama';
     site.info(manga)
-      .tap(console.log)
-      .then(x => {
-        expect(x).to.exist;
+      .then(info => {
+        info.should.exist;
 
-        expect(x.released).to.be.eq(results.manga.released);
+        info.title.should.be.eq(results.manga.title);
+        info.released.should.be.eq(results.manga.released);
+        info.synopsis.should.contain(results.manga.synopsis);
+        info.status.should.be.eq(results.manga.status);
 
-        expect(x.artists).to.be.deep.eq(results.manga.artists);
-        expect(x.authors).to.be.deep.eq(results.manga.authors);
-        expect(x.genres).to.be.deep.eq(results.manga.genres);
-      })
-      .should.eventually.notify(done);
+        info.synonyms.should.be.deep.eq(results.manga.synonyms);
+        info.authors.should.be.deep.eq(results.manga.authors);
+        info.artists.should.be.deep.eq(results.manga.artists);
+        info.genres.should.be.deep.eq(results.manga.genres);
+        info.scanlators.should.be.deep.eq(results.manga.scanlators);
+      }).should.eventually.notify(done);
   });
 
   it('should resolve name to name',(done)=>{
@@ -116,15 +106,8 @@ describe('MangaFox live', () => {
     let manga = 'Gintama';
 
     site.chapters(manga)
-      .then(x => {
-        expect(x).to.exist;
-        expect(x.length).to.be.gte(results.chapter_count);
-        //TODO add chapter verification
-
-      })
-      .then(done)
-      .catch(done);
-
+      .should.eventually.have.length.gte(results.chapter_count)
+      .notify(done);
   });
 
 
@@ -132,13 +115,8 @@ describe('MangaFox live', () => {
     let chapter ='http://mangafox.me/manga/zui_wu_dao/c042/1.html';
 
     site.imagesPaths(chapter)
-      .then(x => {
-        expect(x).to.exist;
-        expect(x.length).to.be.gte(8);
-        //TODO add chapter verification
-      })
-      .then(done)
-      .catch(done);
+      .should.eventually.have.length.gte(8)
+      .notify(done);
   });
 
   it('should get Zui Wu Dao : chapter 42', done => {
@@ -147,11 +125,11 @@ describe('MangaFox live', () => {
 
     site.resolve(name,chapter)
       .then(images=>{
-        expect(images).to.exist;
-        expect(images.length).to.be.eq(17);
+        images.should.to.exist;
+        images.should.have.length.gte(17);
 
         images[0].then(img=>{
-          expect(img).to.contain('mfcdn.net/store/manga/15973/042.0/compressed/k001.jpg');
+          img.should.contain('mfcdn.net/store/manga/15973/042.0/compressed/k001.jpg');
         });
       })
       .should.eventually.notify(done);
