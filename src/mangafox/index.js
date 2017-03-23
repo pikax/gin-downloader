@@ -107,7 +107,7 @@ const resolve = (name, chapter)=>{
 
 
 export default {
-  name : config.name,
+  config,
 
   mangas,
   info,

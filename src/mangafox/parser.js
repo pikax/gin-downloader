@@ -2,6 +2,8 @@
  * Created by rodriguesc on 03/03/2017.
  */
 
+const verbose = require('debug')('gin-downloader:mangafox:verbose');
+
 import url from 'url';
 
 import config from './config';
@@ -70,14 +72,16 @@ const image = html =>{
   const __imgID__ = /src=".*\?token[^"]*".*id=/gmi;
   const __img__ = /src=".*\?token[^"]*/gmi;
 
-  let m = html.match(__imgID__)[0];
-  if(!m)
+  verbose('getting image from \n%s', html);
+
+  let m = html.match(__imgID__);
+  if(!m || m.length=== 0)
     throw new Error('Image not found');
-  m = m.match(__img__)[0]
-  if(!m)
+  m = m[0].match(__img__)
+  if(!m || m.length=== 0)
     throw new Error('Image not found');
 
-  return m.slice(5);
+  return m[0].slice(5);
 };
 
 
