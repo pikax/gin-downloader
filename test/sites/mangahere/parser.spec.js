@@ -5,10 +5,10 @@
 import results from './_results';
 
 
-import {parseDoc} from '../../src/common/helper';
+import {parseDoc} from '../../../src/common/helper';
 
-import manga from './../../src/mangahere/parser';
-import {toName} from './../../src/mangahere/names';
+import manga from '../../../src/sites/mangahere/parser';
+import {toName} from '../../../src/sites/mangahere/names';
 
 const Promise = require('bluebird');
 const readFile = Promise.promisify(require('fs').readFile);
@@ -25,10 +25,10 @@ chai.should();
 
 
 describe('MangaHere offline', () => {
-  let mangas = './test/mangahere/html/mangas.html';
-  let gintama = './test/mangahere/html/Gintama.html';
-  let latest = './test/mangahere/html/latest.html';
-  let chapter = './test/mangahere/html/ch001.html';
+  let mangas = './test/sites/mangahere/html/mangas.html';
+  let gintama = './test/sites/mangahere/html/Gintama.html';
+  let latest = './test/sites/mangahere/html/latest.html';
+  let chapter = './test/sites/mangahere/html/ch001.html';
 
   let fpMangas;
   let fpGintama;

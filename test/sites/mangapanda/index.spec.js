@@ -2,8 +2,8 @@
  * Created by rodriguesc on 07/03/2017.
  */
 
-import site from './../../src/mangapanda';
-import {toName} from './../../src/mangapanda/names';
+import site from './../../../src/sites/mangapanda';
+import {toName} from '../../../src/sites/mangapanda/names';
 import config from './_results';
 
 import chai from 'chai';
@@ -11,7 +11,7 @@ import chaiAsPromised from 'chai-as-promised';
 
 
 import results from './_results';
-import {getDoc} from '../../src/common/helper';
+import {getDoc} from '../../../src/common/helper';
 
 chai.use(chaiAsPromised);
 

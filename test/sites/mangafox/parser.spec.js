@@ -5,9 +5,9 @@
 import results from './_results';
 
 
-import manga from './../../src/mangafox/parser';
-import {toName} from './../../src/mangafox/names';
-import {parseDoc} from '../../src/common/helper';
+import manga from '../../../src/sites/mangafox/parser';
+import {toName} from '../../../src/sites/mangafox/names';
+import {parseDoc} from '../../../src/common/helper';
 
 const Promise = require('bluebird');
 const readFile = Promise.promisify(require('fs').readFile);
@@ -20,10 +20,10 @@ chai.should();
 
 
 describe('MangaFox offline', () => {
-  let mangas = './test/mangafox/html/mangas.html';
-  let gintama = './test/mangafox/html/Gintama.html';
-  let latest = './test/mangafox/html/latest.html';
-  let chapter = './test/mangafox/html/ch001.html';
+  let mangas = './test/sites/mangafox/html/mangas.html';
+  let gintama = './test/sites/mangafox/html/Gintama.html';
+  let latest = './test/sites/mangafox/html/latest.html';
+  let chapter = './test/sites/mangafox/html/ch001.html';
 
   let fpMangas;
   let fpGintama;

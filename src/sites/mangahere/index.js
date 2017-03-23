@@ -1,20 +1,16 @@
 /**
  * Created by rodriguesc on 03/03/2017.
  */
-const debug = require('debug')('gin-downloader:mangafox');
-const verbose = require('debug')('gin-downloader:mangafox:verbose');
-
-import url from 'url';
+const debug = require('debug')('gin-downloader:mangahere');
+const verbose = require('debug')('gin-downloader:mangahere:verbose');
 
 import _ from 'lodash';
 
 import manga from './parser';
 import config from './config';
-import {finder} from './parser';
+import {getHtml} from '../../common/request';
 import {resolveUrl} from './names';
-
-import {getDoc} from '../common/helper';
-import {getHtml} from '../common/request';
+import {getDoc} from '../../common/helper';
 
 const mangas = () => {
   debug('getting mangas');
@@ -64,7 +60,7 @@ const images = (name, chapter) => {
     })
     .then(x=>{
       if(!x)
-        throw new Error($`Manga: ${name} chapter ${chapter} doesn't exists.`);
+        throw new Error(`Manga: ${name} chapter ${chapter} doesn't exists.`);
       return x.src;
     })
     .then(imagesByUrl);
@@ -103,11 +99,9 @@ const resolve = (name, chapter)=>{
     .tap(x=>debug('found %o',x));
 };
 
-
-
-
 export default {
   config,
+  parser : manga,
 
   mangas,
   info,
@@ -117,4 +111,3 @@ export default {
   resolve,
   latest
 };
-

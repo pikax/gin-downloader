@@ -3,12 +3,12 @@
  */
 
 
-import site from './../../src/mangafox';
+import site from './../../../src/sites/mangafox';
 import results from './_results';
 
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {toName} from '../../src/mangafox/names';
+import {toName} from '../../../src/sites/mangafox/names';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -128,7 +128,7 @@ describe('MangaFox live', () => {
         images.should.to.exist;
         images.should.have.length.gte(17);
 
-        images[0].then(img=>{
+        return images[0].then(img=>{
           img.should.contain('mfcdn.net/store/manga/15973/042.0/compressed/k001.jpg');
         });
       })
