@@ -3,7 +3,7 @@
  */
 
 
-import site from './../../../src/sites/mangafox';
+import {MangaFox as site} from './../../../src/index';
 import results from './_results';
 
 import chai from 'chai';
@@ -68,7 +68,7 @@ describe('MangaFox live', () => {
     let name = 'my stupid name';
     let chapter = 1;
 
-    site.resolve(name,chapter)
+    site.images(name,chapter)
       .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });
@@ -87,7 +87,7 @@ describe('MangaFox live', () => {
     let name = 'Gintama';
     let chapter = 'oooraklhsdaosdjnalmshd';
 
-    site.resolve(name,chapter)
+    site.images(name,chapter)
       .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });
@@ -110,20 +110,11 @@ describe('MangaFox live', () => {
       .notify(done);
   });
 
-
-  it('should get images paths', done => {
-    let chapter ='http://mangafox.me/manga/zui_wu_dao/c042/1.html';
-
-    site.imagesPaths(chapter)
-      .should.eventually.have.length.gte(8)
-      .notify(done);
-  });
-
   it('should get Zui Wu Dao : chapter 42', done => {
     let name = 'Zui Wu Dao';
     let chapter = 42;
 
-    site.resolve(name,chapter)
+    site.images(name,chapter)
       .then(images=>{
         images.should.to.exist;
         images.should.have.length.gte(17);
