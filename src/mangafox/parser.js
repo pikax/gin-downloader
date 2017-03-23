@@ -70,7 +70,14 @@ const image = html =>{
   const __imgID__ = /src=".*\?token[^"]*".*id=/gmi;
   const __img__ = /src=".*\?token[^"]*/gmi;
 
-  return html.match(__imgID__)[0].match(__img__)[0].slice(5);
+  let m = html.match(__imgID__)[0];
+  if(!m)
+    throw new Error('Image not found');
+  m = m.match(__img__)[0]
+  if(!m)
+    throw new Error('Image not found');
+
+  return m.slice(5);
 };
 
 
