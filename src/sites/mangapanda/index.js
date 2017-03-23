@@ -1,16 +1,18 @@
 /**
- * Created by rodriguesc on 03/03/2017.
+ * Created by rodriguesc on 05/03/2017.
  */
-const debug = require('debug')('gin-downloader:mangahere');
-const verbose = require('debug')('gin-downloader:mangahere:verbose');
 
-import _ from 'lodash';
+const debug = require('debug')('gin-downloader:mangapanda');
+const verbose = require('debug')('gin-downloader:mangapanda:verbose');
 
-import manga from './parser';
+import url from 'url';
+
 import config from './config';
-import {getHtml} from '../common/request';
+import manga from './parser';
+import {getHtml} from '../../common/request';
+
 import {resolveUrl} from './names';
-import {getDoc} from '../common/helper';
+import {getDoc} from '../../common/helper';
 
 const mangas = () => {
   debug('getting mangas');
@@ -54,16 +56,10 @@ const chapters = (name) =>{
 const images = (name, chapter) => {
   debug(`getting images ${name}:${chapter}`);
 
-  return chapters(name)
-    .then(chaps=>{
-      return _.find(chaps,{number:`${name} ${chapter}`});
-    })
-    .then(x=>{
-      if(!x)
-        throw new Error(`Manga: ${name} chapter ${chapter} doesn't exists.`);
-      return x.src;
-    })
-    .then(imagesByUrl);
+  let mangaUri = resolveUrl(name);
+  //NOTE mangapanda dont add volume to url is a simple {site}/{name}/{chapter}
+  let uri = url.resolve(mangaUri + '/', chapter.toString());
+  return imagesByUrl(uri);
 };
 
 const imagesByUrl = (uri)=>{
@@ -79,6 +75,10 @@ const imagesPaths = (uri)=>{
   debug(`getting image paths ${uri}`);
   return getDoc(uri)
     .then(manga.imagesPaths)
+    .tap(x=>{
+      if(!x || x.length === 0 )
+        throw new Error('chapter not found');
+    })
     .tap(x=>debug(`found ${x.length} images:\n${x}`));
 };
 

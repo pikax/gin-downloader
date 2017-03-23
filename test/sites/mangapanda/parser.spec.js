@@ -2,16 +2,13 @@
  * Created by rodriguesc on 03/03/2017.
  */
 
-import url from 'url';
-
-
 import results from './_results';
 
 
-import manga from './../../src/mangapanda/parser';
-import {toName} from './../../src/mangapanda/names';
+import manga from '../../../src/sites/mangapanda/parser';
+import {toName} from '../../../src/sites/mangapanda/names';
 
-import {parseDoc} from '../../src/common/helper';
+import {parseDoc} from '../../../src/common/helper';
 
 const Promise = require('bluebird');
 const readFile = Promise.promisify(require('fs').readFile);
@@ -30,10 +27,10 @@ chai.should();
 
 
 describe('MangaPanda offline', () => {
-  let mangas = './test/mangapanda/html/mangas.html';
-  let gintama = './test/mangapanda/html/Gintama.html';
-  let latest = './test/mangapanda/html/latest.html';
-  let chapter = './test/mangapanda/html/ch001.html';
+  let mangas = './test/sites/mangapanda/html/mangas.html';
+  let gintama = './test/sites/mangapanda/html/Gintama.html';
+  let latest = './test/sites/mangapanda/html/latest.html';
+  let chapter = './test/sites/mangapanda/html/ch001.html';
 
   let fpMangas;
   let fpGintama;

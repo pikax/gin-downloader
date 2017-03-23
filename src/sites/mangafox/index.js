@@ -1,25 +1,25 @@
 /**
- * Created by rodriguesc on 05/03/2017.
+ * Created by rodriguesc on 03/03/2017.
  */
+const debug = require('debug')('gin-downloader:mangafox');
+const verbose = require('debug')('gin-downloader:mangafox:verbose');
 
-const debug = require('debug')('gin-downloader:mangapanda');
-const verbose = require('debug')('gin-downloader:mangapanda:verbose');
 
-import url from 'url';
+import _ from 'lodash';
 
-import config from './config';
 import manga from './parser';
-import {getHtml} from '../common/request';
-
+import config from './config';
 import {resolveUrl} from './names';
-import {getDoc} from '../common/helper';
 
-const mangas = () => {
-  debug('getting mangas');
-  return getDoc(config.mangas_url)
-    .then(manga.mangas)
-    .tap(x=>debug(`mangas: ${x.length}`));
-};
+import {getDoc} from '../../common/helper';
+import {getHtml} from '../../common/request';
+
+//const mangas = () => {
+//  debug('getting mangas');
+//  return getDoc(config.mangas_url)
+//    .then(manga.mangas)
+//    .tap(x=>debug(`mangas: ${x.length}`));
+//};
 
 const latest= ()=>{
   debug('getting latest');
@@ -30,7 +30,6 @@ const latest= ()=>{
 
 const info= (name) =>{
   debug(`getting info for ${name}`);
-
   let src = resolveUrl(name);
 
   debug(`getting info ${src}`);
@@ -56,10 +55,16 @@ const chapters = (name) =>{
 const images = (name, chapter) => {
   debug(`getting images ${name}:${chapter}`);
 
-  let mangaUri = resolveUrl(name);
-  //NOTE mangapanda dont add volume to url is a simple {site}/{name}/{chapter}
-  let uri = url.resolve(mangaUri + '/', chapter.toString());
-  return imagesByUrl(uri);
+  return chapters(name)
+    .then(chaps=>{
+      return _.find(chaps,{number:`${name} ${chapter}`});
+    })
+    .then(x=>{
+      if(!x)
+        throw new Error($`Manga: ${name} chapter ${chapter} doesn't exists.`);
+      return x.src;
+    })
+    .then(imagesByUrl);
 };
 
 const imagesByUrl = (uri)=>{
@@ -75,10 +80,6 @@ const imagesPaths = (uri)=>{
   debug(`getting image paths ${uri}`);
   return getDoc(uri)
     .then(manga.imagesPaths)
-    .tap(x=>{
-      if(!x || x.length === 0 )
-        throw new Error('chapter not found');
-    })
     .tap(x=>debug(`found ${x.length} images:\n${x}`));
 };
 
@@ -99,10 +100,12 @@ const resolve = (name, chapter)=>{
     .tap(x=>debug('found %o',x));
 };
 
+
+
+
 export default {
   config,
 
-  mangas,
   info,
   chapters,
   images,
@@ -110,3 +113,4 @@ export default {
   resolve,
   latest
 };
+

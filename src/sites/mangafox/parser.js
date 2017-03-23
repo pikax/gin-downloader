@@ -87,9 +87,9 @@ const image = html =>{
 
 //const imagesPaths = osm => resolveArray(resolveImagesPaths(osm));
 const imagesPaths = doc =>{
-  const xpath = '//form[@id=\'top_bar\']/div/div[@class=\'l\']/select/option[position()< last()]';
+  const xpath = '//form[@id=\'top_bar\']/div/div[@class=\'l\']/select/option[position()< last()]/text()';
   return doc.find(xpath)
-    .map(x=>url.resolve(config.site,x + '.html'));
+    .map(x=>url.resolve(doc.baseUrl,x.text() + '.html'));
 }
 
 //const chapters = osm => resolveArray(resolveChapters(osm));

@@ -3,12 +3,12 @@
  */
 
 
-import site from './../../src/mangahere';
+import site from './../../../src/sites/mangahere';
 import config from './_results';
 
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {toName} from '../../src/mangahere/names';
+import {toName} from '../../../src/sites/mangahere/names';
 
 chai.use(chaiAsPromised);
 
@@ -146,7 +146,7 @@ describe('MangaHere live', () => {
         expect(images).to.exist;
         expect(images.length).to.be.eq(24);
 
-        images[0].then(img=>{
+        return images[0].then(img=>{
           expect(img).to.contain('mhcdn.net/store/manga/551/041.0/compressed/M7_Gintama_ch041_00.jpg');
         });
       })
