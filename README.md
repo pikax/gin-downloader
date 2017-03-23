@@ -18,7 +18,38 @@ Simple manga scrapper for famous online manga websites, it uses [libxmljs](https
 - [x] MangaFox
 - [x] MangaPanda
 - [x] MangaHere
-- [ ] Bato.to
+- [ ] BatoTo
+- [ ] BatoToEs
+- [ ] DeNineManga
+- [ ] EsManga
+- [ ] EsMangaHere
+- [ ] EsNineManga
+- [ ] FromFolder
+- [ ] GoGoComic
+- [ ] HeavenManga
+- [ ] ItNineManga
+- [ ] JapScan
+- [ ] KissManga
+- [ ] LectureEnLigne
+- [ ] LeoManga
+- [ ] Manga_Tube
+- [ ] MangaEden
+- [ ] MangaEdenIt
+- [ ] MangaReader
+- [ ] MyMangaIo
+- [ ] NineManga
+- [ ] PureManga
+- [ ] RawSenManga
+- [ ] ReadComicOnline
+- [ ] ReadComicsTV
+- [ ] ReadMangaToday
+- [ ] RuNineManga
+- [ ] ServerBase
+- [ ] StarkanaCom
+- [ ] SubManga
+- [ ] TuMangaOnline
+- [ ] TusMangasOnlineCom
+- [ ] ViewComic
 - [ ] MangaUpdates **only info**
 - [ ] MyAnimeList **only info**
 
