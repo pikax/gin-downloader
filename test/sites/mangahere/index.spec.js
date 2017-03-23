@@ -3,7 +3,7 @@
  */
 
 
-import site from './../../../src/sites/mangahere';
+import {MangaHere as site} from './../../../src';
 import config from './_results';
 
 import chai from 'chai';
@@ -76,7 +76,7 @@ describe('MangaHere live', () => {
     let name = 'my stupid name';
     let chapter = 1;
 
-    site.resolve(name,chapter)
+    site.images(name,chapter)
       .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });
@@ -102,7 +102,7 @@ describe('MangaHere live', () => {
     let name = 'Gintama';
     let chapter = 'oooraklhsdaosdjnalmshd';
 
-    site.resolve(name,chapter)
+    site.images(name,chapter)
       .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });
@@ -141,7 +141,7 @@ describe('MangaHere live', () => {
     let name = 'Gintama';
     let chapter = 41;
 
-    site.resolve(name,chapter)
+    site.images(name,chapter)
       .then(images=>{
         expect(images).to.exist;
         expect(images.length).to.be.eq(24);

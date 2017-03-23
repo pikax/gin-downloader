@@ -2,7 +2,7 @@
  * Created by rodriguesc on 07/03/2017.
  */
 
-import site from './../../../src/sites/mangapanda';
+import {MangaPanda as site} from './../../../src';
 import {toName} from '../../../src/sites/mangapanda/names';
 import config from './_results';
 
@@ -152,7 +152,7 @@ describe('MangaPanda live', () => {
     let name = 'my stupid name';
     let chapter = 1;
 
-    site.resolve(name,chapter)
+    site.images(name,chapter)
       .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });
@@ -162,7 +162,7 @@ describe('MangaPanda live', () => {
     let name = 'Gintama';
     let chapter = 'oooraklhsdaosdjnalmshd';
 
-    site.resolve(name,chapter)
+    site.images(name,chapter)
       .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });
@@ -172,7 +172,7 @@ describe('MangaPanda live', () => {
     let name = 'Gintama';
     let chapter = 41;
 
-    site.resolve(name,chapter)
+    site.images(name,chapter)
       .then(images=>{
         expect(images).to.exist;
         expect(images.length).to.be.eq(23);

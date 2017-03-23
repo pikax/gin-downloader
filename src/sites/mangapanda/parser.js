@@ -3,9 +3,7 @@
  */
 
 import url from 'url';
-
 import config from './config';
-
 
 
 const mangas = doc => {
@@ -87,15 +85,13 @@ const chapters = doc=>{
       return {
         number : x.get('td/a').text().trim(),
         name : x.get('td/a/following-sibling::text()').text().slice(3) || x.text(),
-        src :x.get('td/a').attr('href').value(),
+        src :url.resolve(doc.baseUrl,x.get('td/a').attr('href').value()),
       };
     });
 };
 
 
 const exp = {
-  config,
-
   image,
   imagesPaths,
   latest,

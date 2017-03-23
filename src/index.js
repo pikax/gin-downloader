@@ -4,7 +4,7 @@
 
 import fs from 'fs';
 
-import builder from './sites';
+import {extend} from './sites';
 
 
 let sites = {};
@@ -19,13 +19,12 @@ fs.readdirSync(sitesDir).forEach((file)=> {
   let site = require(fp).default;
   let parser = require(fp + '/parser').default;
   let config = require(fp + '/config').default;
+  let resolveUrl = require(fp + '/names').resolveUrl;
 
 
-  let def = new builder(site,config,parser);
-  let s = site;
-  s.mangas = s.mangas || def.mangas.bind(def);
+  let def = extend(site,config,parser,resolveUrl);
 
-  sites[config.name] = s;
+  sites[config.name] = def;
 });
 
 

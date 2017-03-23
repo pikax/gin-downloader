@@ -6,9 +6,6 @@ const verbose = require('debug')('gin-downloader:mangafox:verbose');
 
 import url from 'url';
 
-import config from './config';
-
-
 
 //mangas from http://mangafox.me/manga
 const mangas = doc =>{
@@ -108,8 +105,6 @@ const chapters = doc=>{
 
 
 const exp = {
-  config,
-
   image,
   imagesPaths,
   latest,
