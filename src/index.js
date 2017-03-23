@@ -22,15 +22,14 @@ fs.readdirSync(sitesDir).forEach((file)=> {
 
 
   let def = new builder(site,config,parser);
-
   let s = site;
-
   s.mangas = s.mangas || def.mangas.bind(def);
 
-  site[config.name] = s;
+  sites[config.name] = s;
 });
 
 
-modules.export = site;
+//modules.export = site;
 
+export default module.exports = sites;
 
