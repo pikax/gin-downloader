@@ -1,13 +1,17 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
+import './extensions';
+
 
 import {IChapter, IConfig, IImage, IMangas, IName, IParser, ISite} from "./declarations";
 import * as debug from "debug";
 import {IDebugger} from "debug";
+import {getDoc} from "./helper";
 
 
-export default  class Site implements ISite{
+export class Site implements ISite{
+
     protected parser: IParser;
     protected verbose: IDebugger;
     protected debug : IDebugger;
@@ -15,7 +19,7 @@ export default  class Site implements ISite{
     protected nameHelper: IName;
 
 
-    constructor(config : IConfig, parser : IParser, nameHelper : IName){
+    protected constructor(config : IConfig, parser : IParser, nameHelper : IName){
         this.debug  = debug(`gin-downloader:${config.name}`);
         this.verbose = debug(`gin-downloader:${config.name}:verbose`);
 
@@ -24,7 +28,7 @@ export default  class Site implements ISite{
         this.nameHelper = nameHelper;
     }
 
-    mangas(): Promise<IMangas> {
+    mangas(): Promise<IMangas[]> {
         this.debug('getting mangas');
 
         return getDoc(this.config.mangas_url)
@@ -47,8 +51,6 @@ export default  class Site implements ISite{
     images(name: string, chapter: string): Promise<Promise<IImage>>[] {
         return undefined;
     }
-
-
-
-
 }
+
+export default Site;

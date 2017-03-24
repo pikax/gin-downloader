@@ -2,13 +2,14 @@
  * Created by rodriguesc on 24/03/2017.
  */
 import {IConfig} from "../../common/declarations";
+import * as url from 'url';
 
 const site= 'http://mangafox.me';
-const config : IConfig = {
+export const config : IConfig = {
     name : 'MangaFox',
     site : site,
-    mangas_url : site+'/manga/',
-    latest_url : site+'/releases/'
+    mangas_url : url.resolve(site,'/manga/'),
+    latest_url : url.resolve(site,'/releases/')
 
 };
 export default config;

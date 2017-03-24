@@ -20,6 +20,10 @@
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-0.0.29.tgz#a1e514adfbd92f03a224ba54d693111dbf1f3754"
 
+"@types/es6-promise@^0.0.32":
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/@types/es6-promise/-/es6-promise-0.0.32.tgz#3bcf44fb1e429f3df76188c8c6d874463ba371fd"
+
 "@types/libxmljs@^0.14.30":
   version "0.14.30"
   resolved "https://registry.yarnpkg.com/@types/libxmljs/-/libxmljs-0.14.30.tgz#4cac8f6ebde725285726ef746f3d5e5dac178f4f"
