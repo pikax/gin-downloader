@@ -3,7 +3,7 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "preserveConstEnums": true,
-    "target": "es5",
+    "target": "es6",
     "sourceMap": true,
     "typeRoots" : ["./node_modules/@types"]
   },
@@ -12,5 +12,8 @@
   ],
   "include": [
     "src/**/*"
+  ],
+  "files": [
+    "src/index.ts"
   ]
 }

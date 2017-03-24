@@ -3,18 +3,16 @@
  */
 
 import {HTMLDocument} from '@types/libxmljs'
-import * as url from "url";
-
+import {URL} from "url";
 
 export interface IMangaXDoc extends HTMLDocument{
     baseUrl : string,
     location : string,
 }
 
-
 export interface IRequest {
-    getHtml(requestedPath : string|url, params : any) : Promise<string>;
-    getBytes(requestedPath : string|url, params : any) : Promise<any>;
+    getHtml(requestedPath : string | URL, params : any) : Promise<string>;
+    getBytes(requestedPath : string | URL, params : any) : Promise<any>;
 }
 
 export interface IName{
@@ -64,11 +62,14 @@ export interface IParser{
 }
 
 export interface ISite{
-    mangas(): Promise<IMangas>;
-    latest():Promise<IChapter>;
+    mangas(): Promise<IMangas[]>;
+    latest():Promise<IChapter[]>;
 
     info(name:string): Promise<any>;
     chapters(name:string) : Promise<IChapter[]>;
 
     images(name:string,chapter:string) : Promise<Promise<IImage>>[];
 }
+
+
+

@@ -7,13 +7,14 @@ const debug = require('debug')('gin-downloader:request');
 const verbose = require('debug')('gin-downloader:request:verbose');
 const error = require('debug')('gin-downloader:error');
 
+import './declarations';
 
 import * as url from 'url';
 import {IRequest} from "./declarations";
 
-import * as Promise from 'bluebird';
+import * as Promise2 from 'bluebird';
 function bluebirdFactory(resolver: any){
-  return new Promise(resolver);
+  return new Promise2(resolver);
 }
 const requestRetry = require('requestretry').defaults({  promiseFactory:bluebirdFactory});
 
@@ -32,16 +33,14 @@ const Headers = {
 };
 
 
-export const getHtml = (requestedPath : string | url, params = any) =>{
-  return getBytes(requestedPath,params)
-    .then(x =>
-      x.toString()
-    );
+export const getHtml = async (requestedPath : string | url, params = any) : Promise<string> =>{
+  let bytes = await getBytes(requestedPath,params);
+  return bytes.toString();
 };
 
 
 //TODO setup configs in configs file
-export const getBytes = (requestedPath: string | url, params:any)=> {
+export const getBytes = (requestedPath: string | url, params:any) : Promise<any> => {
   verbose('Request: %s : %o',requestedPath,params);
   const uri = url.parse(requestedPath);
   let p = uri.pathname;

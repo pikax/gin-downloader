@@ -1,26 +1,24 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
+import '@types/node';
 
 import Site from "../../common/site";
 import {IChapter, IImage, IMangas, IMangaXDoc, IParser} from "../../common/declarations";
 import {HTMLDocument} from '@types/libxmljs'
 import * as url from "url";
 
-import {Promise} from '@types/node';
-import {verbose} from './config';
+import {default as config, verbose} from './config';
 
 
-export default class parser implements IParser{
-    private verbose = verbose
-
+export class parser implements IParser{
 
     mangas(doc: IMangaXDoc): Promise<IMangas[]> {
         const xpath = '//div[@class=\'manga_list\']/ul/li/a';
         let m = doc.find(xpath).map(x => {
             return {
                 name: x.text(),
-                src: x.attr('href').value()
+                src: url.resolve(config.site,x.attr('href').value()
             };
         });
         return Promise.resolve(m);
@@ -31,7 +29,7 @@ export default class parser implements IParser{
         let l = doc.find(xpath).map(x=>{
             return {
                 name: x.text(),
-                src:x.attr('href').value(),
+                src:url.resolve(config.site,x.attr('href').value()),
                 volume: x.get('following-sibling::text()')
             };
         });
@@ -52,7 +50,7 @@ export default class parser implements IParser{
         let rating = doc.get('//div[@id=\'series_info\']/div[@class=\'data\'][3]/span').text();
         let scanlators = doc.find('//div[@id=\'series_info\']/div[@class=\'data\'][4]/span/a').map(x=>x.text());
 
-        return {
+        let result = {
             image,
             title,
             synonyms,
@@ -66,6 +64,8 @@ export default class parser implements IParser{
             rating,
             scanlators
         };
+
+        return Promise.resolve(result)
     }
 
     chapters(doc: IMangaXDoc): Promise<IChapter[]> {
@@ -97,7 +97,6 @@ export default class parser implements IParser{
         const __imgID__ = /src=".*\?token[^"]*".*id=/gmi;
         const __img__ = /src=".*\?token[^"]*/gmi;
 
-        this.verbose('getting image from \n%s', html);
         let m = html.match(__imgID__);
         if(!m || m.length=== 0)
             throw new Error('Image not found');
@@ -228,4 +227,5 @@ const exp = {
 
 export default exp;
 */
-*/
+
+export default parser;
