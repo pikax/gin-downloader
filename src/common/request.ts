@@ -8,10 +8,11 @@ const verbose = require('debug')('gin-downloader:request:verbose');
 const error = require('debug')('gin-downloader:error');
 
 
-import url from 'url';
+import * as url from 'url';
+import {IRequest} from "./declarations";
 
-import Promise from 'bluebird';
-function bluebirdFactory(resolver){
+import * as Promise from 'bluebird';
+function bluebirdFactory(resolver: any){
   return new Promise(resolver);
 }
 const requestRetry = require('requestretry').defaults({  promiseFactory:bluebirdFactory});
@@ -31,7 +32,7 @@ const Headers = {
 };
 
 
-export const getHtml = (requestedPath, params = null) =>{
+export const getHtml = (requestedPath : string | url, params = any) =>{
   return getBytes(requestedPath,params)
     .then(x =>
       x.toString()
@@ -40,7 +41,7 @@ export const getHtml = (requestedPath, params = null) =>{
 
 
 //TODO setup configs in configs file
-export const getBytes = (requestedPath, params)=> {
+export const getBytes = (requestedPath: string | url, params:any)=> {
   verbose('Request: %s : %o',requestedPath,params);
   const uri = url.parse(requestedPath);
   let p = uri.pathname;
@@ -48,7 +49,7 @@ export const getBytes = (requestedPath, params)=> {
   //fix the path
   let paths = p.split('/').map(encodeURIComponent);
 
-  let requestedUrl = uri.format().replace(p,paths.join('/'));
+  let requestedUrl = uri.path.replace(p,paths.join('/'));
 
   debug('Requesting url %s',requestedUrl);
 
@@ -58,7 +59,7 @@ export const getBytes = (requestedPath, params)=> {
     qs: params,
     headers: Headers,
     gzip: true,
-    encoding: null,
+    encoding: '',
     timeout: Timeout,
     followAllRedirects: true,
     forever: true,
@@ -75,7 +76,7 @@ export const getBytes = (requestedPath, params)=> {
   verbose('Request obj: %o',request);
 
   return requestRetry(request)
-    .catch((err)=> {
+    .catch((err : any)=> {
       error('request %s\nerror: %o',requestedPath,err);
       throw err;
     });
@@ -83,7 +84,7 @@ export const getBytes = (requestedPath, params)=> {
 
 
 
-export default {
+export default <IRequest>{
   getBytes,
   getHtml
 };
