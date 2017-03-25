@@ -1,19 +1,15 @@
-/**
- * Created by rodriguesc on 03/03/2017.
- */
-
-
-const site= 'http://mangafox.me';
-const config = {
-  name : 'MangaFox',
-  site : site,
-  mangas_url : site+'/manga/',
-  latest_url : site+'/releases/'
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const url = require("url");
+const site = 'http://mangafox.me';
+exports.config = {
+    name: 'MangaFox',
+    site: site,
+    mangas_url: url.resolve(site, '/manga/'),
+    latest_url: url.resolve(site, '/releases/')
 };
-
-export default config;
-
-export debug = require('debug')('gin-downloader:mangafox');
-export verbose = require('debug')('gin-downloader:mangafox:verbose');
-verbose('using %O', config);
+exports.default = exports.config;
+exports.debug = require('debug')('gin-downloader:mangafox');
+exports.verbose = require('debug')('gin-downloader:mangafox:verbose');
+exports.verbose('using %O', exports.config);
+//# sourceMappingURL=config.js.map

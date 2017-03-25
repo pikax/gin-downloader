@@ -1,16 +1,15 @@
-/**
- * Created by rodriguesc on 03/03/2017.
- */
-
-const debug = require('debug')('gin-downloader:mangahere:config');
-
-const site= 'http://www.mangahere.co';
-const config = {
-  name : 'MangaHere',
-  site : site,
-  mangas_url : site+'/mangalist',
-  latest_url : site+'/latest/'
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const url = require("url");
+const site = 'http://www.mangahere.co';
+exports.config = {
+    name: 'MangaHere',
+    site: site,
+    mangas_url: url.resolve(site, '/mangalist/'),
+    latest_url: url.resolve(site, '/latest/')
 };
-
-export default config;
-debug('using %O', config);
+exports.default = exports.config;
+exports.debug = require('debug')('gin-downloader:mangahere');
+exports.verbose = require('debug')('gin-downloader:mangahere:verbose');
+exports.verbose('using %O', exports.config);
+//# sourceMappingURL=config.js.map
