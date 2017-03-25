@@ -1,3 +1,4 @@
+///<reference path="declarations.ts"/>
 /**
  * Created by rodriguesc on 24/03/2017.
  */
@@ -13,7 +14,6 @@ import {getHtml} from "./request";
 import {parse} from "url";
 
 export class Site implements ISite{
-
   protected parser: IParser;
   protected verbose: IDebugger;
   protected debug : IDebugger;
@@ -122,19 +122,21 @@ export class Site implements ISite{
 
     this.debug('getting images for %s : %s', name,chapter);
 
-    let chapters = await this.chapters(name);
-    this.debug('chapters found %s',chapters.length);
-    this.verbose('%o',chapters);
+    let chap = await this.resolveChapterSource(name, chapter);
 
-    let chap = find(chapters, {number:chapter});
-    this.verbose('filtered chapters %o',chap);
-
-    if(!chap)
-      throw new Error('Chapter not found');
-
-    let paths = await getDoc(chap.src).then(this.parser.imagesPaths);
+    let paths = await getDoc(chap).then(this.parser.imagesPaths);
 
     return paths.map(x=>Site.processImagePath(x,this.parser));
+  }
+
+  protected async resolveChapterSource(name: string, chapter: number): Promise<string>{
+    let chapters = await this.chapters(name);
+    let chap = find(chapters, {number: chapter});
+    this.verbose('filtered chapters %o', chap);
+
+    if (!chap)
+      throw new Error('Chapter not found');
+    return chap.src;
   }
 
   private static async processImagePath(src:string,parser : IParser) : Promise<IImage>{

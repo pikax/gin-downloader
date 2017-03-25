@@ -71,10 +71,6 @@ class Parser implements IParser {
       });
   }
 
-  images(doc: IMangaXDoc): Promise<Promise<IImage>>[] {
-    return undefined;
-  }
-
   imagesPaths(doc: IMangaXDoc): string[] {
     const xpath = '//section[@class=\'readpage_top\']/div[@class=\'go_page clearfix\']/span[@class=\'right\']/select[@class=\'wid60\']/option/@value';
     return doc.find(xpath)

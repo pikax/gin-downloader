@@ -5,14 +5,12 @@ const config_1 = require("./config");
 class Parser {
     mangas(doc) {
         const xpath = '//div[@class=\'manga_list\']/ul/li/a';
-        let m = doc.find(xpath).map(x => {
+        return doc.find(xpath).map(x => {
             return {
                 name: x.text(),
                 src: url.resolve(config_1.default.site, x.attr('href').value())
             };
         });
-        return m;
-        // return Promise.resolve(m);
     }
     ;
     latest(doc) {
@@ -61,9 +59,6 @@ class Parser {
             src: url.resolve(config_1.default.site, x.attr('href').value()),
             volume: x.get(xVolume).text().trim()
         };
-    }
-    images(doc) {
-        throw new Error('Method not implemented.');
     }
     imagesPaths(doc) {
         const xpath = '//form[@id=\'top_bar\']/div/div[@class=\'l\']/select/option[position()< last()]/text()';

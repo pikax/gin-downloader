@@ -62,9 +62,6 @@ class Parser {
             };
         });
     }
-    images(doc) {
-        return undefined;
-    }
     imagesPaths(doc) {
         const xpath = '//section[@class=\'readpage_top\']/div[@class=\'go_page clearfix\']/span[@class=\'right\']/select[@class=\'wid60\']/option/@value';
         return doc.find(xpath)

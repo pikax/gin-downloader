@@ -1,3 +1,4 @@
+///<reference path="declarations.ts"/>
 /**
  * Created by rodriguesc on 24/03/2017.
  */
@@ -105,15 +106,19 @@ class Site {
             if (!util_1.isNumber(chapter))
                 throw new Error('Please provide a valid chapter');
             this.debug('getting images for %s : %s', name, chapter);
+            let chap = yield this.resolveChapterSource(name, chapter);
+            let paths = yield helper_1.getDoc(chap).then(this.parser.imagesPaths);
+            return paths.map(x => Site.processImagePath(x, this.parser));
+        });
+    }
+    resolveChapterSource(name, chapter) {
+        return __awaiter(this, void 0, void 0, function* () {
             let chapters = yield this.chapters(name);
-            this.debug('chapters found %s', chapters.length);
-            this.verbose('%o', chapters);
             let chap = lodash_1.find(chapters, { number: chapter });
             this.verbose('filtered chapters %o', chap);
             if (!chap)
                 throw new Error('Chapter not found');
-            let paths = yield helper_1.getDoc(chap.src).then(this.parser.imagesPaths);
-            return paths.map(x => Site.processImagePath(x, this.parser));
+            return chap.src;
         });
     }
     static processImagePath(src, parser) {
