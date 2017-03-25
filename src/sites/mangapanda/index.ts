@@ -8,7 +8,7 @@ import {helper} from "./names";
 import {resolve} from "url";
 
 
-class Manga extends MangaSite {
+export class MangaPanda extends MangaSite {
   public constructor() {
     super(config, parser , helper);
   }
@@ -20,5 +20,5 @@ class Manga extends MangaSite {
   }
 }
 
-export const manga = new Manga();
+export const manga = new MangaPanda();
 export default manga;

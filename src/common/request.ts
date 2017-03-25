@@ -12,11 +12,7 @@ import "../declarations";
 import * as url from "url";
 import {Request} from "../declarations";
 
-import * as Promise2 from "bluebird";
-function bluebirdFactory(resolver: any) {
-  return new Promise2(resolver);
-}
-const requestRetry = require("requestretry").defaults({  promiseFactory: bluebirdFactory});
+const requestRetry = require("requestretry");
 
 
 const MaxRetries = 50;

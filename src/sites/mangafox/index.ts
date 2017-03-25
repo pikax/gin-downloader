@@ -8,11 +8,11 @@ import {config} from "./config";
 import {helper} from "./names";
 
 
-class Manga extends MangaSite {
+export class MangaFox extends MangaSite {
   public constructor() {
     super(config, parser, helper);
   }
 }
 
-export const manga = new Manga();
+export const manga = new MangaFox();
 export default manga;

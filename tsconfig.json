@@ -3,11 +3,13 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "preserveConstEnums": true,
-    "target": "es6",
+    "target": "es5",
     "sourceMap": true,
     "alwaysStrict": true,
     "typeRoots" : ["./node_modules/@types"],
-    "types": [ "node", "mocha", "chai" ]
+    "types": [ "node", "mocha", "chai" ],
+    "lib": ["ES6"],
+    "declaration": true
   },
   "exclude": [
     "node_modules"

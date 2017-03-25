@@ -9,7 +9,7 @@ import {resolve} from "url";
 const noCase = require("no-case");
 
 
-class Helper implements NameHelper {
+export class Helper implements NameHelper {
   toName(name: string): string {
     let n = name.replace(/[^\x00-\x7F]/g, "_");
 
