@@ -5,12 +5,12 @@
 import {Site} from "../../common/site";
 import {parser} from "./parser";
 import {config} from "./config";
-import {name} from './names'
+import {name} from "./names";
 
 
 class Manga extends Site {
-  public constructor(){
-    super(config,parser, name);
+  public constructor() {
+    super(config, parser, name);
   }
 }
 

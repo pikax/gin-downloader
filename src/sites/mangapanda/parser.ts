@@ -2,45 +2,45 @@
  * Created by rodriguesc on 05/03/2017.
  */
 
-import {resolve} from 'url';
-import config from './config';
-import {IChapter, IImage, IMangaInfo, IMangas, IMangaXDoc, IParser} from "../../common/declarations";
+import {resolve} from "url";
+import config from "./config";
+import {IChapter, IMangaInfo, IMangas, IMangaXDoc, IParser} from "../../common/declarations";
 
 
 class Parser implements IParser {
   mangas(doc: IMangaXDoc): IMangas[] | Promise<IMangas[]> {
-    const xpath = '//ul[@class=\'series_alpha\']/li/a';
+    const xpath = "//ul[@class='series_alpha']/li/a";
     return doc.find(xpath)
-      .map(x=>{
+      .map(x => {
         return {
           name : x.text(),
-          src :  resolve(config.site,  x.attr('href').value())
+          src :  resolve(config.site,  x.attr("href").value())
         };
       });
   }
 
   latest(doc: IMangaXDoc): IChapter[] | Promise<IChapter[]> {
-    const xpath = '//a[@class=\'chaptersrec\']';
-    return doc.find(xpath).map(x=>{
+    const xpath = "//a[@class='chaptersrec']";
+    return doc.find(xpath).map(x => {
       return {
         name: x.text(),
-        src: resolve(config.site, x.attr('href').value())
+        src: resolve(config.site, x.attr("href").value())
       };
     });
   }
 
   info(doc: IMangaXDoc): IMangaInfo | Promise<IMangaInfo> {
-    let image = doc.get('//div[@id=\'mangaimg\']/img').attr('src').value();
-    let title = doc.get('//h2[@class=\'aname\']').text();
-    let synonyms = doc.get('//div[@id=\'mangaproperties\']/table/tr[2]/td[2]').text().split(', ');
-    let released = doc.get('//div[@id=\'mangaproperties\']/table/tr[3]/td[2]').text();
-    let status = doc.get('//div[@id=\'mangaproperties\']/table/tr[4]/td[2]').text();
-    let authors = [doc.get('//div[@id=\'mangaproperties\']/table/tr[5]/td[2]').text()];
-    let artists = [doc.get('//div[@id=\'mangaproperties\']/table/tr[6]/td[2]').text()];
-    let genres = doc.find('//span[@class=\'genretags\']').map(x=>x.text());
-    let synopsis = doc.get('//div[@id=\'readmangasum\']/p').text();
+    let image = doc.get("//div[@id='mangaimg']/img").attr("src").value();
+    let title = doc.get("//h2[@class='aname']").text();
+    let synonyms = doc.get("//div[@id='mangaproperties']/table/tr[2]/td[2]").text().split(", ");
+    let released = doc.get("//div[@id='mangaproperties']/table/tr[3]/td[2]").text();
+    let status = doc.get("//div[@id='mangaproperties']/table/tr[4]/td[2]").text();
+    let authors = [doc.get("//div[@id='mangaproperties']/table/tr[5]/td[2]").text()];
+    let artists = [doc.get("//div[@id='mangaproperties']/table/tr[6]/td[2]").text()];
+    let genres = doc.find("//span[@class='genretags']").map(x => x.text());
+    let synopsis = doc.get("//div[@id='readmangasum']/p").text();
 
-    let direction = doc.get('//div[@id=\'mangaproperties\']/table/tr[7]/td[2]').text();
+    let direction = doc.get("//div[@id='mangaproperties']/table/tr[7]/td[2]").text();
 
     return {
       image,
@@ -57,27 +57,27 @@ class Parser implements IParser {
   }
 
   chapters(doc: IMangaXDoc): IChapter[] | Promise<IChapter[]> {
-    const xpath = '//table[@id=\'listing\']/tr[position()> 1]';
+    const xpath = "//table[@id='listing']/tr[position()> 1]";
     return doc.find(xpath)
-      .map(x=>{
+      .map(x => {
         return {
-          number : x.get('td/a').text().trim().lastDigit(),
-          name : x.get('td/a/following-sibling::text()').text().slice(3) || x.text(),
-          src :resolve(doc.baseUrl,x.get('td/a').attr('href').value()),
+          number : x.get("td/a").text().trim().lastDigit(),
+          name: x.text() || x.get("td/a/following-sibling::text()").text().slice(3),
+          src : resolve(doc.baseUrl, x.get("td/a").attr("href").value()),
         };
       });
   }
 
   imagesPaths(doc: IMangaXDoc): string[] {
-    const xpath = '//select[@id=\'pageMenu\']/option/@value';
+    const xpath = "//select[@id='pageMenu']/option/@value";
     return doc.find(xpath)
-      .map(x=>resolve(config.site,(<any>x).value()));
+      .map(x => resolve(config.site, (<any>x).value()));
   }
 
   image(html: string): string {
     const __img__ = /src="[^"]*" alt/gmi;
 
-    return html.match(__img__)[0].slice(5, -5).replace(/.v=\d+/,'');
+    return html.match(__img__)[0].slice(5, -5).replace(/.v=\d+/, "");
   }
 }
 

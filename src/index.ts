@@ -19,6 +19,7 @@ async function ff(){
 
   await Promise.all(result.map(x=>x.then(console.log)));
 
+
 }
 
 
