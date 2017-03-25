@@ -14,7 +14,7 @@ import {HTMLDocument} from "libxmljs";
 
 
 describe("Helper.js", () => {
-  let manga = `
+  let manga: string = `
       <html>
       <div>
           <a id="chap" href="1"/>

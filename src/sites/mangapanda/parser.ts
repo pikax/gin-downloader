@@ -4,11 +4,11 @@
 
 import {resolve} from "url";
 import config from "./config";
-import {IChapter, IMangaInfo, IMangas, IMangaXDoc, IParser} from "../../common/declarations";
+import {Chapter, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
 
 
-class Parser implements IParser {
-  mangas(doc: IMangaXDoc): IMangas[] | Promise<IMangas[]> {
+class Parser implements SiteParser {
+  mangas(doc: MangaXDoc): MangaSource[] | Promise<MangaSource[]> {
     const xpath = "//ul[@class='series_alpha']/li/a";
     return doc.find(xpath)
       .map(x => {
@@ -19,7 +19,7 @@ class Parser implements IParser {
       });
   }
 
-  latest(doc: IMangaXDoc): IChapter[] | Promise<IChapter[]> {
+  latest(doc: MangaXDoc): Chapter[] | Promise<Chapter[]> {
     const xpath = "//a[@class='chaptersrec']";
     return doc.find(xpath).map(x => {
       return {
@@ -29,7 +29,7 @@ class Parser implements IParser {
     });
   }
 
-  info(doc: IMangaXDoc): IMangaInfo | Promise<IMangaInfo> {
+  info(doc: MangaXDoc): MangaInfo | Promise<MangaInfo> {
     let image = doc.get("//div[@id='mangaimg']/img").attr("src").value();
     let title = doc.get("//h2[@class='aname']").text();
     let synonyms = doc.get("//div[@id='mangaproperties']/table/tr[2]/td[2]").text().split(", ");
@@ -56,7 +56,7 @@ class Parser implements IParser {
     };
   }
 
-  chapters(doc: IMangaXDoc): IChapter[] | Promise<IChapter[]> {
+  chapters(doc: MangaXDoc): Chapter[] | Promise<Chapter[]> {
     const xpath = "//table[@id='listing']/tr[position()> 1]";
     return doc.find(xpath)
       .map(x => {
@@ -68,7 +68,7 @@ class Parser implements IParser {
       });
   }
 
-  imagesPaths(doc: IMangaXDoc): string[] {
+  imagesPaths(doc: MangaXDoc): string[] {
     const xpath = "//select[@id='pageMenu']/option/@value";
     return doc.find(xpath)
       .map(x => resolve(config.site, (<any>x).value()));

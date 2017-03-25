@@ -1,10 +1,10 @@
 /**
  * Created by rodriguesc on 05/03/2017.
  */
-import {IConfig} from "../../common/declarations";
+import {SiteConfig} from "../../declarations";
 
 const site = "http://www.mangapanda.com";
-export const config: IConfig = {
+export const config: SiteConfig = {
   name : "MangaPanda",
   site : site,
   mangas_url : `${site}/alphabetical`,

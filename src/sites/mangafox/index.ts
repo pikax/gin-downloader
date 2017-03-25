@@ -2,18 +2,17 @@
  * Created by david on 24/03/2017.
  */
 
-import {Site} from "../../common/site";
+import {MangaSite} from "../../common/mangasite";
 import {parser} from "./parser";
 import {config} from "./config";
-import {name} from "./names";
+import {helper} from "./names";
 
 
-class Manga extends Site {
+class Manga extends MangaSite {
   public constructor() {
-    super(config, parser, name);
+    super(config, parser, helper);
   }
 }
-
 
 export const manga = new Manga();
 export default manga;

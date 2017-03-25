@@ -5,7 +5,7 @@ import "./../../common";
 
 import {manga} from "./../../../src/sites/mangahere";
 import results from "./_results";
-import {name} from "../../../src/sites/mangahere/names";
+import {helper} from "../../../src/sites/mangahere/names";
 
 
 describe("MangaHere live", () => {
@@ -47,7 +47,7 @@ describe("MangaHere live", () => {
     for (let obj of mangas){
       let expected = obj.src;
       let origName = obj.name;
-      let finalUrl = name.resolveUrl(origName);
+      let finalUrl = helper.resolveUrl(origName);
 
       finalUrl.should.be.eq(expected, `with name "${origName}"`);
     }

@@ -3,13 +3,13 @@
  */
 
 import {config} from "./config";
-import {IName} from "../../common/declarations";
+import {NameHelper} from "../../declarations";
 import {resolve} from "url";
 
 const noCase = require("no-case");
 
 
-class Name implements IName {
+class Helper implements NameHelper {
   toName(name: string): string {
     let n = name.replace(/[^\x00-\x7F]/g, "_");
 
@@ -22,5 +22,6 @@ class Name implements IName {
 }
 
 
-export const name = new Name();
-export default name;
+export const helper = new Helper();
+export default helper;
+

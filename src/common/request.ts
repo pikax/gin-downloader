@@ -7,10 +7,10 @@ const debug = require("debug")("gin-downloader:request");
 const verbose = require("debug")("gin-downloader:request:verbose");
 const error = require("debug")("gin-downloader:error");
 
-import "./declarations";
+import "../declarations";
 
 import * as url from "url";
-import {IRequest} from "./declarations";
+import {Request} from "../declarations";
 
 import * as Promise2 from "bluebird";
 function bluebirdFactory(resolver: any) {
@@ -84,7 +84,7 @@ export const getBytes = (requestedPath: string, params: any ) : Promise<any> => 
 
 
 
-export default <IRequest>{
+export default <Request>{
   getBytes,
   getHtml
 };

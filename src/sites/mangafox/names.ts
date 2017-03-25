@@ -4,7 +4,7 @@
 import {resolve} from "url";
 
 import {config} from "./config";
-import {IName} from "../../common/declarations";
+import {NameHelper} from "../../declarations";
 
 const noCase = require("no-case");
 
@@ -14,7 +14,7 @@ const names: { [id: string]: string; } = {
 };
 
 
-class Name implements IName {
+class Helper implements NameHelper {
   toName(name: string): string {
     if (names.hasOwnProperty(name)) {
       return names[name];
@@ -24,10 +24,10 @@ class Name implements IName {
   }
 
   resolveUrl(name: string): string {
-    return resolve(config.mangas_url, this.toName(name) + '/');
+    return resolve(config.mangas_url, this.toName(name) + "/");
   }
 }
 
 
-export const name = new Name();
-export default name;
+export const helper = new Helper();
+export default helper;
