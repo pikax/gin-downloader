@@ -11,14 +11,12 @@ import {Element} from 'libxmljs'
 class Parser implements IParser{
   mangas(doc: IMangaXDoc): Promise<IMangas[]> | IMangas[]{
     const xpath = '//div[@class=\'manga_list\']/ul/li/a';
-    let m = doc.find(xpath).map(x => {
+    return doc.find(xpath).map(x => {
       return {
         name: x.text(),
-        src: url.resolve(config.site,x.attr('href').value())
+        src: url.resolve(config.site, x.attr('href').value())
       };
     });
-    return m;
-    // return Promise.resolve(m);
   };
 
   latest(doc: IMangaXDoc): Promise<IChapter[]> {
@@ -73,10 +71,6 @@ class Parser implements IParser{
      src:url.resolve(config.site,x.attr('href').value()),
      volume: x.get(xVolume).text().trim()
     }
-  }
-
-  images(doc: IMangaXDoc): Promise<Promise<IImage>>[] {
-    throw new Error('Method not implemented.');
   }
 
   imagesPaths(doc: IMangaXDoc): string[] {

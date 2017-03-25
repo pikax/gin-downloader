@@ -58,6 +58,7 @@ export interface IMangaInfo{
   rating? : string,
   scanlators? : string[],
   similarmanga? : string[],
+  direction? : string,
 }
 
 
@@ -73,12 +74,8 @@ export interface IParser{
   info(doc: IMangaXDoc): Promise<IMangaInfo> | IMangaInfo;
   chapters(doc: IMangaXDoc) : Promise<IChapter[]> | IChapter[];
 
-  images(doc: IMangaXDoc) : Promise<Promise<IImage>>[];
-
-
   imagesPaths(doc: IMangaXDoc) : string[];
   image(html:string) : string;
-
 }
 
 export interface ISite{
@@ -90,7 +87,7 @@ export interface ISite{
 
   infoChapters(name:string): Promise<{info : IMangaInfo,chapters:IChapter[]}>;
 
-  images(name:string,chapter:string) : Promise<Promise<IImage>[]>;
+  images(name:string,chapter:number) : Promise<Promise<IImage>[]>;
 }
 
 
