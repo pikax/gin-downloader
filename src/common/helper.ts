@@ -3,16 +3,16 @@
  */
 
 
-import './declarations';
+import "./declarations";
 
-import {getHtml} from './request';
+import {getHtml} from "./request";
 
-import {parseHtmlString} from 'libxmljs';
+import {parseHtmlString} from "libxmljs";
 import {IMangaXDoc} from "./declarations";
 
-// export const parseDoc = (source: string) : IMangaXDoc => <any> parseHtmlString(source);
-export const parseDoc = (source : string): IMangaXDoc=> <any>parseHtmlString(source);
-export const getDoc= (uri : string)=> getHtml(uri).then(x=> {
+
+export const parseDoc = (source: string): IMangaXDoc => <any>parseHtmlString(source);
+export const getDoc = (uri: string) => getHtml(uri).then(x => {
   let doc = parseDoc(x);
   doc.location = doc.baseUrl = uri.toString();
 

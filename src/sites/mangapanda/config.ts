@@ -3,16 +3,16 @@
  */
 import {IConfig} from "../../common/declarations";
 
-const site= 'http://www.mangapanda.com';
-export const config : IConfig = {
-  name : 'MangaPanda',
+const site = "http://www.mangapanda.com";
+export const config: IConfig = {
+  name : "MangaPanda",
   site : site,
-  mangas_url : site+'/alphabetical',
-  latest_url : site+'/latest'
+  mangas_url : `${site}/alphabetical`,
+  latest_url : `${site}/latest`
 
 };
 export default config;
 
-export const debug = require('debug')('gin-downloader:mangapanda');
-export const verbose = require('debug')('gin-downloader:mangapanda:verbose');
-verbose('using %O', config);
+export const debug = require("debug")("gin-downloader:mangapanda");
+export const verbose = require("debug")("gin-downloader:mangapanda:verbose");
+verbose("using %O", config);

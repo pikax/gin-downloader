@@ -2,35 +2,35 @@
  * Created by david on 19/03/2017.
  */
 
-import {resolve} from 'url';
+import {resolve} from "url";
 
-import {config} from './config';
+import {config} from "./config";
 import {IName} from "../../common/declarations";
 
-const noCase = require('no-case');
+const noCase = require("no-case");
 
-const names : { [id: string] : string; } = {
-  'I\'m Kagome':'i039m-kagome',
-  '009 Re:Cyborg':'009-recyborg',
-  '17 Years Old, That Summer Day\'s Miracle':'17-years-old-that-summer-days-miracle',
-  'Kapon (>_[Completed]':'kapon-_', //NOTE parser issue
-  'Utopia\'s Avenger':'utopia039s-avenger',
+const names: { [id: string]: string; } = {
+  "I'm Kagome": "i039m-kagome",
+  "009 Re:Cyborg": "009-recyborg",
+  "17 Years Old, That Summer Day's Miracle": "17-years-old-that-summer-days-miracle",
+  "Kapon (>_[Completed]": "kapon-_", // NOTE parser issue
+  "Utopia's Avenger": "utopia039s-avenger",
 };
 
 
-class Name implements IName{
+class Name implements IName {
   toName(name: string): string {
-    if(names.hasOwnProperty(name))
+    if (names.hasOwnProperty(name))
       return names[name];
 
-    return noCase(name.toLowerCase(), null,'_');
+    return noCase(name.toLowerCase(), null, "_");
   }
 
   resolveUrl(name: string): string {
-    return resolve(config.site,this.toName(name));
+    return resolve(config.site, this.toName(name));
   }
 }
 
 
-export const name = new Name()
+export const name = new Name();
 export default name;
