@@ -14,7 +14,7 @@ const names : { [id: string] : string; } = {
 };
 
 
-export  class Name implements IName{
+class Name implements IName{
   toName(name: string): string {
     if(names.hasOwnProperty(name))
       return names[name];
@@ -27,4 +27,6 @@ export  class Name implements IName{
   }
 }
 
-export default Name;
+
+export const name = new Name()
+export default name;

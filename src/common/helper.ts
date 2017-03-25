@@ -7,12 +7,12 @@ import './declarations';
 
 import {getHtml} from './request';
 
-import * as libxmljs from '@types/libxmljs';
+import {parseHtmlString} from 'libxmljs';
 import {IMangaXDoc} from "./declarations";
 
-// export const parseDoc = (source: string) : IMangaXDoc => <any> libxmljs.parseHtmlString(source);
-export const parseDoc = (source): IMangaXDoc=> <any>libxmljs.parseHtmlString(source);
-export const getDoc= (uri : string|URL)=> getHtml(uri).then(x=> {
+// export const parseDoc = (source: string) : IMangaXDoc => <any> parseHtmlString(source);
+export const parseDoc = (source : string): IMangaXDoc=> <any>parseHtmlString(source);
+export const getDoc= (uri : string)=> getHtml(uri).then(x=> {
   let doc = parseDoc(x);
   doc.location = doc.baseUrl = uri.toString();
 

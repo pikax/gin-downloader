@@ -33,14 +33,15 @@ const Headers = {
 };
 
 
-export const getHtml = async (requestedPath : string | url, params = any) : Promise<string> =>{
+export const getHtml = async (requestedPath : string, params : any = null) : Promise<string> =>{
   let bytes = await getBytes(requestedPath,params);
   return bytes.toString();
 };
 
 
 //TODO setup configs in configs file
-export const getBytes = (requestedPath: string | url, params:any) : Promise<any> => {
+//TODO check this code, I dont remember this
+export const getBytes = (requestedPath: string, params:any) : Promise<any> => {
   verbose('Request: %s : %o',requestedPath,params);
   const uri = url.parse(requestedPath);
   let p = uri.pathname;
@@ -48,7 +49,8 @@ export const getBytes = (requestedPath: string | url, params:any) : Promise<any>
   //fix the path
   let paths = p.split('/').map(encodeURIComponent);
 
-  let requestedUrl = uri.path.replace(p,paths.join('/'));
+
+  let requestedUrl = url.format(uri).replace(p,paths.join('/'));
 
   debug('Requesting url %s',requestedUrl);
 
