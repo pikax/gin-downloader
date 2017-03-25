@@ -11,11 +11,17 @@ import {parseHtmlString} from "libxmljs";
 import {IMangaXDoc} from "./declarations";
 
 
-export const parseDoc = (source: string): IMangaXDoc => <any>parseHtmlString(source);
-export const getDoc = (uri: string) => getHtml(uri).then(x => {
-  let doc = parseDoc(x);
-  doc.location = doc.baseUrl = uri.toString();
+export const parseDoc = (source: string, params: {location: string} = undefined): IMangaXDoc => {
+  let doc: IMangaXDoc = <any>parseHtmlString(source);
 
+  if (params && params.location) {
+    doc.location = doc.baseUrl = params.location;
+  }
   return doc;
-});
+};
+export const getDoc = (uri: string) => {
+  return getHtml(uri).then(x => {
+    return parseDoc(x, {location: uri});
+  });
+};
 

@@ -82,11 +82,13 @@ class Parser implements IParser {
     const __img__ = /src=".*\?token[^"]*/gmi;
 
     let m = html.match(__imgID__);
-    if (!m || m.length === 0)
+    if (!m || m.length === 0) {
       throw new Error("Image not found");
+    }
     m = m[0].match(__img__);
-    if (!m || m.length === 0)
-       throw new Error("Image not found");
+    if (!m || m.length === 0) {
+      throw new Error("Image not found");
+    }
 
     return m[0].slice(5);
   }
@@ -94,4 +96,3 @@ class Parser implements IParser {
 
 export const parser = new Parser();
 export default parser;
-

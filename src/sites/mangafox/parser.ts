@@ -19,13 +19,13 @@ class Parser implements IParser {
     });
   };
 
-  latest(doc: IMangaXDoc): Promise<IChapter[]> {
+  latest(doc: IMangaXDoc): Promise<IChapter[]> | IChapter[] {
     const xpath = "//dt/span/a[@class='chapter']";
     let l = doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
-    return Promise.resolve(l);
+    return l;
   }
 
-  info(doc: IMangaXDoc): Promise<IMangaInfo> {
+  info(doc: IMangaXDoc): Promise<IMangaInfo> | IMangaInfo {
     let image = doc.get("//div[@class='cover']/img").attr("src").value();
     let title = doc.get("//div[@class='cover']/img").attr("alt").value();
     let synonyms = doc.get("//div[@id='title']/h3").text().split("; ");
@@ -54,13 +54,13 @@ class Parser implements IParser {
       scanlators
     };
 
-    return Promise.resolve(result);
+    return result;
   }
 
-  chapters(doc: IMangaXDoc): Promise<IChapter[]> {
+  chapters(doc: IMangaXDoc): Promise<IChapter[]> | IChapter[] {
     const xpath = "//div[@id='chapters']/ul/li/div//a[@class='tips']";
     let m = doc.find(xpath).map(x => Parser.parseChapter(x, "preceding::div[@class='slide']/h3/text()"));
-    return Promise.resolve(m);
+    return m;
   }
 
 
@@ -76,7 +76,7 @@ class Parser implements IParser {
   imagesPaths(doc: IMangaXDoc): string[] {
     const xpath = "//form[@id='top_bar']/div/div[@class='l']/select/option[position()< last()]/text()";
     return doc.find(xpath)
-      .map(x => resolve(doc.baseUrl, `${x.text()}.html`));
+      .map(x => resolve(doc.location, `${x.text()}.html`));
   }
 
   image(html: string): string {
@@ -84,11 +84,13 @@ class Parser implements IParser {
     const __img__ = /src=".*\?token[^"]*/gmi;
 
     let m = html.match(__imgID__);
-    if (!m || m.length === 0)
+    if (!m || m.length === 0) {
       throw new Error("Image not found");
+    }
     m = m[0].match(__img__);
-    if (!m || m.length === 0)
+    if (!m || m.length === 0) {
       throw new Error("Image not found");
+    }
 
     return m[0].slice(5);
   }

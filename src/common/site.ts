@@ -47,8 +47,9 @@ export class Site implements ISite {
   }
 
   async info(name: string): Promise<IMangaInfo> {
-    if (!name)
+    if (!name) {
       throw new Error("Please provide a name");
+    }
     this.debug(`getting info for ${name}`);
 
     try {
@@ -66,8 +67,9 @@ export class Site implements ISite {
   }
 
   async chapters(name: string): Promise<IChapter[]> {
-    if (!name)
+    if (!name) {
       throw new Error("Please provide a name");
+    }
 
     this.debug(`getting chapters for ${name}`);
 
@@ -80,16 +82,15 @@ export class Site implements ISite {
       return chapters;
     }
     catch (e) {
-      console.error(e);
-
       this.debug(e);
       throw new Error(`${name} not found!`);
     }
   }
 
   async infoChapters(name: string): Promise<{info: IMangaInfo, chapters: IChapter[]}> {
-    if (!name)
+    if (!name) {
       throw new Error("Please provide a name");
+    }
 
     this.debug(`getting info & chapters for ${name}`);
 
@@ -112,12 +113,15 @@ export class Site implements ISite {
   }
 
   async images(name: string, chapter: number): Promise<Promise<IImage>[]> {
-    if (!name)
+    if (!name) {
       throw new Error("Please provide a name");
-    if (!chapter)
+    }
+    if (!chapter) {
       throw new Error("Please provide a chapter");
-    if (!isNumber(chapter))
+    }
+    if (!isNumber(chapter)) {
       throw new Error("Please provide a valid chapter");
+    }
 
     this.debug("getting images for %s : %s", name, chapter);
 
@@ -133,8 +137,9 @@ export class Site implements ISite {
     let chap = find(chapters, {number: chapter});
     this.verbose(`filtered chapters %o`, chap);
 
-    if (!chap)
+    if (!chap) {
       throw new Error("Chapter not found");
+    }
     return chap.src;
   }
 

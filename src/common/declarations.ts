@@ -94,12 +94,13 @@ export interface ISite {
 
 declare global {
   interface Promise<T>{
-    tap<U>(result?: (result: any) => U | Thenable<U>): Promise<T>;
+    tap<U>(result?: (result: any) => U): Promise<T>;
   }
 
   interface String {
     lastDigit(): number;
     firstDigit(): number;
+    leftTrim(): string;
   }
 }
 
@@ -126,6 +127,10 @@ String.prototype.firstDigit = function(){
   let match = this.match(regexFirstDigit);
   return (match && +match[0]) || null;
 };
+
+String.prototype.leftTrim = function() {
+  return this.replace(/^\s+/, "");
+}
 
 
 

@@ -5,6 +5,7 @@
     "preserveConstEnums": true,
     "target": "es6",
     "sourceMap": true,
+    "alwaysStrict": true,
     "typeRoots" : ["./node_modules/@types"],
     "types": [ "node", "mocha", "chai" ]
   },

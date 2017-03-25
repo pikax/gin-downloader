@@ -13,7 +13,7 @@ class Parser implements IParser {
     return doc.find(xpath)
       .map(x => {
         return {
-          name : x.text(),
+          name : x.text().leftTrim(),
           src :  resolve(config.site,  x.attr("href").value())
         };
       });
