@@ -18,7 +18,7 @@ const names: { [id: string]: string; } = {
 };
 
 
-class Helper implements NameHelper {
+export class Helper implements NameHelper {
   toName(name: string): string {
     if (names.hasOwnProperty(name)) {
       return names[name];

@@ -8,7 +8,7 @@ import {config} from "./config";
 import {Element} from "libxmljs";
 
 
-class Parser implements SiteParser {
+export class Parser implements SiteParser {
   mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
     const xpath = "//div[@class='manga_list']/ul/li/a";
     return doc.find(xpath).map(x => {

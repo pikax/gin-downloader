@@ -7,7 +7,7 @@ import config from "./config";
 import {Chapter, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
 
 
-class Parser implements SiteParser {
+export class Parser implements SiteParser {
   mangas(doc: MangaXDoc): MangaSource[] | Promise<MangaSource[]> {
     const xpath = "//ul[@class='series_alpha']/li/a";
     return doc.find(xpath)

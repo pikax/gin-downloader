@@ -14,8 +14,10 @@
     "mangahere"
   ],
   "main": "lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
-    "build": "babel -d lib/ src/",
+    "build-ts": "rmdir /s /q lib && tsc --outDir lib",
+    "build": "npm run build-ts",
     "nyc": "nyc -R spec node_modules/mocha/bin/_mocha test/**/*.spec.ts",
     "lint": "tslint -c tslint.json --project tsconfig.json --force",
     "test:watch": "mocha test/**/*.spec.ts --colors --watch",
@@ -35,13 +37,8 @@
   },
   "homepage": "https://github.com/pikax/gin-downloader#readme",
   "devDependencies": {
-    "@types/bluebird": "~3.5.0",
     "@types/chai": "^3.4.35",
     "@types/chai-as-promised": "^0.0.30",
-    "@types/debug": "~0.0.29",
-    "@types/es6-promise": "^0.0.32",
-    "@types/libxmljs": "^0.14.30",
-    "@types/lodash": "^4.14.57",
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.10",
     "babel-core": "~6.24.0",
@@ -61,7 +58,9 @@
     "typescript": "~2.2.1"
   },
   "dependencies": {
-    "bluebird": "~3.5.0",
+    "@types/libxmljs": "^0.14.30",
+    "@types/lodash": "^4.14.57",
+    "@types/debug": "~0.0.29",
     "debug": "~2.6.3",
     "libxmljs": "~0.18.4",
     "lodash": "~4.17.4",

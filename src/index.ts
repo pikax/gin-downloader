@@ -5,21 +5,16 @@
 
 import "./declarations";
 
-import {manga} from "./sites/mangafox";
+import {MangaFox} from "./sites/mangafox";
+import {MangaHere} from "./sites/mangahere";
+import {MangaPanda} from "./sites/mangapanda";
 
 
-let name = "Gintama";
-let chapter = 41;
+export const gin = {
+  MangaFox,
+  MangaHere,
+  MangaPanda
+};
 
+export default gin;
 
-
-
-async function ff() {
-  let result = await manga.images(name, chapter);
-
-  await Promise.all(result.map(x => x.then(console.log)));
-
-
-}
-
-ff();
