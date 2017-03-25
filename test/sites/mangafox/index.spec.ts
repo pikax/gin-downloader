@@ -7,7 +7,7 @@ import "./../../common";
 
 import {manga} from "./../../../src/sites/mangafox";
 import results from "./_results";
-import {name} from "../../../src/sites/mangafox/names";
+import {helper} from "../../../src/sites/mangafox/names";
 
 
 describe("MangaFox live", () => {
@@ -50,7 +50,7 @@ describe("MangaFox live", () => {
     for (let obj of mangas){
       let expected = obj.src;
       let origName = obj.name;
-      let finalUrl = name.resolveUrl(origName);
+      let finalUrl = helper.resolveUrl(origName);
 
       finalUrl.should.be.eq(expected, `with name "${origName}"`);
     }

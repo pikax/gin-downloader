@@ -1,16 +1,16 @@
 /**
  * Created by rodriguesc on 05/03/2017.
  */
-import {Site} from "../../common/site";
+import {MangaSite} from "../../common/mangasite";
 import {parser} from "./parser";
 import {config} from "./config";
-import {name} from "./names";
+import {helper} from "./names";
 import {resolve} from "url";
 
 
-class Manga extends Site {
+class Manga extends MangaSite {
   public constructor() {
-    super(config, parser , name);
+    super(config, parser , helper);
   }
 
   protected async resolveChapterSource(name: string, chapter: number): Promise<string> {
@@ -19,7 +19,6 @@ class Manga extends Site {
     return resolve(`${mangaUri}/`, chapter.toString());
   }
 }
-
 
 export const manga = new Manga();
 export default manga;

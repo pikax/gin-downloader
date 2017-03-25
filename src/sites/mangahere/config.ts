@@ -1,11 +1,11 @@
 /**
  * Created by rodriguesc on 03/03/2017.
  */
-import {IConfig} from "../../common/declarations";
+import {SiteConfig} from "../../declarations";
 import {resolve} from "url";
 
 const site = "http://www.mangahere.co";
-export const config: IConfig = {
+export const config: SiteConfig = {
   name : "MangaHere",
   site : site,
   mangas_url : resolve(site, "/mangalist/"),

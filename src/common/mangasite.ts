@@ -2,7 +2,7 @@
  * Created by rodriguesc on 24/03/2017.
  */
 
-import {IChapter, IConfig, IImage, IMangaInfo, IMangas, IName, IParser, ISite} from "./declarations";
+import {Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site} from "../declarations";
 import * as debug from "debug";
 import {IDebugger} from "debug";
 import {getDoc} from "./helper";
@@ -12,15 +12,15 @@ import {isNumber} from "util";
 import {getHtml} from "./request";
 import {parse} from "url";
 
-export class Site implements ISite {
-  protected parser: IParser;
+export class MangaSite implements Site {
+  protected parser: SiteParser;
   protected verbose: IDebugger;
   protected debug: IDebugger;
-  protected config: IConfig;
-  protected nameHelper: IName;
+  protected config: SiteConfig;
+  protected nameHelper: NameHelper;
 
 
-  protected constructor(config: IConfig, parser: IParser, nameHelper: IName) {
+  protected constructor(config: SiteConfig, parser: SiteParser, nameHelper: NameHelper) {
     this.debug  = debug(`gin-downloader:${config.name}`);
     this.verbose = debug(`gin-downloader:${config.name}:verbose`);
 
@@ -29,7 +29,7 @@ export class Site implements ISite {
     this.nameHelper = nameHelper;
   }
 
-  mangas(): Promise<IMangas[]> {
+  mangas(): Promise<MangaSource[]> {
     this.debug("getting mangas");
 
     return getDoc(this.config.mangas_url)
@@ -37,7 +37,7 @@ export class Site implements ISite {
       .tap(x => this.debug(`mangas: ${x.length}`));
   }
 
-  async latest(): Promise<IChapter[]> {
+  async latest(): Promise<Chapter[]> {
     this.debug("getting latest");
 
     let mangas = await getDoc(this.config.latest_url).then(this.parser.latest);
@@ -46,7 +46,7 @@ export class Site implements ISite {
     return mangas;
   }
 
-  async info(name: string): Promise<IMangaInfo> {
+  async info(name: string): Promise<MangaInfo> {
     if (!name) {
       throw new Error("Please provide a name");
     }
@@ -66,7 +66,7 @@ export class Site implements ISite {
     }
   }
 
-  async chapters(name: string): Promise<IChapter[]> {
+  async chapters(name: string): Promise<Chapter[]> {
     if (!name) {
       throw new Error("Please provide a name");
     }
@@ -87,7 +87,7 @@ export class Site implements ISite {
     }
   }
 
-  async infoChapters(name: string): Promise<{info: IMangaInfo, chapters: IChapter[]}> {
+  async infoChapters(name: string): Promise<{info: MangaInfo, chapters: Chapter[]}> {
     if (!name) {
       throw new Error("Please provide a name");
     }
@@ -112,7 +112,7 @@ export class Site implements ISite {
     }
   }
 
-  async images(name: string, chapter: number): Promise<Promise<IImage>[]> {
+  async images(name: string, chapter: number): Promise<Promise<ImageSource>[]> {
     if (!name) {
       throw new Error("Please provide a name");
     }
@@ -129,7 +129,7 @@ export class Site implements ISite {
 
     let paths = await getDoc(chap).then(this.parser.imagesPaths);
 
-    return paths.map(x => Site.processImagePath(x, this.parser));
+    return paths.map(x => MangaSite.processImagePath(x, this.parser));
   }
 
   protected async resolveChapterSource(name: string, chapter: number): Promise<string> {
@@ -143,7 +143,7 @@ export class Site implements ISite {
     return chap.src;
   }
 
-  private static async processImagePath(src: string, parser: IParser): Promise<IImage> {
+  private static async processImagePath(src: string, parser: SiteParser): Promise<ImageSource> {
     let image = await getHtml(src).then(parser.image);
 
     return {

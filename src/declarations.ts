@@ -5,23 +5,23 @@
 import {HTMLDocument} from "libxmljs";
 import {URL} from "url";
 
-export interface IMangaXDoc extends HTMLDocument {
+export interface MangaXDoc extends HTMLDocument {
   baseUrl: string;
   location: string;
 }
 
-export interface IRequest {
+export interface Request {
   getHtml(requestedPath: string | URL, params: any): Promise<string>;
   getBytes(requestedPath: string | URL, params: any): Promise<any>;
 }
 
-export interface IName {
+export interface NameHelper {
   toName(name: string): string;
   resolveUrl(name: string): string;
 }
 
 
-export interface IConfig {
+export interface SiteConfig {
   site: string;
   name: string;
   mangas_url: string;
@@ -29,12 +29,12 @@ export interface IConfig {
 
 }
 
-export interface IMangas {
+export interface MangaSource {
   name: string;
   src: string;
 }
 
-export interface IChapter {
+export interface Chapter {
   number?: number;
   src: string;
   volume?: string;
@@ -42,7 +42,7 @@ export interface IChapter {
 }
 
 
-export interface IMangaInfo {
+export interface MangaInfo {
   image: string;
   title: string;
 
@@ -62,32 +62,32 @@ export interface IMangaInfo {
 }
 
 
-export interface IImage {
+export interface ImageSource {
   src: string;
   name: string;
 }
 
-export interface IParser {
-  mangas(doc: IMangaXDoc): Promise<IMangas[]> | IMangas[];
-  latest(doc: IMangaXDoc): Promise<IChapter[]> | IChapter[];
+export interface SiteParser {
+  mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[];
+  latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[];
 
-  info(doc: IMangaXDoc): Promise<IMangaInfo> | IMangaInfo;
-  chapters(doc: IMangaXDoc): Promise<IChapter[]> | IChapter[];
+  info(doc: MangaXDoc): Promise<MangaInfo> | MangaInfo;
+  chapters(doc: MangaXDoc): Promise<Chapter[]> | Chapter[];
 
-  imagesPaths(doc: IMangaXDoc): string[];
+  imagesPaths(doc: MangaXDoc): string[];
   image(html: string): string;
 }
 
-export interface ISite {
-  mangas(): Promise<IMangas[]>;
-  latest(): Promise<IChapter[]>;
+export interface Site {
+  mangas(): Promise<MangaSource[]>;
+  latest(): Promise<Chapter[]>;
 
-  info(name: string): Promise<IMangaInfo>;
-  chapters(name: string): Promise<IChapter[]>;
+  info(name: string): Promise<MangaInfo>;
+  chapters(name: string): Promise<Chapter[]>;
 
-  infoChapters(name: string): Promise<{info: IMangaInfo, chapters: IChapter[]}>;
+  infoChapters(name: string): Promise<{info: MangaInfo, chapters: Chapter[]}>;
 
-  images(name: string, chapter: number): Promise<Promise<IImage>[]>;
+  images(name: string, chapter: number): Promise<Promise<ImageSource>[]>;
 }
 
 
@@ -130,7 +130,7 @@ String.prototype.firstDigit = function(){
 
 String.prototype.leftTrim = function() {
   return this.replace(/^\s+/, "");
-}
+};
 
 
 

@@ -3,25 +3,23 @@
  */
 
 
-import './common/declarations';
+import "./declarations";
 
-import {manga} from './sites/mangafox'
+import {manga} from "./sites/mangafox";
 
 
-let name = 'Gintama';
+let name = "Gintama";
 let chapter = 41;
 
 
 
 
-async function ff(){
-  let result =await manga.images(name,chapter);
+async function ff() {
+  let result = await manga.images(name, chapter);
 
-  await Promise.all(result.map(x=>x.then(console.log)));
+  await Promise.all(result.map(x => x.then(console.log)));
 
 
 }
-
-
 
 ff();

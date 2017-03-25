@@ -1,15 +1,15 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
-import {IChapter, IMangaInfo, IMangas, IMangaXDoc, IParser} from "../../common/declarations";
+import {Chapter, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
 import {resolve} from "url";
 
-import {default as config} from "./config";
+import {config} from "./config";
 import {Element} from "libxmljs";
 
 
-class Parser implements IParser {
-  mangas(doc: IMangaXDoc): Promise<IMangas[]> | IMangas[] {
+class Parser implements SiteParser {
+  mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
     const xpath = "//div[@class='manga_list']/ul/li/a";
     return doc.find(xpath).map(x => {
       return {
@@ -19,13 +19,12 @@ class Parser implements IParser {
     });
   };
 
-  latest(doc: IMangaXDoc): Promise<IChapter[]> | IChapter[] {
+  latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
     const xpath = "//dt/span/a[@class='chapter']";
-    let l = doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
-    return l;
+    return doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
   }
 
-  info(doc: IMangaXDoc): Promise<IMangaInfo> | IMangaInfo {
+  info(doc: MangaXDoc): Promise<MangaInfo> | MangaInfo {
     let image = doc.get("//div[@class='cover']/img").attr("src").value();
     let title = doc.get("//div[@class='cover']/img").attr("alt").value();
     let synonyms = doc.get("//div[@id='title']/h3").text().split("; ");
@@ -39,7 +38,7 @@ class Parser implements IParser {
     let rating = doc.get("//div[@id='series_info']/div[@class='data'][3]/span").text();
     let scanlators = doc.find("//div[@id='series_info']/div[@class='data'][4]/span/a").map(x => x.text());
 
-    let result = {
+    return {
       image,
       title,
       synonyms,
@@ -53,14 +52,11 @@ class Parser implements IParser {
       rating,
       scanlators
     };
-
-    return result;
   }
 
-  chapters(doc: IMangaXDoc): Promise<IChapter[]> | IChapter[] {
+  chapters(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
     const xpath = "//div[@id='chapters']/ul/li/div//a[@class='tips']";
-    let m = doc.find(xpath).map(x => Parser.parseChapter(x, "preceding::div[@class='slide']/h3/text()"));
-    return m;
+    return doc.find(xpath).map(x => Parser.parseChapter(x, "preceding::div[@class='slide']/h3/text()"));
   }
 
 
@@ -73,7 +69,7 @@ class Parser implements IParser {
     };
   }
 
-  imagesPaths(doc: IMangaXDoc): string[] {
+  imagesPaths(doc: MangaXDoc): string[] {
     const xpath = "//form[@id='top_bar']/div/div[@class='l']/select/option[position()< last()]/text()";
     return doc.find(xpath)
       .map(x => resolve(doc.location, `${x.text()}.html`));
