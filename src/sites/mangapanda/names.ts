@@ -20,10 +20,13 @@ const names: { [id: string]: string; } = {
 
 class Name implements IName {
   toName(name: string): string {
-    if (names.hasOwnProperty(name))
+    if (names.hasOwnProperty(name)) {
       return names[name];
+    }
 
-    return noCase(name.toLowerCase(), null, "_");
+    name = name.replace(/[\/\.+':’×;&"]/g, "");
+
+    return noCase(name.toLowerCase(), null, "-");
   }
 
   resolveUrl(name: string): string {

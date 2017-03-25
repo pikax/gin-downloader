@@ -14,14 +14,13 @@ import {HTMLDocument} from "libxmljs";
 
 
 describe("Helper.js", () => {
-  // language=HTML
   let manga = `
       <html>
       <div>
-          <div name="1" id="chap" src="1"/>
-          <div name="2"/>
-          <div name="3"/>
-          <div name="4"/>
+          <a id="chap" href="1"/>
+          <div />
+          <div />
+          <div />
       </div>
       </html>`;
 

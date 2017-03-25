@@ -17,7 +17,7 @@ class Name implements IName {
   }
 
   resolveUrl(name: string): string {
-    return resolve(`${config.site}/manga/`, this.toName(name));
+    return resolve(`${config.site}/manga/`, this.toName(name) + "/");
   }
 }
 

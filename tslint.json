@@ -9,6 +9,8 @@
             true,
             "spaces"
         ],
+        "curly": true,
+        "eofline": true,
         "no-duplicate-variable": true,
         "no-eval": true,
         "no-internal-module": true,
@@ -45,6 +47,11 @@
         "variable-name": [
             true,
             "ban-keywords"
+        ],
+        "no-console": [
+            true,
+            "log",
+            "error"
         ],
         "whitespace": [
             true,
