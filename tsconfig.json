@@ -5,13 +5,14 @@
     "preserveConstEnums": true,
     "target": "es6",
     "sourceMap": true,
-    "typeRoots" : ["./node_modules/@types"]
+    "typeRoots" : ["./node_modules/@types"],
+    "types": [ "node", "mocha", "chai" ]
   },
   "exclude": [
     "node_modules"
   ],
   "include": [
-    "src/**/*"
+    "src/**/*.ts"
   ],
   "files": [
     "src/index.ts"

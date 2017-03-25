@@ -1,7 +1,7 @@
 --timeout 60000
---require babel-core/register
+--require babel-polyfill
 --colors
 --reporter spec
---compilers js:babel-register
+--compilers ts:ts-node/register,tsx:ts-node/register
 --sort
 --ui bdd
