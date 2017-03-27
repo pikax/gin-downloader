@@ -5,7 +5,7 @@
 
 import "./../../common";
 
-import {manga} from "./../../../src/sites/mangafox";
+import {mangafox as manga} from "./../../../src/index";
 import results from "./_results";
 import {helper} from "../../../src/sites/mangafox/names";
 
