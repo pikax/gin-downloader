@@ -5,16 +5,13 @@
 
 import "./declarations";
 
-import {MangaFox} from "./sites/mangafox";
-import {MangaHere} from "./sites/mangahere";
-import {MangaPanda} from "./sites/mangapanda";
+import {manga as mangafox} from "./sites/mangafox";
+import {manga as mangahere} from "./sites/mangahere";
+import {manga as mangapanda} from "./sites/mangapanda";
 
 
-export const gin = {
-  MangaFox,
-  MangaHere,
-  MangaPanda
+export {
+  mangafox,
+  mangahere,
+  mangapanda
 };
-
-export default gin;
-
