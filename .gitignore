@@ -6,8 +6,8 @@ watch
 /src/**/*.js.map
 /test/**/*.js
 /test/**/*.js.map
-/lib
-
+/src/**/*.d.ts
+/test/**/*.d.ts
 
 #visualstudio
 .vs
