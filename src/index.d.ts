@@ -2,12 +2,7 @@
  * Created by david on 25/03/2017.
  */
 import "./declarations";
-import { MangaFox } from "./sites/mangafox";
-import { MangaHere } from "./sites/mangahere";
-import { MangaPanda } from "./sites/mangapanda";
-export declare const gin: {
-    MangaFox: typeof MangaFox;
-    MangaHere: typeof MangaHere;
-    MangaPanda: typeof MangaPanda;
-};
-export default gin;
+import { manga as mangafox } from "./sites/mangafox";
+import { manga as mangahere } from "./sites/mangahere";
+import { manga as mangapanda } from "./sites/mangapanda";
+export { mangafox, mangahere, mangapanda };
