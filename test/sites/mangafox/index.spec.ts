@@ -21,7 +21,7 @@ describe("MangaFox live", () => {
   it("should get latest chaps", done => {
     manga.latest()
       .should.eventually
-      .to.have.length.gte(98)
+      .to.have.length.gte(90)
       .notify(done);
   });
 
