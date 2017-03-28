@@ -79,7 +79,6 @@ export const getBytes = (requestedPath: string, params: any ) : Promise<any> => 
 };
 
 
-
 export default <Request>{
   getBytes,
   getHtml

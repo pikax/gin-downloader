@@ -10,7 +10,7 @@ import results from "./_results";
 import {helper} from "../../../src/sites/mangafox/names";
 
 
-describe("MangaFox live", () => {
+describe("KissManga live", () => {
 
   it("should get all mangas", done => {
     manga.mangas()
