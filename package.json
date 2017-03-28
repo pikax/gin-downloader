@@ -62,6 +62,7 @@
     "@types/debug": "~0.0.29",
     "@types/libxmljs": "^0.14.30",
     "@types/lodash": "4.14.50",
+    "cloudscraper": "^1.4.1",
     "debug": "~2.6.3",
     "libxmljs": "~0.18.4",
     "lodash": "~4.17.4",

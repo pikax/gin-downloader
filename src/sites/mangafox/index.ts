@@ -15,5 +15,5 @@ export class MangaFox extends MangaSite implements Site{
   }
 }
 
-export const manga :Site = new MangaFox();
+export const manga: Site = new MangaFox();
 export default manga;

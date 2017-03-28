@@ -8,6 +8,7 @@ import "./../common";
 
 import {getBytes, getHtml} from "../../src/common/request";
 import {getDoc, parseDoc} from "../../src/common/helper";
+import cfRequest from "../../src/common/cfRequest";
 
 import {HTMLDocument} from "libxmljs";
 
@@ -63,6 +64,13 @@ describe("Helper.js", () => {
 
     getHtml(uri, {})
       .should.eventually.exist.and.notify(done);
+  });
+
+  it("should get kissmanga by bypassing cloudfare protection", done => {
+    let uri = "http://kissmanga.com/";
+
+    cfRequest.getHtml(uri, {})
+      .should.eventually.not.contain("Checking your browser before accessing").notify(done);
   });
 });
 
