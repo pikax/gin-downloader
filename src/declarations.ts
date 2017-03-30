@@ -11,8 +11,10 @@ export interface MangaXDoc extends HTMLDocument {
 }
 
 export interface Request {
+  getHtml(requestedPath: string): Promise<string>;
   getHtml(requestedPath: string | URL, params: any): Promise<string>;
   getBytes(requestedPath: string | URL, params: any): Promise<any>;
+  getDoc(requestedPath: string): Promise<MangaXDoc>;
 }
 
 export interface NameHelper {
@@ -59,6 +61,8 @@ export interface MangaInfo {
   scanlators?: string[];
   similarmanga?: string[];
   direction?: string;
+
+  views?: string;
 }
 
 
@@ -101,6 +105,8 @@ declare global {
     lastDigit(): number;
     firstDigit(): number;
     leftTrim(): string;
+    decodeEscapeSequence(): string;
+    getMatches(regex: RegExp, index: number): string[];
   }
 }
 
@@ -132,7 +138,21 @@ String.prototype.leftTrim = function() {
   return this.replace(/^\s+/, "");
 };
 
+String.prototype.decodeEscapeSequence = function() {
+  return this.replace(/\\x([0-9A-Fa-f]{2})/g, function() {
+    return String.fromCharCode(parseInt(arguments[1], 16));
+  });
+};
 
 
+String.prototype.getMatches = function(regex: RegExp, index: number) {
+  index || (index = 1); // default to the first capturing group
+  let matches = [];
+  let match;
+  while (match = regex.exec(this)) {
+    matches.push(match[index]);
+  }
+  return matches;
+};
 
 

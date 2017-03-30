@@ -1,14 +1,17 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
+import "../../declarations";
 import {Chapter, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
 import {resolve} from "url";
 
 import {config} from "./config";
-import {Element} from "libxmljs";
-
+import {Script, createContext} from "vm";
 
 export class Parser implements SiteParser {
+
+  private _vm: Script;
+
   mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
     const xpath = "//table[@class='listing']/tr/td[1]/a";
     return doc.find(xpath).map(x => {
@@ -21,74 +24,87 @@ export class Parser implements SiteParser {
 
   latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
     const xpath = "//dt/span/a[@class='chapter']";
-    return doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
+   throw  new Error("not implemented");
+    // return doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
   }
 
   info(doc: MangaXDoc): Promise<MangaInfo> | MangaInfo {
-    let image = doc.get("//div[@class='cover']/img").attr("src").value();
-    let title = doc.get("//div[@class='cover']/img").attr("alt").value();
-    let synonyms = doc.get("//div[@id='title']/h3").text().split("; ");
-    let released = doc.get("//div[@id='title']/table/tr[2]/td[1]/a").text();
-    let authors = [doc.get("//div[@id='title']/table/tr[2]/td[2]/a").text()];
-    let artists = [doc.get("//div[@id='title']/table/tr[2]/td[3]/a").text()];
-    let genres = doc.find("//div[@id='title']/table/tr[2]/td[4]/a").map(x => x.text());
-    let synopsis = doc.get("//div[@id='title']/p").text();
-    let status = doc.get("//div[@id='series_info']/div[@class='data'][1]/span/text()[1]").text().trim().slice(0, -1);
-    let ranked = doc.get("//div[@id='series_info']/div[@class='data'][2]/span").text();
-    let rating = doc.get("//div[@id='series_info']/div[@class='data'][3]/span").text();
-    let scanlators = doc.find("//div[@id='series_info']/div[@class='data'][4]/span/a").map(x => x.text());
+    let image = doc.get("///div[@class='rightBox'][1]/div[@class='barContent']/div[2]/img").attr("src").value();
+    let title = doc.get("//div[2]/a[@class='bigChar']").text();
+    let synonyms = doc.find("//div[@class='barContent']/div[2]/p[1]/a/text()").map(x => x.text());
+    let authors = [doc.get("//div[2]/p[3]/a[1]").text()];
+    let artists = [doc.get("//div[2]/p[3]/a[last()]").text()];
+    let genres = doc.find("//div[2]/p[2]/a").map(x => x.text());
+    let synopsis = doc.get("//div[@class='barContent']/div[2]/p[6]").text();
+    let status = doc.get("//p[4]/span[@class='info'][1]/following-sibling::text()[1]").text().trim();
+    let views = doc.get("//p[4]/span[@class='info'][1]/following-sibling::text()[2]").text().trim();
 
     return {
       image,
       title,
       synonyms,
-      released,
       authors,
       artists,
       genres,
       synopsis,
       status,
-      ranked,
-      rating,
-      scanlators
+      views,
     };
   }
 
   chapters(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
-    const xpath = "//div[@id='chapters']/ul/li/div//a[@class='tips']";
-    return doc.find(xpath).map(x => Parser.parseChapter(x, "preceding::div[@class='slide']/h3/text()"));
+    const xpath = "//table/tr/td[1]/a";
+
+    return doc.find(xpath).map(x => {
+      return {
+        number : x.text().trim().lastDigit(),
+        name: x.text().trim(),
+        src: resolve(config.site, x.attr("href").value()),
+      };
+    });
   }
 
 
-  private static parseChapter(x: Element, xVolume: string) {
-    return {
-      number : x.text().lastDigit(),
-      name: (x.get("following-sibling::span/text()") || x).text(),
-      src: resolve(config.site, x.attr("href").value()),
-      volume: x.get(xVolume).text().trim()
+  imagesList(html: string, secret: string, vm: Script): string[] {
+    let lstImages = html.getMatches(/wrapKA\("([^"]*)"/gm, 1);
+
+    const sandbox = {
+      lstImages,
+      imgs : Array<string>(),
+      secret : secret,
+      alert : console.log
     };
+    let context = createContext(sandbox);
+    vm.runInContext(context);
+
+    return sandbox.imgs.map(x => /url=([^&]*)/.exec(x)[1]).map(decodeURIComponent);
+  }
+
+  getSecret(html: string): string {
+    let m = /\["([^\"]*)"]; chko[^\[]*\[(\d+)\]/gm.exec(html);
+    return m[1].decodeEscapeSequence();
   }
 
   imagesPaths(doc: MangaXDoc): string[] {
-    const xpath = "//form[@id='top_bar']/div/div[@class='l']/select/option[position()< last()]/text()";
-    return doc.find(xpath)
-      .map(x => resolve(doc.location, `${x.text()}.html`));
+    throw new Error("no needed");
   }
 
   image(html: string): string {
-    const __imgID__ = /src=".*\?token[^"]*".*id=/gmi;
-    const __img__ = /src=".*\?token[^"]*/gmi;
+   throw new Error("no needed");
+  }
 
-    let m = html.match(__imgID__);
-    if (!m || m.length === 0) {
-      throw new Error("Image not found");
-    }
-    m = m[0].match(__img__);
-    if (!m || m.length === 0) {
-      throw new Error("Image not found");
-    }
+  get VM(): Script {
+    return this._vm;
+  }
 
-    return m[0].slice(5);
+  buildVM(cajs: string, lojs: string) {
+    let scripts = [cajs
+      , lojs
+      , "chko = secret; key = CryptoJS.SHA256(chko);"
+      , "for (var img in lstImages) imgs.push(wrapKA(lstImages[img]).toString());"
+    ];
+
+    return this._vm = new Script(scripts.join("\n"));
   }
 }
 

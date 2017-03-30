@@ -8,9 +8,10 @@ const verbose = require("debug")("gin-downloader:request:verbose");
 const error = require("debug")("gin-downloader:error");
 
 import "../declarations";
+import {parseDoc} from "./helper";
 
 import * as url from "url";
-import {Request} from "../declarations";
+import {MangaXDoc, Request} from "../declarations";
 
 const requestRetry = require("requestretry");
 
@@ -78,8 +79,16 @@ export const getBytes = (requestedPath: string, params: any ) : Promise<any> => 
     });
 };
 
-
-export default <Request>{
-  getBytes,
-  getHtml
+export const getDoc = (requestedPath: string) : Promise<MangaXDoc> => {
+  return getHtml(requestedPath).then(x => parseDoc(x, {location: requestedPath}));
 };
+
+
+export const request: Request = {
+  getBytes,
+  getHtml,
+  getDoc
+};
+
+
+export default request;

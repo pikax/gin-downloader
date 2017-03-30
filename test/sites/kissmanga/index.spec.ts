@@ -5,9 +5,9 @@
 
 import "./../../common";
 
-import {mangafox as manga} from "./../../../src";
+import {manga} from "./../../../src/sites/kissmanga";
 import results from "./_results";
-import {helper} from "../../../src/sites/mangafox/names";
+import {helper} from "../../../src/sites/kissmanga/names";
 
 
 describe("KissManga live", () => {
@@ -25,23 +25,23 @@ describe("KissManga live", () => {
       .notify(done);
   });
 
-  it("should get info", done => {
+  it("should get info", async () => {
     let name = "Gintama";
-    manga.info(name)
-      .then(info => {
-        info.should.exist;
+    let info = await manga.info(name);
 
-        info.title.should.be.eq(results.manga.title);
-        info.released.should.be.eq(results.manga.released);
-        info.synopsis.should.contain(results.manga.synopsis);
-        info.status.should.be.eq(results.manga.status);
 
-        info.synonyms.should.be.deep.eq(results.manga.synonyms);
-        info.authors.should.be.deep.eq(results.manga.authors);
-        info.artists.should.be.deep.eq(results.manga.artists);
-        info.genres.should.be.deep.eq(results.manga.genres);
-        info.scanlators.should.be.deep.eq(results.manga.scanlators);
-      }).should.eventually.notify(done);
+    info.should.exist;
+
+    info.title.should.be.eq(results.manga.title);
+    info.synopsis.should.contain(results.manga.synopsis);
+    info.status.should.be.eq(results.manga.status);
+
+    info.synonyms.should.be.deep.eq(results.manga.synonyms);
+    info.authors.should.be.deep.eq(results.manga.authors);
+    info.artists.should.be.deep.eq(results.manga.artists);
+    info.genres.should.be.deep.eq(results.manga.genres);
+    info.views.should.be.deep.eq(results.manga.views);
+
   });
 
   it("should resolve name to name", async () => {
@@ -103,8 +103,8 @@ describe("KissManga live", () => {
       .notify(done);
   });
 
-  it("should get Zui Wu Dao : chapter 42", async () => {
-    let name = "Zui Wu Dao";
+  it("should get Gintama : chapter 42", async () => {
+    let name = "Gintama";
     let chapter = 42;
 
     let images = await manga.images(name, chapter);
@@ -112,6 +112,6 @@ describe("KissManga live", () => {
     images.should.have.length.gte(17);
 
     let img = await images[0];
-    img.src.should.contain("mfcdn.net/store/manga/15973/042.0/compressed/k001.jpg");
+    img.src.should.contain(results.image_src);
   });
 });

@@ -3,15 +3,16 @@
  */
 
 import {MangaSite} from "../../common/mangasite";
-import {parser} from "./parser";
+import {Parser} from "./parser";
 import {config} from "./config";
-import {helper} from "./names";
-import {Site} from "../../declarations";
+import {Helper} from "./names";
+import {Site, SiteConfig} from "../../declarations";
+import {request} from "../../common/request";
 
 
-export class MangaFox extends MangaSite implements Site{
+export class MangaFox extends MangaSite<SiteConfig, Parser, Helper> implements Site{
   public constructor() {
-    super(config, parser, helper);
+    super(config, new Parser, new Helper(), request);
   }
 }
 

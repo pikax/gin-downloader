@@ -1,7 +1,8 @@
 /**
  * Created by rodriguesc on 27/03/2017.
  */
-import {Request} from "../declarations";
+import {MangaXDoc, Request} from "../declarations";
+import {parseDoc} from "./helper";
 
 const debug = require("debug")("gin-downloader:request");
 const verbose = require("debug")("gin-downloader:request:verbose");
@@ -48,7 +49,15 @@ export const getBytes = (requestedPath: string, params?: any) : Promise<Buffer> 
   });
 };
 
-export default <Request>{
-  getBytes,
-  getHtml
+export const getDoc = (requestedPath: string) : Promise<MangaXDoc> => {
+  return getHtml(requestedPath).then(x => parseDoc(x, {location: requestedPath}));
 };
+
+export const request: Request = {
+  getBytes,
+  getHtml,
+  getDoc
+};
+
+
+export default request;
