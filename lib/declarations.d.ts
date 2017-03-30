@@ -9,8 +9,10 @@ export interface MangaXDoc extends HTMLDocument {
     location: string;
 }
 export interface Request {
+    getHtml(requestedPath: string): Promise<string>;
     getHtml(requestedPath: string | URL, params: any): Promise<string>;
     getBytes(requestedPath: string | URL, params: any): Promise<any>;
+    getDoc(requestedPath: string): Promise<MangaXDoc>;
 }
 export interface NameHelper {
     toName(name: string): string;
@@ -47,6 +49,7 @@ export interface MangaInfo {
     scanlators?: string[];
     similarmanga?: string[];
     direction?: string;
+    views?: string;
 }
 export interface ImageSource {
     src: string;
@@ -79,5 +82,7 @@ declare global  {
         lastDigit(): number;
         firstDigit(): number;
         leftTrim(): string;
+        decodeEscapeSequence(): string;
+        getMatches(regex: RegExp, index: number): string[];
     }
 }
