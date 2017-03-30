@@ -104,4 +104,5 @@ describe("KissManga offline", () => {
     parser.chapters(doc)
       .should.have.length.gte(results.chapter_count);
   });
+
 });

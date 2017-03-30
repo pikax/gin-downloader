@@ -8,10 +8,12 @@ import "./declarations";
 import {manga as mangafox} from "./sites/mangafox";
 import {manga as mangahere} from "./sites/mangahere";
 import {manga as mangapanda} from "./sites/mangapanda";
+import {manga as kissmanga} from "./sites/kissmanga";
 
 
 export {
   mangafox,
   mangahere,
-  mangapanda
+  mangapanda,
+  kissmanga
 };

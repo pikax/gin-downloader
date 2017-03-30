@@ -2,14 +2,16 @@
  * Created by rodriguesc on 03/03/2017.
  */
 import {MangaSite} from "../../common/mangasite";
-import {parser} from "./parser";
+import {Parser} from "./parser";
 import {config} from "./config";
-import {helper} from "./names";
+import {Helper} from "./names";
+import {SiteConfig} from "../../declarations";
+import {request} from "../../common/request";
 
 
-export class MangaHere extends MangaSite {
+export class MangaHere extends MangaSite<SiteConfig, Parser, Helper> {
   public constructor() {
-    super(config, parser, helper);
+    super(config, new Parser(), new Helper(), request);
   }
 }
 

@@ -2,15 +2,17 @@
  * Created by rodriguesc on 05/03/2017.
  */
 import {MangaSite} from "../../common/mangasite";
-import {parser} from "./parser";
+import {Parser} from "./parser";
 import {config} from "./config";
-import {helper} from "./names";
+import {Helper} from "./names";
 import {resolve} from "url";
+import {SiteConfig} from "../../declarations";
+import {request} from "../../common/request";
 
 
-export class MangaPanda extends MangaSite {
+export class MangaPanda extends MangaSite<SiteConfig, Parser, Helper> {
   public constructor() {
-    super(config, parser , helper);
+    super(config, new Parser(), new Helper(), request);
   }
 
   protected async resolveChapterSource(name: string, chapter: number): Promise<string> {
