@@ -11,10 +11,13 @@ export interface MangaXDoc extends HTMLDocument {
 }
 
 export interface Request {
-  getHtml(requestedPath: string): Promise<string>;
-  getHtml(requestedPath: string | URL, params: any): Promise<string>;
-  getBytes(requestedPath: string | URL, params: any): Promise<any>;
+  getHtml(requestedPath: string | URL, params?: any): Promise<string>;
+  getBytes(requestedPath: string | URL, params?: any): Promise<any>;
   getDoc(requestedPath: string): Promise<MangaXDoc>;
+
+  postHtml(requestedPath: string | URL, params?: any): Promise<string>;
+  postBytes(requestedPath: string | URL, params?: any): Promise<any>;
+  postDoc(requestedPath: string| URL, params?: any): Promise<MangaXDoc>;
 }
 
 export interface NameHelper {
@@ -83,7 +86,7 @@ export interface SiteParser {
 }
 
 export interface Site {
-  mangas(): Promise<MangaSource[]>;
+  mangas(filter?: FilterSupport): Promise<MangaSource[]>;
   latest(): Promise<Chapter[]>;
 
   info(name: string): Promise<MangaInfo>;
@@ -155,4 +158,79 @@ String.prototype.getMatches = function(regex: RegExp, index: number) {
   return matches;
 };
 
+
+
+
+
+export enum Genre {
+  Action = <any>"Action",
+  Adult = <any>"Adult",
+  Adventure = <any>"Adventure",
+  AwardWinning = <any>"Award Winning",
+  Comedy = <any>"Comedy",
+  Comic = <any>"Comic",
+  Cooking = <any>"Cooking",
+  Doujinshi = <any>"Doujinshi",
+  Drama = <any>"Drama",
+  Ecchi = <any>"Ecchi",
+  Fantasy = <any>"Fantasy",
+  FourKoma = <any>"4-Koma",
+  GenderBender = <any>"Gender Bender",
+  Harem = <any>"Harem",
+  Historical = <any>"Historical",
+  Horror = <any>"Horror",
+  Josei = <any>"Josei",
+  Lolicon = <any>"Lolicon",
+  Manga = <any>"Manga",
+  Manhua = <any>"Manhua",
+  Manhwa = <any>"Manhwa",
+  MartialArts = <any>"Martial Arts",
+  Mature = <any>"Mature",
+  Mecha = <any>"Mecha",
+  Medical = <any>"Medical",
+  Music = <any>"Music",
+  Mystery = <any>"Mystery",
+  Oneshot = <any>"Oneshot",
+  Psychological = <any>"Psychological",
+  Romance = <any>"Romance",
+  SchoolLife = <any>"School Life",
+  SciFi = <any>"Sci-fi",
+  Seinen = <any>"Seinen",
+  Shotacon = <any>"Shotacon",
+  Shoujo = <any>"Shoujo",
+  ShoujoAi = <any>"Shoujo Ai",
+  Shounen = <any>"Shounen",
+  ShounenAi = <any>"Shounen Ai",
+  SliceOfLife = <any>"Slice of Life",
+  Smut = <any>"Smut",
+  Sports = <any>"Sports",
+  Supernatural = <any>"Supernatural",
+  Tragedy = <any>"Tragedy",
+  Webtoon = <any>"Webtoon",
+  Yaoi = <any>"Yaoi",
+  Yuri = <any>"Yuri",
+
+  NoChapters = <any>"[no chapters]"
+}
+
+
+export enum FilterCondition {
+  Contains,
+  NotContains,
+  StartsWith,
+  EndsWith,
+  Less,
+  Greater,
+  LessThan,
+  GreaterThan
+}
+
+
+export interface FilterSupport {
+  name?: string;
+  page?: number;
+  search?: {
+    name: {name: string, condition: FilterCondition}
+  };
+};
 

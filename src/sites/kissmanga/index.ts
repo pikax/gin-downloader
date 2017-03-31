@@ -6,20 +6,18 @@ import {MangaSite} from "../../common/mangasite";
 import {Parser} from "./parser";
 import {config} from "./config";
 import {Helper} from "./names";
-import {ImageSource, MangaSource, Site, SiteConfig} from "../../declarations";
+import {FilterSupport, ImageSource, MangaSource, Site, SiteConfig} from "../../declarations";
 import {find} from "lodash";
 import {request} from "../../common/cfRequest";
 import {parse, resolve} from "url";
 import {Script} from "vm";
+import {processFilter} from "./filter";
 
 
 export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements Site {
   public constructor() {
     super(config, new Parser(), new Helper(), request);
   }
-  mangas(): Promise<MangaSource[]> {
-    throw new Error("Invalid"); // TODO add more validation, or provide a way to call everything
-  };
 
   private async getVM(): Promise<Script> {
     let vm = this.parser.VM;
@@ -36,6 +34,21 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
     let lst = await Promise.all(tkLst);
 
     return this.parser.buildVM(lst[0], lst[1]);
+  }
+
+  async mangas(filter?: FilterSupport): Promise<MangaSource[]> {
+    this.debug("getting mangas");
+
+    let search = processFilter(filter);
+
+    let doc = await this.request.postDoc(search.src, search.params);
+    let mangas = await this.parser.mangas(doc);
+
+    console.log(mangas);
+
+    this.debug(`mangas: ${mangas.length}`);
+
+    return mangas;
   }
 
   async images(name: string, chapNumber: number): Promise<Promise<ImageSource>[]> {
