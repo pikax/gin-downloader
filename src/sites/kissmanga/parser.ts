@@ -13,7 +13,8 @@ export class Parser implements SiteParser {
   private _vm: Script;
 
   mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
-    const xpath = "//table[@class='listing']/tr/td[1]/a";
+    const xpath = "//table/tr/td[1]/a";
+
     return doc.find(xpath).map(x => {
       return {
         name: x.text().leftTrim(),

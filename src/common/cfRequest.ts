@@ -26,17 +26,45 @@ export const getHtml = async (requestedPath: string, params?: any) : Promise<str
 
 
 export const getBytes = (requestedPath: string, params?: any) : Promise<Buffer> => {
+  return requestMethod("GET", requestedPath, params);
+};
+
+export const getDoc = (requestedPath: string) : Promise<MangaXDoc> => {
+  return getHtml(requestedPath).then(x => parseDoc(x, {location: requestedPath}));
+};
+
+export const postBytes = (requestedPath: string, params?: any) : Promise<Buffer> => {
+  return new Promise((res, rej) => {
+    cloudscraper.post(requestedPath, params, (err: number, response: any, body: Buffer) => {
+      if (err) {
+        return rej(err);
+      }
+      console.log(body)
+      return res(body);
+    });
+  });
+  // return requestMethod("POST", requestedPath, params);
+};
+export const postHtml = async (requestedPath: string, params?: any) : Promise<string> => {
+  let bytes = await postBytes(requestedPath, params);
+  return bytes.toString();
+};
+export const postDoc = (requestedPath: string, params?: any) : Promise<MangaXDoc> => {
+  return postHtml(requestedPath, params).then(x => parseDoc(x, {location: requestedPath}));
+};
+
+const requestMethod = (method: string, requestedPath: string, params?: any): Promise<Buffer> => {
   let request = {
-    method: "GET",
+    method: method,
     url: requestedPath,
     qs: params,
     headers: Headers,
     gzip: true,
     encoding: "",
     followAllRedirects: true,
-    forever: true
+    forever: true,
 
-    // proxy: config.proxy, // Note the fully-qualified path to Fiddler proxy. No "https" is required, even for https connections to outside.
+    proxy: "http://127.0.0.1:8888", // Note the fully-qualified path to Fiddler proxy. No "https" is required, even for https connections to outside.
   };
 
   return new Promise((res, rej) => {
@@ -44,19 +72,22 @@ export const getBytes = (requestedPath: string, params?: any) : Promise<Buffer> 
       if (err) {
         return rej(err);
       }
+      console.log(body);
       return res(body);
     });
   });
 };
 
-export const getDoc = (requestedPath: string) : Promise<MangaXDoc> => {
-  return getHtml(requestedPath).then(x => parseDoc(x, {location: requestedPath}));
-};
 
 export const request: Request = {
   getBytes,
   getHtml,
-  getDoc
+  getDoc,
+
+  postBytes,
+  postHtml,
+  postDoc,
+
 };
 
 

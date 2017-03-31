@@ -13,7 +13,7 @@ import {helper} from "../../../src/sites/kissmanga/names";
 describe("KissManga live", () => {
 
   it("should get all mangas", done => {
-    manga.mangas()
+    manga.mangas({name: "Gintama"})
       .should.eventually.have.length.gte(results.mangas_count)
       .notify(done);
   });
