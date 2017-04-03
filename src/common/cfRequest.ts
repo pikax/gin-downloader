@@ -39,7 +39,6 @@ export const postBytes = (requestedPath: string, params?: any) : Promise<Buffer>
       if (err) {
         return rej(err);
       }
-      console.log(body)
       return res(body);
     });
   });

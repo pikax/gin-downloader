@@ -4,11 +4,11 @@
 import { MangaSite } from "../../common/mangasite";
 import { Parser } from "./parser";
 import { Helper } from "./names";
-import { ImageSource, MangaSource, Site, SiteConfig } from "../../declarations";
+import { FilterSupport, ImageSource, MangaSource, Site, SiteConfig } from "../../declarations";
 export declare class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements Site {
     constructor();
-    mangas(): Promise<MangaSource[]>;
     private getVM();
+    mangas(filter?: FilterSupport): Promise<MangaSource[]>;
     images(name: string, chapNumber: number): Promise<Promise<ImageSource>[]>;
 }
 export declare const manga: Site;

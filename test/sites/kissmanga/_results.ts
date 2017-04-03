@@ -13,7 +13,7 @@ let manga = { image: "http://kissmanga.com/Uploads/Etc/8-30-2011/252808217224747
   views: "7,108,578" };
 
 export default {
-  mangas_count: 50,
+  mangas_count: 11849,
   manga_name : manga.title,
 
   chapter_count : 628,

@@ -4,7 +4,7 @@
 import {Genre, FilterCondition, FilterSupport} from "../../declarations";
 import {config} from "./config";
 import {resolve} from "url";
-
+import {find} from "lodash";
 
 const Supported = [];
 Supported[Genre.FourKoma] = Genre.FourKoma;
@@ -54,22 +54,82 @@ Supported[Genre.Yaoi] = Genre.Yaoi;
 Supported[Genre.Yuri] = Genre.Yuri;
 
 
+const ordered = [
+  Genre.FourKoma,
+  Genre.Action,
+  Genre.Adult,
+  Genre.Adventure,
+  Genre.Comedy,
+  Genre.Comic,
+  Genre.Cooking,
+  Genre.Doujinshi,
+  Genre.Drama,
+  Genre.Ecchi,
+  Genre.Fantasy,
+  Genre.GenderBender,
+  Genre.Harem,
+  Genre.Historical,
+  Genre.Horror,
+  Genre.Josei,
+  Genre.Lolicon,
+  Genre.Manga,
+  Genre.Manhua,
+  Genre.Manhwa,
+  Genre.MartialArts,
+  Genre.Mature,
+  Genre.Mecha,
+  Genre.Medical,
+  Genre.Music,
+  Genre.Mystery,
+  Genre.Oneshot,
+  Genre.Psychological,
+  Genre.Romance,
+  Genre.SchoolLife,
+  Genre.SciFi,
+  Genre.Seinen,
+  Genre.Shotacon,
+  Genre.Shoujo,
+  Genre.Shoujo,
+  Genre.Shounen,
+  Genre.Shounen,
+  Genre.SliceOfLife,
+  Genre.Smut,
+  Genre.Sports,
+  Genre.Supernatural,
+  Genre.Tragedy,
+  Genre.Webtoon,
+  Genre.Yaoi,
+  Genre.Yuri,
+];
+
+
+
 
 
 
 export const processFilter = (filter: FilterSupport) : {src: string, params: any} => {
-  let search = {
-    src: resolve(config.site, "/AdvanceSearch"),
-    params: {
-      mangaName: filter.name
-    }
+  filter = filter || {};
+  let {genres, outGenres} = filter;
+
+  const mangaName = `mangaName=${filter.name || ""}`;
+  const authorArtist = `authorArtist=`;
+  const genreFilter = ordered.map(x => inOutGenre(x, genres, outGenres)).map(x => `genres=${x}`).join("&");
+  const status = `status=`;
+
+  return {src: resolve(config.site, "/AdvanceSearch"),
+    params: [mangaName, authorArtist, genreFilter, status].join("&")
   };
-
-  return {src: search.src,
-  params: "mangaName=gintama&authorArtist=&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status="};
-
-
-  return search;
 };
+
+
+function inOutGenre(genre: Genre, inGenre: Genre[], outGenre: Genre[]){
+  if (inGenre && inGenre.indexOf(genre) > -1) {
+    return 1;
+  }
+  if (outGenre && outGenre.indexOf(genre) > -1) {
+    return 2;
+  }
+  return 0;
+}
 
 

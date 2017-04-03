@@ -232,5 +232,7 @@ export interface FilterSupport {
   search?: {
     name: {name: string, condition: FilterCondition}
   };
-};
+  genres?: Genre[];
+  outGenres?: Genre[];
+}
 

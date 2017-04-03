@@ -8,12 +8,14 @@ import "./../../common";
 import {manga} from "./../../../src/sites/kissmanga";
 import results from "./_results";
 import {helper} from "../../../src/sites/kissmanga/names";
+import {Genre} from "../../../src/declarations";
 
 
 describe("KissManga live", () => {
 
+  // TODO add filter tests
   it("should get all mangas", done => {
-    manga.mangas({name: "Gintama"})
+    manga.mangas()
       .should.eventually.have.length.gte(results.mangas_count)
       .notify(done);
   });
@@ -28,7 +30,6 @@ describe("KissManga live", () => {
   it("should get info", async () => {
     let name = "Gintama";
     let info = await manga.info(name);
-
 
     info.should.exist;
 
