@@ -38,7 +38,7 @@ export const getHtml = async (requestedPath: string, params: any = undefined) : 
 
 // TODO setup configs in configs file
 // TODO check this code, I dont remember this
-export const getBytes = (requestedPath: string, params: any ) : Promise<any> => {
+let RequestBytes = function (requestedPath: string, params: any, method: string) {
   verbose("Request: %s : %o", requestedPath, params);
   const uri = url.parse(requestedPath);
   let p = uri.pathname;
@@ -51,7 +51,7 @@ export const getBytes = (requestedPath: string, params: any ) : Promise<any> => 
   debug("Requesting url %s", requestedUrl);
 
   let request = {
-    method: "GET",
+    method: method,
     uri: requestedUrl,
     qs: params,
     headers: Headers,
@@ -73,10 +73,13 @@ export const getBytes = (requestedPath: string, params: any ) : Promise<any> => 
   verbose("Request obj: %o", request);
 
   return requestRetry(request)
-    .catch((err: any ) => {
+    .catch((err: any) => {
       error("request %s\nerror: %o", requestedPath, err);
       throw err;
     });
+};
+export const getBytes = (requestedPath: string, params: any ) : Promise<any> => {
+  return RequestBytes(requestedPath, params, "GET");
 };
 
 export const getDoc = (requestedPath: string) : Promise<MangaXDoc> => {
@@ -84,10 +87,27 @@ export const getDoc = (requestedPath: string) : Promise<MangaXDoc> => {
 };
 
 
+
+export const postBytes = (requestedPath: string, params?: any) : Promise<Buffer> => {
+  return RequestBytes(requestedPath, params, "POST");
+};
+
+export const postHtml = async (requestedPath: string, params?: any) : Promise<string> => {
+  let bytes = await postBytes(requestedPath, params);
+  return bytes.toString();
+};
+export const postDoc = (requestedPath: string, params?: any) : Promise<MangaXDoc> => {
+  return postHtml(requestedPath, params).then(x => parseDoc(x, {location: requestedPath}));
+};
+
 export const request: Request = {
   getBytes,
   getHtml,
-  getDoc
+  getDoc,
+
+  postBytes,
+  postHtml,
+  postDoc,
 };
 
 

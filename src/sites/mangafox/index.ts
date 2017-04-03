@@ -6,8 +6,10 @@ import {MangaSite} from "../../common/mangasite";
 import {Parser} from "./parser";
 import {config} from "./config";
 import {Helper} from "./names";
-import {Site, SiteConfig} from "../../declarations";
+import {FilterSupport, MangaSource, Site, SiteConfig} from "../../declarations";
 import {request} from "../../common/request";
+import {processFilter} from "./filter";
+import {resolve} from "url";
 
 
 export class MangaFox extends MangaSite<SiteConfig, Parser, Helper> implements Site{

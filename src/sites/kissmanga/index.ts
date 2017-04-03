@@ -40,11 +40,9 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
     this.debug("getting mangas");
 
     let search = processFilter(filter);
-
     let doc = await this.request.postDoc(search.src, search.params);
     let mangas = await this.parser.mangas(doc);
 
-    console.log(mangas);
 
     this.debug(`mangas: ${mangas.length}`);
 

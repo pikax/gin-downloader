@@ -9,10 +9,12 @@ export interface MangaXDoc extends HTMLDocument {
     location: string;
 }
 export interface Request {
-    getHtml(requestedPath: string): Promise<string>;
-    getHtml(requestedPath: string | URL, params: any): Promise<string>;
-    getBytes(requestedPath: string | URL, params: any): Promise<any>;
+    getHtml(requestedPath: string | URL, params?: any): Promise<string>;
+    getBytes(requestedPath: string | URL, params?: any): Promise<any>;
     getDoc(requestedPath: string): Promise<MangaXDoc>;
+    postHtml(requestedPath: string | URL, params?: any): Promise<string>;
+    postBytes(requestedPath: string | URL, params?: any): Promise<any>;
+    postDoc(requestedPath: string | URL, params?: any): Promise<MangaXDoc>;
 }
 export interface NameHelper {
     toName(name: string): string;
@@ -64,7 +66,7 @@ export interface SiteParser {
     image(html: string): string;
 }
 export interface Site {
-    mangas(): Promise<MangaSource[]>;
+    mangas(filter?: FilterSupport): Promise<MangaSource[]>;
     latest(): Promise<Chapter[]>;
     info(name: string): Promise<MangaInfo>;
     chapters(name: string): Promise<Chapter[]>;
@@ -85,4 +87,75 @@ declare global  {
         decodeEscapeSequence(): string;
         getMatches(regex: RegExp, index: number): string[];
     }
+}
+export declare enum Genre {
+    Action,
+    Adult,
+    Adventure,
+    AwardWinning,
+    Comedy,
+    Comic,
+    Cooking,
+    Doujinshi,
+    Drama,
+    Ecchi,
+    Fantasy,
+    FourKoma,
+    GenderBender,
+    Harem,
+    Historical,
+    Horror,
+    Josei,
+    Lolicon,
+    Manga,
+    Manhua,
+    Manhwa,
+    MartialArts,
+    Mature,
+    Mecha,
+    Medical,
+    Music,
+    Mystery,
+    Oneshot,
+    Psychological,
+    Romance,
+    SchoolLife,
+    SciFi,
+    Seinen,
+    Shotacon,
+    Shoujo,
+    ShoujoAi,
+    Shounen,
+    ShounenAi,
+    SliceOfLife,
+    Smut,
+    Sports,
+    Supernatural,
+    Tragedy,
+    Webtoon,
+    Yaoi,
+    Yuri,
+    NoChapters,
+}
+export declare enum FilterCondition {
+    Contains = 0,
+    NotContains = 1,
+    StartsWith = 2,
+    EndsWith = 3,
+    Less = 4,
+    Greater = 5,
+    LessThan = 6,
+    GreaterThan = 7,
+}
+export interface FilterSupport {
+    name?: string;
+    page?: number;
+    search?: {
+        name: {
+            name: string;
+            condition: FilterCondition;
+        };
+    };
+    genres?: Genre[];
+    outGenres?: Genre[];
 }
