@@ -1,7 +1,6 @@
 --timeout 60000
---require babel-polyfill
+--require source-map-support/register
 --colors
---reporter spec
 --compilers ts:ts-node/register,tsx:ts-node/register
 --sort
 --ui bdd

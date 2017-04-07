@@ -20,7 +20,7 @@ describe("MangaPanda live", () => {
   it("should get latest chaps", done => {
     manga.latest()
       .should.eventually
-      .to.have.length.gte(72)
+      .to.have.length.gte(50)
       .notify(done);
   });
 

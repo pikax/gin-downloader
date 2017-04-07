@@ -6,9 +6,9 @@
 import "./../common";
 
 
-import {getBytes, getHtml} from "../../src/common/request";
-import {getDoc, parseDoc} from "../../src/common/helper";
-import cfRequest from "../../src/common/cfRequest";
+import {getDoc, getHtml} from "../../src/common/request";
+import {parseDoc} from "../../src/common/helper";
+import * as cfRequest from "../../src/common/cfRequest";
 
 import {HTMLDocument} from "libxmljs";
 

@@ -4,12 +4,12 @@
 import {Genre, FilterCondition, FilterSupport} from "../../declarations";
 import {config} from "./config";
 import {resolve} from "url";
-import {find} from "lodash";
+import {map} from "lodash";
 
-const Supported: { [id: string]: string } = [];
-Supported[Genre.Action.toString()] = Genre.Action;
-Supported[Genre.Adult.toString()] = Genre.Adult;
-Supported[Genre.Adventure.toString()] = Genre.Adventure;
+const Supported: { [id: string]: Genre } = {};
+Supported[Genre.Action] = Genre.Action;
+Supported[Genre.Adult] = Genre.Adult;
+Supported[Genre.Adventure] = Genre.Adventure;
 Supported[Genre.Comedy] = Genre.Comedy;
 Supported[Genre.Doujinshi] = Genre.Doujinshi;
 Supported[Genre.Drama] = Genre.Drama;
@@ -46,41 +46,41 @@ Supported[Genre.Yuri] = Genre.Yuri;
 
 
 const correctName: { [id: string]: string } = {};
-correctName[Genre.Action] = Genre.Action;
-correctName[Genre.Adult] = Genre.Adult;
-correctName[Genre.Adventure] = Genre.Adventure;
-correctName[Genre.Comedy] = Genre.Comedy;
-correctName[Genre.Doujinshi] = Genre.Doujinshi;
-correctName[Genre.Drama] = Genre.Drama;
-correctName[Genre.Ecchi] = Genre.Ecchi;
-correctName[Genre.Fantasy] = Genre.Fantasy;
+correctName[Genre.Adult] = Genre.Adult.toString();
+correctName[Genre.Action] = Genre.Action.toString();
+correctName[Genre.Adventure] = Genre.Adventure.toString();
+correctName[Genre.Comedy] = Genre.Comedy.toString();
+correctName[Genre.Doujinshi] = Genre.Doujinshi.toString();
+correctName[Genre.Drama] = Genre.Drama.toString();
+correctName[Genre.Ecchi] = Genre.Ecchi.toString();
+correctName[Genre.Fantasy] = Genre.Fantasy.toString();
 correctName[Genre.GenderBender] = "Gender Bender";
-correctName[Genre.Harem] = Genre.Harem;
-correctName[Genre.Historical] = Genre.Historical;
-correctName[Genre.Horror] = Genre.Horror;
-correctName[Genre.Josei] = Genre.Josei;
+correctName[Genre.Harem] = Genre.Harem.toString();
+correctName[Genre.Historical] = Genre.Historical.toString();
+correctName[Genre.Horror] = Genre.Horror.toString();
+correctName[Genre.Josei] = Genre.Josei.toString();
 correctName[Genre.MartialArts] = "Martial Arts";
-correctName[Genre.Mature] = Genre.Mature;
-correctName[Genre.Mecha] = Genre.Mecha;
-correctName[Genre.Mystery] = Genre.Mystery;
+correctName[Genre.Mature] = Genre.Mature.toString();
+correctName[Genre.Mecha] = Genre.Mecha.toString();
+correctName[Genre.Mystery] = Genre.Mystery.toString();
 correctName[Genre.Oneshot] = "One Shot";
-correctName[Genre.Psychological] = Genre.Psychological;
-correctName[Genre.Romance] = Genre.Romance;
-correctName[Genre.SchoolLife] = Genre.SchoolLife;
+correctName[Genre.Psychological] = Genre.Psychological.toString();
+correctName[Genre.Romance] = Genre.Romance.toString();
+correctName[Genre.SchoolLife] = Genre.SchoolLife.toString();
 correctName[Genre.SciFi] = "Sci-fi";
-correctName[Genre.Seinen] = Genre.Seinen;
-correctName[Genre.Shoujo] = Genre.Shoujo;
+correctName[Genre.Seinen] = Genre.Seinen.toString();
+correctName[Genre.Shoujo] = Genre.Shoujo.toString();
 correctName[Genre.ShoujoAi] = "Shoujo Ai";
-correctName[Genre.Shounen] = Genre.Shounen;
+correctName[Genre.Shounen] = Genre.Shounen.toString();
 correctName[Genre.ShounenAi] = "Shounen Ai";
 correctName[Genre.SliceOfLife] = "Slice of Life";
-correctName[Genre.Smut] = Genre.Smut;
-correctName[Genre.Sports] = Genre.Sports;
-correctName[Genre.Supernatural] = Genre.Supernatural;
-correctName[Genre.Tragedy] = Genre.Tragedy;
+correctName[Genre.Smut] = Genre.Smut.toString();
+correctName[Genre.Sports] = Genre.Sports.toString();
+correctName[Genre.Supernatural] = Genre.Supernatural.toString();
+correctName[Genre.Tragedy] = Genre.Tragedy.toString();
 correctName[Genre.Webtoon] = "Webtoons";
-correctName[Genre.Yaoi] = Genre.Yaoi;
-correctName[Genre.Yuri] = Genre.Yuri;
+correctName[Genre.Yaoi] = Genre.Yaoi.toString();
+correctName[Genre.Yuri] = Genre.Yuri.toString();
 
 
 
@@ -98,7 +98,7 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
   const author = `author=`;
   const artistMethod = `artist_method=`;
   const artist = `artist=`;
-  const genreFilter = Supported.map(x => `genre[${x}]=${inOutGenre(x, genres, outGenres)}`).join("&");
+  const genreFilter = map(Supported, x => `genre[${x}]=${inOutGenre(x, genres, outGenres)}`).join("&");
   const releaseMethod = "release_method=eq";
   const release = "released=";
   const rating_method = "rating_method=eq";
@@ -121,7 +121,7 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
 };
 
 
-function inOutGenre(genre: Genre, inGenre: Genre[], outGenre: Genre[]){
+function inOutGenre(genre: Genre, inGenre: Genre[], outGenre: Genre[]): number {
   if (inGenre && inGenre.indexOf(genre) > -1) {
     return 1;
   }

@@ -14,6 +14,7 @@ import {Script} from "vm";
 import {processFilter} from "./filter";
 
 
+
 export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements Site {
   public constructor() {
     super(config, new Parser(), new Helper(), request);
@@ -52,25 +53,26 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
   async images(name: string, chapNumber: number): Promise<Promise<ImageSource>[]> {
     let chapters = await this.chapters(name);
 
+
     let chapter = find(chapters, {number: chapNumber});
     if (!chapter) {
       throw new Error("Chapter not found!");
     }
 
-    let html = await this.request.getHtml(chapter.src);
-    let secret = this.parser.getSecret(html);
+      let html = await this.request.getHtml(chapter.src);
+      let secret = this.parser.getSecret(html);
 
-    let vm = await this.getVM();
+      let vm = await this.getVM();
 
-    let imgs = this.parser.imagesList(html, secret, vm);
+      let imgs = this.parser.imagesList(html, secret, vm);
 
-    let srcs = imgs.map(x => {
-      return {
-        name : parse(x).pathname.split("/").reverse()[0],
-          src : x
-      };
-    });
-    return srcs.map(x => Promise.resolve(x));
+      let srcs = imgs.map(x => {
+        return <ImageSource>{
+          name: parse(x).pathname.split("/").reverse()[0],
+          src: x
+        };
+      });
+      return srcs.map(x => Promise.resolve(x));
   }
 }
 
