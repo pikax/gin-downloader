@@ -39,6 +39,7 @@ export const postBytes = (requestedPath: string, params?: any) : Promise<Buffer>
       if (err) {
         return rej(err);
       }
+
       return res(body);
     });
   });
@@ -63,7 +64,7 @@ const requestMethod = (method: string, requestedPath: string, params?: any): Pro
     followAllRedirects: true,
     forever: true,
 
-    proxy: "http://127.0.0.1:8888", // Note the fully-qualified path to Fiddler proxy. No "https" is required, even for https connections to outside.
+    // proxy: "http://127.0.0.1:8888", // Note the fully-qualified path to Fiddler proxy. No "https" is required, even for https connections to outside.
   };
 
   return new Promise((res, rej) => {
@@ -71,7 +72,7 @@ const requestMethod = (method: string, requestedPath: string, params?: any): Pro
       if (err) {
         return rej(err);
       }
-      console.log(body);
+      // console.log(body);
       return res(body);
     });
   });

@@ -95,6 +95,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     }
     catch (e) {
       this.debug(e);
+      console.log(e);
       throw new Error(`${name} not found!`);
     }
   }

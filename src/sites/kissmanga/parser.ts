@@ -8,24 +8,43 @@ import {resolve} from "url";
 import {config} from "./config";
 import {Script, createContext} from "vm";
 
+
+
+
 export class Parser implements SiteParser {
 
   private _vm: Script;
 
+  private static fixNames: { [id: string]: string; } = {
+  "http://kissmanga.com/Manga/Desire-KOTANI-Kenichi": "Desire KOTANI Kenichi",
+  "http://kissmanga.com/Manga/Tokyo-Toy-Box-o": "Tokyo Toy Box o",
+  "http://kissmanga.com/Manga/Valkyrie%20Profile": "Valkyrie%20Profile",
+};
+
+
+  private static resolveName = (src: string) => Parser.fixNames[src];
+
   mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
     const xpath = "//table/tr/td[1]/a";
 
-    return doc.find(xpath).map(x => {
-      return {
-        name: x.text().leftTrim(),
-        src: resolve(config.site, x.attr("href").value())
-      };
-    });
-  };
+    return doc.find(xpath)
+      .map(x => {
+        return {
+          name: x.text().leftTrim(),
+          src: resolve(config.site, x.attr("href").value())
+        };
+      })
+      .map(x => {
+        return {
+          name: Parser.resolveName(x.src) || x.name,
+          src : x.src
+        };
+      });
+  }
 
   latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
     const xpath = "//dt/span/a[@class='chapter']";
-   throw  new Error("not implemented");
+    throw  new Error("not implemented");
     // return doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
   }
 
@@ -56,13 +75,21 @@ export class Parser implements SiteParser {
   chapters(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
     const xpath = "//table/tr/td[1]/a";
 
-    return doc.find(xpath).map(x => {
-      return {
-        number : x.text().trim().lastDigit(),
-        name: x.text().trim(),
-        src: resolve(config.site, x.attr("href").value()),
-      };
-    });
+    return doc.find(xpath)
+      .map(x => {
+        return {
+          number : x.text().trim().lastDigit(),
+          name: x.text().leftTrim(),
+          src: resolve(config.site, x.attr("href").value())
+        };
+      })
+      .map(x => {
+        return {
+          number: x.number,
+          name: Parser.resolveName(x.src) || x.name,
+          src : x.src
+        };
+      });
   }
 
 
@@ -82,7 +109,7 @@ export class Parser implements SiteParser {
   }
 
   getSecret(html: string): string {
-    let m = /\["([^\"]*)"]; chko[^\[]*\[(\d+)\]/gm.exec(html);
+    let m = /\["([^"]*)"]; chko[^\[]*\[(\d+)]/gm.exec(html);
     return m[1].decodeEscapeSequence();
   }
 
@@ -91,7 +118,7 @@ export class Parser implements SiteParser {
   }
 
   image(html: string): string {
-   throw new Error("no needed");
+    throw new Error("no needed");
   }
 
   get VM(): Script {

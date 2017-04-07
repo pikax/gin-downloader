@@ -41,7 +41,6 @@ describe("KissManga live", () => {
     info.authors.should.be.deep.eq(results.manga.authors);
     info.artists.should.be.deep.eq(results.manga.artists);
     info.genres.should.be.deep.eq(results.manga.genres);
-    info.views.should.be.deep.eq(results.manga.views);
 
   });
 
@@ -54,6 +53,10 @@ describe("KissManga live", () => {
       let finalUrl = helper.resolveUrl(origName);
 
       finalUrl.should.be.eq(expected, `with name "${origName}"`);
+
+      // if(expected !== finalUrl)
+      //   console.log(`"${origName}": "${expected}"; // ${finalUrl}`);
+
     }
   });
 

@@ -30,23 +30,11 @@ describe("KissManga offline", () => {
     fpChapter = readFileSync(chapter).toString();
   });
 
-  it("should resolve image path chapter", () => {
-    let doc = parseDoc(fpChapter, {location: `${helper.resolveUrl("Gintama")}`});
-    parser.imagesPaths(doc)
-      .should.have.have.lengthOf(58);
-  });
-
-  it("should parse image from chapter", () => {
-    parser.image(fpChapter.toString())
-      .should.contain(results.image_src);
-
-  });
-
   it("should parse and get all mangas", () => {
     let doc = parseDoc(fpMangas);
 
     parser.mangas(doc).should
-      .have.length.gte(results.mangas_count);
+      .have.length.gte(50);
   });
 
   it("should resolve name to name", async () => {
@@ -70,7 +58,6 @@ describe("KissManga offline", () => {
 
     info.should.exist;
     info.title.should.be.eq(results.manga.title);
-    info.released.should.be.eq(results.manga.released);
     info.synopsis.should.contain(results.manga.synopsis);
     info.status.should.be.eq(results.manga.status);
 
@@ -78,7 +65,7 @@ describe("KissManga offline", () => {
     info.authors.should.be.deep.eq(results.manga.authors);
     info.artists.should.be.deep.eq(results.manga.artists);
     info.genres.should.be.deep.eq(results.manga.genres);
-    info.scanlators.should.be.deep.eq(results.manga.scanlators);
+    info.views.should.be.deep.eq(results.manga.views);
   });
 
 
@@ -89,14 +76,6 @@ describe("KissManga offline", () => {
       .should.have.length.to.be.greaterThan(98);
   });
 
-
-  it("it should resolve all images from chapter", () => {
-    let doc = parseDoc(fpChapter, {location: `${helper.resolveUrl("Gintama")}`});
-
-    parser.imagesPaths(doc)
-      .should.have.length.gte(58);
-
-  });
 
   it("should parse chapters", () => {
     let doc = parseDoc(fpGintama, {location: `${helper.resolveUrl("Gintama")}`});
