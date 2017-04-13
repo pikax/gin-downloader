@@ -48,7 +48,7 @@ export class Parser implements SiteParser {
     return doc.find(xpath)
       .map(x => {
         return <Chapter> {
-          number: x.text(),
+          chap_number: x.text(),
           src: resolve(config.site, x.attr("href").value()),
           name: x.get("../preceding-sibling::td/a").text().trim(),
         };
@@ -88,14 +88,14 @@ export class Parser implements SiteParser {
     return doc.find(xpath)
       .map(x => {
         return {
-          number : x.text().trim().lastDigit(),
+          chap_number : x.text().trim().lastDigit(),
           name: x.text().leftTrim(),
           src: resolve(config.site, x.attr("href").value())
         };
       })
       .map(x => {
         return {
-          number: x.number,
+          chap_number: x.chap_number,
           name: Parser.resolveName(x.src) || x.name,
           src : x.src
         };
