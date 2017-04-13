@@ -7,6 +7,8 @@ import { Chapter, MangaInfo, MangaSource, MangaXDoc, SiteParser } from "../../de
 import { Script } from "vm";
 export declare class Parser implements SiteParser {
     private _vm;
+    private static fixNames;
+    private static resolveName;
     mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[];
     latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[];
     info(doc: MangaXDoc): Promise<MangaInfo> | MangaInfo;
