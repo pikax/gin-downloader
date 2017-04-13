@@ -9,7 +9,7 @@ export const config: SiteConfig = {
     name : "KissManga",
     site : site,
     mangas_url : resolve(site, "/MangaList/"),
-    latest_url : resolve(site, "/")
+    latest_url : resolve(site, "/MangaList/LatestUpdate")
 
 };
 export default config;

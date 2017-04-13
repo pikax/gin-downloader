@@ -72,8 +72,9 @@ describe("KissManga offline", () => {
   it("should parse latest", () => {
     let doc = parseDoc(fpLatest, {location: `${helper.resolveUrl("Gintama")}`});
 
+
     parser.latest(doc)
-      .should.have.length.to.be.greaterThan(98);
+      .should.have.length.to.be.greaterThan(10);
   });
 
 
