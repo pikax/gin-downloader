@@ -61,8 +61,7 @@ This project is under **development**.
 - **latest()** : returns [{chapter:string, src:string, volume?:string}]
 - **info(name)** : returns object with site info {}
 - **chapters(name)** : returns [{chapter:string, src:string, volume?:string}]
-- **images(url)** : return [string]
-- **resolve(name,chapter)** : returns [Promise<string>]
+- **images(manga, chapter_number)** : return Promise<Promise<string>[]>
 
 
 ```javascript

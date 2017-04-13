@@ -1,6 +1,14 @@
 # Created by .ignore support plugin (hsz.mobi)
 #mocha
 watch
+
+/src/**/*.js
+/src/**/*.js.map
+/test/**/*.js
+/test/**/*.js.map
+/src/**/*.d.ts
+/test/**/*.d.ts
+
 #visualstudio
 .vs
 
