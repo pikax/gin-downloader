@@ -31,7 +31,7 @@ export interface MangaSource {
     src: string;
 }
 export interface Chapter {
-    number?: number;
+    chap_number?: string | number;
     src: string;
     volume?: string;
     name?: string;
