@@ -41,12 +41,15 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     this._request = request;
   }
 
-  mangas(): Promise<MangaSource[]> {
+  async mangas(): Promise<MangaSource[]> {
     this.debug("getting mangas");
 
-    return this.request.getDoc(this.config.mangas_url)
-      .then(this.parser.mangas)
-      .tap(x => this.debug(`mangas: ${x.length}`));
+    let mangas = await this.request.getDoc(this.config.mangas_url)
+      .then(this.parser.mangas);
+
+    this.debug(`mangas: ${mangas.length}`);
+
+    return mangas;
   }
 
   async latest(): Promise<Chapter[]> {
@@ -95,7 +98,6 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     }
     catch (e) {
       this.debug(e);
-      console.log(e);
       throw new Error(`${name} not found!`);
     }
   }
@@ -147,7 +149,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
 
   protected async resolveChapterSource(name: string, chapter: number): Promise<string> {
     let chapters = await this.chapters(name);
-    let chap = find(chapters, {number: chapter});
+    let chap = find(chapters, {chap_number: chapter});
     this.verbose(`filtered chapters %o`, chap);
 
     if (!chap) {

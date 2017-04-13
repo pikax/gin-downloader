@@ -40,7 +40,7 @@ export interface MangaSource {
 }
 
 export interface Chapter {
-  number?: number;
+  chap_number?: string | number; // TODO fix name
   src: string;
   volume?: string;
   name?: string;

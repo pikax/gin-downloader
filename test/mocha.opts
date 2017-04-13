@@ -1,6 +1,6 @@
 --timeout 60000
 --require source-map-support/register
 --colors
---compilers ts:ts-node/register,tsx:ts-node/register
+--compilers ts:ts-node/register,tsx:ts-node/register -O '{"lib": ["ES6", "es2015"]}'
 --sort
 --ui bdd
