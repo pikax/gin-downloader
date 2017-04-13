@@ -1,7 +1,6 @@
 --timeout 60000
---require babel-core/register
+--require source-map-support/register
 --colors
---reporter spec
---compilers js:babel-register
+--compilers ts:ts-node/register,tsx:ts-node/register -O '{"lib": ["ES6", "es2015"]}'
 --sort
 --ui bdd

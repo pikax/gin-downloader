@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "target": "es5",
+    "sourceMap": true,
+    "alwaysStrict": true,
+    "typeRoots" : ["./node_modules/@types"],
+    "types": [ "node", "mocha", "chai" ],
+    "lib": ["ES6", "es2015"],
+    "declaration": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ],
+  "files": [
+    "src/index.ts"
+  ]
+}
