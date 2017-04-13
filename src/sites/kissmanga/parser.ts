@@ -43,8 +43,18 @@ export class Parser implements SiteParser {
   }
 
   latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
-    const xpath = "//dt/span/a[@class='chapter']";
-    throw  new Error("not implemented");
+    const xpath = "//table[@class='listing']/tr/td[2]/a";
+
+    return doc.find(xpath)
+      .map(x => {
+        return <Chapter> {
+          number: x.text(),
+          src: resolve(config.site, x.attr("href").value()),
+          name: x.get("../preceding-sibling::td/a").text().trim(),
+        };
+      });
+
+
     // return doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
   }
 
@@ -110,7 +120,10 @@ export class Parser implements SiteParser {
 
   getSecret(html: string): string {
     let m = /\["([^"]*)"]; chko[^\[]*\[(\d+)]/gm.exec(html);
-    return m[1].decodeEscapeSequence();
+    if (m) {
+      return m[1].decodeEscapeSequence();
+    }
+    return null;
   }
 
   imagesPaths(doc: MangaXDoc): string[] {
@@ -128,7 +141,7 @@ export class Parser implements SiteParser {
   buildVM(cajs: string, lojs: string) {
     let scripts = [cajs
       , lojs
-      , "chko = secret; key = CryptoJS.SHA256(chko);"
+      , "chko = secret || chko; key = CryptoJS.SHA256(chko);"
       , "for (var img in lstImages) imgs.push(wrapKA(lstImages[img]).toString());"
     ];
 

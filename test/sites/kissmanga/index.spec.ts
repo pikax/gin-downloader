@@ -23,7 +23,7 @@ describe("KissManga live", () => {
   it("should get latest chaps", done => {
     manga.latest()
       .should.eventually
-      .to.have.length.gte(90)
+      .to.have.length.gte(40)
       .notify(done);
   });
 
