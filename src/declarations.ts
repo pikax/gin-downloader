@@ -205,6 +205,7 @@ export enum Genre {
 
 
 export enum FilterCondition {
+  Equal,
   Contains,
   NotContains,
   StartsWith,
@@ -212,7 +213,7 @@ export enum FilterCondition {
   Less,
   Greater,
   LessThan,
-  GreaterThan
+  GreaterThan,
 }
 
 
@@ -220,6 +221,12 @@ export enum FilterStatus {
   Ongoing,
   Complete,
   Cancelled
+}
+
+export enum FilterMangaType {
+  Manga,
+  Manhwa,
+  Manhua,
 }
 
 
@@ -240,6 +247,15 @@ export interface FilterSupport {
       condition?: FilterCondition,
     },
     status?: FilterStatus,
+    rating?: {
+      value: number,
+      condition?: FilterCondition,
+    },
+    released?: {
+      value: number,
+      condition?: FilterCondition,
+    },
+    type?: FilterMangaType
   };
   genres?: Genre[];
   outGenres?: Genre[];

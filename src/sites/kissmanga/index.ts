@@ -37,17 +37,8 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
     return this.parser.buildVM(lst[0], lst[1]);
   }
 
-  async mangas(filter?: FilterSupport): Promise<MangaSource[]> {
-    this.debug("getting mangas");
-
-    let search = processFilter(filter);
-    let doc = await this.request.postDoc(search.src, search.params);
-    let mangas = await this.parser.mangas(doc);
-
-
-    this.debug(`mangas: ${mangas.length}`);
-
-    return mangas;
+  mangas(filter?: FilterSupport): Promise<MangaSource[]> {
+    return this.filter().then(x => x.results);
   }
 
   async filter(filter?: FilterSupport): Promise<FilteredResults> {
