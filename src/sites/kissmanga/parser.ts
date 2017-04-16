@@ -2,7 +2,10 @@
  * Created by rodriguesc on 24/03/2017.
  */
 import "../../declarations";
-import {Chapter, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
+import {
+  Chapter, FilteredResults, FilterSupport, MangaInfo, MangaSource, MangaXDoc,
+  SiteParser
+} from "../../declarations";
 import {resolve} from "url";
 
 import {config} from "./config";
@@ -147,6 +150,16 @@ export class Parser implements SiteParser {
 
     return this._vm = new Script(scripts.join("\n"));
   }
+
+
+  filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults {
+    return <FilteredResults>{
+      results: this.mangas(doc),
+      page: 1,
+      total: 1
+    };
+  }
+
 }
 
 export const parser = new Parser();

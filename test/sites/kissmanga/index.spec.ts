@@ -8,7 +8,7 @@ import "./../../common";
 import {manga} from "./../../../src/sites/kissmanga";
 import results from "./_results";
 import {helper} from "../../../src/sites/kissmanga/names";
-import {Genre} from "../../../src/declarations";
+import {FilterCondition, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
 
 
 describe("KissManga live", () => {
@@ -118,4 +118,77 @@ describe("KissManga live", () => {
     let img = await images[0];
     img.src.should.contain(results.image_src);
   });
+
+
+  it("should filter by name", async () => {
+    let filter: FilterSupport = {
+      name: "Gintama"
+    };
+
+    let mangas = await manga.filter(filter);
+    mangas.results.should.length(1);
+    mangas.results.should.deep.include({
+      name: "Gintama",
+      src : "http://kissmanga.com/Manga/Gintama"
+    });
+  });
+
+  it("should filter by in genre", async () => {
+    let filter: FilterSupport = {
+      genres: [Genre.Comedy, Genre.Action, Genre.SciFi, Genre.Shounen]
+    };
+
+    let mangas = await manga.filter(filter);
+    mangas.results.should.length.gte(50);
+    mangas.results.should.deep.include({
+      name: "Gintama",
+      src : "http://kissmanga.com/Manga/Gintama"
+    });
+  });
+  it("should filter by out genre", async () => {
+    let filter: FilterSupport = {
+      outGenres: [Genre.FourKoma, Genre.Adult, Genre.Adventure, Genre.Manhwa, Genre.AwardWinning]
+    };
+
+    let mangas = await manga.filter(filter);
+    mangas.results.should.length.gte(50);
+    mangas.results.should.deep.include({
+      name: "Gintama",
+      src : "http://kissmanga.com/Manga/Gintama"
+    });
+  });
+
+  it("should filter by Author", async () => {
+    let filter: FilterSupport = {
+      search: {
+        author: {
+          name: "Sorachi",
+        }
+      }
+    };
+
+    let mangas = await manga.filter(filter);
+    mangas.results.should.length.gte(1);
+    mangas.results.should.length.lte(10);
+    mangas.results.should.deep.include({
+      name: "Gintama",
+      src : "http://kissmanga.com/Manga/Gintama"
+    });
+  });
+
+  it("should filter by Status", async () => {
+    let filter: FilterSupport = {
+      search: {
+        status: FilterStatus.Ongoing
+      }
+    };
+
+    let mangas = await manga.filter(filter);
+    mangas.results.should.length.gte(50);
+    mangas.results.should.deep.include({
+      name: "History's Strongest Disciple Kenichi",
+      src : "http://kissmanga.com/Manga/History-s-Strongest-Disciple-Kenichi"
+    });
+  });
+
 });

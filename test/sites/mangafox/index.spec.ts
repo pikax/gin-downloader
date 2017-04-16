@@ -94,6 +94,10 @@ describe("MangaFox live", () => {
       .notify(done);
   });
 
+  it("should filter", ()=>{
+
+
+  });
 
   it("should get chapters", done => {
     let name = "Gintama";

@@ -1,7 +1,7 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, FilterSupport} from "../../declarations";
+import {Genre, FilterCondition, FilterSupport, FilterStatus} from "../../declarations";
 import {config} from "./config";
 import {resolve} from "url";
 import {find} from "lodash";
@@ -89,9 +89,9 @@ const ordered = [
   Genre.Seinen,
   Genre.Shotacon,
   Genre.Shoujo,
-  Genre.Shoujo,
+  Genre.ShoujoAi,
   Genre.Shounen,
-  Genre.Shounen,
+  Genre.ShounenAi,
   Genre.SliceOfLife,
   Genre.Smut,
   Genre.Sports,
@@ -109,18 +109,51 @@ const ordered = [
 
 export const processFilter = (filter: FilterSupport) : {src: string, params: any} => {
   filter = filter || {};
-  let {genres, outGenres} = filter;
+  let {genres, outGenres, search} = filter;
 
-  const mangaName = `mangaName=${filter.name || ""}`;
-  const authorArtist = `authorArtist=`;
+
+  let fauthor = null;
+  let fstatus = null;
+  let fname = filter.name;
+
+  if (search) {
+    let nameFilter = search.name;
+    if (nameFilter) {
+      fauthor = nameFilter.name;
+    }
+
+    let authorFilter = search.author || search.artist;
+    if (authorFilter) {
+      fauthor = authorFilter.name;
+    }
+
+
+    let statusFilter = search.status;
+    if (statusFilter) {
+      fstatus = resolveStatus(statusFilter);
+    }
+  }
+
+  const mangaName = `mangaName=${fname || ""}`;
+  const authorArtist =  `authorArtist=${(fauthor || "")}`;
   const genreFilter = ordered.map(x => inOutGenre(x, genres, outGenres)).map(x => `genres=${x}`).join("&");
-  const status = `status=`;
+  const status = `status=${(fstatus || "")}`;
 
   return {src: resolve(config.site, "/AdvanceSearch"),
     params: [mangaName, authorArtist, genreFilter, status].join("&")
   };
 };
 
+function resolveStatus(status: FilterStatus){
+  switch (status) {
+    case FilterStatus.Ongoing:
+      return "Ongoing";
+    case FilterStatus.Complete:
+      return "Complete";
+    default:
+      return null;
+  }
+}
 
 function inOutGenre(genre: Genre, inGenre: Genre[], outGenre: Genre[]){
   if (inGenre && inGenre.indexOf(genre) > -1) {

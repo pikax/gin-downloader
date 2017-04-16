@@ -2,15 +2,19 @@
  * Created by rodriguesc on 24/03/2017.
  */
 
-import {Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, Request} from "../declarations";
+import {
+  Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, Request,
+  FilterSupport, FilteredResults
+} from "../declarations";
 import * as debug from "debug";
 import {IDebugger} from "debug";
 
 import {find} from "lodash";
-import {isNumber} from "util";
 import {parse} from "url";
 
 export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends NameHelper> implements Site {
+
+
   private _parser: P;
   protected verbose: IDebugger;
   protected debug: IDebugger;
@@ -20,16 +24,16 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
 
   get parser(): P {
     return this._parser;
-  };
+  }
   get config(): C {
     return this._config;
-  };
+  }
   get nameHelper(): N {
     return this._nameHelper;
-  };
+  }
   get request(): Request {
     return this._request;
-  };
+  }
 
   protected constructor(config: C, parser: P, nameHelper: N, request: Request) {
     this.debug  = debug(`gin-downloader:${config.name}`);
@@ -44,12 +48,16 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
   async mangas(): Promise<MangaSource[]> {
     this.debug("getting mangas");
 
-    let rmangas = await this.request.getDoc(this.config.mangas_url)
+    let mangas = await this.request.getDoc(this.config.mangas_url)
       .then(this.parser.mangas);
 
-    this.debug(`mangas: ${rmangas.length}`);
+    this.debug(`mangas: ${mangas.length}`);
 
-    return rmangas;
+    return mangas;
+  }
+
+  filter(filter?: FilterSupport): Promise<FilteredResults> {
+    throw new Error("Method not implemented.");
   }
 
   async latest(): Promise<Chapter[]> {
