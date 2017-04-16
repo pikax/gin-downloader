@@ -62,7 +62,7 @@ export class Parser implements SiteParser {
 
   private static parseChapter(x: Element, xVolume: string) {
     return {
-      number : x.text().lastDigit(),
+      chap_number : x.text().lastDigit(),
       name: (x.get("following-sibling::span/text()") || x).text(),
       src: resolve(config.site, x.attr("href").value()),
       volume: x.get(xVolume).text().trim()

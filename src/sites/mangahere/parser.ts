@@ -64,7 +64,7 @@ export class Parser implements SiteParser {
     return doc.find(xpath)
       .map(x => {
         return {
-          number : x.text().trim().lastDigit(),
+          chap_number : x.text().trim().lastDigit(),
           name : (x.get("following-sibling::span/following-sibling::text()") || x).text(),
           src : x.attr("href").value(),
         };
