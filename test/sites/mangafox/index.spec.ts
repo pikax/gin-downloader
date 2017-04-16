@@ -13,7 +13,7 @@ import {helper} from "../../../src/sites/mangafox/names";
 describe("MangaFox live", () => {
 
   it("should get all mangas", done => {
-    manga.mangas({name:"Gintama"})
+    manga.mangas({name: "Gintama"})
       .should.eventually.have.length.gte(results.mangas_count)
       .notify(done);
   });
