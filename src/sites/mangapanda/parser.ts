@@ -4,7 +4,10 @@
 
 import {resolve} from "url";
 import config from "./config";
-import {Chapter, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
+import {Chapter, FilteredResults, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
+import * as url from "url";
+
+import {uniqBy} from "lodash";
 
 
 export class Parser implements SiteParser {
@@ -78,6 +81,52 @@ export class Parser implements SiteParser {
     const __img__ = /src="[^"]*" alt/gmi;
 
     return html.match(__img__)[0].slice(5, -5).replace(/.v=\d+/, "");
+  }
+
+  filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults {
+    const xpath = "//div[@class='manga_name']/div/h3/a";
+    const authorXpath = "//div[@class='authorinfo']/div[1]/a";
+
+    let mangas = doc.find(xpath).map(x => {
+      return {
+        name: x.text(),
+        src: resolve(config.site, x.attr("href").value())
+      };
+    });
+
+    mangas = mangas.concat(doc.find(authorXpath).map(x => {
+      return {
+        name: x.text(),
+        src: resolve(config.site, x.attr("href").value())
+      };
+    }));
+
+    mangas = uniqBy(mangas, "src");
+
+    let page = 1;
+    let query = url.parse(doc.location).query;
+    if (query) {
+      let m = query.toString().getMatches(/p=(\d+)/g, 1);
+      if (m) {
+        page = +m[0];
+      }
+    }
+
+    let lastPageElement = doc.get("//div[@id='sp']/a[last()]");
+    let lastPage = 0;
+
+    if (lastPageElement) {
+      let m = lastPageElement.attr("href").value().getMatches(/p=(\d+)/g, 1);
+      if (m) {
+        lastPage = +m[0];
+      }
+    }
+
+    return <FilteredResults>{
+      results: mangas,
+      page: page,
+      total: lastPage
+    };
   }
 }
 
