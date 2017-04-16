@@ -7,6 +7,7 @@ import "./../../common";
 import {manga} from "./../../../src/sites/mangapanda";
 import results from "./_results";
 import {helper} from "../../../src/sites/mangapanda/names";
+import {FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
 
 
 describe("MangaPanda live", () => {
@@ -112,5 +113,112 @@ describe("MangaPanda live", () => {
     let img = await images[0];
     img.src.should.contain("mangapanda.com/gintama/41/gintama-503216.jpg");
   });
+
+  describe("filter", () => {
+
+    it("should filter by name", async () => {
+      let filter: FilterSupport = {
+        name: "Gintama"
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "Gintama",
+        src : "http://www.mangapanda.com/gintama"
+      });
+    });
+
+    it("should filter by in genre", async () => {
+      let filter: FilterSupport = {
+        genres: [Genre.Action, Genre.Comedy,  Genre.SciFi, Genre.Shounen]
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "Gintama",
+        src : "http://www.mangapanda.com/gintama"
+      });
+    });
+
+    it("should filter by out genre", async () => {
+      let filter: FilterSupport = {
+        outGenres: [Genre.Romance],
+        search: {
+          name: {
+            name: "gin",
+            condition: FilterCondition.StartsWith
+          },
+          author: {
+            name: "Sora",
+          }
+        }
+
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "Gintama",
+        src : "http://www.mangapanda.com/gintama"
+      });
+    });
+
+    it("should filter by Author", async () => {
+      let filter: FilterSupport = {
+        search: {
+          author: {
+            name: "Sorachi",
+          }
+        }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.length.lte(10);
+      mangas.results.should.deep.include({
+        name: "Gintama",
+        src : "http://www.mangapanda.com/gintama"
+      });
+    });
+
+    it("should filter by Status", async () => {
+      let filter: FilterSupport = {
+        search: {
+          status: FilterStatus.Complete,
+          name: {
+            name: "Kenshin"
+          }
+        }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "Rurouni Kenshin",
+        src : "http://www.mangapanda.com/rurouni-kenshin"
+      });
+    });
+
+    it("should filter by Type", async () => {
+      let filter: FilterSupport = {
+        search: {
+          type: FilterMangaType.Manhwa,
+          name: {
+            name: "Breaker"
+          }
+        }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "The Breaker",
+        src : "http://www.mangapanda.com/the-breaker"
+      });
+    });
+  });
+
 });
 
