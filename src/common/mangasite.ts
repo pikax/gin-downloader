@@ -154,6 +154,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
 
   protected async resolveChapterSource(name: string, chapter: number): Promise<string> {
     let chapters = await this.chapters(name);
+    // TODO find a better way to filter chapters, because this doesnt work if we pass a string instead of number
     let chap = find(chapters, {chap_number: chapter});
     this.verbose(`filtered chapters %o`, chap);
 
