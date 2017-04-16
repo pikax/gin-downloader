@@ -76,6 +76,8 @@ export interface ImageSource {
 
 export interface SiteParser {
   mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[];
+  filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults;
+
   latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[];
 
   info(doc: MangaXDoc): Promise<MangaInfo> | MangaInfo;
@@ -87,6 +89,8 @@ export interface SiteParser {
 
 export interface Site {
   mangas(filter?: FilterSupport): Promise<MangaSource[]>;
+  filter(filter?: FilterSupport): Promise<FilteredResults>;
+
   latest(): Promise<Chapter[]>;
 
   info(name: string): Promise<MangaInfo>;
@@ -100,9 +104,6 @@ export interface Site {
 
 
 declare global {
-  interface Promise<T>{
-    tap<U>(result?: (result: any) => U): Promise<T>;
-  }
 
   interface String {
     lastDigit(): number;
@@ -112,15 +113,6 @@ declare global {
     getMatches(regex: RegExp, index: number): string[];
   }
 }
-
-
-
-Promise.prototype.tap = function <T>(func: (arg: T) => void) {
-  return this.then((x: T) => {
-    func(x);
-    return x;
-  });
-};
 
 
 
@@ -157,8 +149,6 @@ String.prototype.getMatches = function(regex: RegExp, index: number) {
   }
   return matches;
 };
-
-
 
 
 
@@ -226,13 +216,38 @@ export enum FilterCondition {
 }
 
 
+export enum FilterStatus {
+  Ongoing,
+  Complete,
+  Cancelled
+}
+
+
 export interface FilterSupport {
   name?: string;
   page?: number;
   search?: {
-    name: {name: string, condition: FilterCondition}
+    name?: {
+      name: string,
+      condition?: FilterCondition,
+    },
+    author?: {
+      name: string,
+      condition?: FilterCondition,
+    },
+    artist?: {
+      name: string,
+      condition?: FilterCondition,
+    },
+    status?: FilterStatus,
   };
   genres?: Genre[];
   outGenres?: Genre[];
 }
 
+
+export interface FilteredResults {
+  results: MangaSource[];
+  page: number;
+  total: number;
+}

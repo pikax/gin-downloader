@@ -6,7 +6,7 @@ import {MangaSite} from "../../common/mangasite";
 import {Parser} from "./parser";
 import {config} from "./config";
 import {Helper} from "./names";
-import {FilterSupport, ImageSource, MangaSource, Site, SiteConfig} from "../../declarations";
+import {FilteredResults, FilterSupport, ImageSource, MangaSource, Site, SiteConfig} from "../../declarations";
 import {find} from "lodash";
 import {request} from "../../common/cfRequest";
 import {parse, resolve} from "url";
@@ -49,6 +49,20 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
 
     return mangas;
   }
+
+  async filter(filter?: FilterSupport): Promise<FilteredResults> {
+    this.debug("filter mangas with: %o", filter);
+
+    let search = processFilter(filter);
+
+    let doc = await this.request.postDoc(search.src, search.params);
+    let mangas = await this.parser.filter(doc);
+
+    this.debug(`mangas: ${mangas.results.length}`);
+
+    return mangas;
+  }
+
 
   async images(name: string, chapNumber: number): Promise<Promise<ImageSource>[]> {
     let chapters = await this.chapters(name);

@@ -108,7 +108,7 @@ mangafox.chapters("Gintama")
 ```javascript
 mangafox.chapters("Gintama", 1)
     .then(Promise.all) //resolve all promises
-	.then(console.log)
+    .then(console.log)
 ```
 
 
