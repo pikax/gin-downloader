@@ -232,6 +232,7 @@ export enum FilterMangaType {
   Manga,
   Manhwa,
   Manhua,
+  Comic,
 }
 
 

@@ -77,8 +77,138 @@ gin.mangafox.mangas(); //get mangas
 ```
 
 
+- **filter(filter: FilterSupport)** : returns {results:[{src:string,name:string}], page:number, total:number}
+```javascript
+gin.mangapanda.filter({name:"gintama"})
+  .then(console.log);
+/* returns
+{ results: [ { name: 'Gintama', src: 'http://www.mangapanda.com/gintama' } ],
+  page: 0,
+  total: 0 }
+*/
+```
+
+*FilterSupport* : **note** not every site supports all the filters/genres.
+```typescript
+interface FilterSupport {
+  name?: string;
+  page?: number;
+  search?: {
+    name?: {
+      name: string,
+      condition?: FilterCondition,
+    },
+    author?: {
+      name: string,
+      condition?: FilterCondition,
+    },
+    artist?: {
+      name: string,
+      condition?: FilterCondition,
+    },
+    status?: FilterStatus,
+    rating?: {
+      value: number,
+      condition?: FilterCondition,
+    },
+    released?: {
+      value: number,
+      condition?: FilterCondition,
+    },
+    type?: FilterMangaType
+  };
+  genres?: Genre[];
+  outGenres?: Genre[];
+}
+
+enum Genre {
+  Action,
+  Adult,
+  Adventure,
+  AwardWinning,
+  Comedy,
+  Comic,
+  Cooking,
+  Demons,
+  Doujinshi,
+  Drama,
+  Ecchi,
+  Fantasy,
+  FourKoma,
+  GenderBender,
+  Harem,
+  Historical,
+  Horror,
+  Josei,
+  Lolicon,
+  Magic,
+  Manga,
+  Manhua,
+  Manhwa,
+  MartialArts,
+  Mature,
+  Mecha,
+  Medical,
+  Military,
+  Music,
+  Mystery,
+  Oneshot,
+  Psychological,
+  Romance,
+  SchoolLife,
+  SciFi,
+  Seinen,
+  Shotacon,
+  Shoujo,
+  ShoujoAi,
+  Shounen,
+  ShounenAi,
+  SliceOfLife,
+  Smut,
+  Sports,
+  Supernatural,
+  SuperPower,
+  Tragedy,
+  Vampire,
+  Webtoon,
+  Yaoi,
+  Yuri,
+
+  NoChapters,
+}
+
+
+enum FilterCondition {
+  Equal,
+  Contains,
+  NotContains,
+  StartsWith,
+  EndsWith,
+  Less,
+  Greater,
+  LessThan,
+  GreaterThan,
+}
+
+
+enum FilterStatus {
+  Ongoing,
+  Complete,
+  Cancelled
+}
+
+enum FilterMangaType {
+  Manga,
+  Manhwa,
+  Manhua,
+  Comic,
+}
+
+```
+
 
 - **mangas()** : returns [{name:string, src:string}]
+*note*: not every site will return all the mangas. 
 ```javascript
 import {mangafox} from 'gin-downloader';
 
@@ -110,8 +240,6 @@ mangafox.chapters("Gintama", 1)
     .then(Promise.all) //resolve all promises
     .then(console.log)
 ```
-
-
 
 
 
