@@ -11,13 +11,16 @@
 npm install gin-downloader --save
 ```
 
-Simple manga scrapper for famous online manga websites, it uses [libxmljs](https://github.com/libxmljs/libxmljs) for parsing.
+
+Promise based manga scrapper for node, which supports multiple sites.   
+
 
 
 ### Supported websites
 - [x] MangaFox
 - [x] MangaPanda
 - [x] MangaHere
+- [x] KissManga
 - [ ] BatoTo
 - [ ] BatoToEs
 - [ ] DeNineManga
@@ -29,7 +32,6 @@ Simple manga scrapper for famous online manga websites, it uses [libxmljs](https
 - [ ] HeavenManga
 - [ ] ItNineManga
 - [ ] JapScan
-- [ ] KissManga
 - [ ] LectureEnLigne
 - [ ] LeoManga
 - [ ] Manga_Tube
@@ -57,61 +59,60 @@ Simple manga scrapper for famous online manga websites, it uses [libxmljs](https
 This project is under **development**.
 
 ## Usage
-- **mangas()** : returns [{name:string, src:string}]
-- **latest()** : returns [{chapter:string, src:string, volume?:string}]
-- **info(name)** : returns object with site info {}
-- **chapters(name)** : returns [{chapter:string, src:string, volume?:string}]
-- **images(manga, chapter_number)** : return Promise<Promise<string>[]>
+- **import**
+single site
+```javascript
+import {mangafox} from 'gin-downloader';
+```
 
+or
 
 ```javascript
-import manga from 'gin-downloader';
-
-let name = 'Gintama';
-let chapter = 400;
-let site = manga.mangahere; // choose your favorite website -- mangafox, mangahere, mangapanda
-
-site.mangas()
-    .tap(x=>console.log(x))
-    .then(x=>site.latest())
-    .tap(()=>console.log('info:'))
-    .tap(x=>console.log(x))
-    .then(()=>site.info(name))
-    .tap(()=>console.log('info:'))
-    .tap(console.log) //bluebird promises
-    .then(()=>site.chapters(name))
-    .tap(()=>console.log('chapters:'))
-    .tap(x=>console.log(x))
-    .then((x)=>site.images(x[0].url)) //first chapter
-    .then(x=>Promise.all(x)) //images return an array of promises
-    .tap(()=>console.log('Images:'))
-    .tap(console.log)
-    //or
-    .tap(()=>console.log('using resolver'))
-    .then(site.resolve(name,chapter))
-    .tap(console.log)
-;
-
-````
+import gin from 'gin-downloader'; // as default
+//or
+import * as gin from 'gin-downloader'; //typescript
 
 
-## mangas()
-Type: `function`
-
-returns all mangas from the website
+gin.mangafox.mangas(); //get mangas
+```
 
 
-## latest()
-Type: `function`
 
-return latest added chapters  
+- **mangas()** : returns [{name:string, src:string}]
+```javascript
+import {mangafox} from 'gin-downloader';
 
-##info(name)
+mangafox.mangas()
+	.then(console.log); // prints all mangas from mangafox 
+```
 
-### name
-Type: `string`
+- **latest()** : returns [{number:number|string, src:string, volume?:string,name:string}]
+```javascript
+mangafox.latest() // latest chapters added to mangafox
+    .then(console.log); 
+```
 
-Manga name in the chosen 
+- **info(name)** : returns object with manga info {}
+```javascript
+mangafox.info("Gintama")
+    .then(console.log);
+```
+
+- **chapters(name)** : returns [{number:number|string, name:string, src:string, volume?:string}]
+```javascript
+mangafox.chapters("Gintama")
+	.then(console.log)
+```
+
+- **images(manga, chapter_number)** : return Promise<Promise<string>[]>
+```javascript
+mangafox.chapters("Gintama", 1)
+    .then(Promise.all) //resolve all promises
+	.then(console.log)
+```
+
+
+
 
 
 
