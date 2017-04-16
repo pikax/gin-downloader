@@ -6,6 +6,7 @@ import "./../../common";
 import {manga} from "./../../../src/sites/mangahere";
 import results from "./_results";
 import {helper} from "../../../src/sites/mangahere/names";
+import {FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
 
 
 describe("MangaHere live", () => {
@@ -110,5 +111,148 @@ describe("MangaHere live", () => {
 
     let img = await images[0];
     img.src.should.contain("mhcdn.net/store/manga/551/041.0/compressed/M7_Gintama_ch041_00.jpg");
+  });
+
+  describe("filter", () => {
+
+    it("should filter by name", async () => {
+      let filter: FilterSupport = {
+        name: "Gintama"
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(14);
+      mangas.results.should.deep.include({
+        name: "Gintama",
+        src : "http://www.mangahere.co/manga/gintama/"
+      });
+    });
+
+
+    it("should filter by name endWith", async () => {
+      let filter: FilterSupport = {
+        search: {
+          name : {
+            name: "Gintama",
+            condition : FilterCondition.EndsWith
+          }
+        }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length(1);
+      mangas.results.should.deep.include({
+        name: "Gintama",
+        src : "http://www.mangahere.co/manga/gintama/"
+      });
+    });
+
+    it("should filter by name startsWith", async () => {
+      let filter: FilterSupport = {
+        search: {
+          name : {
+            name: "Gintama",
+            condition : FilterCondition.StartsWith
+          }
+        }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(14);
+      mangas.results.should.deep.include({
+        name: "Gintama",
+        src : "http://www.mangahere.co/manga/gintama/"
+      });
+    });
+
+    it("should filter by in genre", async () => {
+      let filter: FilterSupport = {
+        genres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Drama, Genre.Historical, Genre.SciFi, Genre.Shounen, Genre.Supernatural]
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length(1);
+      mangas.results.should.deep.include({
+        name: "Gintama",
+        src : "http://www.mangahere.co/manga/gintama/"
+      });
+    });
+
+    it("should filter by out genre", async () => {
+      let filter: FilterSupport = {
+        outGenres: [Genre.Romance],
+        search: {
+          name: {
+            name: "gin",
+            condition: FilterCondition.StartsWith
+          },
+          author: {
+            name: "Sora",
+          }
+        }
+
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "Gintama",
+        src : "http://www.mangahere.co/manga/gintama/"
+      });
+    });
+
+    it("should filter by Author", async () => {
+      let filter: FilterSupport = {
+        search: {
+          author: {
+            name: "Sorachi",
+          }
+        }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.length.lte(10);
+      mangas.results.should.deep.include({
+        name: "Gintama",
+        src : "http://www.mangahere.co/manga/gintama/"
+      });
+    });
+
+    it("should filter by Status", async () => {
+      let filter: FilterSupport = {
+        search: {
+          status: FilterStatus.Complete,
+          name: {
+            name: "kenichi"
+          }
+        }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "Historys Strongest Disciple Kenichi",
+        src : "http://www.mangahere.co/manga/historys_strongest_disciple_kenichi/"
+      });
+    });
+
+    it("should filter by Type", async () => {
+      let filter: FilterSupport = {
+        search: {
+          name: {
+            name: "10"
+          },
+          type: FilterMangaType.Manhwa
+        }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "100 Ways to Kill A Seal",
+        src : "http://www.mangahere.co/manga/100_ways_to_kill_a_seal/"
+      });
+    });
   });
 });

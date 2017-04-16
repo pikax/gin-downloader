@@ -5,7 +5,8 @@
 import {resolve} from "url";
 
 import config from "./config";
-import {Chapter, ImageSource, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
+import {Chapter, FilteredResults, ImageSource, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
+import * as url from "url";
 
 export class Parser implements SiteParser {
   mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
@@ -91,6 +92,40 @@ export class Parser implements SiteParser {
     }
 
     return m[0].slice(5);
+  }
+
+
+  filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults {
+    const xpath = "//a[@class='manga_info name_one']";
+
+    let mangas = doc.find(xpath).map(x => {
+      return {
+        name: x.text(),
+        src: x.attr("href").value()
+      };
+    });
+
+    let page = 1;
+    let query = url.parse(doc.location).query;
+    if (query) {
+      let m = query.toString().match(/page=(\d+)/g);
+      if (m) {
+        page = +m[1];
+      }
+    }
+
+    let lastPageElement = doc.get("//div[@class='next-page']/a[last()-1]");
+    let lastPage = 1;
+
+    if (lastPageElement) {
+      lastPage = +lastPageElement.text();
+    }
+
+    return <FilteredResults>{
+      results: mangas,
+      page: page,
+      total: lastPage
+    };
   }
 }
 
