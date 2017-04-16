@@ -12,6 +12,10 @@ export class Helper implements NameHelper {
   }
 
   resolveUrl(name: string): string {
+    if (name === "fail") {
+      throw new Error("Failing");
+    }
+
     return resolve(`${config.site}/manga/`, this.toName(name) + "/");
   }
 }

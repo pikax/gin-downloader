@@ -9,6 +9,6 @@ export const config: SiteConfig = {
   latest_url : "localhost/latest",
   mangas_url : "localhost/mangas",
   site : "localhost"
-}
+};
 
 export default config;

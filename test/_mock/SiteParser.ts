@@ -4,31 +4,31 @@
 
 import {Chapter, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../src/declarations";
 
-import {chapters, latest, info, mangas, image, imagesPaths} from "./_results";
+import * as results from "./_results";
 
 export class Parser implements SiteParser {
   mangas(doc: MangaXDoc): MangaSource[] | Promise<MangaSource[]> {
-    return mangas;
+    return results.mangas;
   }
 
   latest(doc: MangaXDoc): Chapter[] | Promise<Chapter[]> {
-    return latest;
+    return results.latest;
   }
 
   info(doc: MangaXDoc): MangaInfo | Promise<MangaInfo> {
-    return info;
+    return results.info;
   }
 
   chapters(doc: MangaXDoc): Chapter[] | Promise<Chapter[]> {
-    return chapters;
+    return results.chapters;
   }
 
   imagesPaths(doc: MangaXDoc): string[] {
-    return imagesPaths;
+    return results.imagesPaths;
   }
 
   image(html: string): string {
-    return image;
+    return results.image;
   }
 }
 

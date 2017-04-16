@@ -6,9 +6,8 @@
 import {MangaXDoc, Request} from "../../src/declarations";
 
 
-
 export const getHtml = async (requestedPath: string, params: any = undefined) : Promise<string> => {
-  return "test";
+  return Promise.resolve("test");
 };
 
 

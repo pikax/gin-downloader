@@ -12,10 +12,10 @@ export const mangas: MangaSource[] = [
 ];
 
 export const chapters: Chapter[] = [
-  {name: "My Test 1", src: "chap/test1", chap_number: "1", volume: "v01"},
-  {name: "My Test 2", src: "chap/test2", chap_number: "2", volume: "v01"},
-  {name: "My Test 3", src: "chap/test3", chap_number: "3", volume: "v01"},
-  {name: "My Test 4", src: "chap/test4", chap_number: "4", volume: "v01"},
+  {name: "My Test 1", src: "chap/test1", chap_number: 1, volume: "v01"},
+  {name: "My Test 2", src: "chap/test2", chap_number: 2, volume: "v01"},
+  {name: "My Test 3", src: "chap/test3", chap_number: 3, volume: "v01"},
+  {name: "My Test 4", src: "chap/test4", chap_number: 4, volume: "v01"},
 ];
 
 export const latest: Chapter[] = chapters;

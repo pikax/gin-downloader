@@ -44,12 +44,12 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
   async mangas(): Promise<MangaSource[]> {
     this.debug("getting mangas");
 
-    let mangas = await this.request.getDoc(this.config.mangas_url)
+    let rmangas = await this.request.getDoc(this.config.mangas_url)
       .then(this.parser.mangas);
 
-    this.debug(`mangas: ${mangas.length}`);
+    this.debug(`mangas: ${rmangas.length}`);
 
-    return mangas;
+    return rmangas;
   }
 
   async latest(): Promise<Chapter[]> {
@@ -127,15 +127,12 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     }
   }
 
-  async images(name: string, chapter: number): Promise<Promise<ImageSource>[]> {
+  async images(name: string, chapter: any): Promise<Promise<ImageSource>[]> {
     if (!name) {
       throw new Error("Please provide a name");
     }
     if (!chapter) {
       throw new Error("Please provide a chapter");
-    }
-    if (!isNumber(chapter)) {
-      throw new Error("Please provide a valid chapter");
     }
 
     this.debug("getting images for %s : %s", name, chapter);
