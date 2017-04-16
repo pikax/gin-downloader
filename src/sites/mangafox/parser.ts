@@ -1,8 +1,9 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
-import {Chapter, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
+import {Chapter, FilteredResults, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
 import {resolve} from "url";
+import * as url from "url";
 
 import {config} from "./config";
 import {Element} from "libxmljs";
@@ -17,7 +18,7 @@ export class Parser implements SiteParser {
         src: resolve(config.site, x.attr("href").value())
       };
     });
-  };
+  }
 
   latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
     const xpath = "//dt/span/a[@class='chapter']";
@@ -89,6 +90,40 @@ export class Parser implements SiteParser {
     }
 
     return m[0].slice(5);
+  }
+
+
+  filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults {
+    const xpath = "//a[@class='title series_preview top']";
+
+    let mangas = doc.find(xpath).map(x => {
+      return {
+        name: x.text(),
+        src: x.attr("href").value()
+      };
+    });
+
+    let page = 1;
+    let query = url.parse(doc.location).query;
+    if (query) {
+      let m = query.toString().match(/page=(\d+)/g);
+      if (m) {
+        page = +m[1];
+      }
+    }
+
+    let lastPageElement = doc.get("//div[@id='nav']/ul/li[last()-1]/a");
+    let lastPage = 1;
+
+    if (lastPageElement) {
+      lastPage = +lastPageElement.text();
+    }
+
+    return <FilteredResults>{
+      results: mangas,
+      page: page,
+      total: lastPage
+    };
   }
 }
 

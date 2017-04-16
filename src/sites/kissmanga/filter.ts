@@ -104,9 +104,6 @@ const ordered = [
 
 
 
-
-
-
 export const processFilter = (filter: FilterSupport) : {src: string, params: any} => {
   filter = filter || {};
   let {genres, outGenres, search} = filter;
@@ -127,7 +124,6 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
       fauthor = authorFilter.name;
     }
 
-
     let statusFilter = search.status;
     if (statusFilter) {
       fstatus = resolveStatus(statusFilter);
@@ -144,7 +140,7 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
   };
 };
 
-function resolveStatus(status: FilterStatus){
+function resolveStatus(status: FilterStatus) {
   switch (status) {
     case FilterStatus.Ongoing:
       return "Ongoing";
@@ -155,7 +151,7 @@ function resolveStatus(status: FilterStatus){
   }
 }
 
-function inOutGenre(genre: Genre, inGenre: Genre[], outGenre: Genre[]){
+function inOutGenre(genre: Genre, inGenre: Genre[], outGenre: Genre[]) {
   if (inGenre && inGenre.indexOf(genre) > -1) {
     return 1;
   }

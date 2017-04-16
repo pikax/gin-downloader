@@ -1,7 +1,7 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, FilterSupport} from "../../declarations";
+import {Genre, FilterCondition, FilterSupport, FilterStatus, FilterMangaType} from "../../declarations";
 import {config} from "./config";
 import {resolve} from "url";
 import {map} from "lodash";
@@ -89,37 +89,139 @@ correctName[Genre.Yuri] = Genre.Yuri.toString();
 
 export const processFilter = (filter: FilterSupport) : {src: string, params: any} => {
   filter = filter || {};
-  let {genres, outGenres} = filter;
+  let {genres, outGenres, search, page} = filter;
 
-  const nameMethod = "name_method=cw"; // NOTE name search set to contains
-  const mangaName = `name=${filter.name || ""}`;
-  const type = `type=`;
-  const authorMethod = `author_method=`;
-  const author = `author=`;
-  const artistMethod = `artist_method=`;
-  const artist = `artist=`;
-  const genreFilter = map(Supported, x => `genre[${x}]=${inOutGenre(x, genres, outGenres)}`).join("&");
-  const releaseMethod = "release_method=eq";
-  const release = "released=";
-  const rating_method = "rating_method=eq";
-  const rating = "rating=";
-  const completed = "is_completed=";
-  const advopts = "advopts=1"; // NOTE not sure what is this
+  let filterType = null;
+
+  let filterName = filter.name;
+  let filterAuthor = null;
+  let filterArtist = null;
+  let filterReleased = null;
+  let filterRating = null;
+  let status = null;
+
+  let methodName = "cw";
+  let methodAuthor = "cw";
+  let methodArtist = "cw";
+  let methodReleased = "eq";
+  let methodRating = "eq";
 
 
-  const status = `status=`;
+
+  if (search) {
+    let { name, author, artist, rating, released, type} = search;
+
+    filterType = resolveType(type) || filterType;
+
+    if (name) {
+      filterName = name.name || filterName;
+      methodName = searchMethod(name.condition) || methodName;
+    }
+
+    if (search.status) {
+      status = resolveStatus(search.status) || status;
+    }
+
+    if (author) {
+      filterAuthor = author.name || filterAuthor;
+      methodAuthor = searchMethod(author.condition) || methodAuthor;
+    }
+
+    if (artist) {
+      filterArtist = artist.name || filterArtist;
+      methodArtist = searchMethod(artist.condition) || methodArtist;
+    }
+
+    if (rating) {
+      filterRating = rating.value || filterRating;
+      methodRating = searchMethod(rating.condition) || methodRating;
+    }
+
+    if (released) {
+      filterReleased = released.value || filterReleased;
+      methodReleased = searchMethod(released.condition) || methodReleased;
+    }
+  }
+
+  const nameMethod = `name_method=${methodName}`; // NOTE name search set to contains
+  const mangaName = `name=${filterName || ""}`;
+  const type = `type=${filterType || ""}`;
+  const authorMethod = `author_method=${methodAuthor}`;
+  const author = `author=${filterAuthor || ""}`;
+  const artistMethod = `artist_method=${methodArtist}`;
+  const artist = `artist=${filterArtist || ""}`;
+  const genreFilter = map(Supported, x => `genres%5B${correctName[x].replace(/ /g, "+")}%5D=${inOutGenre(x, genres, outGenres)}`).join("&");
+  const releaseMethod = `released_method=${methodReleased}`;
+  const release = `released=${filterReleased || ""}`;
+  const rating_method = `rating_method=${methodRating}`;
+  const rating = `rating=${filterRating || ""}`;
+  const completed = `is_completed=${resolveStatus(status) || ""}`;
+
+
+  let advopts = "advopts=1"; // NOTE not sure what is this
+
+  if (page) {
+    advopts += `&page=${page}`;
+  }
 
   return {src: resolve(config.site, "/search.php"),
     params: [nameMethod, mangaName,
+      type,
       authorMethod, author,
       artistMethod, artist,
       genreFilter,
       releaseMethod, release,
       rating_method, rating,
-      completed].join("&")
+      completed, advopts].join("&")
   };
 };
 
+
+function resolveType(type: FilterMangaType) {
+  switch (type) {
+    case FilterMangaType.Manga:
+      return 1;
+    case FilterMangaType.Manhwa:
+      return 2;
+    case FilterMangaType.Manhua:
+      return 3;
+
+    default:
+      return null;
+  }
+}
+
+function resolveStatus(status: FilterStatus) {
+  switch (status) {
+    case FilterStatus.Ongoing:
+      return 0;
+    case FilterStatus.Complete:
+      return 1;
+    default:
+      return null;
+  }
+}
+
+function searchMethod(condition: FilterCondition) {
+  switch (condition) {
+    case FilterCondition.Contains:
+      return "cw";
+    case FilterCondition.StartsWith:
+      return "bw";
+    case FilterCondition.EndsWith:
+      return "ew";
+
+    case FilterCondition.Equal:
+      return "eq";
+    case FilterCondition.LessThan:
+      return "lt";
+    case FilterCondition.GreaterThan:
+      return "gt";
+
+    default:
+      return "cw";
+  }
+}
 
 function inOutGenre(genre: Genre, inGenre: Genre[], outGenre: Genre[]): number {
   if (inGenre && inGenre.indexOf(genre) > -1) {
