@@ -48,15 +48,14 @@ describe("Helper.js", () => {
     parseDoc(manga).should.exist;
   });
 
-  it("should get doc", done => {
+  it("should get doc", async () => {
     let uri = "https://github.com/";
-    getDoc(uri)
-      .tap(x => {
-        x.find(`//a[@class='header-logo-invertocat']`).length.should.be.eq(1);
-      })
-      .should.eventually.exist
-      .and.property("location", uri)
-      .notify(done);
+    let doc = await getDoc(uri);
+
+    doc.find(`//a[@class='header-logo-invertocat']`).length.should.be.eq(1);
+
+    doc.should.have.property("location", uri);
+
   });
 
   it("should get bytes", done => {
