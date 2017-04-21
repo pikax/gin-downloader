@@ -31,8 +31,12 @@ describe("Batoto offline", () => {
 
   it("should resolve image path chapter", () => {
     let doc = parseDoc(fpChapter, {location: `http://bato.to/comic/_/comics/gintama-r94`});
-    parser.imagesPaths(doc)
-      .should.have.have.lengthOf(58);
+    let paths = parser.imagesPaths(doc);
+    console.log(paths);
+
+    paths.should.have.have.lengthOf(58);
+
+
   });
 
   it("should parse image from chapter", () => {
@@ -53,9 +57,9 @@ describe("Batoto offline", () => {
 
     let info = await parser.info(doc);
 
+
     info.should.exist;
     info.title.should.be.eq(results.manga.title);
-    info.released.should.be.eq(results.manga.released);
     info.synopsis.should.contain(results.manga.synopsis);
     info.status.should.be.eq(results.manga.status);
 
@@ -63,12 +67,12 @@ describe("Batoto offline", () => {
     info.authors.should.be.deep.eq(results.manga.authors);
     info.artists.should.be.deep.eq(results.manga.artists);
     info.genres.should.be.deep.eq(results.manga.genres);
-    info.scanlators.should.be.deep.eq(results.manga.scanlators);
+    info.type.should.be.deep.eq(results.manga.type);
   });
 
 
   it("should parse latest", () => {
-    let doc = parseDoc(fpLatest, {location: "http://bato.to/comic/_/comics/gintama-r94"});
+    let doc = parseDoc(fpLatest, {location: "http://bato.to"});
 
     parser.latest(doc)
       .should.have.length.to.be.greaterThan(98);

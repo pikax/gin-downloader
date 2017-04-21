@@ -38,31 +38,6 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
     return mangas;
   }
 
-
-  async images(name: string, chapNumber: number): Promise<Promise<ImageSource>[]> {
-    let chapters = await this.chapters(name);
-
-
-    let chapter = find(chapters, {chap_number: chapNumber});
-    if (!chapter) {
-      throw new Error("Chapter not found!");
-    }
-
-      let html = await this.request.getHtml(chapter.src);
-      let secret = this.parser.getSecret(html);
-
-      let vm = await this.getVM();
-
-      let imgs = this.parser.imagesList(html, secret, vm);
-
-      let srcs = imgs.map(x => {
-        return <ImageSource>{
-          name: parse(x).pathname.split("/").reverse()[0],
-          src: x
-        };
-      });
-      return srcs.map(x => Promise.resolve(x));
-  }
 }
 
 export const manga: Site = new Batoto();
