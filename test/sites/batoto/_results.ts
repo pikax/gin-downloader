@@ -2,40 +2,22 @@
  * Created by rodriguesc on 02/03/2017.
  */
 
-let manga = {
-  image: "http://h.mfcdn.net/store/manga/551/cover.jpg",
+let manga = { image: "http://img.bato.to/forums/uploads/501378b77edcdef486ef2260d1ad0b0e.jpg",
   title: "Gintama",
-  released: "2003",
-  synopsis: "Sakata Gintoki is a samurai living in an era when samurai are no longer needed",
-  status: "Ongoing",
-  ranked: "\r\n        95th, it has 221,700 monthly views.\r\n        ",
-  rating: "Average 4.91 / 5 out of 1050 total votes.",
-  synonyms:
-  [ "กินทามะ",
-    "銀魂",
-    "银魂",
-    "긴타마",
-    "은혼",
-    "Gin Tama",
-    "Silver Soul",
-    "غينتاما - الروح الفضيه",
-    "Сребърна душа (Bulgarian)",
-    "Gümüş Ruh (Turkish)",
-    "Jiwa Perak",
-    "Серебряная душа (Russian)" ],
+  synonyms: [ "ぎんたま", "銀魂", "Gintama", "은혼" ],
   authors: [ "Sorachi Hideaki" ],
   artists: [ "Sorachi Hideaki" ],
   genres:
-  [ "Action",
-    "Adventure",
-    "Comedy",
-    "Drama",
-    "Historical",
-    "Sci-fi",
-    "Shounen",
-    "Supernatural" ],
-  scanlators: [ "BakanaHaven" ]
-};
+    [ "Action",
+      "Adventure",
+      "Comedy",
+      "Drama",
+      "Historical",
+      "Sci-fi",
+      "Shounen" ],
+  synopsis: "The story focuses on an eccentric samurai, Gintoki Sakata, his (partial) apprentice Shinpachi Shimura, and a teenage alien girl who's from one of the strongest races in existence: Kagura. All three are \"free-lancers\" search for work in order to pay the monthly rent, which usually goes unpaid anyway. The story takes place in the Edo Period, but instead of the Europeans invading in the late 1860s they are invaded by aliens, which they call Amanto.",
+  status: "Ongoing",
+  type: "Manga (Japanese)" };
 
 export default {
   mangas_count: 30,

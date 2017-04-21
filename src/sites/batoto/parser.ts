@@ -1,5 +1,5 @@
 /**
- * Created by rodriguesc on 24/03/2017.
+ * Created by rodriguesc on 19/04/2017.
  */
 import "../../declarations";
 import {
@@ -9,9 +9,7 @@ import {
 import {resolve} from "url";
 
 import {config} from "./config";
-import {Script, createContext} from "vm";
-
-
+import {uniq} from "lodash";
 
 
 export class Parser implements SiteParser {
@@ -52,15 +50,15 @@ export class Parser implements SiteParser {
   }
 
   info(doc: MangaXDoc): Promise<MangaInfo> | MangaInfo {
-    let image = doc.get("///div[@class='rightBox'][1]/div[@class='barContent']/div[2]/img").attr("src").value();
-    let title = doc.get("//div[2]/a[@class='bigChar']").text();
-    let synonyms = doc.find("//div[@class='barContent']/div[2]/p[1]/a/text()").map(x => x.text());
-    let authors = [doc.get("//div[2]/p[3]/a[1]").text()];
-    let artists = [doc.get("//div[2]/p[3]/a[last()]").text()];
-    let genres = doc.find("//div[2]/p[2]/a").map(x => x.text());
-    let synopsis = doc.get("//div[@class='barContent']/div[2]/p[6]").text();
-    let status = doc.get("//p[4]/span[@class='info'][1]/following-sibling::text()[1]").text().trim();
-    let views = doc.get("//p[4]/span[@class='info'][1]/following-sibling::text()[2]").text().trim();
+    let image = doc.get("//div[@class='ipsBox']/div[1]/div[1]/img").attr("src").value();
+    let title = doc.get("//h1[@class='ipsType_pagetitle']").text().trim();
+    let synonyms = doc.find("//table[@class='ipb_table']/tr[1]/td[2]/span").map(x => x.text().trim());
+    let authors = [doc.get("//div[@class='ipsBox']/div[1]/div[2]/table[@class='ipb_table']/tr[2]/td[2]/a").text()];
+    let artists = [doc.get("//div[@class='ipsBox']/div[1]/div[2]/table[@class='ipb_table']/tr[3]/td[2]/a").text()];
+    let genres = doc.find("//table[@class='ipb_table']/tr[4]/td[2]/a/span").map(x => x.text().trim());
+    let synopsis = doc.get("//div[@class='ipsBox']/div/div/table[@class='ipb_table']/tr[7]/td[2]").text();
+    let status = doc.get("//div[@class='ipsBox']/div/div/table[@class='ipb_table']/tr[6]/td[2]").text().trim();
+    let type = doc.get("//div[@class='ipsBox']/div/div/table[@class='ipb_table']/tr[5]/td[2]").text().trim();
 
     return {
       image,
@@ -71,17 +69,27 @@ export class Parser implements SiteParser {
       genres,
       synopsis,
       status,
-      views,
+      type,
     };
   }
 
   chapters(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
-    const xpath = "//table/tr/td[1]/a";
+    const xpath = "//table[@class='ipb_table chapters_list']/tbody/tr/td[1]/a";
+
+    let items = doc.find(xpath)
+      .map(x => {
+          return {
+            href: x.attr("href").value(),
+            language: x.get("../following::td/div").attr("title").value(),
+            group: x.get("../../td[3]/a").text()
+          };
+        }
+      );
 
     return doc.find(xpath)
       .map(x => {
         return {
-          chap_number : x.text().trim().lastDigit(),
+          chap_number : x.text().trim(), // todo fix me
           name: x.text().leftTrim(),
           src: resolve(config.site, x.attr("href").value())
         };
@@ -95,28 +103,20 @@ export class Parser implements SiteParser {
       });
   }
 
-
-  imagesList(html: string, secret: string, vm: Script): string[] {
-    let lstImages = html.getMatches(/wrapKA\("([^"]*)"/gm, 1);
-
-    const sandbox = {
-      lstImages,
-      imgs : Array<string>(),
-      secret : secret,
-      alert : console.log
-    };
-    let context = createContext(sandbox);
-    vm.runInContext(context);
-
-    return sandbox.imgs.map(x => /url=([^&]*)/.exec(x)[1]).map(decodeURIComponent);
-  }
-
   imagesPaths(doc: MangaXDoc): string[] {
-    throw new Error("no needed");
+    let xpath = "//select[@id='page_select'][1]/option";
+    return uniq(doc.find(xpath).map(x => x.attr("value").value()));
   }
 
   image(html: string): string {
-    throw new Error("no needed");
+    let regex = /(http:\/\/img\.bato\.to\/comics\/g\/[^"]*)/gm;
+
+    let m = regex.exec(html); // get the first match
+
+    if (!m) {
+      throw new Error("Image not found");
+    }
+    return m[0];
   }
 
 

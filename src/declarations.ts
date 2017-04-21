@@ -44,6 +44,10 @@ export interface Chapter {
   src: string;
   volume?: string;
   name?: string;
+
+  language?: string;
+  scanlator?: string;
+  dateAdded?: string;
 }
 
 
@@ -66,6 +70,7 @@ export interface MangaInfo {
   direction?: string;
 
   views?: string;
+  type?: string;
 }
 
 
