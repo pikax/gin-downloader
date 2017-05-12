@@ -5,11 +5,12 @@
 [![dependencies Status](https://david-dm.org/pikax/gin-downloader/status.svg)](https://david-dm.org/pikax/gin-downloader)
 [![devDependencies Status](https://david-dm.org/pikax/gin-downloader/dev-status.svg)](https://david-dm.org/pikax/gin-downloader?type=dev)
 [![Known Vulnerabilities](https://snyk.io/test/npm/gin-downloader/badge.svg)](https://snyk.io/test/npm/gin-downloader)
-[![Code Climate](https://lima.codeclimate.com/github/pikax/gin-downloader/badges/gpa.svg)](https://lima.codeclimate.com/github/pikax/gin-downloader)
+
+
 
 ``` bash
 npm install gin-downloader --save
-```
+``` 
 
 
 Promise based manga scrapper for node, which supports multiple sites.   
@@ -55,8 +56,6 @@ Promise based manga scrapper for node, which supports multiple sites.
 - [ ] MangaUpdates **only info**
 - [ ] MyAnimeList **only info**
 
-## Note
-This project is under **development**.
 
 ## Usage
 - **import**
@@ -250,3 +249,5 @@ mangafox.chapters("Gintama", 1)
 ## Disclaimer
 
 The developer of this application does not have any affiliation with the content providers available.
+
+
