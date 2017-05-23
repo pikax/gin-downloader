@@ -227,6 +227,11 @@ export enum FilterCondition {
 }
 
 
+export enum GenreCondition {
+  And = 0,
+  Or = 1,
+}
+
 export enum FilterStatus {
   Ongoing,
   Complete,
@@ -266,10 +271,17 @@ export interface FilterSupport {
       value: number,
       condition?: FilterCondition,
     },
-    type?: FilterMangaType
+    type?: FilterMangaType,
+
+    genre?: { // todo use this object instead of genres/outGenres
+      inGenres?: Genre[];
+      outGenres?: Genre[];
+      condition?: GenreCondition;
+    };
   };
-  genres?: Genre[];
-  outGenres?: Genre[];
+
+  genres?: Genre[]; // deprecated
+  outGenres?: Genre[]; // deprecated
 }
 
 
