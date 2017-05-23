@@ -5,13 +5,12 @@
 let manga = { image: "http://img.bato.to/forums/uploads/501378b77edcdef486ef2260d1ad0b0e.jpg",
   title: "Gintama",
   synonyms: [ "ぎんたま", "銀魂", "Gintama", "은혼" ],
-  authors: [ "Sorachi Hideaki" ],
-  artists: [ "Sorachi Hideaki" ],
+  authors: [ "sorachi hideaki" ],
+  artists: [ "sorachi hideaki" ],
   genres:
     [ "Action",
       "Adventure",
       "Comedy",
-      "Drama",
       "Historical",
       "Sci-fi",
       "Shounen" ],
@@ -19,11 +18,13 @@ let manga = { image: "http://img.bato.to/forums/uploads/501378b77edcdef486ef2260
   status: "Ongoing",
   type: "Manga (Japanese)" };
 
+
+
 export default {
   mangas_count: 30,
   manga_name : manga.title,
 
-  chapter_count : 628,
+  chapter_count : 10, // unregistered users are only allow to read the last chapters
 
   manga,
   image_src : "http://img.bato.to/comics/g/gintama/1/yanime/English/read4d76e94677ad0/Gintama_v01_ch01%5BYanime%5D_Gintama_v01_ch01_p014d76e94716071.png"

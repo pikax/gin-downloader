@@ -50,7 +50,7 @@ describe("KissManga live", () => {
     for (let obj of mangas){
       let expected = obj.src;
       let origName = obj.name;
-      let finalUrl = helper.resolveUrl(origName);
+      let finalUrl = manga.resolveMangaUrl(origName);
 
       finalUrl.should.be.eq(expected, `with name "${origName}"`);
 

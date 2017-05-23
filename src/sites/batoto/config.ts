@@ -8,9 +8,8 @@ const site = "http://bato.to/";
 export const config: SiteConfig = {
     name : "Batoto",
     site : site,
-    mangas_url : resolve(site, "/search/"),
-    latest_url : resolve(site, "/")
-
+    mangas_url : resolve(site, "/search_ajax"),
+    latest_url : resolve(site, "/"),
 };
 export default config;
 

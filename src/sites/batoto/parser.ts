@@ -39,14 +39,15 @@ export class Parser implements SiteParser {
     return doc.find(xpath)
       .map(x => {
         return <Chapter> {
-          chap_number: x.text(),
+          chap_number: Parser.extractChapterNumber(x.text()),
+          volume: Parser.extractVolumeNumber(x.text()),
           src: resolve(config.site, x.attr("href").value()),
-          name: x.get("../preceding-sibling::td/a").text().trim(),
+          name: Parser.extractChapterName(x.get("../../preceding-sibling::tr/td[@colspan = '5']").text().trim()),
+          language :  x.get("../following-sibling::td[1]/div").attr("title").value().trim(),
+          scanlator: x.get("../following-sibling::td[2]/a").text().trim(),
+          dateAdded: x.get("../following-sibling::td[3]").text().trim(),
         };
       });
-
-
-    // return doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
   }
 
   info(doc: MangaXDoc): Promise<MangaInfo> | MangaInfo {
@@ -74,33 +75,47 @@ export class Parser implements SiteParser {
   }
 
   chapters(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
-    const xpath = "//table[@class='ipb_table chapters_list']/tbody/tr/td[1]/a";
+    // const xpath = "//table[@class='ipb_table chapters_list']/tbody/tr/td[1]/a";
 
-    let items = doc.find(xpath)
-      .map(x => {
-          return {
-            href: x.attr("href").value(),
-            language: x.get("../following::td/div").attr("title").value(),
-            group: x.get("../../td[3]/a").text()
-          };
-        }
-      );
+    const xpath = "//table[@class='ipb_table chapters_list']/tbody/tr/td[1]/a/../.."; // tr
+
+    // let items = doc.find(xpath)
+    //   .map(x => {
+    //       return {
+    //         href: x.attr("href").value(),
+    //         language: x.get("../following::td/div").attr("title").value(),
+    //         group: x.get("../../td[3]/a").text()
+    //       };
+    //     }
+    //   );
+
+    // return doc.find(xpath)
+    //   .map(x => {
+    //     return {
+    //       chap_number : x.text().trim(), // todo fix me
+    //       name: x.text().leftTrim(),
+    //       src: resolve(config.site, x.attr("href").value())
+    //     };
+    //   })
+    //   .map(x => {
+    //     return {
+    //       chap_number: x.chap_number,
+    //       name: x.name,
+    //       src : x.src
+    //     };
+    //   });
+
 
     return doc.find(xpath)
-      .map(x => {
-        return {
-          chap_number : x.text().trim(), // todo fix me
-          name: x.text().leftTrim(),
-          src: resolve(config.site, x.attr("href").value())
-        };
-      })
-      .map(x => {
-        return {
-          chap_number: x.chap_number,
-          name: x.name,
-          src : x.src
-        };
-      });
+      .map(x => ({
+        chap_number: Parser.extractChapterNumber(x.get("td[1]/a").text().trim()),
+        volume: Parser.extractVolumeNumber(x.get("td[1]/a").text().trim()),
+        src: resolve(config.site, x.get("td[1]/a").attr("href").value()),
+        name: Parser.extractChapterName(x.get("td[1]/a").text().trim()),
+        language :   x.get("td[2]/div").attr("title").value().trim(),
+        scanlator: x.get("td[3]/a").text().trim(),
+        dateAdded: x.get("td[5]").text().trim(),
+      }));
   }
 
   imagesPaths(doc: MangaXDoc): string[] {
@@ -121,13 +136,34 @@ export class Parser implements SiteParser {
 
 
   filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults {
+    let results = this.mangas(doc);
+    let next = doc.find("//input[@class='input_submit']");
+
+
+    let {location} = doc;
+    let matches = location.match(/\d+$/); // get page | &p=11
+    let match = matches && +matches[0];
+
+
     return <FilteredResults>{
-      results: this.mangas(doc),
-      page: 1,
-      total: 1
+      results: results,
+      page: match || 1,
+      total: (next.length && 99999) || +match || 1
     };
   }
-
+  static extractChapterNumber(text: string): number {
+    console.log(text);
+    let match = text.match(/Ch\.\d+/);
+    return match && match[0] && +match[0].slice(3);
+  }
+  static extractVolumeNumber(text: string): string {
+    let match = text.match(/Vol\.\d+/);
+    return match && match[0] && match[0].slice(4);
+  }
+  static extractChapterName(text: string): string {
+    let index = text.indexOf(":");
+    return (index > 0 && text.slice(index + 2)) || text;
+  }
 }
 
 export const parser = new Parser();

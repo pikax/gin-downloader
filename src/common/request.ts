@@ -7,10 +7,12 @@ const debug = require("debug")("gin-downloader:request");
 const verbose = require("debug")("gin-downloader:request:verbose");
 const error = require("debug")("gin-downloader:error");
 
+
 import "../declarations";
 import {parseDoc} from "./helper";
 
 import * as url from "url";
+import * as qs from "qs";
 import {MangaXDoc, Request} from "../declarations";
 
 const requestRetry = require("requestretry");
@@ -82,8 +84,8 @@ export const getBytes = (requestedPath: string, params: any ) : Promise<any> => 
   return RequestBytes(requestedPath, params, "GET");
 };
 
-export const getDoc = (requestedPath: string) : Promise<MangaXDoc> => {
-  return getHtml(requestedPath).then(x => parseDoc(x, {location: requestedPath}));
+export const getDoc = (requestedPath: string, params?: any) : Promise<MangaXDoc> => {
+  return getHtml(requestedPath).then(x => parseDoc(x, {location: resolveFinalLocation(requestedPath, params)}));
 };
 
 
@@ -97,8 +99,24 @@ export const postHtml = async (requestedPath: string, params?: any) : Promise<st
   return bytes.toString();
 };
 export const postDoc = (requestedPath: string, params?: any) : Promise<MangaXDoc> => {
-  return postHtml(requestedPath, params).then(x => parseDoc(x, {location: requestedPath}));
+  return postHtml(requestedPath, params).then(x => parseDoc(x, {location: resolveFinalLocation(requestedPath, params)  }));
 };
+
+
+function resolveFinalLocation(requestedPath: string, params?: any) {
+  if (!params) {
+    return requestedPath;
+  }
+  let queryString;
+  if (typeof params === "string") {
+    queryString = params;
+  }
+  else {
+    queryString = qs.stringify(params);
+  }
+
+  return `${requestedPath}?${queryString}`;
+}
 
 export const request: Request = {
   getBytes,
