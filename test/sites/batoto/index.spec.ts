@@ -5,16 +5,16 @@
 
 import "./../../common";
 
-import {mangafox as manga} from "./../../../src";
+import {manga} from "./../../../src/sites/batoto";
 import results from "./_results";
-import {helper} from "../../../src/sites/mangafox/names";
+import {helper} from "../../../src/sites/batoto/names";
 import {FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
 
 
 describe("Batoto live", () => {
 
   it("should get all mangas", done => {
-    manga.mangas({name: "Gintama"})
+    manga.mangas()
       .should.eventually.have.length.gte(results.mangas_count)
       .notify(done);
   });
@@ -130,7 +130,7 @@ describe("Batoto live", () => {
       mangas.results.should.deep.include({
         name: "Gintama",
         src : "http://mangafox.me/manga/gintama/"
-      });
+      });k
     });
 
 
