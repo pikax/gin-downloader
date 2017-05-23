@@ -27,10 +27,7 @@ describe("Batoto live", () => {
 
     let mangas = await manga.latest();
 
-    console.log(mangas);
-
     mangas.should.have.length.gte(90);
-
   });
 
   it("should get info", done => {
@@ -109,23 +106,19 @@ describe("Batoto live", () => {
 
     let chapters = await manga.chapters(name);
 
-    console.log(chapters);
-
-
     chapters.should.have.length.gte(results.chapter_count);
-
   });
 
-  it("should get Zui Wu Dao : chapter 42", async () => {
-    let name = "Zui Wu Dao";
-    let chapter = 42;
+  it("should get Gintama : chapter 635", async () => {
+    let name = "Gintama";
+    let chapter = 635;
 
     let images = await manga.images(name, chapter);
     images.should.to.exist;
     images.should.have.length.gte(17);
 
     let img = await images[0];
-    img.src.should.contain("mfcdn.net/store/manga/15973/042.0/compressed/k001.jpg");
+    img.src.should.contain("http://img.bato.to/comics/2017/05/20/g/read591fb1e5ad4d4/img000001.png");
   });
 
 

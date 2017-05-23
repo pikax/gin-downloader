@@ -6,13 +6,16 @@
 import "./../common";
 
 
-import {getDoc, getHtml} from "../../src/common/request";
+import {GinRequest} from "../../src/request";
 import {parseDoc} from "../../src/common/helper";
-import * as cfRequest from "../../src/common/cfRequest";
+import {strategy} from "../../src/request/requestRetryStrategy";
+import {strategy as cfStrategy} from "../../src/request/requestCloudFareStrategy";
 
 import {HTMLDocument} from "libxmljs";
 
 
+const request = new GinRequest(strategy);
+const cfRequest = new GinRequest(cfStrategy);
 
 describe("Helper.js", () => {
   let manga: string = `
@@ -28,14 +31,14 @@ describe("Helper.js", () => {
 
   it("should not get html", done => {
     let uri = "ht222tps://github.com/";
-    getDoc(uri)
+    request.getDoc(uri)
       .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });
 
   it("should get html", done => {
     let uri = "https://github.com/";
-    getDoc(uri)
+    request.getDoc(uri)
       .then(doc => doc.find(`//a[@class='header-logo-invertocat']`))
       .then(x => {
         x.should.exist;
@@ -50,7 +53,7 @@ describe("Helper.js", () => {
 
   it("should get doc", async () => {
     let uri = "https://github.com/";
-    let doc = await getDoc(uri);
+    let doc = await request.getDoc(uri);
 
     doc.find(`//a[@class='header-logo-invertocat']`).length.should.be.eq(1);
 
@@ -61,14 +64,14 @@ describe("Helper.js", () => {
   it("should get bytes", done => {
     let uri = "https://github.com/";
 
-    getHtml(uri, {})
+    request.getHtml(uri)
       .should.eventually.exist.and.notify(done);
   });
 
   it("should get kissmanga by bypassing cloudfare protection", done => {
     let uri = "http://kissmanga.com/";
 
-    cfRequest.getHtml(uri, {})
+    cfRequest.getHtml(uri)
       .should.eventually.not.contain("Checking your browser before accessing").notify(done);
   });
 });

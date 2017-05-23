@@ -8,16 +8,17 @@ import {config} from "./config";
 import {Helper} from "./names";
 import {FilteredResults, FilterSupport, ImageSource, MangaSource, Site, SiteConfig} from "../../declarations";
 import {find} from "lodash";
-import {request} from "../../common/cfRequest";
 import {parse, resolve} from "url";
 import {Script} from "vm";
 import {processFilter} from "./filter";
+import {strategy} from "../../request/requestCloudFareStrategy";
+import {OptionsWithUrl} from "request";
 
 
 
 export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements Site {
   public constructor() {
-    super(config, new Parser(), new Helper(), request);
+    super(config, new Parser(), new Helper(), strategy);
   }
 
   private async getVM(): Promise<Script> {
@@ -46,7 +47,12 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
 
     let search = processFilter(filter);
 
-    let doc = await this.request.postDoc(search.src, search.params);
+    let opts = this.buildMangasRequest(search.src);
+    let headers = opts.headers || {};
+    headers['Content-Type'] = headers['Content-Type'] || 'application/x-www-form-urlencoded; charset=UTF-8';
+    headers['Content-Length'] = headers['Content-Length'] || search.params.length;
+    opts.body = search.params.toString();
+    let doc = await this.request.postDoc(opts);
     let mangas = await this.parser.filter(doc);
 
     this.debug(`mangas: ${mangas.results.length}`);
@@ -79,6 +85,11 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
       });
       return srcs.map(x => Promise.resolve(x));
   }
+
+  // protected buildMangasRequest(url: string): OptionsWithUrl{
+  //   let opts = this.buildRequest(url);
+  //
+  // }
 }
 
 export const manga: Site = new KissManga();

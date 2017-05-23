@@ -79,33 +79,6 @@ export class Parser implements SiteParser {
 
     const xpath = "//table[@class='ipb_table chapters_list']/tbody/tr/td[1]/a/../.."; // tr
 
-    // let items = doc.find(xpath)
-    //   .map(x => {
-    //       return {
-    //         href: x.attr("href").value(),
-    //         language: x.get("../following::td/div").attr("title").value(),
-    //         group: x.get("../../td[3]/a").text()
-    //       };
-    //     }
-    //   );
-
-    // return doc.find(xpath)
-    //   .map(x => {
-    //     return {
-    //       chap_number : x.text().trim(), // todo fix me
-    //       name: x.text().leftTrim(),
-    //       src: resolve(config.site, x.attr("href").value())
-    //     };
-    //   })
-    //   .map(x => {
-    //     return {
-    //       chap_number: x.chap_number,
-    //       name: x.name,
-    //       src : x.src
-    //     };
-    //   });
-
-
     return doc.find(xpath)
       .map(x => ({
         chap_number: Parser.extractChapterNumber(x.get("td[1]/a").text().trim()),
@@ -120,18 +93,34 @@ export class Parser implements SiteParser {
 
   imagesPaths(doc: MangaXDoc): string[] {
     let xpath = "//select[@id='page_select'][1]/option";
-    return uniq(doc.find(xpath).map(x => x.attr("value").value()));
+    return uniq(doc.find(xpath).map(x => x.attr("value").value())).map(Parser.convertChapterReaderUrl);
+  }
+
+  static convertChapterReaderUrl(src: string) {
+    let idNumber = src.split("#")[1];
+
+    let pg = 1;
+
+    let pgMatch = /_\d+$/.exec(idNumber);
+
+    if (pgMatch) {
+      pg = +pgMatch[0].slice(1);
+
+      idNumber = idNumber.replace(pgMatch[0], "");
+    }
+
+    return resolve(config.site, `/areader?id=${idNumber}&p=${pg}`);
   }
 
   image(html: string): string {
-    let regex = /(http:\/\/img\.bato\.to\/comics\/g\/[^"]*)/gm;
+    let regex = /(?:id="comic_page".*)((http|https):\/\/img\.bato\.to\/comics\/[^"]*)/gm;
 
     let m = regex.exec(html); // get the first match
 
     if (!m) {
       throw new Error("Image not found");
     }
-    return m[0];
+    return m[1];
   }
 
 
@@ -144,7 +133,6 @@ export class Parser implements SiteParser {
     let matches = location.match(/\d+$/); // get page | &p=11
     let match = matches && +matches[0];
 
-
     return <FilteredResults>{
       results: results,
       page: match || 1,
@@ -152,7 +140,6 @@ export class Parser implements SiteParser {
     };
   }
   static extractChapterNumber(text: string): number {
-    console.log(text);
     let match = text.match(/Ch\.\d+/);
     return match && match[0] && +match[0].slice(3);
   }

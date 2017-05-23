@@ -7,13 +7,13 @@ import {config} from "./config";
 import {Helper} from "./names";
 import {resolve} from "url";
 import {FilteredResults, FilterSupport, SiteConfig} from "../../declarations";
-import {request} from "../../common/request";
 import {processFilter} from "./filter";
+import {strategy} from "../../request/requestRetryStrategy";
 
 
 export class MangaPanda extends MangaSite<SiteConfig, Parser, Helper> {
   public constructor() {
-    super(config, new Parser(), new Helper(), request);
+    super(config, new Parser(), new Helper(), strategy);
   }
 
   protected async resolveChapterSource(name: string, chapter: number): Promise<string> {
