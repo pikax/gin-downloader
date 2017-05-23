@@ -15,6 +15,8 @@ import {request} from "../../common/cfRequest";
 import {parse, resolve} from "url";
 import {Script} from "vm";
 import {processFilter} from "./filter";
+import RequestRetryStrategy, {strategy} from "../../request/requestRetryStrategy";
+import {OptionsWithUrl} from "request";
 
 
 
@@ -23,7 +25,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
   private _urlCache: {[id: string]: string} = {}; // provide a cache for resolved urls
 
   public constructor() {
-    super(config, new Parser(), new Helper(), request);
+    super(config, new Parser(), new Helper(), strategy);
   }
 
   async resolveMangaUrl(name: string)  {
@@ -80,6 +82,20 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
     return mangas;
   }
 
+
+  async resolveChapterSource(name: string, chapter: number): Promise<string> {
+    let src = await super.resolveChapterSource(name, chapter);
+    if (!src) {
+      return src;
+    }
+    return Parser.convertChapterReaderUrl(src);
+  }
+
+  buildChapterRequest(url: string) : OptionsWithUrl {
+    let opts = super.buildRequest(url);
+    opts.headers = {...opts.headers, Referer: "http://bato.to/reader" };
+    return opts;
+  }
 }
 
 export const manga: Site = new Batoto();

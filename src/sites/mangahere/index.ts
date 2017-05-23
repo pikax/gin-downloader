@@ -6,13 +6,13 @@ import {Parser} from "./parser";
 import {config} from "./config";
 import {Helper} from "./names";
 import {FilteredResults, FilterSupport, SiteConfig} from "../../declarations";
-import {request} from "../../common/request";
 import {processFilter} from "./filter";
+import {strategy} from "../../request/requestRetryStrategy";
 
 
 export class MangaHere extends MangaSite<SiteConfig, Parser, Helper> {
   public constructor() {
-    super(config, new Parser(), new Helper(), request);
+    super(config, new Parser(), new Helper(), strategy);
   }
 
 

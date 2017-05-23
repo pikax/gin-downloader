@@ -9,12 +9,12 @@ import {Site, SiteConfig} from "../../src/declarations";
 import {Parser} from "./SiteParser";
 import {Helper} from "./NameHelper";
 import {config} from "./SiteConfig";
-import {request} from "./Request";
+import {strategy} from "./Strategy";
 
 
 export class MockSite extends MangaSite<SiteConfig, Parser, Helper> implements Site {
   public constructor() {
-    super(config, new Parser, new Helper(), request);
+    super(config, new Parser, new Helper(), strategy);
   }
 }
 
