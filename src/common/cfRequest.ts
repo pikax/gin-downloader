@@ -1,6 +1,8 @@
 /**
  * Created by rodriguesc on 27/03/2017.
  */
+
+import * as qs from "qs";
 import {MangaXDoc, Request} from "../declarations";
 import {parseDoc} from "./helper";
 
@@ -29,17 +31,16 @@ export const getBytes = (requestedPath: string, params?: any) : Promise<Buffer> 
   return requestMethod("GET", requestedPath, params);
 };
 
-export const getDoc = (requestedPath: string) : Promise<MangaXDoc> => {
-  return getHtml(requestedPath).then(x => parseDoc(x, {location: requestedPath}));
+export const getDoc = (requestedPath: string, params?: any) : Promise<MangaXDoc> => {
+  return getHtml(requestedPath).then(x => parseDoc(x, {location: resolveFinalLocation(requestedPath, params)}));
 };
 
 export const postBytes = (requestedPath: string, params?: any) : Promise<Buffer> => {
   return new Promise((res, rej) => {
-    cloudscraper.post(requestedPath, params, (err: number, response: any, body: Buffer) => {
+    cloudscraper.post(requestedPath, qs.parse(params), (err: number, response: any, body: Buffer) => {
       if (err) {
         return rej(err);
       }
-
       return res(body);
     });
   });
@@ -50,8 +51,24 @@ export const postHtml = async (requestedPath: string, params?: any) : Promise<st
   return bytes.toString();
 };
 export const postDoc = (requestedPath: string, params?: any) : Promise<MangaXDoc> => {
-  return postHtml(requestedPath, params).then(x => parseDoc(x, {location: requestedPath}));
+  return postHtml(requestedPath, params).then(x => parseDoc(x, {location: resolveFinalLocation(requestedPath, params)}));
 };
+
+
+function resolveFinalLocation(requestedPath: string, params?: any) {
+  if (!params) {
+    return requestedPath;
+  }
+  let queryString;
+  if (typeof params === "string") {
+    queryString = params;
+  }
+  else {
+    queryString = qs.stringify(params);
+  }
+
+  return `${requestedPath}?${queryString}`;
+}
 
 const requestMethod = (method: string, requestedPath: string, params?: any): Promise<Buffer> => {
   let request = {
@@ -77,6 +94,7 @@ const requestMethod = (method: string, requestedPath: string, params?: any): Pro
     });
   });
 };
+
 
 
 export const request: Request = {

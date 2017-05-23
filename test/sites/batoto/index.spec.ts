@@ -19,17 +19,25 @@ describe("Batoto live", () => {
       .notify(done);
   });
 
-  it("should get latest chaps", done => {
-    manga.latest()
-      .should.eventually
-      .to.have.length.gte(90)
-      .notify(done);
+  it("should get latest chaps", async () => {
+    // manga.latest()
+    //   .should.eventually
+    //   .to.have.length.gte(90)
+    //   .notify(done);
+
+    let mangas = await manga.latest();
+
+    console.log(mangas);
+
+    mangas.should.have.length.gte(90);
+
   });
 
   it("should get info", done => {
     let name = "Gintama";
     manga.info(name)
       .then(info => {
+
         info.should.exist;
 
         info.title.should.be.eq(results.manga.title);
@@ -38,8 +46,8 @@ describe("Batoto live", () => {
         info.status.should.be.eq(results.manga.status);
 
         info.synonyms.should.be.deep.eq(results.manga.synonyms);
-        info.authors.should.be.deep.eq(results.manga.authors);
-        info.artists.should.be.deep.eq(results.manga.artists);
+        info.authors.map(x => x.toLowerCase()).should.be.deep.eq(results.manga.authors); // the website keeps changing between lower and uppercase
+        info.artists.map(x => x.toLowerCase()).should.be.deep.eq(results.manga.artists); // the website keeps changing between lower and uppercase
         info.genres.should.be.deep.eq(results.manga.genres);
         // info.scanlators.should.be.deep.eq(results.manga.scanlators);
       }).should.eventually.notify(done);
@@ -51,7 +59,7 @@ describe("Batoto live", () => {
     for (let obj of mangas){
       let expected = obj.src;
       let origName = obj.name;
-      let finalUrl = helper.resolveUrl(origName);
+      let finalUrl = await manga.resolveMangaUrl(origName);
 
       finalUrl.should.be.eq(expected, `with name "${origName}"`);
     }
@@ -73,7 +81,7 @@ describe("Batoto live", () => {
     let name = "Gintamass";
 
     manga.chapters(name)
-      .should.eventually.be.empty
+      .should.eventually.be.rejectedWith(Error)
       .notify(done);
   });
 
@@ -96,12 +104,16 @@ describe("Batoto live", () => {
   });
 
 
-  it("should get chapters", done => {
+  it("should get chapters", async () => {
     let name = "Gintama";
 
-    manga.chapters(name)
-      .should.eventually.have.length.gte(results.chapter_count)
-      .notify(done);
+    let chapters = await manga.chapters(name);
+
+    console.log(chapters);
+
+
+    chapters.should.have.length.gte(results.chapter_count);
+
   });
 
   it("should get Zui Wu Dao : chapter 42", async () => {
@@ -130,7 +142,7 @@ describe("Batoto live", () => {
       mangas.results.should.deep.include({
         name: "Gintama",
         src : "http://mangafox.me/manga/gintama/"
-      });k
+      });
     });
 
 

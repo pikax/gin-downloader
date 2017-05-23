@@ -104,6 +104,8 @@ export interface Site {
   infoChapters(name: string): Promise<{info: MangaInfo, chapters: Chapter[]}>;
 
   images(name: string, chapter: number): Promise<Promise<ImageSource>[]>;
+
+  resolveMangaUrl(name: string): Promise<string>|string;
 }
 
 
@@ -115,7 +117,7 @@ declare global {
     firstDigit(): number;
     leftTrim(): string;
     decodeEscapeSequence(): string;
-    getMatches(regex: RegExp, index: number): string[];
+    getMatches(regex: RegExp, index?: number): string[];
   }
 }
 
@@ -145,7 +147,7 @@ String.prototype.decodeEscapeSequence = function() {
 };
 
 
-String.prototype.getMatches = function(regex: RegExp, index: number) {
+String.prototype.getMatches = function(regex: RegExp, index?: number) {
   index || (index = 1); // default to the first capturing group
   let matches = [];
   let match;

@@ -76,7 +76,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     this.debug(`getting info for ${name}`);
 
     try {
-      let src = this.nameHelper.resolveUrl(name);
+      let src = await this.resolveMangaUrl(name);
       let info = await this.request.getDoc(src).then(this.parser.info);
       this.verbose("info:%o", info);
       this.debug(`got info for ${name}`);
@@ -97,8 +97,10 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     this.debug(`getting chapters for ${name}`);
 
     try {
-      let src = this.nameHelper.resolveUrl(name);
+      let src = await this.resolveMangaUrl(name);
+      console.log(src);
       let chapters = await this.request.getDoc(src).then(this.parser.chapters);
+      console.log(chapters);
       this.verbose("chapters:%o", chapters);
       this.debug(`got chapters for ${name}`);
 
@@ -106,6 +108,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     }
     catch (e) {
       this.debug(e);
+      console.log(e);
       throw new Error(`${name} not found!`);
     }
   }
@@ -118,7 +121,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     this.debug(`getting info & chapters for ${name}`);
 
     try {
-      let src = this.nameHelper.resolveUrl(name);
+      let src = await this.resolveMangaUrl(name);
       let doc = await this.request.getDoc(src);
 
       let info = await this.parser.info(doc);
@@ -152,8 +155,13 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     return paths.map(x => MangaSite.processImagePath(x, this.parser, this.request));
   }
 
+  resolveMangaUrl(name: string): Promise<string>|string  {
+      return this.nameHelper.resolveUrl(name);
+  }
+
   protected async resolveChapterSource(name: string, chapter: number): Promise<string> {
     let chapters = await this.chapters(name);
+    console.log(chapters);
     // TODO find a better way to filter chapters, because this doesnt work if we pass a string instead of number
     let chap = find(chapters, {chap_number: chapter});
     this.verbose(`filtered chapters %o`, chap);
