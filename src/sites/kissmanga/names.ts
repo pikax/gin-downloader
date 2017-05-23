@@ -28,8 +28,10 @@ const names: { [id: string]: string; } = {
   "Ansatsu Kyoushitsu Spin-off  Koro-sense Q!": "Ansatsu-Kyoushitsu-Spin-off--Koro-sense-Q",
   "Atelier - Escha & Logy": "Escha-Logy-no-Atelier-Tasogare-no-Sora-no-Renkinjutsushi",
 
-  // TODO double check this conditions
 
+  // TODO double check this conditions
+  "Takianna no Honshou wa S na no ka M na no ka Ore Dake ga Shitte Iru.": "Takianna-no-Honshou-wa-S-na-no-ka-M-na-no-ka-Ore-Dake-ga-Shitte-Iru-", // http://kissmanga.com/Manga/Takianna-no-Honshou-wa-S-na-no-ka-M-na-no-ka-Ore-Dake-ga-Shitte-Iru
+  "Itsuka, Kimi ga Tonari de Mezametara": "Itsuka--Kimi-ga-Tonari-de-Mezametara",
   "Chocolat (Kubonouchi Eisaku)": "Chocolat", // http://kissmanga.com/Manga/Chocolat-Kubonouchi-Eisaku
   "Code Geass - Soubou no Oz": "Code-Geas--Soubou-no-Oz", // http://kissmanga.com/Manga/Code-Geass-Soubou-no-Oz
   "Coffee & Vanilla": "Coffee-&-Vanilla", // http://kissmanga.com/Manga/Coffee-Vanilla
@@ -125,6 +127,9 @@ const names: { [id: string]: string; } = {
   "Wow Toilet": "Wow-Sergeant", // http://kissmanga.com/Manga/Wow-Toilet
   "Yagate Kimi ni Naru": "Yagate-kun-ni-Naru", // http://kissmanga.com/Manga/Yagate-Kimi-ni-Naru
   "Zettai Zetsubou Shoujo - Danganronpa Another Episode - Genocider Mode": "Zettai-Zetsubou-Shoujo-Danganronpa-Another-Episode---Genocider-Mode", // http://kissmanga.com/Manga/Zettai-Zetsubou-Shoujo-Danganronpa-Another-Episode-Genocider-Mode
+
+
+
 
   "Valkyrie%20Profile": "Valkyrie%20Profile",
 };

@@ -117,7 +117,7 @@ describe("MangaFox live", () => {
     images.should.have.length.gte(17);
 
     let img = await images[0];
-    img.src.should.contain("mfcdn.net/store/manga/15973/042.0/compressed/k001.jpg");
+    img.src.should.contain(".net/store/manga/15973/042.0/compressed/k001.jpg");
   });
 
 
