@@ -246,7 +246,7 @@ export enum FilterMangaType {
   Manhua,
   Comic,
   Artbook, //An artbook is a title that contains purely art and has no story
-  Other, //bato.to
+  Other, // bato.to
 }
 
 
@@ -267,22 +267,33 @@ export interface FilterSupport {
       condition?: FilterCondition,
     },
     status?: FilterStatus,
-    rating?: {
-      value: number,
-      condition?: FilterCondition,
-    },
+    // rating?: {
+    //   value: number,
+    //   condition?: FilterCondition,
+    // },
     released?: {
       value: number,
       condition?: FilterCondition,
     },
-    type?: FilterMangaType,
-
     genre?: { // todo use this object instead of genres/outGenres
       inGenres?: Genre[];
       outGenres?: Genre[];
       condition?: GenreCondition;
     };
+
+    rating?: {
+
+    },
+    mature: {
+
+    }
+
+
+    type?: FilterMangaType,
   };
+
+  sort: {
+  }
 
   genres?: Genre[]; // deprecated
   outGenres?: Genre[]; // deprecated
