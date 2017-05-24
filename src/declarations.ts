@@ -267,10 +267,6 @@ export interface FilterSupport {
       condition?: FilterCondition,
     },
     status?: FilterStatus,
-    // rating?: {
-    //   value: number,
-    //   condition?: FilterCondition,
-    // },
     released?: {
       value: number,
       condition?: FilterCondition,
