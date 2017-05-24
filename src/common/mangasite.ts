@@ -52,9 +52,6 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     this.debug("getting mangas");
 
     let opts = this.buildMangasRequest(this.config.mangas_url);
-
-    console.log(opts);
-
     let mangas = await this.request.getDoc(opts)
       .then(this.parser.mangas);
 

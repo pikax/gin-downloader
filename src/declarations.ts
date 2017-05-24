@@ -284,16 +284,16 @@ export interface FilterSupport {
     rating?: {
 
     },
-    mature: {
+    mature?: {
 
-    }
+    };
 
 
     type?: FilterMangaType,
   };
 
-  sort: {
-  }
+  sort?: {
+  };
 
   genres?: Genre[]; // deprecated
   outGenres?: Genre[]; // deprecated

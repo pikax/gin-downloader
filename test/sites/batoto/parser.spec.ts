@@ -32,11 +32,7 @@ describe("Batoto offline", () => {
   it("should resolve image path chapter", () => {
     let doc = parseDoc(fpChapter, {location: `http://bato.to/comic/_/comics/gintama-r94`});
     let paths = parser.imagesPaths(doc);
-    console.log(paths);
-
     paths.should.have.have.lengthOf(58);
-
-
   });
 
   it("should parse image from chapter", () => {
@@ -64,8 +60,8 @@ describe("Batoto offline", () => {
     info.status.should.be.eq(results.manga.status);
 
     info.synonyms.should.be.deep.eq(results.manga.synonyms);
-    info.authors.should.be.deep.eq(results.manga.authors);
-    info.artists.should.be.deep.eq(results.manga.artists);
+    info.authors.map(x => x.toLowerCase()).should.be.deep.eq(results.manga.authors); // the website keeps changing between lower and uppercase
+    info.artists.map(x => x.toLowerCase()).should.be.deep.eq(results.manga.artists); // the website keeps changing between lower and uppercase
     info.genres.should.be.deep.eq(results.manga.genres);
     info.type.should.be.deep.eq(results.manga.type);
   });
