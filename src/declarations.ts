@@ -280,13 +280,11 @@ export interface FilterSupport {
       outGenres?: Genre[];
       condition?: GenreCondition;
     };
-
     rating?: {
-
+      from?: number,
+      to?: number,
     },
-    mature?: {
-
-    };
+    mature?: boolean;
 
 
     type?: FilterMangaType,
