@@ -245,6 +245,8 @@ export enum FilterMangaType {
   Manhwa,
   Manhua,
   Comic,
+  Artbook, //An artbook is a title that contains purely art and has no story
+  Other, //bato.to
 }
 
 

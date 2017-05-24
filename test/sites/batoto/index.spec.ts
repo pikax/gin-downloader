@@ -131,10 +131,10 @@ describe("Batoto live", () => {
       };
 
       let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(14);
+      mangas.results.should.length.gte(4);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://bato.to/comic/_/gintama-r94"
       });
     });
 
@@ -153,7 +153,7 @@ describe("Batoto live", () => {
       mangas.results.should.length(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://bato.to/comic/_/gintama-r94"
       });
     });
 
@@ -168,29 +168,32 @@ describe("Batoto live", () => {
       };
 
       let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(14);
+      mangas.results.should.length.gte(4);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://bato.to/comic/_/gintama-r94"
       });
     });
 
     it("should filter by in genre", async () => {
       let filter: FilterSupport = {
-        genres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Drama, Genre.Historical, Genre.SciFi, Genre.Shounen, Genre.Supernatural]
+        search:{
+          genre : {
+            inGenres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Historical, Genre.SciFi, Genre.Shounen]
+          }
+        }
       };
 
       let mangas = await manga.filter(filter);
-      mangas.results.should.length(1);
+      mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://bato.to/comic/_/gintama-r94"
       });
     });
 
     it("should filter by out genre", async () => {
       let filter: FilterSupport = {
-        outGenres: [Genre.Romance],
         search: {
           name: {
             name: "gin",
@@ -198,6 +201,9 @@ describe("Batoto live", () => {
           },
           author: {
             name: "Sora",
+          },
+          genre: {
+            outGenres : [Genre.Romance]
           }
         }
 
@@ -207,7 +213,7 @@ describe("Batoto live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://bato.to/comic/_/gintama-r94"
       });
     });
 
@@ -225,7 +231,7 @@ describe("Batoto live", () => {
       mangas.results.should.length.lte(10);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://bato.to/comic/_/gintama-r94"
       });
     });
 
@@ -243,7 +249,7 @@ describe("Batoto live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "History's Strongest Disciple Kenichi",
-        src : "http://mangafox.me/manga/history_s_strongest_disciple_kenichi/"
+        src : "http://bato.to/comic/_/historys-strongest-disciple-kenichi-r6"
       });
     });
 
@@ -258,8 +264,32 @@ describe("Batoto live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "10, 20, and 30",
-        src : "http://mangafox.me/manga/10_20_and_30/"
+        src : "http://bato.to/comic/_/10-20-and-30-r16192"
       });
+    });
+
+    it('should get by order', async ()=>{
+
+      throw new Error('not implemented');
+    });
+
+    it('should not include mature', async ()=>{
+
+      throw new Error('not implemented');
+    });
+
+    it('should have rating between 5~5', async ()=>{
+
+      throw new Error('not implemented');
+    });
+    it('should have rating between 0~1', async ()=>{
+
+      throw new Error('not implemented');
+    });
+
+    it('should have genre inclusion OR', async ()=>{
+
+      throw new Error('not implemented');
     });
   });
 

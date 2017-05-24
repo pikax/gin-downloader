@@ -1,7 +1,7 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, FilterSupport, FilterStatus, GenreCondition} from "../../declarations";
+import {Genre, FilterCondition, FilterSupport, FilterStatus, GenreCondition, FilterMangaType} from "../../declarations";
 import {config} from "./config";
 import {resolve} from "url";
 import {find} from "lodash";
@@ -139,12 +139,14 @@ export const processFilter = (filter: FilterSupport) : {src: string} => {
 
   let fauthor = null;
   let fstatus = null;
+  let ftype= null;
   let fname = filter.name;
   let nameCondition = null;
   let authorCondition = null;
   let genreCondition = null;
 
   if (search) {
+
     let nameFilter = search.name;
     if (nameFilter) {
       fname = nameFilter.name;
@@ -168,21 +170,50 @@ export const processFilter = (filter: FilterSupport) : {src: string} => {
       outGenres = genreFilter.outGenres;
       genreCondition = resolveGenreCondition(genreFilter.condition);
     }
+
+
+    let {type} = search;
+    if(type) {
+      ftype = resolveType(type);
+    }
   }
 
   const mangaName = `name=${fname || ""}`;
   const nameCond = nameCondition && `name_cond=${nameCondition}`;
-  const authorArtist =  `authorArtist=${(fauthor || "")}`;
-  const authorCond = authorCondition && `name_cond=${authorCondition}`;
+  const authorArtist =  `artist_name=${(fauthor || "")}`;
+  const authorCond = authorCondition && `artist_name_cond=${authorCondition}`;
 
   const genreFilter = "genres=" + ordered.map(x => inOutGenre(x, genres, outGenres)).filter(x => x !== "").join(";");
   const genreCon = ( genreCondition && `genre_cond=${genreCondition}` ) || "genre_cond=and"; // todo change me
   const status = `status=${(fstatus || "")}`;
+  const type = `type=${ftype}`;
   const page = `p=${(filter.page || 1)}`;
 
-  return {src: config.mangas_url + "?" + [mangaName, nameCond, authorArtist, authorCond, genreFilter, genreCon, status, page].join("&")
+
+
+  return {src: config.mangas_url + "?" + [mangaName, nameCond, authorArtist, authorCond, genreFilter, genreCon, status, type, page].join("&")
   };
 };
+
+
+function  resolveType(type: FilterMangaType) {
+
+  switch (type) {
+    case FilterMangaType.Manga:
+      return "jp";
+
+    case FilterMangaType.Manhwa:
+      return "kr";
+    case FilterMangaType.Manhua:
+      return "cn";
+    case FilterMangaType.Artbook:
+      return "ar";
+    case FilterMangaType.Other:
+      return "ot";
+    default:
+      throw new Error("Unknown type");
+  }
+}
 
 
 function resolveCondition(condition: FilterCondition) {
