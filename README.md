@@ -1,5 +1,7 @@
 # gin-downloader
 
+[![Join the chat at https://gitter.im/pikax/gin-downloader](https://badges.gitter.im/pikax/gin-downloader.svg)](https://gitter.im/pikax/gin-downloader?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/pikax/gin-downloader.svg?branch=master)](https://travis-ci.org/pikax/gin-downloader)
 [![Coverage Status](https://coveralls.io/repos/github/pikax/gin-downloader/badge.svg?branch=master)](https://coveralls.io/github/pikax/gin-downloader?branch=master)
 [![dependencies Status](https://david-dm.org/pikax/gin-downloader/status.svg)](https://david-dm.org/pikax/gin-downloader)
