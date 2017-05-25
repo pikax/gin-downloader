@@ -293,4 +293,25 @@ describe("Batoto live", () => {
     });
   });
 
+
+  describe("Loggin", ()=>{
+
+    it("should be not logged in",async ()=>{
+
+      let loggedIn = await manga.isLoggedIn();
+
+      loggedIn.should.be.false;
+    });
+
+    it("should logged in", async()=>{
+      let cred = {
+        user: "test",
+        pw : "test"
+      };
+
+      let loggedIn = await manga.logIn(cred.user, cred.pw);
+      loggedIn.should.be.true;
+    });
+
+  });
 });

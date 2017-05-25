@@ -96,7 +96,37 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
     opts.headers = {...opts.headers, Referer: "http://bato.to/reader" };
     return opts;
   }
+
+
+  async isLoggedIn() : Promise<boolean> {
+    let html = await this.request.getHtml("http://bato.to/search");
+    let match = html.match(/>Sign Out<\/a\>/m);
+    return !!match;
+  }
+
+  async logIn(user: string, pw: string, rememberMe?:boolean = true) {
+      let url =  'http://bato.to/forums/index.php?app=core&module=global&section=login&do=process';
+
+      let doc = await this.request.getDoc(url);
+      let authKey = doc.get("//form[@id='login']/input[@name='auth_key']").attr("value").value();
+      let body = {
+        ips_username : user,
+        ips_password : pw,
+        referer : "https://bato.to/forums",
+        rememberMe: rememberMe ? 1 : 0,
+        auth_key : authKey,
+      };
+
+
+    let html = await this.request.postHtml({
+      url,
+      formData: body,
+      proxy: "http://127.0.0.1:8888"
+    });
+
+    return !!html.match(/<strong>You are now signed in<\/strong>/m);
+  }
 }
 
-export const manga: Site = new Batoto();
+export const manga = new Batoto();
 export default manga;
