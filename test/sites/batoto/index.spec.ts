@@ -9,6 +9,7 @@ import {manga} from "./../../../src/sites/batoto";
 import results from "./_results";
 import {helper} from "../../../src/sites/batoto/names";
 import {FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
+import auth from './auth';
 
 
 describe("Batoto live", () => {
@@ -303,13 +304,13 @@ describe("Batoto live", () => {
       loggedIn.should.be.false;
     });
 
-    it("should logged in", async()=>{
-      let cred = {
-        user: "test",
-        pw : "test"
-      };
+    it("should login", async()=>{
+      if(!auth.username) {
+        console.log("no credential founds, not running login");
+        return;
+      }
 
-      let loggedIn = await manga.logIn(cred.user, cred.pw);
+      let loggedIn = await manga.logIn(auth.username, auth.password);
       loggedIn.should.be.true;
     });
 
