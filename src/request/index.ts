@@ -84,6 +84,8 @@ export class GinRequest  {
   }
 
 
+
+
   postBytes(opts: string|OptionsWithUrl, params?: any) {
     return this.request(opts, "POST", params);
   }

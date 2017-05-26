@@ -2,15 +2,12 @@
  * Created by rodriguesc on 10/03/2017.
  */
 
-import {parseHtmlString} from "libxmljs";
+import * as cheerio from "cheerio";
 import {MangaXDoc} from "../declarations";
 
 
 export const parseDoc = (source: string, params: {location: string} = undefined): MangaXDoc => {
-  let doc: MangaXDoc = (<any>parseHtmlString(source));
-
-  if (params && params.location) {
-    doc.location = doc.baseUrl = params.location;
-  }
+  let doc: MangaXDoc = (<any>cheerio.load(source));
+  doc.location = params && params.location;
   return doc;
 };

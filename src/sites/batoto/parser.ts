@@ -15,25 +15,204 @@ import {uniq} from "lodash";
 export class Parser implements SiteParser {
 
 
-  mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
-    const xpath = "//table[@class='ipb_table chapters_list']/tbody/tr/td[1]/strong/a";
+  mangas($: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
+    const rows = $("tr[id^='comic_rowo']");
+    const location = $.location;
 
-    return doc.find(xpath)
-      .map(x => {
-        return {
-          name: x.text().leftTrim(),
-          src: resolve(config.site, x.attr("href").value())
-        };
-      })
-      .map(x => {
-        return {
-          name:  x.name,
-          src : x.src
-        };
-      });
+    let mangas: MangaSource[] = [];
+    rows.each((i, e) => {
+      // note this performance can be improved, is taking around 72ms to resolve 30 items, libxml could handle that
+      // in 10ms, if we don't use the $() it can reach around those speeds, 72ms is not that much
+      let td = $(e).prev();
+
+      mangas[i] = {
+        name: td.find("td > strong > a").text().slice(1), // contains a space at the beggining
+        src: td.find("td > strong > a").attr("href"),
+        status: td.find("td > strong > a > img").attr("src").indexOf("book_open") > 0 ? "Open" : "Closed",
+
+        mature: td.find("td > img").eq(1).attr("alt") === "Mature",
+      };
+    });
+
+    // console.log(mangas);
+    return mangas;
   }
 
-  latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
+  latest($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
+
+    let chapters : Chapter[] = [];
+    let $trs: CheerioElement[] = [];
+
+    $(".chapters_list > tbody > tr > td[colspan='5']").each((i, el) => $trs[i] = el.parent);
+
+    $trs = $trs.slice(1,3);
+
+    console.log($trs.length)
+
+
+    for (let i = 0; i < $trs.length; ++i) {
+      let $current = $trs[i];
+      let next = i+1 < $trs.length  && $trs[i + 1];
+
+      let manga_name = $current.childNodes[3].childNodes[3].lastChild.nodeValue;
+
+
+      do{
+        let children: CheerioElement[] = [];
+        let $cnext = $($current).next().next();
+        $cnext.next().children('td').each((i,e)=>children[i] = e);
+
+        //$current == tr
+        // $current = $current.next.next;
+
+        //$current == td
+
+        // let children = $current.children.filter(x => x.type === "tag");
+
+
+
+
+
+        let eTitle = children[0];
+        let eLanguage = children[1];
+        let eGroup = children[2];
+        let eDate = children[3];
+
+
+        // const fullTitle = eTitle.next.childNodes[1].lastChild.nodeValue.slice(1);
+
+        const a = eTitle.childNodes.find(x => x.name === "a");
+
+
+        const fullTitle = a.lastChild.nodeValue.slice(1);
+        // console.log(fullTitle)
+
+        const src = Parser.convertChapterReaderUrl(a.attribs.href);
+
+        const name = Parser.extractChapterName(fullTitle);
+        const chap_number = Parser.extractChapterNumber(fullTitle);
+        const volume = Parser.extractVolumeNumber(fullTitle);
+        const language = eLanguage.lastChild.attribs.title;
+        const scanlator = eGroup.childNodes.find(x => x.name === "a").lastChild.nodeValue;
+
+        const dateAdded = eDate.lastChild.nodeValue.trim();
+
+        chapters.push({
+          manga_name,
+          chap_number,
+          volume,
+          src,
+          name,
+          language,
+          scanlator,
+          dateAdded,
+        });
+
+
+
+        $current = $cnext;
+
+        // console.log($current);
+      }((next && $current !== next ) || ($current.attribs.class && $current.attribs.class.split(' ').length ===1));
+
+
+
+
+
+      console.log(manga_name);
+    }
+
+
+
+    console.log(chapters);
+
+
+
+    // $(".chapters_list > tbody > tr > td[colspan='5']").each((i,$td)=>{
+    //   let manga_name = $td.childNodes.reverse().find(x=>x.name === "a").lastChild.nodeValue;
+    //
+    //   let chapters : Chapter[] = [];
+    //
+    //
+    //   let tr = $td.parent;
+    //
+    //
+    //
+    //   do{
+    //     tr = tr.next.next;
+    //
+    //     let children = tr.children.filter(x => x.type === "tag");
+    //
+    //     let eTitle = children[0];
+    //     let eLanguage = children[1];
+    //     let eGroup = children[2];
+    //     let eDate = children[3];
+    //
+    //
+    //     // const fullTitle = eTitle.next.childNodes[1].lastChild.nodeValue.slice(1);
+    //
+    //     const a = eTitle.childNodes.find(x => x.name === "a");
+    //     if(a.lastChild.nodeValue == null)
+    //       console.log(a)
+    //     const fullTitle = a.lastChild.nodeValue.slice(1);
+    //
+    //     const src = Parser.convertChapterReaderUrl(a.attribs.href);
+    //
+    //     const name = Parser.extractChapterName(fullTitle);
+    //     const chap_number = Parser.extractChapterNumber(fullTitle);
+    //     const volume = Parser.extractVolumeNumber(fullTitle);
+    //     const language = eLanguage.lastChild.attribs.title;
+    //     const scanlator = eGroup.childNodes.find(x => x.name === "a").lastChild.nodeValue;
+    //
+    //     const dateAdded = eDate.lastChild.nodeValue.trim();
+    //
+    //     chapters.push({
+    //       manga_name,
+    //       chap_number,
+    //       volume,
+    //       src,
+    //       name,
+    //       language,
+    //       scanlator,
+    //       dateAdded,
+    //     });
+    //
+    //
+    //     if(tr && tr.next.next.attribs.class.split(' ').length === 1)
+    //
+    //     console.log(tr.next.next)
+    //
+    //   }while(tr && tr.next.next.attribs.class.split(' ').length === 1)
+    //
+    //
+
+
+
+
+
+
+
+
+    // console.log(chapters );
+
+
+
+    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     const xpath = "//table[@class='ipb_table chapters_list']/tbody/tr/td/a[starts-with(@href,'/reader')]";
 
     return doc.find(xpath)
@@ -50,16 +229,23 @@ export class Parser implements SiteParser {
       });
   }
 
-  info(doc: MangaXDoc): Promise<MangaInfo> | MangaInfo {
-    let image = doc.get("//div[@class='ipsBox']/div[1]/div[1]/img").attr("src").value();
-    let title = doc.get("//h1[@class='ipsType_pagetitle']").text().trim();
-    let synonyms = doc.find("//table[@class='ipb_table']/tr[1]/td[2]/span").map(x => x.text().trim());
-    let authors = [doc.get("//div[@class='ipsBox']/div[1]/div[2]/table[@class='ipb_table']/tr[2]/td[2]/a").text()];
-    let artists = [doc.get("//div[@class='ipsBox']/div[1]/div[2]/table[@class='ipb_table']/tr[3]/td[2]/a").text()];
-    let genres = doc.find("//table[@class='ipb_table']/tr[4]/td[2]/a/span").map(x => x.text().trim());
-    let synopsis = doc.get("//div[@class='ipsBox']/div/div/table[@class='ipb_table']/tr[7]/td[2]").text();
-    let status = doc.get("//div[@class='ipsBox']/div/div/table[@class='ipb_table']/tr[6]/td[2]").text().trim();
-    let type = doc.get("//div[@class='ipsBox']/div/div/table[@class='ipb_table']/tr[5]/td[2]").text().trim();
+  info($: MangaXDoc): Promise<MangaInfo> | MangaInfo {
+
+    let $content = $("#content");
+    let $ipsBox = $content.find("div.ipsBox");
+    let $ipbTable = $ipsBox.find(".ipb_table");
+    let $tr = $ipbTable.find("tr > td");
+
+
+    let title = $("h1.ipsType_pagetitle").text().trim();
+    let image = $ipsBox.find("img").attr("src");
+    let synonyms = $tr.eq(1).children("span").map((i, e) => e.lastChild.nodeValue.slice(1)).get();
+    let authors = $tr.eq(3).children("a").map((i, e) => e.lastChild.nodeValue).get();
+    let artists = $tr.eq(5).children("a").map((i, e) => e.lastChild.nodeValue).get();
+    let genres = $tr.eq(7).children("a").map((i, e) => e.lastChild.lastChild).filter((x, e) => !!e).map((i, e) => e.nodeValue.slice(1)).get();
+    let synopsis = $tr.eq(13).text();
+    let type = $tr.eq(9).text().trim(); // TODO curate this result, Manga (Japanese)
+    let status = $tr.eq(11).text().trim();
 
     return {
       image,
@@ -74,26 +260,53 @@ export class Parser implements SiteParser {
     };
   }
 
-  chapters(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
-    // const xpath = "//table[@class='ipb_table chapters_list']/tbody/tr/td[1]/a";
+  chapters($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
+    let chapters: Chapter[] = [];
 
-    const xpath = "//table[@class='ipb_table chapters_list']/tbody/tr/td[1]/a/../.."; // tr
 
-    return doc.find(xpath)
-      .map(x => ({
-        chap_number: Parser.extractChapterNumber(x.get("td[1]/a").text().trim()),
-        volume: Parser.extractVolumeNumber(x.get("td[1]/a").text().trim()),
-        src: resolve(config.site, x.get("td[1]/a").attr("href").value()),
-        name: Parser.extractChapterName(x.get("td[1]/a").text().trim()),
-        language :   x.get("td[2]/div").attr("title").value().trim(),
-        scanlator: x.get("td[3]/a").text().trim(),
-        dateAdded: x.get("td[5]").text().trim(),
-      }));
+    $(".chapter_row")
+      .each((i, e) => {
+        let children = e.children.filter(x => x.type === "tag");
+
+        let eTitle = children[0];
+        let eLanguage = children[1];
+        let eGroup = children[2];
+        let eDate = children[4];
+
+
+        // const fullTitle = eTitle.next.childNodes[1].lastChild.nodeValue.slice(1);
+
+        const a = eTitle.childNodes.find(x => x.name === "a");
+        const fullTitle = a.lastChild.nodeValue.slice(1);
+        const src = Parser.convertChapterReaderUrl(a.attribs.href);
+
+        const name = Parser.extractChapterName(fullTitle);
+        const chap_number = Parser.extractChapterNumber(fullTitle);
+        const volume = Parser.extractVolumeNumber(fullTitle);
+        const language = eLanguage.lastChild.attribs.title;
+        const scanlator = eGroup.childNodes.find(x => x.name === "a").lastChild.nodeValue;
+
+        const dateAdded = eDate.lastChild.nodeValue;
+
+        chapters[i] = {
+          chap_number,
+          volume,
+          src,
+          name,
+          language,
+          scanlator,
+          dateAdded,
+        };
+      });
+
+    return chapters;
+
   }
 
-  imagesPaths(doc: MangaXDoc): string[] {
-    let xpath = "//select[@id='page_select'][1]/option";
-    return uniq(doc.find(xpath).map(x => x.attr("value").value())).map(Parser.convertChapterReaderUrl);
+  imagesPaths($: MangaXDoc): string[] {
+    let paths: string[] = [];
+    $("#page_select").eq(1).children().each((i, e) => paths[i] = Parser.convertChapterReaderUrl(e.attribs["value"]));
+    return paths;
   }
 
   static convertChapterReaderUrl(src: string) {
@@ -124,12 +337,12 @@ export class Parser implements SiteParser {
   }
 
 
-  filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults {
-    let results = this.mangas(doc);
-    let next = doc.find("//input[@class='input_submit']");
+  filter($: MangaXDoc): Promise<FilteredResults> | FilteredResults {
+    let results = this.mangas($);
+    let next = $(".input_submit");
 
 
-    let {location} = doc;
+    let {location} = $;
     let matches = location.match(/\d+$/); // get page | &p=11
     let match = matches && +matches[0];
 

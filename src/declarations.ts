@@ -3,10 +3,19 @@
  */
 
 import {HTMLDocument} from "libxmljs";
+import {CheerioElement} from 'cheerio';
 import {URL} from "url";
 
-export interface MangaXDoc extends HTMLDocument {
-  baseUrl: string;
+// TODO refractor, move to distinct files
+
+
+
+// export interface MangaXDocXml extends HTMLDocument {
+//   baseUrl: string;
+//   location: string;
+// }
+
+export interface MangaXDoc extends CheerioStatic{
   location: string;
 }
 
@@ -31,12 +40,14 @@ export interface SiteConfig {
   name: string;
   mangas_url: string;
   latest_url: string;
-
 }
 
 export interface MangaSource {
   name: string;
   src: string;
+
+  status?: string;
+  mature?: boolean;
 }
 
 export interface Chapter {
