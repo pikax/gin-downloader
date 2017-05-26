@@ -124,6 +124,7 @@ describe("MangaFox benchmarking, libxmljs x cheerio ", () => {
       info.genres.should.be.deep.eq(results.manga.genres);
       info.scanlators.should.be.deep.eq(results.manga.scanlators);
 
+      console.log(info);
       libXmlResult = info;
     });
 
@@ -177,10 +178,11 @@ describe("MangaFox benchmarking, libxmljs x cheerio ", () => {
           let artists = [titleElem.find("table tr td a").eq(2).text()];
           let genres = titleElem.find("table tr td a").slice(3).map((i, el) => el.children[0].nodeValue).get();
 
-          let status = seriesInfo.find("div .data [1] span text()[1]").text().trim().slice(0, -1);
-          let ranked = seriesInfo.find("div .data:nth-child(2) span").text();
-          let rating = seriesInfo.find("div .data:nth-child(3) span").text();
-          let scanlators = seriesInfo.find("div.data:nth-child(4) span a").map((i, el) => el.children[0].nodeValue).get();;
+          let sSstatus = seriesInfo.find("div .data span").eq(0).html().trim();
+          let status = sSstatus.slice(0, sSstatus.indexOf(","));
+          let ranked = seriesInfo.find("div .data span").eq(2).text();
+          let rating = seriesInfo.find("div .data span").eq(3).text();
+          let scanlators = seriesInfo.find("div.data span a").slice(1).map((i, el) => el.children[0].nodeValue).get();;
 
           let synopsis = titleElem.find("p").text();
 
@@ -196,6 +198,20 @@ describe("MangaFox benchmarking, libxmljs x cheerio ", () => {
           genres.should.be.deep.eq(results.manga.genres);
           scanlators.should.be.deep.eq(results.manga.scanlators);
 
+        cheerioResult = {
+          image,
+          title,
+          synonyms,
+          released,
+          authors,
+          artists,
+          genres,
+          status,
+          ranked,
+          rating,
+          scanlators,
+          synopsis,
+        }
       });
       it("optimized? selector", () => {
         let $ = cheerio.load(fpGintama);
@@ -231,6 +247,10 @@ describe("MangaFox benchmarking, libxmljs x cheerio ", () => {
         // scanlators.should.be.deep.eq(results.manga.scanlators);
 
       });
+      it("integrity check", () => {
+        libXmlResult.should.deep.equals(cheerioResult);
+      });
+
 
     });
   });
