@@ -46,6 +46,10 @@ describe("Batoto offline", () => {
 
     let mangas = parser.mangas(doc);
     mangas.should.have.length.gte(results.mangas_count);
+    mangas.should.deep.include(  { name: '&',
+      src: 'http://bato.to/comic/_/--r4478',
+      status: 'Open',
+      mature: false })
   });
 
   it("it should parse full manga info", async () => {
