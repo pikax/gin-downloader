@@ -49,7 +49,7 @@ export class RequestCloudFareStrategy implements RequestStrategy {
       else {
         cloudscraper.request(opts, callback);
       }
-    }
+    };
   }
 }
 
