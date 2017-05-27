@@ -134,8 +134,8 @@ declare global {
 
 
 
-const regexLastDigit = /\d+(\.\d{1,2})?$/g;
-const regexFirstDigit = /\d+(\.\d{1,2})?/g;
+const regexLastDigit = /\d+(\.\d{1,3})?$/;
+const regexFirstDigit = /\d+(\.\d{1,3})?/;
 
 String.prototype.lastDigit = function(){
   let match = this.match(regexLastDigit);
