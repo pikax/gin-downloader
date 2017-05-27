@@ -3,7 +3,7 @@
  */
 
 import {HTMLDocument} from "libxmljs";
-import {CheerioElement} from 'cheerio';
+import {CheerioElement} from "cheerio";
 import {URL} from "url";
 
 // TODO refractor, move to distinct files
@@ -139,12 +139,18 @@ const regexFirstDigit = /\d+(\.\d{1,3})?/;
 
 String.prototype.lastDigit = function(){
   let match = this.match(regexLastDigit);
-  return (match && +match[0]) || null;
+  if (!match) { // can't be to smart if the last digit is 0
+    return null;
+  }
+  return +match[0];
 };
 
 String.prototype.firstDigit = function(){
   let match = this.match(regexFirstDigit);
-  return (match && +match[0]) || null;
+  if (!match) { // can't be to smart if the first digit is 0
+    return null;
+  }
+  return +match[0];
 };
 
 String.prototype.leftTrim = function() {
