@@ -10,9 +10,7 @@ import {resolve} from "url";
 
 import {config} from "./config";
 import {Script, createContext} from "vm";
-
-
-
+import {unescape} from "querystring";
 
 export class Parser implements SiteParser {
 
@@ -27,22 +25,32 @@ export class Parser implements SiteParser {
 
   private static resolveName = (src: string) => Parser.fixNames[src];
 
-  mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
-    const xpath = "//table/tr/td[1]/a";
+  mangas($: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
+    let mangas: MangaSource[] = [];
+    let rows = new Map<any, CheerioElement[]>();
 
-    return doc.find(xpath)
-      .map(x => {
-        return {
-          name: x.text().leftTrim(),
-          src: resolve(config.site, x.attr("href").value())
-        };
-      })
-      .map(x => {
-        return {
-          name: Parser.resolveName(x.src) || x.name,
-          src : x.src
-        };
+    $("table.listing > tr > td").each((i, el) => {
+        let array = rows.get(el.parentNode) || [];
+        array.push(el);
+        rows.set(el.parentNode, array);
+    });
+
+    rows.forEach((children) => {
+      let titleTd = children[0];
+      let lastChapter = children[1].lastChild.nodeValue.trim();
+
+      let a = titleTd.children[1];
+
+      let title = a.lastChild.nodeValue.leftTrim();
+      let src = resolve(config.mangas_url, a.attribs.href);
+
+      mangas.push({
+        name: Parser.resolveName(src) || title,
+        src: src,
+        status: lastChapter === "complete" ? "Closed" : "Open",
       });
+    });
+    return mangas;
   }
 
   latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
@@ -61,16 +69,27 @@ export class Parser implements SiteParser {
     // return doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
   }
 
-  info(doc: MangaXDoc): Promise<MangaInfo> | MangaInfo {
-    let image = doc.get("///div[@class='rightBox'][1]/div[@class='barContent']/div[2]/img").attr("src").value();
-    let title = doc.get("//div[2]/a[@class='bigChar']").text();
-    let synonyms = doc.find("//div[@class='barContent']/div[2]/p[1]/a/text()").map(x => x.text());
-    let authors = [doc.get("//div[2]/p[3]/a[1]").text()];
-    let artists = [doc.get("//div[2]/p[3]/a[last()]").text()];
-    let genres = doc.find("//div[2]/p[2]/a").map(x => x.text());
-    let synopsis = doc.get("//div[@class='barContent']/div[2]/p[6]").text();
-    let status = doc.get("//p[4]/span[@class='info'][1]/following-sibling::text()[1]").text().trim();
-    let views = doc.get("//p[4]/span[@class='info'][1]/following-sibling::text()[2]").text().trim();
+  info($: MangaXDoc): Promise<MangaInfo> | MangaInfo {
+    let $main = $("#leftside > div > div.barContent > div").eq(1);
+    let img = $("#rightside > div > div.barContent > div > img").eq(0);
+    let a = $main.children("a");
+    let rows = $main.children("p");
+
+
+
+    let image = img.attr("src");
+    let title = a.text();
+    let synonyms = rows.eq(0).children("a").map((x, el) => el.lastChild.nodeValue).get();
+    let genres = rows.eq(1).children("a").map((x, el) => el.lastChild.nodeValue).get();
+    let authors = rows.eq(2).children("a").map((x, el) => el.lastChild.nodeValue).get();
+    let artists = authors;
+    if (authors.length > 1) {
+      authors = authors.slice(0, -1);
+      artists = artists.slice(-1);
+    }
+    let status = rows.eq(3).children("span").eq(0).map((i, el) => el.next).text().trim();
+    let views = rows.eq(3).children("span").eq(1).map((i, el) => el.next).text().trim();
+    let synopsis = rows.eq(5).text();
 
     return {
       image,
@@ -85,7 +104,46 @@ export class Parser implements SiteParser {
     };
   }
 
-  chapters(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
+  chapters($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
+    let mangas: Chapter[] = [];
+    let rows = new Map<any, CheerioElement[]>();
+
+    $("table.listing > tr > td").each((i, el) => {
+      let array = rows.get(el.parentNode) || [];
+      array.push(el);
+      rows.set(el.parentNode, array);
+    });
+
+    rows.forEach((children) => {
+      let titleTd = children[0];
+
+      let dateAdded = children[1].lastChild.nodeValue.trim();
+
+      let a = titleTd.children[1];
+
+      let title = a.lastChild.nodeValue.leftTrim();
+      let src = resolve(config.mangas_url, a.attribs.href);
+      //
+      // console.log(title);
+      // console.log(src);
+      // console.log(dateAdded);
+
+      mangas.push({
+        name: Parser.ResolveChapterName(title),
+        chap_number : Parser.ResolveChapterNumber(title),
+        volume: Parser.ResolveChapterVolume(title),
+
+        src: src,
+        dateAdded: dateAdded,
+      });
+    });
+
+
+    console.log(mangas);
+
+    return mangas;
+
+
     const xpath = "//table/tr/td[1]/a";
 
     return doc.find(xpath)
@@ -158,6 +216,28 @@ export class Parser implements SiteParser {
       page: 1,
       total: 1
     };
+  }
+
+
+
+  static ResolveChapterVolume(title: string): string{
+    if (title.indexOf("_vol") < 0)
+      return;
+
+    let frags = title.split(-1);
+    let chapfrags = frags[0].split("ch.");
+
+    return chapfrags[0].trim().lastDigit();
+  }
+
+  static ResolveChapterNumber(title: string): string{
+    let frags = title.split(-1);
+    return frags[0].lastDigit();
+  }
+
+  static ResolveChapterName(title: string): string{
+    let frags = title.split(-1);
+    return frags[frags.length - 1];
   }
 
 }

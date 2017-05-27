@@ -125,11 +125,14 @@ describe("KissManga live", () => {
         name: "Gintama"
       };
 
+
       let mangas = await manga.filter(filter);
+      console.log(mangas)
       mangas.results.should.length(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://kissmanga.com/Manga/Gintama"
+        src : "http://kissmanga.com/Manga/Gintama",
+        status : "Open"
       });
     });
 
@@ -142,7 +145,8 @@ describe("KissManga live", () => {
       mangas.results.should.length.gte(50);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://kissmanga.com/Manga/Gintama"
+        src : "http://kissmanga.com/Manga/Gintama",
+        status : "Open"
       });
     });
     it("should filter by out genre", async () => {
@@ -154,7 +158,8 @@ describe("KissManga live", () => {
       mangas.results.should.length.gte(50);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://kissmanga.com/Manga/Gintama"
+        src : "http://kissmanga.com/Manga/Gintama",
+        status : "Open"
       });
     });
 
@@ -172,7 +177,8 @@ describe("KissManga live", () => {
       mangas.results.should.length.lte(10);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://kissmanga.com/Manga/Gintama"
+        src : "http://kissmanga.com/Manga/Gintama",
+        status : "Open"
       });
     });
 
@@ -187,7 +193,8 @@ describe("KissManga live", () => {
       mangas.results.should.length.gte(50);
       mangas.results.should.deep.include({
         name: "History's Strongest Disciple Kenichi",
-        src : "http://kissmanga.com/Manga/History-s-Strongest-Disciple-Kenichi"
+        src : "http://kissmanga.com/Manga/History-s-Strongest-Disciple-Kenichi",
+        status : "Open"
       });
     });
   })
