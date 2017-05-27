@@ -40,92 +40,93 @@ export class Parser implements SiteParser {
 
   latest($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
 
-    let chapters : Chapter[] = [];
-    let $trs: CheerioElement[] = [];
-
-    $(".chapters_list > tbody > tr > td[colspan='5']").each((i, el) => $trs[i] = el.parent);
-
-    $trs = $trs.slice(1,3);
-
-    console.log($trs.length)
-
-
-    for (let i = 0; i < $trs.length; ++i) {
-      let $current = $trs[i];
-      let next = i+1 < $trs.length  && $trs[i + 1];
-
-      let manga_name = $current.childNodes[3].childNodes[3].lastChild.nodeValue;
-
-
-      do{
-        let children: CheerioElement[] = [];
-        let $cnext = $($current).next().next();
-        $cnext.next().children('td').each((i,e)=>children[i] = e);
-
-        //$current == tr
-        // $current = $current.next.next;
-
-        //$current == td
-
-        // let children = $current.children.filter(x => x.type === "tag");
-
-
-
-
-
-        let eTitle = children[0];
-        let eLanguage = children[1];
-        let eGroup = children[2];
-        let eDate = children[3];
-
-
-        // const fullTitle = eTitle.next.childNodes[1].lastChild.nodeValue.slice(1);
-
-        const a = eTitle.childNodes.find(x => x.name === "a");
-
-
-        const fullTitle = a.lastChild.nodeValue.slice(1);
-        // console.log(fullTitle)
-
-        const src = Parser.convertChapterReaderUrl(a.attribs.href);
-
-        const name = Parser.extractChapterName(fullTitle);
-        const chap_number = Parser.extractChapterNumber(fullTitle);
-        const volume = Parser.extractVolumeNumber(fullTitle);
-        const language = eLanguage.lastChild.attribs.title;
-        const scanlator = eGroup.childNodes.find(x => x.name === "a").lastChild.nodeValue;
-
-        const dateAdded = eDate.lastChild.nodeValue.trim();
-
-        chapters.push({
-          manga_name,
-          chap_number,
-          volume,
-          src,
-          name,
-          language,
-          scanlator,
-          dateAdded,
-        });
-
-
-
-        $current = $cnext;
-
-        // console.log($current);
-      }((next && $current !== next ) || ($current.attribs.class && $current.attribs.class.split(' ').length ===1));
-
-
-
-
-
-      console.log(manga_name);
-    }
-
-
-
-    console.log(chapters);
-
+    throw new Error("NOT WORKING")
+    // let chapters : Chapter[] = [];
+    // let $trs: CheerioElement[] = [];
+    //
+    // $(".chapters_list > tbody > tr > td[colspan='5']").each((i, el) => $trs[i] = el.parent);
+    //
+    // $trs = $trs.slice(1,3);
+    //
+    // console.log($trs.length)
+    //
+    //
+    // for (let i = 0; i < $trs.length; ++i) {
+    //   let $current = $trs[i];
+    //   let next = i+1 < $trs.length  && $trs[i + 1];
+    //
+    //   let manga_name = $current.childNodes[3].childNodes[3].lastChild.nodeValue;
+    //
+    //
+    //   do{
+    //     let children: CheerioElement[] = [];
+    //     let $cnext = $($current).next().next();
+    //     $cnext.next().children('td').each((i,e)=>children[i] = e);
+    //
+    //     //$current == tr
+    //     // $current = $current.next.next;
+    //
+    //     //$current == td
+    //
+    //     // let children = $current.children.filter(x => x.type === "tag");
+    //
+    //
+    //
+    //
+    //
+    //     let eTitle = children[0];
+    //     let eLanguage = children[1];
+    //     let eGroup = children[2];
+    //     let eDate = children[3];
+    //
+    //
+    //     // const fullTitle = eTitle.next.childNodes[1].lastChild.nodeValue.slice(1);
+    //
+    //     const a = eTitle.childNodes.find(x => x.name === "a");
+    //
+    //
+    //     const fullTitle = a.lastChild.nodeValue.slice(1);
+    //     // console.log(fullTitle)
+    //
+    //     const src = Parser.convertChapterReaderUrl(a.attribs.href);
+    //
+    //     const name = Parser.extractChapterName(fullTitle);
+    //     const chap_number = Parser.extractChapterNumber(fullTitle);
+    //     const volume = Parser.extractVolumeNumber(fullTitle);
+    //     const language = eLanguage.lastChild.attribs.title;
+    //     const scanlator = eGroup.childNodes.find(x => x.name === "a").lastChild.nodeValue;
+    //
+    //     const dateAdded = eDate.lastChild.nodeValue.trim();
+    //
+    //     chapters.push({
+    //       manga_name,
+    //       chap_number,
+    //       volume,
+    //       src,
+    //       name,
+    //       language,
+    //       scanlator,
+    //       dateAdded,
+    //     });
+    //
+    //
+    //
+    //     $current = $cnext;
+    //
+    //     // console.log($current);
+    //   }((next && $current !== next ) || ($current.attribs.class && $current.attribs.class.split(' ').length ===1));
+    //
+    //
+    //
+    //
+    //
+    //   console.log(manga_name);
+    // }
+    //
+    //
+    //
+    // console.log(chapters);
+    //
 
 
     // $(".chapters_list > tbody > tr > td[colspan='5']").each((i,$td)=>{
@@ -310,8 +311,10 @@ export class Parser implements SiteParser {
   }
 
   static convertChapterReaderUrl(src: string) {
-    let idNumber = src.split("#")[1];
+    if(src.startsWith(resolve(config.site, "/areader"))
+      return src;
 
+    let idNumber = src.split("#")[1];
     let pg = 1;
 
     let pgMatch = /_\d+$/.exec(idNumber);
