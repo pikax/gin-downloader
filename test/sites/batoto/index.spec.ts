@@ -135,7 +135,9 @@ describe("Batoto live", () => {
       mangas.results.should.length.gte(4);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://bato.to/comic/_/gintama-r94"
+        src : "http://bato.to/comic/_/gintama-r94",
+        status: 'Open',
+        mature: false
       });
     });
 
@@ -154,7 +156,9 @@ describe("Batoto live", () => {
       mangas.results.should.length(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://bato.to/comic/_/gintama-r94"
+        src : "http://bato.to/comic/_/gintama-r94",
+        status: 'Open',
+        mature: false
       });
     });
 
@@ -172,7 +176,9 @@ describe("Batoto live", () => {
       mangas.results.should.length.gte(4);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://bato.to/comic/_/gintama-r94"
+        src : "http://bato.to/comic/_/gintama-r94",
+        status: 'Open',
+        mature: false
       });
     });
 
@@ -189,7 +195,9 @@ describe("Batoto live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://bato.to/comic/_/gintama-r94"
+        src : "http://bato.to/comic/_/gintama-r94",
+        status: 'Open',
+        mature: false
       });
     });
 
@@ -214,7 +222,9 @@ describe("Batoto live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://bato.to/comic/_/gintama-r94"
+        src : "http://bato.to/comic/_/gintama-r94",
+        status: 'Open',
+        mature: false
       });
     });
 
@@ -232,7 +242,9 @@ describe("Batoto live", () => {
       mangas.results.should.length.lte(10);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://bato.to/comic/_/gintama-r94"
+        src : "http://bato.to/comic/_/gintama-r94",
+        status: 'Open',
+        mature: false
       });
     });
 
@@ -250,7 +262,10 @@ describe("Batoto live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "History's Strongest Disciple Kenichi",
-        src : "http://bato.to/comic/_/historys-strongest-disciple-kenichi-r6"
+        src : "http://bato.to/comic/_/historys-strongest-disciple-kenichi-r6",
+        status: 'Open',
+        mature: false
+
       });
     });
 
@@ -265,7 +280,9 @@ describe("Batoto live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "10, 20, and 30",
-        src : "http://bato.to/comic/_/10-20-and-30-r16192"
+        src : "http://bato.to/comic/_/10-20-and-30-r16192",
+        status: "Closed",
+        mature: false,
       });
     });
 
