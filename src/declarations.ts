@@ -5,6 +5,7 @@
 import {HTMLDocument} from "libxmljs";
 import {CheerioElement} from "cheerio";
 import {URL} from "url";
+import getPrototypeOf = Reflect.getPrototypeOf;
 
 // TODO refractor, move to distinct files
 
@@ -134,6 +135,7 @@ declare global {
 
 
 
+
 const regexLastDigit = /\d+(\.\d{1,3})?$/;
 const regexFirstDigit = /\d+(\.\d{1,3})?/;
 
@@ -252,9 +254,9 @@ export enum GenreCondition {
 }
 
 export enum FilterStatus {
-  Ongoing,
-  Complete,
-  Cancelled
+  Ongoing = <any>"Ongoing",
+  Complete = <any>"Complete",
+  Cancelled = <any>"Cancelled"
 }
 
 export enum FilterMangaType {
@@ -262,7 +264,7 @@ export enum FilterMangaType {
   Manhwa,
   Manhua,
   Comic,
-  Artbook, //An artbook is a title that contains purely art and has no story
+  Artbook, // An artbook is a title that contains purely art and has no story
   Other, // bato.to
 }
 

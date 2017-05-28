@@ -11,3 +11,6 @@ export const parseDoc = (source: string, params: {location: string} = undefined)
   doc.location = params && params.location;
   return doc;
 };
+
+
+export const sanitize = (children: CheerioElement[])=> children.filter(x=>x.type !== "text");
