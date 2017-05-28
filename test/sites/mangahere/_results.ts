@@ -31,8 +31,6 @@ let manga = {
     "Supernatural" ],
   synopsis: "Sakata Gintoki is a samurai living in an era when samurai are no longer needed.",
   status: "Ongoing",
-  ranked: "177th",
-  rating: "4.94",
   similarmanga:
   [ "13",
     "Bankara",
