@@ -220,23 +220,22 @@ export class Parser implements SiteParser {
 
 
 
-  static ResolveChapterVolume(title: string): string{
+  static ResolveChapterVolume(title: string): number {
     if (title.indexOf("_vol") < 0)
       return;
 
-    let frags = title.split(-1);
+    let frags = title.split(": ", 1);
     let chapfrags = frags[0].split("ch.");
-
     return chapfrags[0].trim().lastDigit();
   }
 
-  static ResolveChapterNumber(title: string): string{
-    let frags = title.split(-1);
+  static ResolveChapterNumber(title: string): number {
+    let frags = title.split(": ", 1);
     return frags[0].lastDigit();
   }
 
-  static ResolveChapterName(title: string): string{
-    let frags = title.split(-1);
+  static ResolveChapterName(title: string): string {
+    let frags = title.split(": ");
     return frags[frags.length - 1];
   }
 

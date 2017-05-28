@@ -104,4 +104,7 @@ describe("MangaFox offline", () => {
     parser.chapters(doc)
       .should.have.length.gte(results.chapter_count);
   });
+
+
+  // TODO implement filter
 });
