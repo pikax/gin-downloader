@@ -1,7 +1,7 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, FilterSupport, FilterStatus, FilterMangaType} from "../../declarations";
+import {Genre, FilterCondition, FilterSupport, FilterStatus, FilterMangaType, Genre} from "../../declarations";
 import {config} from "./config";
 import {resolve} from "url";
 import {map} from "lodash";
@@ -86,9 +86,9 @@ correctName[Genre.Yuri] = Genre.Yuri.toString();
 
 
 
-export const processFilter = (filter: FilterSupport) : {src: string, params: any} => {
+export const processFilter = (filter: FilterSupport) : {src: string, params?: any} => {
   filter = filter || {};
-  let {genres, outGenres, search, page} = filter;
+  let {search, page} = filter;
 
   let filterType = null;
 
@@ -103,10 +103,13 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
   let methodArtist = "cw";
   let methodReleased = "eq";
 
+  let inGenres: Genre[] = [];
+  let outGenres: Genre[] = [];
+
 
 
   if (search) {
-    let { name, author, artist, rating, released, type} = search;
+    let { name, author, artist, rating, released, type, genre} = search;
 
     filterType = resolveType(type) || filterType;
 
@@ -133,6 +136,15 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
       filterReleased = released.value || filterReleased;
       methodReleased = searchMethod(released.condition) || methodReleased;
     }
+
+
+
+    if(genre) {
+      inGenres = genre.inGenres;
+      outGenres = genre.outGenres;
+    }
+
+
   }
 
   const type = `direction=${filterType || ""}`;
@@ -142,10 +154,11 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
   const author = `author=${filterAuthor || ""}`;
   const artistMethod = `artist_method=${methodArtist}`;
   const artist = `artist=${filterArtist || ""}`;
-  const genreFilter = map(Supported, x => `genres%5B${correctName[x].replace(/ /g, "+")}%5D=${inOutGenre(x, genres, outGenres)}`).join("&");
+  const genreFilter = map(Supported, x => `genres%5B${correctName[x].replace(/ /g, "+")}%5D=${inOutGenre(x, inGenres, outGenres)}`).join("&");
   const releaseMethod = `released_method=${methodReleased}`;
   const release = `released=${filterReleased || ""}`;
   const completed = `is_completed=${resolveStatus(status) || ""}`;
+
 
 
   let advopts = "advopts=1"; // NOTE not sure what is this
@@ -154,14 +167,15 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
     advopts += `&page=${page}`;
   }
 
-  return {src: resolve(config.site, "/search.php"),
-    params: [nameMethod, mangaName,
+
+
+  return {src: resolve(config.site, "/search.php?"+[nameMethod, mangaName,
       type,
       authorMethod, author,
       artistMethod, artist,
       genreFilter,
       releaseMethod, release,
-      completed, advopts].join("&")
+      completed, advopts].join("&"))
   };
 };
 

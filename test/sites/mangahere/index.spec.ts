@@ -167,7 +167,11 @@ describe("MangaHere live", () => {
 
     it("should filter by in genre", async () => {
       let filter: FilterSupport = {
-        genres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Drama, Genre.Historical, Genre.SciFi, Genre.Shounen, Genre.Supernatural]
+        search: {
+          genre: {
+            inGenres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Drama, Genre.Historical, Genre.SciFi, Genre.Shounen, Genre.Supernatural]
+          }
+        }
       };
 
       let mangas = await manga.filter(filter);
@@ -180,7 +184,7 @@ describe("MangaHere live", () => {
 
     it("should filter by out genre", async () => {
       let filter: FilterSupport = {
-        outGenres: [Genre.Romance],
+
         search: {
           name: {
             name: "gin",
@@ -188,6 +192,9 @@ describe("MangaHere live", () => {
           },
           author: {
             name: "Sora",
+          },
+          genre: {
+            outGenres: [Genre.Romance],
           }
         }
 

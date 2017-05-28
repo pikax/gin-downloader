@@ -5,11 +5,11 @@ import {
   Chapter, FilteredResults, FilterStatus, MangaInfo, MangaSource, MangaXDoc,
   SiteParser
 } from "../../declarations";
+
 import {resolve} from "url";
 import * as url from "url";
 
 import {config} from "./config";
-import {Element} from "libxmljs";
 import {sanitize} from "../../common/helper";
 
 
@@ -68,20 +68,6 @@ export class Parser implements SiteParser {
     let scanlators = seriesInfo.find("div.data span a").slice(1).map((i, el) => el.children[0].nodeValue).get();;
 
     let synopsis = titleElem.find("p").text();
-
-    //
-    // let image = doc.get("//div[@class='cover']/img").attr("src").value();
-    // let title = doc.get("//div[@class='cover']/img").attr("alt").value();
-    // let synonyms = doc.get("//div[@id='title']/h3").text().split("; ");
-    // let released = doc.get("//div[@id='title']/table/tr[2]/td[1]/a").text();
-    // let authors = [doc.get("//div[@id='title']/table/tr[2]/td[2]/a").text()];
-    // let artists = [doc.get("//div[@id='title']/table/tr[2]/td[3]/a").text()];
-    // let genres = doc.find("//div[@id='title']/table/tr[2]/td[4]/a").map(x => x.text());
-    // let synopsis = doc.get("//div[@id='title']/p").text();
-    // let status = doc.get("//div[@id='series_info']/div[@class='data'][1]/span/text()[1]").text().trim().slice(0, -1);
-    // let ranked = doc.get("//div[@id='series_info']/div[@class='data'][2]/span").text();
-    // let rating = doc.get("//div[@id='series_info']/div[@class='data'][3]/span").text();
-    // let scanlators = doc.find("//div[@id='series_info']/div[@class='data'][4]/span/a").map(x => x.text());
 
     return {
       image,
