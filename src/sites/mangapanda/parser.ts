@@ -4,22 +4,43 @@
 
 import {resolve} from "url";
 import config from "./config";
-import {Chapter, FilteredResults, MangaInfo, MangaSource, MangaXDoc, SiteParser} from "../../declarations";
+import {
+  Chapter, FilteredResults, FilterStatus, MangaInfo, MangaSource, MangaXDoc,
+  SiteParser
+} from "../../declarations";
 import * as url from "url";
 
 import {uniqBy} from "lodash";
 
 
 export class Parser implements SiteParser {
-  mangas(doc: MangaXDoc): MangaSource[] | Promise<MangaSource[]> {
-    const xpath = "//ul[@class='series_alpha']/li/a";
-    return doc.find(xpath)
-      .map(x => {
-        return {
-          name : x.text().leftTrim(),
-          src :  resolve(config.site,  x.attr("href").value())
-        };
-      });
+  private static fixNames: { [id: string]: string; } = {
+    "/kapon-_": "Kapon (>_<)!",
+  };
+
+
+  private static resolveName = (src: string) => Parser.fixNames[src];
+  mangas($: MangaXDoc): MangaSource[] | Promise<MangaSource[]> {
+    let mangas: MangaSource[] = [];
+    $("ul.series_alpha > li > a").each((i, el) => {
+      mangas[i] = {
+        name: Parser.resolveName(el.attribs.href) || el.lastChild.nodeValue.leftTrim(),
+        src:  resolve(config.site, el.attribs.href),
+        status: el.parent.children.find(x=>x.name === "span" && x.attribs.class === "mangacompleted")
+          ? FilterStatus.Complete.toString()
+          : FilterStatus.Ongoing.toString(),
+      };
+    });
+    return mangas;
+    //
+    // const xpath = "//ul[@class='series_alpha']/li/a";
+    // return doc.find(xpath)
+    //   .map(x => {
+    //     return {
+    //       name : x.text().leftTrim(),
+    //       src :  resolve(config.site,  x.attr("href").value())
+    //     };
+    //   });
   }
 
   latest(doc: MangaXDoc): Chapter[] | Promise<Chapter[]> {
