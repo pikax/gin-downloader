@@ -13,7 +13,7 @@ const names: { [id: string]: string; } = {
   "I'm Kagome": "i039m-kagome",
   "009 Re:Cyborg": "009-recyborg",
   "17 Years Old, That Summer Day's Miracle": "17-years-old-that-summer-days-miracle",
-  "Kapon (>_": "kapon-_",
+  "Kapon (>_": "kapon-_", // NOTE parser issue
   "Kapon (>_<)!": "kapon-_",
   "Utopia's Avenger": "utopia039s-avenger",
 };

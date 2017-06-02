@@ -68,6 +68,8 @@ describe("MangaHere offline", () => {
 
     let info = await parser.info(doc);
 
+    console.log(info)
+
     info.should.exist;
     info.title.should.be.eq(results.manga.title);
     info.synopsis.should.contain(results.manga.synopsis);
