@@ -242,7 +242,21 @@ mangafox.chapters("Gintama", 1)
     .then(console.log)
 ```
 
+- **login(user, pw, remember?)**: return Promise<boolean>
+```javascript
+let user = ""; //username
+let pw = ""; //pw
 
+//simple version
+batoto.logIn(user, pw)
+  .then(x=>{
+    if(!x) 
+      throw new Error('invalid user or password')
+    return x;
+  })
+  .then(x=>batoto.chapters('Gintama'))
+  .then(console.log)
+```
 
 
 
