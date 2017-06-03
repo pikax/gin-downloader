@@ -1,8 +1,11 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
-import { Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, Request, FilterSupport, FilteredResults } from "../declarations";
+import { Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, FilterSupport, FilteredResults } from "../declarations";
 import { IDebugger } from "debug";
+import { RequestStrategy } from "../request/headers";
+import { GinRequest } from "../request";
+import { OptionsWithUrl } from "request";
 export declare class MangaSite<C extends SiteConfig, P extends SiteParser, N extends NameHelper> implements Site {
     private _parser;
     protected verbose: IDebugger;
@@ -13,8 +16,8 @@ export declare class MangaSite<C extends SiteConfig, P extends SiteParser, N ext
     readonly parser: P;
     readonly config: C;
     readonly nameHelper: N;
-    readonly request: Request;
-    protected constructor(config: C, parser: P, nameHelper: N, request: Request);
+    readonly request: GinRequest;
+    protected constructor(config: C, parser: P, nameHelper: N, strategy: RequestStrategy);
     mangas(): Promise<MangaSource[]>;
     filter(filter?: FilterSupport): Promise<FilteredResults>;
     latest(): Promise<Chapter[]>;
@@ -25,7 +28,14 @@ export declare class MangaSite<C extends SiteConfig, P extends SiteParser, N ext
         chapters: Chapter[];
     }>;
     images(name: string, chapter: any): Promise<Promise<ImageSource>[]>;
+    resolveMangaUrl(name: string): Promise<string> | string;
+    protected buildRequest(url: string): OptionsWithUrl;
+    protected buildMangasRequest(url: string): OptionsWithUrl;
+    protected buildLatestRequest(url: string): OptionsWithUrl;
+    protected buildInfoRequest(url: string): OptionsWithUrl;
+    protected buildChapterRequest(url: string): OptionsWithUrl;
+    protected buildImagePathsRequest(url: string): OptionsWithUrl;
     protected resolveChapterSource(name: string, chapter: number): Promise<string>;
-    private static processImagePath(src, parser, request);
+    private static processImagePath(opts, parser, request);
 }
 export default Site;

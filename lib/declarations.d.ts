@@ -2,10 +2,9 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
-import { HTMLDocument } from "libxmljs";
 import { URL } from "url";
-export interface MangaXDoc extends HTMLDocument {
-    baseUrl: string;
+import "cheerio";
+export interface MangaXDoc extends CheerioStatic {
     location: string;
 }
 export interface Request {
@@ -29,12 +28,17 @@ export interface SiteConfig {
 export interface MangaSource {
     name: string;
     src: string;
+    status?: string;
+    mature?: boolean;
 }
 export interface Chapter {
     chap_number?: string | number;
     src: string;
     volume?: string;
     name?: string;
+    language?: string;
+    scanlator?: string;
+    dateAdded?: string;
 }
 export interface MangaInfo {
     image: string;
@@ -52,6 +56,7 @@ export interface MangaInfo {
     similarmanga?: string[];
     direction?: string;
     views?: string;
+    type?: string;
 }
 export interface ImageSource {
     src: string;
@@ -77,6 +82,7 @@ export interface Site {
         chapters: Chapter[];
     }>;
     images(name: string, chapter: number): Promise<Promise<ImageSource>[]>;
+    resolveMangaUrl(name: string): Promise<string> | string;
 }
 declare global  {
     interface String {
@@ -84,7 +90,7 @@ declare global  {
         firstDigit(): number;
         leftTrim(): string;
         decodeEscapeSequence(): string;
-        getMatches(regex: RegExp, index: number): string[];
+        getMatches(regex: RegExp, index?: number): string[];
     }
 }
 export declare enum Genre {
@@ -152,15 +158,22 @@ export declare enum FilterCondition {
     LessThan = 7,
     GreaterThan = 8,
 }
+export declare enum GenreCondition {
+    And = 0,
+    Or = 1,
+}
 export declare enum FilterStatus {
-    Ongoing = 0,
-    Complete = 1,
-    Cancelled = 2,
+    Ongoing,
+    Complete,
+    Cancelled,
 }
 export declare enum FilterMangaType {
     Manga = 0,
     Manhwa = 1,
     Manhua = 2,
+    Comic = 3,
+    Artbook = 4,
+    Other = 5,
 }
 export interface FilterSupport {
     name?: string;
@@ -179,16 +192,20 @@ export interface FilterSupport {
             condition?: FilterCondition;
         };
         status?: FilterStatus;
-        rating?: {
-            value: number;
-            condition?: FilterCondition;
-        };
         released?: {
             value: number;
             condition?: FilterCondition;
         };
+        genre?: {
+            inGenres?: Genre[];
+            outGenres?: Genre[];
+            condition?: GenreCondition;
+        };
+        rating?: {};
+        mature?: {};
         type?: FilterMangaType;
     };
+    sort?: {};
     genres?: Genre[];
     outGenres?: Genre[];
 }
