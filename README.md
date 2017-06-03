@@ -24,7 +24,7 @@ Promise based manga scrapper for node, which supports multiple sites.
 - [x] MangaPanda
 - [x] MangaHere
 - [x] KissManga
-- [ ] BatoTo
+- [x] BatoTo
 - [ ] BatoToEs
 - [ ] DeNineManga
 - [ ] EsManga

@@ -9,7 +9,8 @@ import {
 import {resolve} from "url";
 
 import {config} from "./config";
-import {uniq} from "lodash";
+import {uniq, takeWhile, last, slice} from "lodash";
+import {sanitize} from "../../common/helper";
 
 
 export class Parser implements SiteParser {
@@ -39,195 +40,67 @@ export class Parser implements SiteParser {
   }
 
   latest($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
+    let chapters: Chapter[] = [];
+    let $trs: CheerioElement[] = [];
 
-    throw new Error("NOT WORKING")
-    // let chapters : Chapter[] = [];
-    // let $trs: CheerioElement[] = [];
-    //
-    // $(".chapters_list > tbody > tr > td[colspan='5']").each((i, el) => $trs[i] = el.parent);
-    //
-    // $trs = $trs.slice(1,3);
-    //
-    // console.log($trs.length)
-    //
-    //
-    // for (let i = 0; i < $trs.length; ++i) {
-    //   let $current = $trs[i];
-    //   let next = i+1 < $trs.length  && $trs[i + 1];
-    //
-    //   let manga_name = $current.childNodes[3].childNodes[3].lastChild.nodeValue;
-    //
-    //
-    //   do{
-    //     let children: CheerioElement[] = [];
-    //     let $cnext = $($current).next().next();
-    //     $cnext.next().children('td').each((i,e)=>children[i] = e);
-    //
-    //     //$current == tr
-    //     // $current = $current.next.next;
-    //
-    //     //$current == td
-    //
-    //     // let children = $current.children.filter(x => x.type === "tag");
-    //
-    //
-    //
-    //
-    //
-    //     let eTitle = children[0];
-    //     let eLanguage = children[1];
-    //     let eGroup = children[2];
-    //     let eDate = children[3];
-    //
-    //
-    //     // const fullTitle = eTitle.next.childNodes[1].lastChild.nodeValue.slice(1);
-    //
-    //     const a = eTitle.childNodes.find(x => x.name === "a");
-    //
-    //
-    //     const fullTitle = a.lastChild.nodeValue.slice(1);
-    //     // console.log(fullTitle)
-    //
-    //     const src = Parser.convertChapterReaderUrl(a.attribs.href);
-    //
-    //     const name = Parser.extractChapterName(fullTitle);
-    //     const chap_number = Parser.extractChapterNumber(fullTitle);
-    //     const volume = Parser.extractVolumeNumber(fullTitle);
-    //     const language = eLanguage.lastChild.attribs.title;
-    //     const scanlator = eGroup.childNodes.find(x => x.name === "a").lastChild.nodeValue;
-    //
-    //     const dateAdded = eDate.lastChild.nodeValue.trim();
-    //
-    //     chapters.push({
-    //       manga_name,
-    //       chap_number,
-    //       volume,
-    //       src,
-    //       name,
-    //       language,
-    //       scanlator,
-    //       dateAdded,
-    //     });
-    //
-    //
-    //
-    //     $current = $cnext;
-    //
-    //     // console.log($current);
-    //   }((next && $current !== next ) || ($current.attribs.class && $current.attribs.class.split(' ').length ===1));
-    //
-    //
-    //
-    //
-    //
-    //   console.log(manga_name);
-    // }
-    //
-    //
-    //
-    // console.log(chapters);
-    //
+    $("#content > div > div.category_block.block_wrap > table > tbody > tr").slice(1).each((i, el) => {
+      $trs[i] = el;
+    });
 
 
-    // $(".chapters_list > tbody > tr > td[colspan='5']").each((i,$td)=>{
-    //   let manga_name = $td.childNodes.reverse().find(x=>x.name === "a").lastChild.nodeValue;
-    //
-    //   let chapters : Chapter[] = [];
-    //
-    //
-    //   let tr = $td.parent;
-    //
-    //
-    //
-    //   do{
-    //     tr = tr.next.next;
-    //
-    //     let children = tr.children.filter(x => x.type === "tag");
-    //
-    //     let eTitle = children[0];
-    //     let eLanguage = children[1];
-    //     let eGroup = children[2];
-    //     let eDate = children[3];
-    //
-    //
-    //     // const fullTitle = eTitle.next.childNodes[1].lastChild.nodeValue.slice(1);
-    //
-    //     const a = eTitle.childNodes.find(x => x.name === "a");
-    //     if(a.lastChild.nodeValue == null)
-    //       console.log(a)
-    //     const fullTitle = a.lastChild.nodeValue.slice(1);
-    //
-    //     const src = Parser.convertChapterReaderUrl(a.attribs.href);
-    //
-    //     const name = Parser.extractChapterName(fullTitle);
-    //     const chap_number = Parser.extractChapterNumber(fullTitle);
-    //     const volume = Parser.extractVolumeNumber(fullTitle);
-    //     const language = eLanguage.lastChild.attribs.title;
-    //     const scanlator = eGroup.childNodes.find(x => x.name === "a").lastChild.nodeValue;
-    //
-    //     const dateAdded = eDate.lastChild.nodeValue.trim();
-    //
-    //     chapters.push({
-    //       manga_name,
-    //       chap_number,
-    //       volume,
-    //       src,
-    //       name,
-    //       language,
-    //       scanlator,
-    //       dateAdded,
-    //     });
-    //
-    //
-    //     if(tr && tr.next.next.attribs.class.split(' ').length === 1)
-    //
-    //     console.log(tr.next.next)
-    //
-    //   }while(tr && tr.next.next.attribs.class.split(' ').length === 1)
-    //
-    //
+    for (let i = 0; i < $trs.length; ++i) {
+      let header = $trs[i];
+      let ha = last(sanitize(header.children)).children
+          .find(x => x && x.attribs && x.attribs.href && x.attribs.href.startsWith("http"));
+
+      // let mangaUrl = ha.attribs.href;
+      let mangaName = ha.lastChild.nodeValue;
+      let row = header.attribs.class.slice(0, 4);
 
 
 
 
+      let tr: CheerioElement;
+      while ((tr = $trs[++i]) && (tr.attribs && tr.attribs.class.startsWith(row))) {
+        let tds = sanitize(tr.children).reverse(); // reversed
 
 
+        let date = tds[0].lastChild.nodeValue.trim(); // date
+        let sTd = tds[1].children.find(x => x.name === "a"); // scanlator
+        let lTd = tds[2].children.find(x => x.name === "div"); // lang
+        let cTd = tds[3].children.find(x => x.name === "a"); // chapter
 
 
-    // console.log(chapters );
+        //
+        // if(i>9){
+        //   console.log($trs[i]);
+        //   console.log(mangaName);
+        //   console.log(mangaUrl);
+        // }
 
 
-
-    // });
-
-
-
-
+        let cname = cTd.lastChild.nodeValue;
+        let src = cTd.attribs.href;
+        let lang = lTd.attribs.title;
+        let scanlator = sTd.lastChild.nodeValue;
 
 
+        chapters[i] = {
+          name: mangaName, // Parser.extractChapterName(cname),
+          chap_number : Parser.extractChapterNumber(cname),
+          volume: Parser.extractVolumeNumber(cname),
 
+          src: Parser.convertChapterReaderUrl(src),
 
+          language: lang,
+          scanlator: scanlator,
 
-
-
-
-
-
-
-    const xpath = "//table[@class='ipb_table chapters_list']/tbody/tr/td/a[starts-with(@href,'/reader')]";
-
-    return doc.find(xpath)
-      .map(x => {
-        return <Chapter> {
-          chap_number: Parser.extractChapterNumber(x.text()),
-          volume: Parser.extractVolumeNumber(x.text()),
-          src: resolve(config.site, x.attr("href").value()),
-          name: Parser.extractChapterName(x.get("../../preceding-sibling::tr/td[@colspan = '5']").text().trim()),
-          language :  x.get("../following-sibling::td[1]/div").attr("title").value().trim(),
-          scanlator: x.get("../following-sibling::td[2]/a").text().trim(),
-          dateAdded: x.get("../following-sibling::td[3]").text().trim(),
+          dateAdded: date
         };
-      });
+      }
+      --i;
+    }
+    return chapters;
   }
 
   info($: MangaXDoc): Promise<MangaInfo> | MangaInfo {
@@ -311,8 +184,9 @@ export class Parser implements SiteParser {
   }
 
   static convertChapterReaderUrl(src: string) {
-    if(src.startsWith(resolve(config.site, "/areader"))
+    if (src.startsWith(resolve(config.site, "/areader"))) {
       return src;
+    }
 
     let idNumber = src.split("#")[1];
     let pg = 1;
@@ -356,7 +230,7 @@ export class Parser implements SiteParser {
     };
   }
   static extractChapterNumber(text: string): number {
-    let match = text.match(/Ch\.\d+/);
+    let match = text.match(/Ch\.\d+(\.\d{1,3})?/);
     return match && match[0] && +match[0].slice(3);
   }
   static extractVolumeNumber(text: string): string {
