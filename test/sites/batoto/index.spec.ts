@@ -8,7 +8,7 @@ import "./../../common";
 import {manga} from "./../../../src/sites/batoto";
 import results from "./_results";
 import auth from "./auth";
-import {helper} from "../../../src/sites/batoto/names";
+import {
   FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre,
   GenreCondition
 } from "../../../src/declarations";
@@ -298,12 +298,12 @@ describe("Batoto live", () => {
       });
     });
 
-    it('should get by order', async ()=>{
+    it("should get by order", async () => {
 
-      throw new Error('not implemented');
+      throw new Error("not implemented");
     });
 
-    it('should not include mature', async ()=>{
+    it("should not include mature", async () => {
 
       let filter: FilterSupport = {
         name: "ginta",
@@ -320,7 +320,7 @@ describe("Batoto live", () => {
       });
     });
 
-    it('should have rating between 5~5', async ()=>{
+    it("should have rating between 5~5", async () => {
       let filter: FilterSupport = {
         search: {
           rating: {
@@ -337,7 +337,8 @@ describe("Batoto live", () => {
         src : "http://bato.to/comic/_/a-girl-in-the-clouds-r21070"
       });
     });
-    it('should have rating between 0~1', async ()=>{
+
+    it("should have rating between 0~1", async () => {
 
       let filter: FilterSupport = {
         search: {
@@ -356,7 +357,7 @@ describe("Batoto live", () => {
       });
     });
 
-    it('should have genre inclusion OR', async ()=>{
+    it("should have genre inclusion OR", async () => {
 
       let filter: FilterSupport = {
         name: "ginta",
