@@ -9,10 +9,10 @@ export declare class Parser implements SiteParser {
     private _vm;
     private static fixNames;
     private static resolveName;
-    mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[];
-    latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[];
-    info(doc: MangaXDoc): Promise<MangaInfo> | MangaInfo;
-    chapters(doc: MangaXDoc): Promise<Chapter[]> | Chapter[];
+    mangas($: MangaXDoc): Promise<MangaSource[]> | MangaSource[];
+    latest($: MangaXDoc): Promise<Chapter[]> | Chapter[];
+    info($: MangaXDoc): Promise<MangaInfo> | MangaInfo;
+    chapters($: MangaXDoc): Promise<Chapter[]> | Chapter[];
     imagesList(html: string, secret: string, vm: Script): string[];
     getSecret(html: string): string;
     imagesPaths(doc: MangaXDoc): string[];
@@ -20,6 +20,9 @@ export declare class Parser implements SiteParser {
     readonly VM: Script;
     buildVM(cajs: string, lojs: string): Script;
     filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults;
+    static ResolveChapterVolume(title: string): string;
+    static ResolveChapterNumber(title: string): number;
+    static ResolveChapterName(title: string): string;
 }
 export declare const parser: Parser;
 export default parser;

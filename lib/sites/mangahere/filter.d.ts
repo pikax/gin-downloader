@@ -4,5 +4,5 @@
 import { FilterSupport } from "../../declarations";
 export declare const processFilter: (filter: FilterSupport) => {
     src: string;
-    params: any;
+    params?: any;
 };
