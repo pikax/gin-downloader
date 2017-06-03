@@ -22,6 +22,7 @@ const DefaultOptions = {
   encoding: "",
   timeout: Timeout,
   followAllRedirects: true,
+  jar: true,
 
   forever: true,
   // proxy: config.proxy, // Note the fully-qualified path to Fiddler proxy. No "https" is required, even for https connections to outside.

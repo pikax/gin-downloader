@@ -14,6 +14,8 @@ import {RequestStrategy} from "./headers";
 const DefaultOptions = {
   method: "GET",
 
+  jar: true,
+
   gzip: true,
   encoding: "",
   // timeout: Timeout,
