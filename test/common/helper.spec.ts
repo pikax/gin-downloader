@@ -11,9 +11,6 @@ import {parseDoc} from "../../src/common/helper";
 import {strategy} from "../../src/request/requestRetryStrategy";
 import {strategy as cfStrategy} from "../../src/request/requestCloudFareStrategy";
 
-import {HTMLDocument} from "libxmljs";
-
-
 const request = new GinRequest(strategy);
 const cfRequest = new GinRequest(cfStrategy);
 
@@ -39,7 +36,7 @@ describe("Helper.js", () => {
   it("should get html", done => {
     let uri = "https://github.com/";
     request.getDoc(uri)
-      .then(doc => doc.find(`//a[@class='header-logo-invertocat']`))
+      .then($ => $(`a.header-logo-invertocat`))
       .then(x => {
         x.should.exist;
         x.length.should.be.eq(1);
@@ -53,11 +50,11 @@ describe("Helper.js", () => {
 
   it("should get doc", async () => {
     let uri = "https://github.com/";
-    let doc = await request.getDoc(uri);
+    let $ = await request.getDoc(uri);
 
-    doc.find(`//a[@class='header-logo-invertocat']`).length.should.be.eq(1);
+    $(`a.header-logo-invertocat`).length.should.be.eq(1);
 
-    doc.should.have.property("location", uri);
+    $.should.have.property("location", uri);
 
   });
 
