@@ -26,22 +26,21 @@ describe("Helper.js", () => {
       </html>`;
 
 
-  it("should not get html", done => {
+  it("should not get html", async () => {
     let uri = "ht222tps://github.com/";
-    request.getDoc(uri)
-      .should.eventually.be.rejectedWith(Error)
-      .notify(done);
+    try{
+      let doc = await request.getDoc(uri);
+      doc.should.be.null;
+    }catch(e){
+      e.should.be.throw;
+    }
   });
 
-  it("should get html", done => {
+  it("should get html", async()  => {
     let uri = "https://github.com/";
-    request.getDoc(uri)
-      .then($ => $(`a.header-logo-invertocat`))
-      .then(x => {
-        x.should.exist;
-        x.length.should.be.eq(1);
-      })
-      .should.eventually.notify(done);
+    let $ = await request.getDoc(uri);
+    $(`a.header-logo-invertocat`).should.exist.and
+        .length.should.be.eq(1);
   });
 
   it("should parse doc", () => {
@@ -58,18 +57,18 @@ describe("Helper.js", () => {
 
   });
 
-  it("should get bytes", done => {
+  it("should get bytes", async() => {
     let uri = "https://github.com/";
 
-    request.getHtml(uri)
-      .should.eventually.exist.and.notify(done);
+    let html = await request.getHtml(uri);
+    html.should.exist;
   });
 
-  it("should get kissmanga by bypassing cloudfare protection", done => {
+  it("should get kissmanga by bypassing cloudfare protection", async() => {
     let uri = "http://kissmanga.com/";
 
-    cfRequest.getHtml(uri)
-      .should.eventually.not.contain("Checking your browser before accessing").notify(done);
+    let html = cfRequest.getHtml(uri);
+    html.should.not.contain("Checking your browser before accessing");
   });
 });
 
