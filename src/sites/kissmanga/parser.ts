@@ -245,7 +245,7 @@ export class Parser implements SiteParser {
 
     let frags = title.split(": ", 1);
     let chapfrags = frags[0].split("ch.");
-    return chapfrags[0].trim().lastDigit();
+    return chapfrags[0].trim().lastDigit().toString();
   }
 
   static ResolveChapterNumber(title: string): number {

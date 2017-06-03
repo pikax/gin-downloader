@@ -8,7 +8,7 @@
     "alwaysStrict": true,
     "typeRoots" : ["./node_modules/@types"],
     "types": [ "node", "mocha", "chai" ],
-    "lib": ["ES6", "es2015"],
+    "lib": ["ES6", "es2015","dom"],
     "declaration": true
   },
   "exclude": [

@@ -51,7 +51,7 @@ export class Parser implements SiteParser {
       let date = divChildren[2].lastChild.nodeValue;
 
 
-      let dts = sanitize(divChildren[1].children.slice(1).filter(x => x.name === "a" && x.attribs.class= "chaptersrec"));
+      let dts = sanitize(divChildren[1].children.slice(1).filter(x => x.name === "a" && x.attribs.class == "chaptersrec"));
 
 
       for (let a of dts) {

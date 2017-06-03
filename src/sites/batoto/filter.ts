@@ -189,9 +189,10 @@ export const processFilter = (filter: FilterSupport) : {src: string} => {
   const type = `type=${ftype}`;
   const page = `p=${(filter.page || 1)}`;
 
-  const rating_high; // 0~5
-  const rating_low; // 0~5
-  const mature; // n == false
+  // TODO implement me
+  const rating_high= 0; // 0~5
+  const rating_low = 0; // 0~5
+  const mature = false; // n == false
 
   return {src: config.mangas_url + "?" + [mangaName, nameCond, authorArtist, authorCond, genreFilter, genreCon, status, type, page].join("&")
   };

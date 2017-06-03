@@ -2,10 +2,10 @@
  * Created by rodriguesc on 24/03/2017.
  */
 
-import {HTMLDocument} from "libxmljs";
-import {CheerioElement} from "cheerio";
 import {URL} from "url";
 import getPrototypeOf = Reflect.getPrototypeOf;
+
+import "cheerio";
 
 // TODO refractor, move to distinct files
 
@@ -16,7 +16,7 @@ import getPrototypeOf = Reflect.getPrototypeOf;
 //   location: string;
 // }
 
-export interface MangaXDoc extends CheerioStatic{
+export interface MangaXDoc extends CheerioStatic {
   location: string;
 }
 

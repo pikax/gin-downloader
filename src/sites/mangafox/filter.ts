@@ -133,8 +133,9 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
     }
 
     if (rating) {
-      filterRating = rating.value || filterRating;
-      methodRating = searchMethod(rating.condition) || methodRating;
+      // TODO fix this
+      filterRating = rating || filterRating;
+      // methodRating = searchMethod(rating.condition) || methodRating;
     }
 
     if (released) {

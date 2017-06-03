@@ -1,7 +1,7 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, FilterSupport, FilterStatus, FilterMangaType, Genre} from "../../declarations";
+import {Genre, FilterCondition, FilterSupport, FilterStatus, FilterMangaType} from "../../declarations";
 import {config} from "./config";
 import {resolve} from "url";
 import {map} from "lodash";
@@ -139,7 +139,7 @@ export const processFilter = (filter: FilterSupport) : {src: string, params?: an
 
 
 
-    if(genre) {
+    if (genre) {
       inGenres = genre.inGenres;
       outGenres = genre.outGenres;
     }
@@ -169,7 +169,7 @@ export const processFilter = (filter: FilterSupport) : {src: string, params?: an
 
 
 
-  return {src: resolve(config.site, "/search.php?"+[nameMethod, mangaName,
+  return {src: resolve(config.site, "/search.php?" + [nameMethod, mangaName,
       type,
       authorMethod, author,
       artistMethod, artist,

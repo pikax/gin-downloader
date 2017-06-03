@@ -10,12 +10,9 @@ import {
   FilterCondition, FilteredResults, FilterSupport, ImageSource, MangaSource, Site,
   SiteConfig
 } from "../../declarations";
-import {find} from "lodash";
-import {request} from "../../common/cfRequest";
-import {parse, resolve} from "url";
-import {Script} from "vm";
+
 import {processFilter} from "./filter";
-import RequestRetryStrategy, {strategy} from "../../request/requestRetryStrategy";
+import {strategy} from "../../request/requestRetryStrategy";
 import {OptionsWithUrl} from "request";
 
 
@@ -62,7 +59,6 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
     } while (filterResults.page < filterResults.total && filterResults.results.length > 0);
 
     return "";
-    return new Error("Not found");
   }
 
   mangas(filter?: FilterSupport): Promise<MangaSource[]> {
