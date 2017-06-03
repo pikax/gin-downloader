@@ -29,24 +29,51 @@ export class Parser implements SiteParser {
     return mangas;
   }
 
-  latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
-    const xpath = "//div[@class='manga_updates']/dl/dd/a";
-    return doc.find(xpath).map(x => {
-      return {
-        name: x.text(),
-        src: x.attr("href").value(),
-      };
+  latest($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
+    let chapters: Chapter[] = [];
+    $(".manga_updates > dl").each((i, el) => {
+      let divChildren = sanitize(el.children);
+
+
+      let aManga = divChildren[0].children.find(x => x.name === "a");
+      // console.log(aManga)
+      // let mangaUrl = aManga.attribs.href;
+      let mangaName = aManga.lastChild.nodeValue;
+
+      let date = divChildren[0].children.find(x => x.name === "span").lastChild.nodeValue;
+
+      let dts = sanitize(divChildren.slice(1));
+
+
+      for (let dt of dts) {
+        let a = dt.children.find(x => x.name === "a");
+
+        let src = a.attribs.href;
+        let title = a.lastChild.nodeValue;
+
+        let chapNumber = title.lastDigit();
+
+        chapters.push({
+          name: mangaName,
+          src: src,
+          chap_number: chapNumber,
+          dateAdded: date
+        });
+      }
+
     });
+
+    return chapters;
   }
 
   info($: MangaXDoc): Promise<MangaInfo> | MangaInfo {
 
     let image =  $("img.img").attr("src");
-    let title = $("div.title > h3").text().slice(5,-7);
+    let title = $("div.title > h3").text().slice(5, -7);
 
 
     let li: CheerioElement[] = [];
-    $(".detail_topText > li").each((i,el)=>{
+    $(".detail_topText > li").each((i, el) => {
       li[i] = el;
     });
 
@@ -54,40 +81,14 @@ export class Parser implements SiteParser {
     let genres = li[3].lastChild.nodeValue.split(", ");
 
 
-    let authors = li[4].children.filter(x=>x.name==="a").map(x=>x.lastChild.nodeValue);
-    let artists = li[5].children.filter(x=>x.name==="a").map(x=>x.lastChild.nodeValue);
-
-
+    let authors = li[4].children.filter(x => x.name === "a").map(x => x.lastChild.nodeValue);
+    let artists = li[5].children.filter(x => x.name === "a").map(x => x.lastChild.nodeValue);
 
     let status = li[6].children[0].next.nodeValue.trim() === "Ongoing"
       ? FilterStatus.Ongoing.toString()
       : FilterStatus.Complete.toString();
 
-
-
-
-
-    // 4545  let ranked = seriesInfo.find("div .data span").eq(2).text();
-    // let rating = seriesInfo.find("div .data span").eq(3).text();
-    // let scanlators = seriesInfo.find("div.data span a").slice(1).map((i, el) => el.children[0].nodeValue).get();;
-
-    let synopsis = li.reverse()[0].children.reverse().find(x=>x.name == "p").children[0].nodeValue;
-
-
-
-    //
-    // let image = doc.get("//img[@class='img']").attr("src").value();
-    // let title = doc.get("//div[@class='title']/h3").text().slice(5, -7);
-    // let synonyms = doc.get("//ul[@class='detail_topText']/li[3]/text()").text().split("; ");
-    // let authors = [doc.get("//ul[@class='detail_topText']/li[5]/a[@class='color_0077']").text()];
-    // let artists = [doc.get("//ul[@class='detail_topText']/li[6]/a[@class='color_0077']").text()];
-    // let genres = doc.get("//ul[@class='detail_topText']/li[4]/text()").text().split(", ");
-    // let synopsis = doc.get("//ul[@class='detail_topText']/li/p[last()]/text()").text();
-    // let status = doc.get("//ul[@class='detail_topText']/li[7]/text()[1]").text().trim();
-    // let ranked = doc.get("//ul[@class='detail_topText']/li[8]/text()[1]").text();
-    // let rating = doc.get("//ul[@class='detail_topText']/li[@id='rate']/span[@id='current_rating']").text();
-    // let similarmanga = doc.find("//div[@class='box_radius mb10'][2]/ul[@class='right_aside']/li/a").map(x => x.attr("title").value());
-
+    let synopsis = li.reverse()[0].children.reverse().find(x => x.name == "p").children[0].nodeValue;
 
     return {
       image,
@@ -162,15 +163,6 @@ export class Parser implements SiteParser {
 
 
   filter($: MangaXDoc): Promise<FilteredResults> | FilteredResults {
-    // const xpath = "//a[@class='manga_info name_one']";
-    //
-    // let mangas = doc.find(xpath).map(x => {
-    //   return {
-    //     name: x.text(),
-    //     src: x.attr("href").value()
-    //   };
-    // });
-
     let mangas: MangaSource[] = [];
 
     $("a.manga_info").each((i, el) => {
@@ -190,7 +182,7 @@ export class Parser implements SiteParser {
       }
     }
 
-    let lastPageElement = $("div.next-page > a").slice(-2,-1);
+    let lastPageElement = $("div.next-page > a").slice(-2, -1);
     let lastPage = 1;
 
     if (lastPageElement && lastPageElement[0]) {
