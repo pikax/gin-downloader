@@ -97,6 +97,8 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
     return opts;
   }
 
+  // buildLoginRequest(url: )
+
 
   async isLoggedIn() : Promise<boolean> {
     let html = await this.request.getHtml("http://bato.to/search");
@@ -104,11 +106,13 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
     return !!match;
   }
 
-  async logIn(user: string, pw: string, rememberMe?:boolean = true) {
-      let url =  'http://bato.to/forums/index.php?app=core&module=global&section=login&do=process';
+  async logIn(user: string, pw: string, rememberMe: boolean = true) {
+      let url =  "http://bato.to/forums/index.php?app=core&module=global&section=login&do=process";
 
-      let doc = await this.request.getDoc(url);
-      let authKey = doc.get("//form[@id='login']/input[@name='auth_key']").attr("value").value();
+      let request = this.buildRequest(url);
+      let $ = await this.request.getDoc(request);
+      let authKey = $("#login > input[name='auth_key']").attr("value");
+
       let body = {
         ips_username : user,
         ips_password : pw,
@@ -118,11 +122,12 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
       };
 
 
-    let html = await this.request.postHtml({
-      url,
-      formData: body,
-      proxy: "http://127.0.0.1:8888"
-    });
+      request = {...request, formData: body,
+        // proxy: "http://127.0.0.1:8888"
+      };
+
+    let html = await this.request.postHtml(request);
+
 
     return !!html.match(/<strong>You are now signed in<\/strong>/m);
   }

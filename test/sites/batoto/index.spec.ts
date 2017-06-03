@@ -323,8 +323,7 @@ describe("Batoto live", () => {
 
     it("should login", async()=>{
       if(!auth.username) {
-        console.log("no credential founds, not running login");
-        return;
+        console.warn("no credential founds, not running login");
       }
 
       let loggedIn = await manga.logIn(auth.username, auth.password);
