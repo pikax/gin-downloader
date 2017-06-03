@@ -11,35 +11,29 @@ import {FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre} fr
 
 describe("MangaHere live", () => {
 
-  it("should get all mangas", done => {
-    manga.mangas()
-      .should.eventually.have.length.gte(results.mangas_count)
-      .notify(done);
+  it("should get all mangas", async () => {
+    let mangas = await await manga.mangas();
+    mangas.should.have.length.gte(results.mangas_count);
   });
 
-  it("should get latest chaps", done => {
-    manga.latest()
-      .should.eventually
-      .to.have.length.gte(98)
-      .notify(done);
+  it("should get latest chaps", async () => {
+    let latest = await manga.latest();
+    latest.should.to.have.length.gte(98);
   });
 
-  it("should get info", done => {
+  it("should get info", async () => {
     let name = "Gintama";
-    manga.info(name)
-      .then(info => {
-        info.should.exist;
+    let info = await manga.info(name);
+    info.should.exist;
 
-        info.title.should.be.eq(results.manga.title);
-        info.synopsis.should.contain(results.manga.synopsis);
-        info.status.should.be.eq(results.manga.status);
+    info.title.should.be.eq(results.manga.title);
+    info.synopsis.should.contain(results.manga.synopsis);
+    info.status.should.be.eq(results.manga.status);
 
-        info.synonyms.should.be.deep.eq(results.manga.synonyms);
-        info.authors.should.be.deep.eq(results.manga.authors);
-        info.artists.should.be.deep.eq(results.manga.artists);
-        info.genres.should.be.deep.eq(results.manga.genres);
-
-      }).should.eventually.notify(done);
+    info.synonyms.should.be.deep.eq(results.manga.synonyms);
+    info.authors.should.be.deep.eq(results.manga.authors);
+    info.artists.should.be.deep.eq(results.manga.artists);
+    info.genres.should.be.deep.eq(results.manga.genres);
   });
 
   it("should resolve name to name", async () => {
@@ -55,50 +49,69 @@ describe("MangaHere live", () => {
   });
 
 
-  it("should not find manga by name", done => {
+  it("should not find manga by name", async () => {
     let name = "my stupid name";
     let chapter = 1;
 
-    manga.images(name, chapter)
-      .should.eventually.be.rejectedWith(Error)
-      .notify(done);
+    try {
+      let images = await manga.images(name, chapter);
+
+      images.should.be.null;
+
+    }catch (e){
+      e.should.be.Throw;
+    }
   });
 
 
 
-  it("should not find get chapters", done => {
+  it("should not find get chapters", async () => {
     let name = "Gintamass";
 
-    manga.chapters(name)
-      .should.eventually.be.empty
-      .notify(done);
+    try {
+      let chapters = await manga.chapters(name);
+
+      chapters.should.be.null;
+
+    }catch (e){
+      e.should.be.Throw;
+    }
   });
 
-  it("should not find chapter", done => {
+  it("should not find chapter", async () => {
     let name = "Gintama";
     let chapter = -354564;
 
-    manga.images(name, chapter)
-      .should.eventually.be.rejectedWith(Error)
-      .notify(done);
+    try {
+      let images = await manga.images(name, chapter);
+
+      images.should.be.null;
+
+    }catch (e){
+      e.should.be.Throw;
+    }
   });
 
-  it("should not find images chapter ", done => {
+  it("should not find images chapter ", async () => {
     let name = "Gintama";
     let chapter = -5151;
 
-    manga.images(name, chapter)
-      .should.eventually.be.rejectedWith(Error)
-      .notify(done);
+    try {
+      let images = await manga.images(name, chapter);
+
+      images.should.be.null;
+
+    }catch (e){
+      e.should.be.Throw;
+    }
   });
 
 
-  it("should get chapters", done => {
+  it("should get chapters", async () => {
     let name = "Gintama";
 
-    manga.chapters(name)
-      .should.eventually.have.length.gte(results.chapter_count)
-      .notify(done);
+    let chapters = await manga.chapters(name);
+    chapters.should.have.length.gte(results.chapter_count);
   });
 
   it("should get Gintama : chapter 41", async () => {

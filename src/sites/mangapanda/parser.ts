@@ -76,7 +76,7 @@ export class Parser implements SiteParser {
   }
 
   info($: MangaXDoc): MangaInfo | Promise<MangaInfo> {
-    let selector = "#mangaproperties > table > tr > td";
+    let selector = "#mangaproperties > table > tbody > tr > td";
 
     let $tds = $(selector);
 
@@ -112,7 +112,7 @@ export class Parser implements SiteParser {
   chapters($: MangaXDoc): Chapter[] | Promise<Chapter[]> {
     let chapters: Chapter[] = [];
 
-    $("#listing > tr ").slice(1).each((i, el) => {
+    $("#listing > tbody > tr ").slice(1).each((i, el) => {
       let tr = el;
       let children = sanitize(tr.children);
       let a = children[0].children.find(x => x.name === "a");

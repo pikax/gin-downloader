@@ -16,16 +16,27 @@ describe("MangaSite logic", () => {
   it("Should get all mangas", async () => {
       let mangas = await site.mangas();
 
-
       mangas.should.be.eq(results.mangas);
   });
 
-  it("Should fail getting info : no name", (done) => {
-    ((<any>site).info()).should.eventually.be.rejected.notify(done);
+  it("Should fail getting info : no name", async () => {
+
+    try {
+      let info =await (<any>site).info();
+      info.should.be.null;
+    }catch (e){
+      e.should.be.throw;
+    }
   });
 
-  it("Should fail getting info", (done) => {
-    site.info("fail").should.eventually.be.rejected.notify(done);
+  it("Should fail getting info", async() => {
+    try {
+      let info = await site.info("fail");
+      info.should.be.null;
+    }catch (e){
+      e.should.be.throw;
+    }
+
   });
 
   it("Should get latest", async () => {
@@ -50,12 +61,22 @@ describe("MangaSite logic", () => {
   });
 
 
-  it("Should fail getting chapters : no name", (done) => {
-    ((<any>site).chapters()).should.eventually.be.rejected.notify(done);
+  it("Should fail getting chapters : no name", async () => {
+    try {
+      let info = (<any>site).chapters();
+      info.should.be.null;
+    }catch (e){
+      e.should.be.throw;
+    }
   });
 
-  it("Should fail getting chapters", (done) => {
-    site.chapters("fail").should.eventually.be.rejected.notify(done);
+  it("Should fail getting chapters", async () => {
+    try {
+      let info = site.chapters("fail");
+      info.should.be.null;
+    }catch (e){
+      e.should.be.throw;
+    }
   });
 
 
@@ -67,12 +88,22 @@ describe("MangaSite logic", () => {
   });
 
 
-  it("Should fail getting info&chapters : no name", (done) => {
-    ((<any>site).infoChapters()).should.eventually.be.rejected.notify(done);
+  it("Should fail getting info&chapters : no name", async () => {
+    try {
+      let info =  ((<any>site).infoChapters());
+      info.should.be.null;
+    }catch (e){
+      e.should.be.throw;
+    }
   });
 
-  it("Should fail getting info&chapters", (done) => {
-    site.infoChapters("fail").should.eventually.be.rejected.notify(done);
+  it("Should fail getting info&chapters", async () => {
+    try {
+      let info = site.infoChapters("fail");
+      info.should.be.null;
+    }catch (e){
+      e.should.be.throw;
+    }
   });
 
   it("should get images", async () => {
@@ -83,13 +114,23 @@ describe("MangaSite logic", () => {
     images.should.be.length(results.image.length);
   });
 
-  it("Should fail getting images : no name", (done) => {
-    ((<any>site).images()).should.eventually.be.rejected.notify(done);
+  it("Should fail getting images : no name", async () => {
+    try {
+      let images = ((<any>site).images());
+      images.should.be.null;
+    }catch (e){
+      e.should.be.throw;
+    }
   });
 
 
-  it("Should fail getting images : no chapter", (done) => {
-    ((<any>site).images("Gintama")).should.eventually.be.rejected.notify(done);
+  it("Should fail getting images : no chapter", async () => {
+    try {
+      let images = ((<any>site).images("Gintama"));
+      images.should.be.null;
+    }catch (e){
+      e.should.be.throw;
+    }
   });
 
 

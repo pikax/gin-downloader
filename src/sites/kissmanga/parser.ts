@@ -30,7 +30,7 @@ export class Parser implements SiteParser {
   mangas($: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
     let mangas: MangaSource[] = [];
 
-    $("table.listing > tr").slice(2).each((i, el) => {
+    $("table.listing > tbody > tr").slice(2).each((i, el) => {
       let tds = sanitize(el.children);
 
       let ma = tds[0].children.find(x => x.name === "a");
@@ -56,7 +56,7 @@ export class Parser implements SiteParser {
 
     let chapters: Chapter[] = [];
 
-    $("table.listing > tr").slice(2).each((i, el) => {
+    $("table.listing > tbody  > tr").slice(2).each((i, el) => {
       let tds = sanitize(el.children);
 
       let ma = tds[0].children.find(x => x.name === "a");
@@ -148,7 +148,7 @@ export class Parser implements SiteParser {
     let mangas: Chapter[] = [];
     let rows = new Map<any, CheerioElement[]>();
 
-    $("table.listing > tr > td").each((i, el) => {
+    $("table.listing > tbody > tr > td").each((i, el) => {
       let array = rows.get(el.parentNode) || [];
       array.push(el);
       rows.set(el.parentNode, array);

@@ -7,34 +7,26 @@ import "./../../common";
 
 import {manga} from "./../../../src/sites/batoto";
 import results from "./_results";
-import {helper} from "../../../src/sites/batoto/names";
 import {FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
-import auth from './auth';
+import auth from "./auth";
 
 
 describe("Batoto live", () => {
 
-  it("should get all mangas", done => {
-    manga.mangas()
-      .should.eventually.have.length.gte(results.mangas_count)
-      .notify(done);
+  it("should get all mangas", async () => {
+    let mangas = await manga.mangas();
+    mangas.should.have.length.gte(results.mangas_count);
   });
 
   it("should get latest chaps", async () => {
-    // manga.latest()
-    //   .should.eventually
-    //   .to.have.length.gte(90)
-    //   .notify(done);
-
     let mangas = await manga.latest();
 
     mangas.should.have.length.gte(90);
   });
 
-  it("should get info", done => {
+  it("should get info", async () => {
     let name = "Gintama";
-    manga.info(name)
-      .then(info => {
+    let info = await manga.info(name);
 
         info.should.exist;
 
@@ -48,7 +40,6 @@ describe("Batoto live", () => {
         info.artists.map(x => x.toLowerCase()).should.be.deep.eq(results.manga.artists); // the website keeps changing between lower and uppercase
         info.genres.should.be.deep.eq(results.manga.genres);
         // info.scanlators.should.be.deep.eq(results.manga.scanlators);
-      }).should.eventually.notify(done);
   });
 
   it("should resolve name to name", async () => {
@@ -64,41 +55,59 @@ describe("Batoto live", () => {
   });
 
 
-  it("should not find manga by name", done => {
+  it("should not find manga by name", async () => {
     let name = "my stupid name";
     let chapter = 1;
 
-    manga.images(name, chapter)
-      .should.eventually.be.rejectedWith(Error)
-      .notify(done);
+    try {
+      let images = await manga.images(name, chapter);
+
+      images.should.be.null;
+
+    }catch (e){
+      e.should.be.Throw;
+    }
   });
 
 
 
-  it("should not find get chapters", done => {
+  it("should not find get chapters", async () => {
     let name = "Gintamass";
 
-    manga.chapters(name)
-      .should.eventually.be.rejectedWith(Error)
-      .notify(done);
+    try {
+      let chapters = await manga.chapters(name);
+      chapters.should.be.null;
+
+    }catch (e) {
+      e.should.be.Throw;
+    }
   });
 
-  it("should not find chapter", done => {
+  it("should not find chapter", async () => {
     let name = "Gintama";
     let chapter = -354564;
 
-    manga.images(name, chapter)
-      .should.eventually.be.rejectedWith(Error)
-      .notify(done);
+
+    try {
+      let images = await manga.images(name, chapter);
+      images.should.be.null;
+
+    }catch (e) {
+      e.should.be.Throw;
+    }
   });
 
-  it("should not find images chapter ", done => {
+  it("should not find images chapter ", async () => {
     let name = "Gintama";
     let chapter = -5151;
 
-    manga.images(name, chapter)
-      .should.eventually.be.rejectedWith(Error)
-      .notify(done);
+    try {
+      let images = await manga.images(name, chapter);
+      images.should.be.null;
+
+    }catch (e) {
+      e.should.be.Throw;
+    }
   });
 
 
@@ -136,7 +145,7 @@ describe("Batoto live", () => {
       mangas.results.should.deep.include({
         name: "Gintama",
         src : "http://bato.to/comic/_/gintama-r94",
-        status: 'Open',
+        status: "Open",
         mature: false
       });
     });
@@ -157,7 +166,7 @@ describe("Batoto live", () => {
       mangas.results.should.deep.include({
         name: "Gintama",
         src : "http://bato.to/comic/_/gintama-r94",
-        status: 'Open',
+        status: "Open",
         mature: false
       });
     });
@@ -177,14 +186,14 @@ describe("Batoto live", () => {
       mangas.results.should.deep.include({
         name: "Gintama",
         src : "http://bato.to/comic/_/gintama-r94",
-        status: 'Open',
+        status: "Open",
         mature: false
       });
     });
 
     it("should filter by in genre", async () => {
       let filter: FilterSupport = {
-        search:{
+        search: {
           genre : {
             inGenres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Historical, Genre.SciFi, Genre.Shounen]
           }
@@ -196,7 +205,7 @@ describe("Batoto live", () => {
       mangas.results.should.deep.include({
         name: "Gintama",
         src : "http://bato.to/comic/_/gintama-r94",
-        status: 'Open',
+        status: "Open",
         mature: false
       });
     });
@@ -223,7 +232,7 @@ describe("Batoto live", () => {
       mangas.results.should.deep.include({
         name: "Gintama",
         src : "http://bato.to/comic/_/gintama-r94",
-        status: 'Open',
+        status: "Open",
         mature: false
       });
     });
@@ -243,7 +252,7 @@ describe("Batoto live", () => {
       mangas.results.should.deep.include({
         name: "Gintama",
         src : "http://bato.to/comic/_/gintama-r94",
-        status: 'Open',
+        status: "Open",
         mature: false
       });
     });
@@ -263,7 +272,7 @@ describe("Batoto live", () => {
       mangas.results.should.deep.include({
         name: "History's Strongest Disciple Kenichi",
         src : "http://bato.to/comic/_/historys-strongest-disciple-kenichi-r6",
-        status: 'Open',
+        status: "Open",
         mature: false
 
       });
@@ -286,43 +295,43 @@ describe("Batoto live", () => {
       });
     });
 
-    it('should get by order', async ()=>{
+    it("should get by order", async () => {
 
-      throw new Error('not implemented');
+      throw new Error("not implemented");
     });
 
-    it('should not include mature', async ()=>{
+    it("should not include mature", async () => {
 
-      throw new Error('not implemented');
+      throw new Error("not implemented");
     });
 
-    it('should have rating between 5~5', async ()=>{
+    it("should have rating between 5~5", async () => {
 
-      throw new Error('not implemented');
+      throw new Error("not implemented");
     });
-    it('should have rating between 0~1', async ()=>{
+    it("should have rating between 0~1", async () => {
 
-      throw new Error('not implemented');
+      throw new Error("not implemented");
     });
 
-    it('should have genre inclusion OR', async ()=>{
+    it("should have genre inclusion OR", async () => {
 
-      throw new Error('not implemented');
+      throw new Error("not implemented");
     });
   });
 
 
-  describe("Loggin", ()=>{
+  describe("Loggin", () => {
 
-    it("should be not logged in",async ()=>{
+    it("should be not logged in", async() => {
 
       let loggedIn = await manga.isLoggedIn();
 
       loggedIn.should.be.false;
     });
 
-    it("should login", async()=>{
-      if(!auth.username) {
+    it("should login", async() => {
+      if (!auth.username) {
         console.warn("no credential founds, not running login");
       }
 
