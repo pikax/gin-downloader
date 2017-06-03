@@ -25,38 +25,6 @@ Promise based manga scrapper for node, which supports multiple sites.
 - [x] MangaHere
 - [x] KissManga
 - [x] BatoTo
-- [ ] BatoToEs
-- [ ] DeNineManga
-- [ ] EsManga
-- [ ] EsMangaHere
-- [ ] EsNineManga
-- [ ] FromFolder
-- [ ] GoGoComic
-- [ ] HeavenManga
-- [ ] ItNineManga
-- [ ] JapScan
-- [ ] LectureEnLigne
-- [ ] LeoManga
-- [ ] Manga_Tube
-- [ ] MangaEden
-- [ ] MangaEdenIt
-- [ ] MangaReader
-- [ ] MyMangaIo
-- [ ] NineManga
-- [ ] PureManga
-- [ ] RawSenManga
-- [ ] ReadComicOnline
-- [ ] ReadComicsTV
-- [ ] ReadMangaToday
-- [ ] RuNineManga
-- [ ] ServerBase
-- [ ] StarkanaCom
-- [ ] SubManga
-- [ ] TuMangaOnline
-- [ ] TusMangasOnlineCom
-- [ ] ViewComic
-- [ ] MangaUpdates **only info**
-- [ ] MyAnimeList **only info**
 
 
 ## Usage
@@ -108,18 +76,30 @@ interface FilterSupport {
       condition?: FilterCondition,
     },
     status?: FilterStatus,
-    rating?: {
-      value: number,
-      condition?: FilterCondition,
-    },
     released?: {
       value: number,
       condition?: FilterCondition,
     },
-    type?: FilterMangaType
+    genre?: { // todo use this object instead of genres/outGenres
+      inGenres?: Genre[];
+      outGenres?: Genre[];
+      condition?: GenreCondition;
+    };
+    rating?: {
+      from?: number,
+      to?: number,
+    },
+    mature?: boolean;
+
+
+    type?: FilterMangaType,
   };
-  genres?: Genre[];
-  outGenres?: Genre[];
+
+  sort?: { // placeholde for future
+ 	};
+
+  genres?: Genre[]; // deprecated
+  outGenres?: Genre[]; // deprecated
 }
 
 enum Genre {
@@ -175,7 +155,7 @@ enum Genre {
   Yaoi,
   Yuri,
 
-  NoChapters,
+  NoChapters
 }
 
 
@@ -192,6 +172,11 @@ enum FilterCondition {
 }
 
 
+enum GenreCondition {
+  And = 0,
+  Or = 1,
+}
+
 enum FilterStatus {
   Ongoing,
   Complete,
@@ -203,10 +188,22 @@ enum FilterMangaType {
   Manhwa,
   Manhua,
   Comic,
+  Artbook, //An artbook is a title that contains purely art and has no story
+  Other, // bato.to
 }
 
 ```
 
+
+
+- **filter(filter: FilterSupport)** : returns [{name:string, src:string}]
+
+```javascript
+import {mangafox} from 'gin-downloader';
+
+mangafox.filter()
+	.then(console.log); // prints all mangas from mangafox 
+```
 
 - **mangas()** : returns [{name:string, src:string}]
 *note*: not every site will return all the mangas. 
@@ -233,6 +230,14 @@ mangafox.info("Gintama")
 ```javascript
 mangafox.chapters("Gintama")
 	.then(console.log)
+```
+
+
+- **infoChapters(name)** : returns {info: MangaInfo, chapters: Chapter[]} 
+manga info and chapters with single call
+```javascript
+mangafox.info("Gintama")
+    .then(console.log);
 ```
 
 - **images(manga, chapter_number)** : return Promise<Promise<string>[]>

@@ -38,7 +38,6 @@ export class RequestCloudFareStrategy implements RequestStrategy {
 
     return new Promise((res, rej) => {
       let callback = (err: number, response: any, body: Buffer) => {
-        // cloudscraper.request(opts, (err: number, response: any, body: Buffer) => {
         if (err) {
           return rej(err);
         }
