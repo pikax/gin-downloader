@@ -29,57 +29,56 @@ export class Parser implements SiteParser {
       mangas[i] = {
         name: Parser.resolveName(el.attribs.href) || el.lastChild.nodeValue.leftTrim(),
         src:  resolve(config.site, el.attribs.href),
-        status: el.parent.children.find(x=>x.name === "span" && x.attribs.class === "mangacompleted")
+        status: el.parent.children.find(x => x.name === "span" && x.attribs.class === "mangacompleted")
           ? FilterStatus.Complete.toString()
           : FilterStatus.Ongoing.toString(),
       };
     });
     return mangas;
-    //
-    // const xpath = "//ul[@class='series_alpha']/li/a";
-    // return doc.find(xpath)
-    //   .map(x => {
-    //     return {
-    //       name : x.text().leftTrim(),
-    //       src :  resolve(config.site,  x.attr("href").value())
-    //     };
-    //   });
   }
 
-  latest(doc: MangaXDoc): Chapter[] | Promise<Chapter[]> {
-    const xpath = "//a[@class='chaptersrec']";
-    return doc.find(xpath).map(x => {
-      return {
-        name: x.text(),
-        src: resolve(config.site, x.attr("href").value())
-      };
+  latest($: MangaXDoc): Chapter[] | Promise<Chapter[]> {
+    let chapters: Chapter[] = [];
+    $("tr.c2").each((i, el) => {
+      let divChildren = sanitize(el.children);
+
+
+      let aManga = divChildren[1].children.find(x => x.name === "a");
+      // console.log(aManga)
+      // let mangaUrl = aManga.attribs.href;
+      let mangaName = aManga.children.find(x => x.name === "strong").lastChild.nodeValue;
+
+      let date = divChildren[2].lastChild.nodeValue;
+
+
+      let dts = sanitize(divChildren[1].children.slice(1).filter(x => x.name === "a" && x.attribs.class= "chaptersrec"));
+
+
+      for (let a of dts) {
+        // let a = dt.children.find(x => x.name === "a");
+
+        let src = resolve($.location , a.attribs.href);
+        let title = a.lastChild.nodeValue;
+
+
+        let chapNumber = title.lastDigit();
+
+        chapters.push({
+          name: Parser.resolveName(src) || title,
+          src: src,
+          chap_number: chapNumber,
+          dateAdded: date
+        });
+      }
     });
+
+    return chapters;
   }
 
   info($: MangaXDoc): MangaInfo | Promise<MangaInfo> {
-    // let image = doc.get("//div[@id='mangaimg']/img").attr("src").value();
-    // let title = doc.get("//h2[@class='aname']").text();
-    // let synonyms = doc.get("//div[@id='mangaproperties']/table/tr[2]/td[2]").text().split(", ");
-    // let released = doc.get("//div[@id='mangaproperties']/table/tr[3]/td[2]").text();
-    // let status = doc.get("//div[@id='mangaproperties']/table/tr[4]/td[2]").text();
-    // let authors = [doc.get("//div[@id='mangaproperties']/table/tr[5]/td[2]").text()];
-    // let artists = [doc.get("//div[@id='mangaproperties']/table/tr[6]/td[2]").text()];
-    // let genres = doc.find("//span[@class='genretags']").map(x => x.text());
-    // let synopsis = doc.get("//div[@id='readmangasum']/p").text();
-    //
-    // let direction = doc.get("//div[@id='mangaproperties']/table/tr[7]/td[2]").text();
-
-
-    let selector = '#mangaproperties > table > tr > td';
-
-    if($.location === "http://www.mangapanda.com/kapon-_") //Kapon is special -- bad parser
-      selector = '#mangaproperties > h1 > table > tr > td';
-
+    let selector = "#mangaproperties > table > tr > td";
 
     let $tds = $(selector);
-
-    console.log($tds.length)
-
 
     let image = $("#mangaimg > img").attr("src");
 
@@ -90,10 +89,10 @@ export class Parser implements SiteParser {
     let status = $tds.eq(7).text();
     let authors = [$tds.eq(9).text()];
     let artists = [$tds.eq(11).text()];
-    let direction = $tds.eq(13).text()
+    let direction = $tds.eq(13).text();
 
 
-    let genres = $("span.genretags").map((x,el) => el.lastChild.nodeValue).get();
+    let genres = $("span.genretags").map((x, el) => el.lastChild.nodeValue).get();
     let synopsis = $("#readmangasum > p").text();
 
     return {
@@ -116,14 +115,14 @@ export class Parser implements SiteParser {
     $("#listing > tr ").slice(1).each((i, el) => {
       let tr = el;
       let children = sanitize(tr.children);
-      let a = children[0].children.find(x=>x.name === "a");
+      let a = children[0].children.find(x => x.name === "a");
 
 
       let date = children.reverse()[0].lastChild.nodeValue;
 
       let text = a.next.nodeValue.slice(3);
 
-      chapters.push(Parser.parseChapter(a,text ,date));
+      chapters.push(Parser.parseChapter(a, text , date));
     });
 
     return chapters;
@@ -151,9 +150,6 @@ export class Parser implements SiteParser {
     });
 
     return paths;
-    // const xpath = "//select[@id='pageMenu']/option/@value";
-    // return doc.find(xpath)
-    //   .map(x => resolve(config.site, (<any>x).value()));
   }
 
   image(html: string): string {
@@ -162,42 +158,58 @@ export class Parser implements SiteParser {
     return html.match(__img__)[0].slice(5, -5).replace(/.v=\d+/, "");
   }
 
-  filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults {
-    const xpath = "//div[@class='manga_name']/div/h3/a";
-    const authorXpath = "//div[@class='authorinfo']/div[1]/a";
+  filter($: MangaXDoc): Promise<FilteredResults> | FilteredResults {
+    let mangas: MangaSource[] = [];
 
-    let mangas = doc.find(xpath).map(x => {
-      return {
-        name: x.text(),
-        src: resolve(config.site, x.attr("href").value())
+    // mangas
+    $(".manga_name > div > h3 > a").each((i, el) => {
+      mangas[i] = {
+        name: el.lastChild.nodeValue,
+        src: resolve(config.site, el.attribs.href)
       };
     });
 
-    mangas = mangas.concat(doc.find(authorXpath).map(x => {
-      return {
-        name: x.text(),
-        src: resolve(config.site, x.attr("href").value())
-      };
-    }));
+    // author
+    $(".authorinfo > div > a").each((i, el) => {
+
+      mangas.push({
+        name: el.lastChild.nodeValue,
+        src: resolve(config.site, el.attribs.href)
+      });
+    });
+
 
     mangas = uniqBy(mangas, "src");
 
     let page = 1;
-    let query = url.parse(doc.location).query;
+    let query = url.parse($.location).query;
     if (query) {
       let m = query.toString().getMatches(/p=(\d+)/g, 1);
       if (m) {
-        page = +m[0];
+        page = +m[0] / 30;
       }
     }
 
-    let lastPageElement = doc.get("//div[@id='sp']/a[last()]");
+
     let lastPage = 0;
 
+    let selectedPageElement = $("#sp > strong").slice(-1);
+    let lastPageElement = $("#sp > a").slice(-1);
+
+
     if (lastPageElement) {
-      let m = lastPageElement.attr("href").value().getMatches(/p=(\d+)/g, 1);
-      if (m) {
-        lastPage = +m[0];
+      let href = lastPageElement.attr("href");
+      if (href) {
+        let m = href.match(/p=(\d+)/);
+        if (m) {
+          lastPage = (+m[1]) / 30;
+        }
+      }
+    }
+    if (selectedPageElement) {
+      let selPage = (+selectedPageElement.text()) - 1;
+      if (selPage > lastPage) {
+        lastPage = selPage;
       }
     }
 

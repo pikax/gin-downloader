@@ -89,11 +89,14 @@ const ordered = [
 
 export const processFilter = (filter: FilterSupport) : {src: string, params: any} => {
   filter = filter || {};
-  let {genres, outGenres, search, name, page} = filter;
+  let {search, name, page} = filter;
 
   let mainsearch = name;
   let fstatus = null;
   let ftype = null;
+
+  let inGenres: Genre[] = filter.genres || [];
+  let outGenres: Genre[] = filter.outGenres || [];
 
   if (search) {
 
@@ -110,13 +113,22 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
     }
 
     ftype = resolveType(search.type) || ftype;
+
+
+    let {genre} = search;
+
+    if (genre) {
+      inGenres = genre.inGenres || inGenres;
+      outGenres = genre.outGenres || outGenres;
+
+    }
   }
 
 
   const msearch = `w=${mainsearch || ""}`;
-  const genreFilter = `genre=${ordered.map(x => inOutGenre(x, genres, outGenres)).join("")}`;
+  const genreFilter = `genre=${ordered.map(x => inOutGenre(x, inGenres, outGenres)).join("")}`;
   const status = `status=${(fstatus || "")}`;
-  const pg = `p=${page || 0}`;
+  const pg = `p=${page * 30 || 0}`;
   const type = `rd=${ftype || 0}`
 
   return {src: resolve(config.site, "/search/"),
