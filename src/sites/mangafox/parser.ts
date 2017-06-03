@@ -22,27 +22,55 @@ export class Parser implements SiteParser {
         name: (<any>el.children[0]).data,
         src: el.attribs["href"],
 
-        status: el.attribs.class.indexOf('manga_open') >= 0
+        status: el.attribs.class.indexOf("manga_open") >= 0
             ? FilterStatus.Ongoing.toString()
-             :FilterStatus.Complete.toString()
+             : FilterStatus.Complete.toString()
 
       };
     });
 
     return mangas;
-
-    // const xpath = "//div[@class='manga_list']/ul/li/a";
-    // return doc.find(xpath).map(x => {
-    //   return {
-    //     name: x.text(),
-    //     src: resolve(config.site, x.attr("href").value())
-    //   };
-    // });
   }
 
-  latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
-    const xpath = "//dt/span/a[@class='chapter']";
-    return doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
+  latest($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
+
+    let chapters: Chapter[] = [];
+    $("#updates > li > div").each((i, el) => {
+      let divChildren = sanitize(el.children);
+
+
+      let aManga = sanitize(divChildren[0].children)[0];
+      // let mangaUrl = aManga.attribs.href;
+      let mangaName = aManga.lastChild.nodeValue;
+
+      let dts = sanitize(divChildren[1].children);
+
+
+      for (let dt of dts) {
+        let children = sanitize(dt.children);
+        let date = children[0].lastChild.nodeValue;
+
+        let a = children[1].children.find(x => x.name === "a");
+
+        let src = a.attribs.href;
+        let title = a.lastChild.nodeValue;
+        let volume = a.next.type === "text" && a.next.nodeValue.trim().slice(1);
+
+        let chapNumber = title.lastDigit();
+
+        chapters.push({
+          name: mangaName,
+          src: src,
+          volume,
+          chap_number: chapNumber,
+          dateAdded: date
+        });
+      }
+
+    });
+
+    return chapters;
+
   }
 
   info($: MangaXDoc): Promise<MangaInfo> | MangaInfo {
@@ -65,7 +93,7 @@ export class Parser implements SiteParser {
     let status = sSstatus.slice(0, sSstatus.indexOf(","));
     let ranked = seriesInfo.find("div .data span").eq(2).text();
     let rating = seriesInfo.find("div .data span").eq(3).text();
-    let scanlators = seriesInfo.find("div.data span a").slice(1).map((i, el) => el.children[0].nodeValue).get();;
+    let scanlators = seriesInfo.find("div.data span a").slice(1).map((i, el) => el.children[0].nodeValue).get();
 
     let synopsis = titleElem.find("p").text();
 
@@ -88,7 +116,7 @@ export class Parser implements SiteParser {
   chapters($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
     let chapters: Chapter[] = [];
 
-    $(".chlist > li > div").each((i,el) => {
+    $(".chlist > li > div").each((i, el) => {
 
       // console.log(el.children)
 
@@ -114,15 +142,13 @@ export class Parser implements SiteParser {
 
       chapters.push(Parser.parseChapter(a, span, volume, date));
 
-    })
+    });
 
     return chapters;
-    // const xpath = "//div[@id='chapters']/ul/li/div//a[@class='tips']";
-    // return doc.find(xpath).map(x => Parser.parseChapter(x, "preceding::div[@class='slide']/h3/text()"));
   }
 
 
-  private static parseChapter(a: CheerioElement, span: CheerioElement, volume: string, date: string) : Chapter {
+  private static parseChapter(a: CheerioElement, span: CheerioElement, volume: string, date: string): Chapter {
     let aText = a.lastChild.nodeValue;
     let name = (span || a).lastChild.nodeValue;
 
@@ -169,15 +195,15 @@ export class Parser implements SiteParser {
     let lastPageElement = $("#nav > ul > li > a").slice(-2, -1);
 
     let mangas: MangaSource[] = [];
-    $(".manga_text").each((i, el)=>{
+    $(".manga_text").each((i, el) => {
 
       let children = sanitize(el.children);
 
-      let a = children.find(x=>x.name === "a");
-      let info = children.find(x=>x.name === "p" && x.attribs && !!x.attribs.title);
+      let a = children.find(x => x.name === "a");
+      let info = children.find(x => x.name === "p" && x.attribs && !!x.attribs.title);
 
       let parentA = sanitize(el.parent.children)[0];
-      let completed = sanitize(parentA.children).find(x=>x.name === "em" && x.attribs && x.attribs.class === "tag_completed")
+      let completed = sanitize(parentA.children).find(x => x.name === "em" && x.attribs && x.attribs.class === "tag_completed");
 
 
       mangas[i] = {

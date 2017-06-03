@@ -130,10 +130,13 @@ describe("MangaFox live", () => {
       };
 
       let mangas = await manga.filter(filter);
+      console.log(mangas);
       mangas.results.should.length.gte(14);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://mangafox.me/manga/gintama/",
+        mature: false,
+        status: "Ongoing"
       });
     });
 
@@ -152,7 +155,9 @@ describe("MangaFox live", () => {
       mangas.results.should.length(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://mangafox.me/manga/gintama/",
+        mature: false,
+        status: "Ongoing"
       });
     });
 
@@ -170,7 +175,9 @@ describe("MangaFox live", () => {
       mangas.results.should.length.gte(14);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://mangafox.me/manga/gintama/",
+        mature: false,
+        status: "Ongoing"
       });
     });
 
@@ -183,7 +190,9 @@ describe("MangaFox live", () => {
       mangas.results.should.length(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://mangafox.me/manga/gintama/",
+        mature: false,
+        status: "Ongoing"
       });
     });
 
@@ -206,7 +215,9 @@ describe("MangaFox live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://mangafox.me/manga/gintama/",
+        mature: false,
+        status: "Ongoing"
       });
     });
 
@@ -224,7 +235,9 @@ describe("MangaFox live", () => {
       mangas.results.should.length.lte(10);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://mangafox.me/manga/gintama/"
+        src : "http://mangafox.me/manga/gintama/",
+        mature: false,
+        status: "Ongoing"
       });
     });
 
@@ -242,7 +255,9 @@ describe("MangaFox live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "History's Strongest Disciple Kenichi",
-        src : "http://mangafox.me/manga/history_s_strongest_disciple_kenichi/"
+        src : "http://mangafox.me/manga/history_s_strongest_disciple_kenichi/",
+        mature: false,
+        status: FilterStatus.Complete.toString()
       });
     });
 
@@ -257,7 +272,9 @@ describe("MangaFox live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "10, 20, and 30",
-        src : "http://mangafox.me/manga/10_20_and_30/"
+        src : "http://mangafox.me/manga/10_20_and_30/",
+        mature: false,
+        status: "Complete"
       });
     });
   });
