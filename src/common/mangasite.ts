@@ -4,7 +4,7 @@
 
 import {
   Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, Request,
-  FilterSupport, FilteredResults
+  FilterSupport, FilteredResults, MangaXDoc
 } from "../declarations";
 import * as debug from "debug";
 import {IDebugger} from "debug";
@@ -157,7 +157,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     let opts = this.buildChapterRequest(chap);
     let paths = await this.request.getDoc(opts).then(this.parser.imagesPaths);
 
-    return paths.map(x => MangaSite.processImagePath(this.buildImagePathsRequest(x), this.parser, this.request));
+    return paths.map(x => this.processImagePath(this.buildImagePathsRequest(x)));
   }
 
   resolveMangaUrl(name: string): Promise<string>|string  {
@@ -188,6 +188,17 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     return this.buildChapterRequest(url);
   }
 
+  protected getHtml(url: string | OptionsWithUrl): Promise<string> {
+    return this.request.getHtml(url);
+  }
+
+  protected getDoc(url: string | OptionsWithUrl): Promise<MangaXDoc> {
+    return this.request.getDoc(url);
+  }
+
+  protected postDoc(url: string | OptionsWithUrl, params?: any): Promise<MangaXDoc> {
+    return this.request.postDoc(url, params);
+  }
 
 
   protected async resolveChapterSource(name: string, chapter: number): Promise<string> {
@@ -202,8 +213,8 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     return chap.src;
   }
 
-  private static async processImagePath(opts: any, parser: SiteParser, request: GinRequest): Promise<ImageSource> {
-    let image = await request.getHtml(opts).then(parser.image);
+  private async processImagePath(opts: any): Promise<ImageSource> {
+    let image = await this.getHtml(opts).then(this.parser.image);
 
     return {
       name : parse(image).pathname.split("/").reverse()[0],

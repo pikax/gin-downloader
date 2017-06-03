@@ -286,10 +286,6 @@ export interface FilterSupport {
       condition?: FilterCondition,
     },
     status?: FilterStatus,
-    // rating?: {
-    //   value: number,
-    //   condition?: FilterCondition,
-    // },
     released?: {
       value: number,
       condition?: FilterCondition,
@@ -299,13 +295,11 @@ export interface FilterSupport {
       outGenres?: Genre[];
       condition?: GenreCondition;
     };
-
     rating?: {
-
+      from?: number,
+      to?: number,
     },
-    mature?: {
-
-    };
+    mature?: boolean;
 
 
     type?: FilterMangaType,

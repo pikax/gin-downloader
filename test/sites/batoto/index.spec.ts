@@ -7,8 +7,11 @@ import "./../../common";
 
 import {manga} from "./../../../src/sites/batoto";
 import results from "./_results";
-import {FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
 import auth from "./auth";
+import {helper} from "../../../src/sites/batoto/names";
+  FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre,
+  GenreCondition
+} from "../../../src/declarations";
 
 
 describe("Batoto live", () => {
@@ -295,31 +298,84 @@ describe("Batoto live", () => {
       });
     });
 
-    it("should get by order", async () => {
+    it('should get by order', async ()=>{
 
-      throw new Error("not implemented");
+      throw new Error('not implemented');
     });
 
-    it("should not include mature", async () => {
+    it('should not include mature', async ()=>{
 
-      throw new Error("not implemented");
+      let filter: FilterSupport = {
+        name: "ginta",
+        search: {
+          mature: false,
+          }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.not.deep.include({
+        name: "Gintama - Iroha Uta (Doujinshi)",
+        src : "http://bato.to/comic/_/gintama-iroha-uta-doujinshi-r11951"
+      });
     });
 
-    it("should have rating between 5~5", async () => {
+    it('should have rating between 5~5', async ()=>{
+      let filter: FilterSupport = {
+        search: {
+          rating: {
+            from: 5,
+            to: 5
+          }
+        }
+      };
 
-      throw new Error("not implemented");
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "A Girl In The Clouds",
+        src : "http://bato.to/comic/_/a-girl-in-the-clouds-r21070"
+      });
     });
-    it("should have rating between 0~1", async () => {
+    it('should have rating between 0~1', async ()=>{
 
-      throw new Error("not implemented");
+      let filter: FilterSupport = {
+        search: {
+          rating: {
+            from: 1,
+            to: 1
+          }
+        }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "A Bittersweet Life",
+        src : "http://bato.to/comic/_/a-bittersweet-life-r6684"
+      });
     });
 
-    it("should have genre inclusion OR", async () => {
+    it('should have genre inclusion OR', async ()=>{
 
-      throw new Error("not implemented");
+      let filter: FilterSupport = {
+        name: "ginta",
+        search: {
+          genre: {
+            condition: GenreCondition.Or,
+            inGenres: [Genre.Josei, Genre.Oneshot, Genre.Shoujo]
+          }
+        }
+      };
+
+      let mangas = await manga.filter(filter);
+      mangas.results.should.length.gte(1);
+      mangas.results.should.deep.include({
+        name: "Gintama - Iroha Uta (Doujinshi)",
+        src : "http://bato.to/comic/_/gintama-iroha-uta-doujinshi-r11951"
+      });
     });
   });
-
 
   describe("Loggin", () => {
 

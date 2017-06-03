@@ -5,6 +5,7 @@ import {Genre, FilterCondition, FilterSupport, FilterStatus, GenreCondition, Fil
 import {config} from "./config";
 import {resolve} from "url";
 import {find} from "lodash";
+import {isNullOrUndefined} from "util";
 
 const Supported = [];
 Supported[Genre.Action] = Genre.Action;
@@ -139,11 +140,14 @@ export const processFilter = (filter: FilterSupport) : {src: string} => {
 
   let fauthor = null;
   let fstatus = null;
-  let ftype= null;
+  let ftype = null;
   let fname = filter.name;
   let nameCondition = null;
   let authorCondition = null;
   let genreCondition = null;
+  let fmature = "y";
+  let fratingFrom = 0;
+  let fratingTo = 5;
 
   if (search) {
 
@@ -172,9 +176,16 @@ export const processFilter = (filter: FilterSupport) : {src: string} => {
     }
 
 
-    let {type} = search;
-    if(type) {
+    let {type, mature,rating} = search;
+    if (type) {
       ftype = resolveType(type);
+    }
+
+    fmature = isNullOrUndefined(mature) || mature ? "y" : "n";
+
+    if(rating){
+      fratingFrom = rating.from || 0;
+      fratingTo = rating.to || 5;
     }
   }
 
@@ -189,12 +200,23 @@ export const processFilter = (filter: FilterSupport) : {src: string} => {
   const type = `type=${ftype}`;
   const page = `p=${(filter.page || 1)}`;
 
-  // TODO implement me
-  const rating_high= 0; // 0~5
-  const rating_low = 0; // 0~5
-  const mature = false; // n == false
+  const rating_low = `rating_low=${fratingFrom || 0}`; // 0~5
+  const rating_high = `rating_high=${fratingTo || 5}`; // 0~5
+  const mature = `mature=${fmature || "y"}`; // n == false
 
-  return {src: config.mangas_url + "?" + [mangaName, nameCond, authorArtist, authorCond, genreFilter, genreCon, status, type, page].join("&")
+  return {src: config.mangas_url + "?" + [
+    mangaName,
+    nameCond,
+    authorArtist,
+    authorCond,
+    genreFilter,
+    genreCon,
+    status,
+    type,
+    mature,
+    rating_low,
+    rating_high,
+    page].join("&")
   };
 };
 
