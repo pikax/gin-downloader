@@ -201,8 +201,11 @@ export interface FilterSupport {
             outGenres?: Genre[];
             condition?: GenreCondition;
         };
-        rating?: {};
-        mature?: {};
+        rating?: {
+            from?: number;
+            to?: number;
+        };
+        mature?: boolean;
         type?: FilterMangaType;
     };
     sort?: {};
