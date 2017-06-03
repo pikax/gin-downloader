@@ -185,7 +185,7 @@ describe("KissManga live", () => {
     it("should filter by Status", async () => {
       let filter: FilterSupport = {
         search: {
-          status: FilterStatus.Ongoing
+          status: FilterStatus.Complete
         }
       };
 

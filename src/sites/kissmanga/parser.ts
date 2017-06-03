@@ -11,6 +11,8 @@ import {resolve} from "url";
 import {config} from "./config";
 import {Script, createContext} from "vm";
 import {unescape} from "querystring";
+import {sanitize} from "../../common/helper";
+import * as _ from "lodash";
 
 export class Parser implements SiteParser {
 
@@ -19,7 +21,7 @@ export class Parser implements SiteParser {
   private static fixNames: { [id: string]: string; } = {
   "http://kissmanga.com/Manga/Desire-KOTANI-Kenichi": "Desire KOTANI Kenichi",
   "http://kissmanga.com/Manga/Tokyo-Toy-Box-o": "Tokyo Toy Box o",
-  "http://kissmanga.com/Manga/Valkyrie%20Profile": "Valkyrie%20Profile",
+  "http://kissmanga.com/Manga/Valkyrie%20Profile": "Valkyrie%20Profile", // there are two mangas with the same name.
 };
 
 
@@ -27,46 +29,84 @@ export class Parser implements SiteParser {
 
   mangas($: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
     let mangas: MangaSource[] = [];
-    let rows = new Map<any, CheerioElement[]>();
 
-    $("table.listing > tr > td").each((i, el) => {
-        let array = rows.get(el.parentNode) || [];
-        array.push(el);
-        rows.set(el.parentNode, array);
-    });
+    $("table.listing > tr").slice(2).each((i, el) => {
+      let tds = sanitize(el.children);
 
-    rows.forEach((children) => {
-      let titleTd = children[0];
-      let lastChapter = children[1].lastChild.nodeValue.trim();
+      let ma = tds[0].children.find(x => x.name === "a");
+      let mangaUrl = ma.attribs.href;
 
-      let a = titleTd.children[1];
+      let mangaName = ma.children.map(x => x.nodeValue).join("").leftTrim();
 
-      let title = a.lastChild.nodeValue.leftTrim();
-      let src = resolve(config.mangas_url, a.attribs.href);
+      let completed = tds[1].lastChild.nodeValue === "Completed";
 
-      mangas.push({
-        name: Parser.resolveName(src) || title,
+      let src = resolve($.location || config.latest_url, mangaUrl);
+
+      mangas[i] = {
+        name: Parser.resolveName(src) || mangaName,
         src: src,
-        status: lastChapter === "complete" ? "Closed" : "Open",
-      });
+        status: completed ? "Closed" : "Open",
+      };
     });
+
     return mangas;
   }
 
-  latest(doc: MangaXDoc): Promise<Chapter[]> | Chapter[] {
-    const xpath = "//table[@class='listing']/tr/td[2]/a";
+  latest($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
 
-    return doc.find(xpath)
-      .map(x => {
-        return <Chapter> {
-          chap_number: x.text(),
-          src: resolve(config.site, x.attr("href").value()),
-          name: x.get("../preceding-sibling::td/a").text().trim(),
-        };
-      });
+    let chapters: Chapter[] = [];
+
+    $("table.listing > tr").slice(2).each((i, el) => {
+      let tds = sanitize(el.children);
+
+      let ma = tds[0].children.find(x => x.name === "a");
+      // let mangaUrl = ma.attribs.href;
+      let mangaName = ma.children.map(x => x.nodeValue).join("").leftTrim();
 
 
-    // return doc.find(xpath).map(x => Parser.parseChapter(x, "following-sibling::text()"));
+      let ca = tds[1].children.find(x => x.name === "a");
+      let src = ca.attribs.href;
+      // let aname = ca.lastChild.nodeValue;
+
+      let vol = _.last(src.match(/(?:vol-)(\d+)/i));
+
+      const chapRegexes = [
+        /(?:(?:ch|chapter|ep)-)(\d+(-\d{1,3})?)/i,
+        /(\d+(-\d{1,3})?)(?:\?)/,
+
+        /(?:\/)(\d+(-\d{1,3})?)/
+      ];
+
+
+      let chapter =  _.reduce(chapRegexes, (result, value) => {
+        return result || _.head(_.slice(src.match(value), 1, 2));
+      }, null);
+
+
+      // TODO resolve chapter number or type
+      if (!chapter) {
+        chapter = -7;
+        console.warn("couldn't resolve the chapter for '%s', please refer to %s", src , "https://github.com/pikax/gin-downloader/issues/7" );
+      }
+
+
+
+
+
+      // chapter = chapter.replace("-", ".");
+
+      // console.log(chapter)
+
+
+      chapters[i] = {
+        name: mangaName,
+        chap_number: chapter,
+        src: resolve(config.latest_url, src),
+        volume: vol
+      };
+
+    });
+    return chapters;
   }
 
   info($: MangaXDoc): Promise<MangaInfo> | MangaInfo {
@@ -139,28 +179,7 @@ export class Parser implements SiteParser {
     });
 
 
-    console.log(mangas);
-
     return mangas;
-
-
-    const xpath = "//table/tr/td[1]/a";
-
-    return doc.find(xpath)
-      .map(x => {
-        return {
-          chap_number : x.text().trim().lastDigit(),
-          name: x.text().leftTrim(),
-          src: resolve(config.site, x.attr("href").value())
-        };
-      })
-      .map(x => {
-        return {
-          chap_number: x.chap_number,
-          name: Parser.resolveName(x.src) || x.name,
-          src : x.src
-        };
-      });
   }
 
 
@@ -220,7 +239,7 @@ export class Parser implements SiteParser {
 
 
 
-  static ResolveChapterVolume(title: string): number {
+  static ResolveChapterVolume(title: string): string {
     if (title.indexOf("_vol") < 0)
       return;
 
