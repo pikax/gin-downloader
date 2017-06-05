@@ -11,7 +11,7 @@ import {helper} from "../../../src/sites/mangapanda/names";
 import {parseDoc} from "../../../src/common/helper";
 import {readFileSync} from "fs";
 
-describe("MangaHere offline", () => {
+describe("MangaPanda offline", () => {
   let mangas = "./test/sites/mangapanda/html/mangas.html";
   let gintama = "./test/sites/mangapanda/html/Gintama.html";
   let latest = "./test/sites/mangapanda/html/latest.html";
