@@ -1,0 +1,6 @@
+{
+  "code": "/**\r\n * Created by david on 24/03/2017.\r\n */\r\nimport * as tslib_1 from \"tslib\";\r\nimport { MangaSite } from \"../../common/mangasite\";\r\nimport { Parser } from \"./parser\";\r\nimport { config } from \"./config\";\r\nimport { Helper } from \"./names\";\r\nimport { strategy } from \"../../request/requestRetryStrategy\";\r\nimport { processFilter } from \"./filter\";\r\nexport class MangaFox extends MangaSite {\r\n    constructor() {\r\n        super(config, new Parser, new Helper(), strategy);\r\n    }\r\n    filter(filter) {\r\n        return tslib_1.__awaiter(this, void 0, void 0, function* () {\r\n            this.debug(\"filter mangas with: %o\", filter);\r\n            let search = processFilter(filter);\r\n            let doc = yield this.request.getDoc(search.src + \"?\" + search.params);\r\n            let mangas = yield this.parser.filter(doc);\r\n            this.debug(`mangas: ${mangas.results.length}`);\r\n            return mangas;\r\n        });\r\n    }\r\n}\r\nexport const manga = new MangaFox();\r\nexport default manga;\r\n",
+  "map": {
+    "mappings": ""
+  }
+}
