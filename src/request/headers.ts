@@ -3,7 +3,7 @@
  */
 
 
-import {Options} from "@types/request";
+import {Options} from "request";
 
 
 export const Headers = {

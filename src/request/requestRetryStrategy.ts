@@ -6,7 +6,7 @@ import * as url from "url";
 
 const requestRetry = require("requestretry");
 import {RequestStrategy} from "./headers";
-import {OptionsWithUrl} from "@types/request";
+import {OptionsWithUrl} from "request";
 
 
 const MaxRetries = 50;

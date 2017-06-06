@@ -5,11 +5,11 @@
 
 import "./declarations";
 
-import {manga as mangafox} from "./sites/mangafox";
-import {manga as mangahere} from "./sites/mangahere";
-import {manga as mangapanda} from "./sites/mangapanda";
-import {manga as kissmanga} from "./sites/kissmanga";
-import {manga as batoto} from "./sites/batoto";
+import {manga as mangafox} from "./sites/mangafox/index";
+import {manga as mangahere} from "./sites/mangahere/index";
+import {manga as mangapanda} from "./sites/mangapanda/index";
+import {manga as kissmanga} from "./sites/kissmanga/index";
+import {manga as batoto} from "./sites/batoto/index";
 
 
 export {
