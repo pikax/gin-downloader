@@ -20,7 +20,7 @@
     "build-ts": "rmdir /s /q lib && tsc --outDir lib",
     "build": "npm run build-ts",
     "lint": "tslint {src,test}/**/*.ts --format stylish",
-    "test": "nyc --check-coverage mocha test/**/*.spec.ts --bail",
+    "test": "nyc --check-coverage mocha test/**/*.spec.ts test/sites/batoto/*.spec.ts",
     "test:watch": "mocha -w --reporter min"
   },
   "repository": "https://github.com/pikax/gin-downloader",
