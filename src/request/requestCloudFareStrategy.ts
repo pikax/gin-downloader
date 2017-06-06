@@ -17,7 +17,6 @@ const DefaultOptions = {
   jar: true,
 
   gzip: true,
-  encoding: "",
   // timeout: Timeout,
   followAllRedirects: true,
 

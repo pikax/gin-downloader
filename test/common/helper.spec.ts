@@ -39,8 +39,8 @@ describe("Helper.js", () => {
   it("should get html", async()  => {
     let uri = "https://github.com/";
     let $ = await request.getDoc(uri);
-    $(`a.header-logo-invertocat`).should.exist.and
-        .length.should.be.eq(1);
+
+    let xx = $(`a.header-logo-invertocat`).length.should.exist.and.be.eq(1);
   });
 
   it("should parse doc", () => {
@@ -67,7 +67,7 @@ describe("Helper.js", () => {
   it("should get kissmanga by bypassing cloudfare protection", async() => {
     let uri = "http://kissmanga.com/";
 
-    let html = cfRequest.getHtml(uri);
+    let html = await cfRequest.getHtml(uri);
     html.should.not.contain("Checking your browser before accessing");
   });
 });

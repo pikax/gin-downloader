@@ -19,7 +19,6 @@ const DefaultOptions = {
   method: "GET",
 
   gzip: true,
-  encoding: "",
   timeout: Timeout,
   followAllRedirects: true,
   jar: true,
