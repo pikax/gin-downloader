@@ -21,6 +21,7 @@
     "build": "npm run build-ts",
     "lint": "tslint {src,test}/**/*.ts --format stylish",
     "test": "nyc --check-coverage mocha test/**/*.spec.ts test/sites/**/*.spec.ts",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test:watch": "mocha -w --reporter min"
   },
   "repository": "https://github.com/pikax/gin-downloader",
@@ -31,7 +32,8 @@
   },
   "nyc": {
     "exclude":[
-      "/**/*.d.ts"
+      "/**/*.d.ts",
+      "test/**/*"
     ],
     "require": [
       "ts-node/register"
@@ -43,7 +45,6 @@
       "lcov",
       "text-summary"
     ],
-    "check-coverage": true,
     "lines": 90,
     "statements": 90,
     "functions": 90,
