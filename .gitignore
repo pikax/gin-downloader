@@ -9,6 +9,11 @@ watch
 /src/**/*.d.ts
 /test/**/*.d.ts
 
+
+!/test/sites/kissmanga/html/*.js
+/.rpt2_cache/
+
+
 #visualstudio
 .vs
 
@@ -397,4 +402,3 @@ __pycache__/
 # tools/**
 # !tools/packages.config
 
-!/test/sites/kissmanga/html/*.js
