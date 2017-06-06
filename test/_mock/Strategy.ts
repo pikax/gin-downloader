@@ -9,7 +9,7 @@ export class MockRequestStrategy implements RequestStrategy {
 
   request(options: string | OptionsWithUrl): Promise<any> {
 
-    return Promise.result((<any>options).return || options );
+    return Promise.resolve((<any>options).return || options );
   }
 }
 

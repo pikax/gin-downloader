@@ -7,8 +7,7 @@ import "./../../common";
 
 import {manga} from "./../../../src/sites/kissmanga";
 import results from "./_results";
-import {helper} from "../../../src/sites/kissmanga/names";
-import {FilterCondition, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
+import { FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
 
 
 describe("KissManga live", () => {
@@ -19,7 +18,7 @@ describe("KissManga live", () => {
   });
 
   it("should get latest chaps", async() => {
-    let latest =await  manga.latest();
+    let latest = await  manga.latest();
     latest.should.to.have.length.gte(40);
   });
 
@@ -110,7 +109,7 @@ describe("KissManga live", () => {
 
       images.should.be.null;
 
-    }catch (e){
+    }catch (e) {
       e.should.be.Throw;
     }
   });
@@ -120,7 +119,7 @@ describe("KissManga live", () => {
     let name = "Gintama";
 
     let chapters = await manga.chapters(name);
-    chapters.should.have.length.gte(results.chapter_count)
+    chapters.should.have.length.gte(results.chapter_count);
   });
 
   it("should get Gintama : chapter 42", async () => {
@@ -135,7 +134,7 @@ describe("KissManga live", () => {
     img.src.should.contain(results.image_src);
   });
 
-  describe("Filter", ()=>{
+  describe("Filter", () => {
     it("should filter by name", async () => {
       let filter: FilterSupport = {
         name: "Gintama"
@@ -212,7 +211,7 @@ describe("KissManga live", () => {
         status : "Open"
       });
     });
-  })
+  });
 
 
 
