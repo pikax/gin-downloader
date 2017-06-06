@@ -5,6 +5,7 @@ cache:
   yarn: true
   directories:
       - node_modules
+script: yarn test
 before_script:
       - yarn global add mocha
 after_script: "yarn coveralls && cat ./coverage/lcov.info | coveralls"
