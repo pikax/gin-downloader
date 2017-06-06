@@ -12,7 +12,6 @@ import * as url from "url";
 
 import {uniqBy} from "lodash";
 import {sanitize} from "../../common/helper";
-import {findConfiguration} from "tslint/lib/configuration";
 
 
 export class Parser implements SiteParser {

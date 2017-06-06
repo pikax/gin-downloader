@@ -5,7 +5,6 @@ import {resolve} from "url";
 
 import {config} from "./config";
 import {NameHelper} from "../../declarations";
-import {convertRuleOptions} from "tslint/lib/configuration";
 
 
 const names: { [id: string]: string; } = {

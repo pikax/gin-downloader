@@ -12,7 +12,7 @@ import {IDebugger} from "debug";
 import {find} from "lodash";
 import {parse} from "url";
 import {RequestStrategy} from "../request/headers";
-import {GinRequest} from "../request";
+import {GinRequest} from "../request/index";
 import {OptionsWithUrl} from "request";
 
 export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends NameHelper> implements Site {
