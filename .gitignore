@@ -397,3 +397,4 @@ __pycache__/
 # tools/**
 # !tools/packages.config
 
+!/test/sites/kissmanga/html/*.js

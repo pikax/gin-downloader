@@ -20,7 +20,7 @@
     "build-ts": "rmdir /s /q lib && tsc --outDir lib",
     "build": "npm run build-ts",
     "lint": "tslint {src,test}/**/*.ts --format stylish",
-    "test": "nyc --check-coverage --lines 100 mocha",
+    "test": "nyc --check-coverage mocha test/**/*.spec.ts",
     "test:watch": "mocha -w --reporter min"
   },
   "repository": "https://github.com/pikax/gin-downloader",
@@ -40,6 +40,11 @@
       "lcov",
       "text-summary"
     ],
+    "check-coverage": true,
+    "lines": 90,
+    "statements": 90,
+    "functions": 90,
+    "branches": 90,
     "sourceMap": true,
     "instrument": true
   },
