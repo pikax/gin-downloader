@@ -1,6 +1,0 @@
-{
-  "code": "/**\r\n * Created by david on 25/03/2017.\r\n */\r\nimport \"./declarations\";\r\nimport { manga as mangafox } from \"./sites/mangafox/index\";\r\nimport { manga as mangahere } from \"./sites/mangahere/index\";\r\nimport { manga as mangapanda } from \"./sites/mangapanda/index\";\r\nimport { manga as kissmanga } from \"./sites/kissmanga/index\";\r\nimport { manga as batoto } from \"./sites/batoto/index\";\r\nexport { mangafox, mangahere, mangapanda, kissmanga, batoto, };\r\n",
-  "map": {
-    "mappings": ""
-  }
-}
