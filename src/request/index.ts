@@ -3,7 +3,7 @@
  */
 
 
-import {MangaXDoc, Request} from "../declarations";
+import {MangaXDoc} from "../declarations";
 import {RequestStrategy} from "./headers";
 import {OptionsWithUrl} from "request";
 import {parseDoc} from "../common/helper";
@@ -61,7 +61,6 @@ export class GinRequest  {
     if (params) {
       opts.body = params;
     }
-
     return this.strategy.request(opts)
       .catch((err: any) => {
         error("request %s\nerror: %o", opts.url, err);
