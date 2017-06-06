@@ -18,6 +18,8 @@
   "homepage": "https://github.com/pikax/gin-downloader#readme",
   "scripts": {
     "build-ts": "rmdir /s /q lib && tsc --outDir lib",
+    "oldlint": "tslint -c tslint.json --project tsconfig.json --force",
+    
     "build": "npm run build-ts",
     "lint": "tslint {src,test}/**/*.ts --format stylish",
     "test": "nyc --check-coverage mocha test/**/*.spec.ts --recursive",

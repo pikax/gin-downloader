@@ -1,0 +1,9 @@
+[
+  {
+    "flatMessage": "This syntax requires an imported helper but module 'tslib' cannot be found.",
+    "category": 1,
+    "code": 2354,
+    "type": "semantic",
+    "fileLine": "D:/dev/gin-downloader/src/sites/mangafox/index.ts (20,9)"
+  }
+]
