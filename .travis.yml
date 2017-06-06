@@ -1,14 +1,10 @@
 language: node_js
 node_js:
   - "node"
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
+cache:
+  yarn: true
+  directories:
+      - node_modules
 before_script:
       - npm install -g mocha
 after_script: "npm install coveralls && cat ./coverage/lcov.info | coveralls"

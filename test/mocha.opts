@@ -1,6 +1,3 @@
---timeout 60000
---require source-map-support/register
---colors
---compilers ts:ts-node/register,tsx:ts-node/register
---sort
---ui bdd
+--require ts-node/register
+--watch-extensions ts
+test/**/*.spec.ts

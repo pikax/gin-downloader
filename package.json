@@ -13,17 +13,15 @@
     "mangapanda",
     "mangahere"
   ],
-  "main": "lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "src/index.js",
+  "types": "./src/index.d.ts",
+  "homepage": "https://github.com/pikax/gin-downloader#readme",
   "scripts": {
     "build-ts": "rmdir /s /q lib && tsc --outDir lib",
     "build": "npm run build-ts",
-    "nyc": "nyc -R spec node_modules/mocha/bin/_mocha test/common/*.spec.ts",
-    "lint": "tslint -c tslint.json --project tsconfig.json --force",
-    "test:watch": "mocha test/**/*.spec.ts --colors --watch",
-    "mocha": "mocha test/**/*.spec.ts --colors",
-    "test:debug": "cross-env DEBUG=\"gin-downloader:*,-gin-downloader:*:verbose\" istanbul cover node_modules/mocha/bin/_mocha  test/**/*.spec.ts -- -R spec",
-    "test": "istanbul cover node_modules/mocha/bin/_mocha  test/**/*.spec.ts -- -R spec"
+    "lint": "tslint {src,test}/**/*.ts --format stylish",
+    "test": "nyc --check-coverage --lines 100 mocha",
+    "test:watch": "mocha -w --reporter min"
   },
   "repository": "https://github.com/pikax/gin-downloader",
   "author": "pikax",
@@ -32,51 +30,30 @@
     "url": "https://github.com/pikax/gin-downloader/issues"
   },
   "nyc": {
-    "include": [
-      "/test/common/*.spec.ts"
-    ],
-    "exclude": [
-      "/src/**/*.js",
-      "/test/**/*.js"
-    ],
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
     "require": [
       "ts-node/register"
     ],
+    "extension": [
+      ".ts"
+    ],
     "reporter": [
       "lcov",
-      "text",
-      "text-lcov"
+      "text-summary"
     ],
     "sourceMap": true,
-    "instrument": false,
-    "check-coverage": true,
-    "produce-source-map": true,
-    "report-dir": "./coverage"
+    "instrument": true
   },
-  "homepage": "https://github.com/pikax/gin-downloader#readme",
   "devDependencies": {
     "@types/chai": "^4.0.0",
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.10",
-    "babel-core": "~6.24.0",
-    "babel-plugin-istanbul": "^4.1.4",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "~6.24.0",
-    "chai": "^4.0.1",
     "coveralls": "^2.13.0",
     "cross-env": "^5.0.0",
-    "istanbul": "~1.1.0-alpha.1",
-    "istanbul-coveralls": "~1.0.3",
+    "chai": "^4.0.2",
     "mocha": "^3.4.2",
-    "mocha-lcov-reporter": "~1.3.0",
     "nyc": "^11.0.2",
-    "source-map-support": "^0.4.14",
-    "ts-node": "^3.0.2",
-    "tslint": "^5.0.0",
+    "ts-node": "^3.0.4",
+    "tslint": "^5.4.2",
     "typescript": "^2.3.4"
   },
   "dependencies": {
