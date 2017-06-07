@@ -29,6 +29,16 @@ describe("MangaSite logic", () => {
     }
   });
 
+  it("Should fail filter", async () => {
+
+    try {
+      let info =await (<any>site).filter();
+      info.should.be.null;
+    }catch (e){
+      e.should.be.throw;
+    }
+  });
+
   it("Should fail getting info", async() => {
     try {
       let info = await site.info("fail");

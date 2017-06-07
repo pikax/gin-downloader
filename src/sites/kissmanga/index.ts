@@ -52,7 +52,7 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
     headers['Content-Length'] = headers['Content-Length'] || search.params.length;
     opts.body = search.params.toString();
 
-    let doc = await this.request.postDoc(opts);
+    let doc = await this.postDoc(opts);
     let mangas = await this.parser.filter(doc);
 
     this.debug(`mangas: ${mangas.results.length}`);
@@ -70,7 +70,7 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
       throw new Error("Chapter not found!");
     }
 
-      let html = await this.request.getHtml(chapter.src);
+      let html = await this.getHtml(chapter.src);
       let secret = this.parser.getSecret(html);
 
       let vm = await this.getVM();
