@@ -1,0 +1,83 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+    <div id="containerRoot">
+            <div id="container">
+                <div id="leftside">
+                    <div class="bigBarContainer">
+                        <div class="barTitle">
+                            Search by series name
+                        </div>
+                        <div class="barContent">
+                            <div class="arrow-general">
+                            &nbsp;</div>
+                            <div>
+                                <style>.tooltip{display:none;background:url('../../Content/images/black_big.png') no-repeat;height:180px;padding:25px 10px 0px 30px;width:450px;font-size:11px;color:#fff;}.alphabet{background:none repeat scroll 0 0 #161616;color:gray;text-align:center;font-size:14px;}.alphabet a{font-weight:bold;}</style>
+                                <script type="text/javascript" src="../../Scripts/jqueryTooltip.js"></script>
+                                <img style="vertical-align: middle" title="Latest update" src="../../Content/images/newupdate.png"/>
+                                Latest Update &nbsp;&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+                                Top Popular Manga&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" id="chbDoujinshi"/>
+                                Display Doujinshi
+                                <div class="clear">
+                                &nbsp;</div>
+                                <script type="text/javascript">
+                                    $('#chbDoujinshi').click(function () {
+                                        if ($(this).is(':checked'))
+                                            document.cookie = "vns_doujinshi=1; expires=Thu, 2 Aug 2020 20:47:11 UTC;path=/";
+                                        else
+                                            document.cookie = "vns_doujinshi=0; expires=Thu, 2 Aug 2020 20:47:11 UTC;path=/";
+                                        window.location.reload();
+                                    });
+                                </script>
+                                <div class="clear">
+                                &nbsp;</div>
+                                <div style="text-align: center; padding: 10px 0px 10px 0px;">
+                                    <iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" id="adsIfrme1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" src="http://kissmanga.com/ads/adprotect300.aspx" width="300px" height="250px">
+                                    </iframe>
+                                </div>
+                                <div class="clear">
+                                &nbsp;</div>
+                                <table class="listing">
+                                    <tr class="head">
+                                        <th width="70%">
+                                            Series Name
+                                        </th>
+                                        <th width="30%">
+                                            Latest chapter
+                                        </th>
+                                    </tr>
+                                    <tr style="height: 10px">
+                                    </tr>
+                                    <tr class="odd">
+                                        <td title='
+                                        <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-30-2011/25280821722474734aaa.jpg" style="float: left; padding-right: 10px" />
+                                        <div style="float: left; width: 300px">
+                                            <a class="bigChar" href="/Manga/Gintama">Gintama</a>
+                                            <p>
+                                                The samurai didnt stand a chance. First, the aliens invaded Japan. Next, they took all the jobs. And then they confiscated everyones swords. So what does a hotheaded former samurai like Sakata "Gin" ...
+                                            </p>
+                                        </div>'>
+                                        <a href="/Manga/Gintama">
+                                        Gintama</a>
+                                        &nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+                                    </td>
+                                    <td>
+                                        <a href="/Manga/Gintama/Lesson-637?id=368421">Lesson 637</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <script type="text/javascript">
+                                $(".listing td[title]").tooltip({ offset: [10, 200], effect: 'slide', predelay: 300 }).dynamic({ bottom: { direction: 'down', bounce: true} });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
