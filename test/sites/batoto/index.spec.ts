@@ -41,8 +41,10 @@ describe("Batoto live", () => {
         info.synonyms.should.be.deep.eq(results.manga.synonyms);
         info.authors.map(x => x.toLowerCase()).should.be.deep.eq(results.manga.authors); // the website keeps changing between lower and uppercase
         info.artists.map(x => x.toLowerCase()).should.be.deep.eq(results.manga.artists); // the website keeps changing between lower and uppercase
-        info.genres.should.be.deep.eq(results.manga.genres);
-        // info.scanlators.should.be.deep.eq(results.manga.scanlators);
+
+        for (let genre of results.manga.genres) { // batoto keeps adding/removing Drama from genres
+          info.genres.should.be.contain(genre);
+        }
   });
 
   it("should resolve name to name", async () => {
