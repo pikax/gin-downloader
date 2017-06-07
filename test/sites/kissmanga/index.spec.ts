@@ -3,7 +3,6 @@
  */
 
 
-import "./../../common";
 
 import * as nock from "nock";
 
@@ -14,15 +13,16 @@ import results from "./_results";
 import { FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
 import * as fs from "fs";
 
+import {_MOCK_} from "../../common";
 
-const _MOCK_ = !!process.env._MOCK_SITES_  || true;
+
 
 
 describe("KissManga live", () => {
 
   it("should get all mangas", async () => {
     // should get all mangas
-    if(_MOCK_) {
+    if (_MOCK_) {
       nock(config.site)
         .post("/AdvanceSearch")
         .replyWithFile(200, __dirname + "/html/mangas.html");
@@ -34,7 +34,7 @@ describe("KissManga live", () => {
 
   it("should get latest chaps", async() => {
     // latest
-    if(_MOCK_) {
+    if (_MOCK_) {
       nock(config.site)
         .get("/MangaList/LatestUpdate")
         .replyWithFile(200, __dirname + "/html/latest.html");
@@ -46,7 +46,7 @@ describe("KissManga live", () => {
 
   it("should get info", async () => {
     // info
-    if(_MOCK_) {
+    if (_MOCK_) {
       nock(config.site)
         .get("/Manga/Gintama")
         .replyWithFile(200, __dirname + "/html/Gintama.html");
@@ -72,7 +72,7 @@ describe("KissManga live", () => {
   it("should resolve name to name", async () => {
 
     // name to name [deprecated?]
-    if(_MOCK_) {
+    if (_MOCK_) {
       nock(config.site)
         .post("/AdvanceSearch")
         .replyWithFile(200, __dirname + "/html/mangas.html");
@@ -120,7 +120,7 @@ describe("KissManga live", () => {
 
   it("should not find get chapters", async () => {
     // not find Gintamass
-    if(_MOCK_) {
+    if (_MOCK_) {
       nock(config.site)
         .get("/Manga/Gintamass")
         .reply(404);
@@ -140,7 +140,7 @@ describe("KissManga live", () => {
 
   it("should not find chapter", async () => {
     // chapters
-    if(_MOCK_) {
+    if (_MOCK_) {
       nock(config.site)
         .get("/Manga/Gintama")
         .replyWithFile(200, __dirname + "/html/Gintama.html");
@@ -161,7 +161,7 @@ describe("KissManga live", () => {
 
   it("should not find images chapter ", async () => {
     // chapters
-    if(_MOCK_) {
+    if (_MOCK_) {
       nock(config.site)
         .get("/Manga/Gintama")
         .replyWithFile(200, __dirname + "/html/Gintama.html");
@@ -183,7 +183,7 @@ describe("KissManga live", () => {
 
   it("should get chapters", async () => {
     // chapters
-    if(_MOCK_) {
+    if (_MOCK_) {
       nock(config.site)
         .get("/Manga/Gintama")
         .replyWithFile(200, __dirname + "/html/Gintama.html");
@@ -199,7 +199,7 @@ describe("KissManga live", () => {
   it("should get Gintama : chapter 42", async () => {
     // get gintama chapter 42?
     /*start*/
-    if(_MOCK_) {
+    if (_MOCK_) {
       nock(config.site)
         .get("/Manga/Gintama")
         .replyWithFile(200, __dirname + "/html/Gintama.html");
@@ -228,7 +228,7 @@ describe("KissManga live", () => {
 
   describe("Filter", () => {
     it("should filter by name", async () => {
-      if(_MOCK_) {
+      if (_MOCK_) {
         // filter by Name
         nock(config.site)
           .post("/AdvanceSearch", "mangaName=Gintama&authorArtist=&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=")
@@ -251,7 +251,7 @@ describe("KissManga live", () => {
 
     it("should filter by in genre", async () => {
 
-      if(_MOCK_) {
+      if (_MOCK_) {
         // filter by Genre
         nock(config.site)
           .post("/AdvanceSearch", "mangaName=&authorArtist=&genres=0&genres=1&genres=0&genres=0&genres=1&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=1&genres=0&genres=0&genres=0&genres=0&genres=1&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=")
@@ -270,7 +270,7 @@ describe("KissManga live", () => {
       });
     });
     it("should filter by out genre", async () => {
-      if(_MOCK_) {
+      if (_MOCK_) {
         // filter by outGenre
         nock(config.site)
           .post("/AdvanceSearch", "mangaName=&authorArtist=&genres=2&genres=0&genres=2&genres=2&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=2&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=")
@@ -291,7 +291,7 @@ describe("KissManga live", () => {
     });
 
     it("should filter by Author", async () => {
-      if(_MOCK_) {
+      if (_MOCK_) {
         // filter by Author
         nock(config.site)
           .post("/AdvanceSearch", "mangaName=&authorArtist=Sorachi&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=")
@@ -318,7 +318,7 @@ describe("KissManga live", () => {
 
     it("should filter by Status", async () => {
 
-      if(_MOCK_) {// filter by Status
+      if (_MOCK_) {// filter by Status
         nock(config.site)
           .post("/AdvanceSearch", "mangaName=&authorArtist=&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=Complete")
           .replyWithFile(200, __dirname + "/html/filter/byCompleted.html");

@@ -44,7 +44,7 @@ export class GinRequest  {
 
 
   request(uri: string|OptionsWithUrl, method?: string, params?: any) {
-    let opts: OptionsWithUrl = {url: ""};
+    let opts: OptionsWithUrl = {url: "", method, body: params};
 
 
     if (typeof uri === "string") {
@@ -55,12 +55,7 @@ export class GinRequest  {
 
       opts.headers = {...this.headers, ...opts.headers};
     }
-    if (method) {
-      opts.method = method;
-    }
-    if (params) {
-      opts.body = params;
-    }
+
     return this.strategy.request(opts)
       .catch((err: any) => {
         error("request %s\nerror: %o", opts.url, err);

@@ -20,7 +20,7 @@
     "build-ts": "rmdir /s /q lib && tsc --outDir lib",
     "build": "npm run build-ts",
     "lint": "tslint {src,test}/**/*.ts --format stylish",
-    "test": "nyc --check-coverage mocha test/**/*.spec.ts test/sites/**/*.spec.ts",
+    "test": "nyc --check-coverage mocha test/**/*.spec.ts --recursive",
     "test:Mock": "cross-env _MOCK_SITES_=YES npm run test",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test:watch": "mocha -w --reporter min"

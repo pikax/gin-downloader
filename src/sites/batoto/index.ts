@@ -70,7 +70,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
 
     let search = processFilter(filter);
 
-    let doc = await this.request.getDoc(search.src);
+    let doc = await this.getDoc(search.src);
     let mangas = await this.parser.filter(doc);
 
     this.debug(`mangas: ${mangas.results.length}`);
@@ -97,7 +97,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
 
 
   async isLoggedIn() : Promise<boolean> {
-    let html = await this.request.getHtml("http://bato.to/search");
+    let html = await this.getHtml("http://bato.to/search");
     let match = html.match(/>Sign Out<\/a\>/m);
     return !!match;
   }
@@ -106,7 +106,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
       let url =  "http://bato.to/forums/index.php?app=core&module=global&section=login&do=process";
 
       let request = this.buildRequest(url);
-      let $ = await this.request.getDoc(request);
+      let $ = await this.getDoc(request);
       let authKey = $("#login > input[name='auth_key']").attr("value");
 
       let body = {
