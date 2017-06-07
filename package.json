@@ -21,6 +21,7 @@
     "build": "npm run build-ts",
     "lint": "tslint {src,test}/**/*.ts --format stylish",
     "test": "nyc --check-coverage mocha test/**/*.spec.ts test/sites/**/*.spec.ts",
+    "test:Mock": "cross-env _MOCK_SITES_=YES npm run test",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test:watch": "mocha -w --reporter min"
   },
@@ -31,7 +32,7 @@
     "url": "https://github.com/pikax/gin-downloader/issues"
   },
   "nyc": {
-    "exclude":[
+    "exclude": [
       "/**/*.d.ts",
       "test/**/*"
     ],
@@ -55,11 +56,13 @@
   "devDependencies": {
     "@types/chai": "^4.0.0",
     "@types/mocha": "^2.2.40",
+    "@types/nock": "^8.2.1",
     "@types/node": "^7.0.10",
+    "chai": "^4.0.2",
     "coveralls": "^2.13.0",
     "cross-env": "^5.0.0",
-    "chai": "^4.0.2",
     "mocha": "^3.4.2",
+    "nock": "^9.0.13",
     "nyc": "^11.0.2",
     "ts-node": "^3.0.4",
     "tslint": "^5.4.2",

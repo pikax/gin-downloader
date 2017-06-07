@@ -5,24 +5,54 @@
 
 import "./../../common";
 
-import {manga} from "./../../../src/sites/kissmanga";
+import * as nock from "nock";
+
+import {manga} from "./../../../src/sites/kissmanga/index";
+import {config} from "../../../src/sites/kissmanga/config";
+
 import results from "./_results";
 import { FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
+import * as fs from "fs";
+
+
+const _MOCK_ = !!process.env._MOCK_SITES_  || true;
 
 
 describe("KissManga live", () => {
 
   it("should get all mangas", async () => {
+    // should get all mangas
+    if(_MOCK_) {
+      nock(config.site)
+        .post("/AdvanceSearch")
+        .replyWithFile(200, __dirname + "/html/mangas.html");
+    }
+
     let mangas = await manga.mangas();
     mangas.should.have.length.gte(results.mangas_count);
   });
 
   it("should get latest chaps", async() => {
+    // latest
+    if(_MOCK_) {
+      nock(config.site)
+        .get("/MangaList/LatestUpdate")
+        .replyWithFile(200, __dirname + "/html/latest.html");
+    }
+
     let latest = await  manga.latest();
     latest.should.to.have.length.gte(40);
   });
 
   it("should get info", async () => {
+    // info
+    if(_MOCK_) {
+      nock(config.site)
+        .get("/Manga/Gintama")
+        .replyWithFile(200, __dirname + "/html/Gintama.html");
+    }
+
+
     let name = "Gintama";
     let info = await manga.info(name);
 
@@ -40,6 +70,14 @@ describe("KissManga live", () => {
   });
 
   it("should resolve name to name", async () => {
+
+    // name to name [deprecated?]
+    if(_MOCK_) {
+      nock(config.site)
+        .post("/AdvanceSearch")
+        .replyWithFile(200, __dirname + "/html/mangas.html");
+    }
+
     let mangas = await manga.mangas();
 
     for (let obj of mangas){
@@ -57,6 +95,14 @@ describe("KissManga live", () => {
 
 
   it("should not find manga by name", async () => {
+
+    // not find my stupid name
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/Manga/my-stupid-name")
+        .reply(404);
+    }
+
     let name = "my stupid name";
     let chapter = 1;
 
@@ -73,6 +119,13 @@ describe("KissManga live", () => {
 
 
   it("should not find get chapters", async () => {
+    // not find Gintamass
+    if(_MOCK_) {
+      nock(config.site)
+        .get("/Manga/Gintamass")
+        .reply(404);
+    }
+
     let name = "Gintamass";
 
     try {
@@ -86,6 +139,12 @@ describe("KissManga live", () => {
   });
 
   it("should not find chapter", async () => {
+    // chapters
+    if(_MOCK_) {
+      nock(config.site)
+        .get("/Manga/Gintama")
+        .replyWithFile(200, __dirname + "/html/Gintama.html");
+    }
     let name = "Gintama";
     let chapter = -354564;
 
@@ -101,6 +160,13 @@ describe("KissManga live", () => {
   });
 
   it("should not find images chapter ", async () => {
+    // chapters
+    if(_MOCK_) {
+      nock(config.site)
+        .get("/Manga/Gintama")
+        .replyWithFile(200, __dirname + "/html/Gintama.html");
+    }
+
     let name = "Gintama";
     let chapter = -5151;
 
@@ -116,13 +182,39 @@ describe("KissManga live", () => {
 
 
   it("should get chapters", async () => {
+    // chapters
+    if(_MOCK_) {
+      nock(config.site)
+        .get("/Manga/Gintama")
+        .replyWithFile(200, __dirname + "/html/Gintama.html");
+    }
+
     let name = "Gintama";
 
     let chapters = await manga.chapters(name);
     chapters.should.have.length.gte(results.chapter_count);
   });
 
+
   it("should get Gintama : chapter 42", async () => {
+    // get gintama chapter 42?
+    /*start*/
+    if(_MOCK_) {
+      nock(config.site)
+        .get("/Manga/Gintama")
+        .replyWithFile(200, __dirname + "/html/Gintama.html");
+
+      nock(config.site)
+        .get("/Manga/Gintama/Lesson-042?id=288316")
+        .replyWithFile(200, __dirname + "/html/Lesson-042.html");
+      nock(config.site)
+        .get("/Scripts/ca.js")
+        .replyWithFile(200, __dirname + "/html/ca.js");
+      nock(config.site)
+        .get("/Scripts/lo.js")
+        .replyWithFile(200, __dirname + "/html/lo.js");
+    }
+    /*end*/
     let name = "Gintama";
     let chapter = 42;
 
@@ -136,6 +228,13 @@ describe("KissManga live", () => {
 
   describe("Filter", () => {
     it("should filter by name", async () => {
+      if(_MOCK_) {
+        // filter by Name
+        nock(config.site)
+          .post("/AdvanceSearch", "mangaName=Gintama&authorArtist=&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=")
+          .replyWithFile(200, __dirname + "/html/filter/byName.html");
+      }
+
       let filter: FilterSupport = {
         name: "Gintama"
       };
@@ -151,6 +250,13 @@ describe("KissManga live", () => {
     });
 
     it("should filter by in genre", async () => {
+
+      if(_MOCK_) {
+        // filter by Genre
+        nock(config.site)
+          .post("/AdvanceSearch", "mangaName=&authorArtist=&genres=0&genres=1&genres=0&genres=0&genres=1&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=1&genres=0&genres=0&genres=0&genres=0&genres=1&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=")
+          .replyWithFile(200, __dirname + "/html/filter/byGenre.html");
+      }
       let filter: FilterSupport = {
         genres: [Genre.Comedy, Genre.Action, Genre.SciFi, Genre.Shounen]
       };
@@ -164,6 +270,13 @@ describe("KissManga live", () => {
       });
     });
     it("should filter by out genre", async () => {
+      if(_MOCK_) {
+        // filter by outGenre
+        nock(config.site)
+          .post("/AdvanceSearch", "mangaName=&authorArtist=&genres=2&genres=0&genres=2&genres=2&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=2&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=")
+          .replyWithFile(200, __dirname + "/html/filter/outGenre.html");
+      }
+
       let filter: FilterSupport = {
         outGenres: [Genre.FourKoma, Genre.Adult, Genre.Adventure, Genre.Manhwa, Genre.AwardWinning]
       };
@@ -178,6 +291,13 @@ describe("KissManga live", () => {
     });
 
     it("should filter by Author", async () => {
+      if(_MOCK_) {
+        // filter by Author
+        nock(config.site)
+          .post("/AdvanceSearch", "mangaName=&authorArtist=Sorachi&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=")
+          .replyWithFile(200, __dirname + "/html/filter/byAuthor.html");
+      }
+
       let filter: FilterSupport = {
         search: {
           author: {
@@ -197,14 +317,23 @@ describe("KissManga live", () => {
     });
 
     it("should filter by Status", async () => {
+
+      if(_MOCK_) {// filter by Status
+        nock(config.site)
+          .post("/AdvanceSearch", "mangaName=&authorArtist=&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=Complete")
+          .replyWithFile(200, __dirname + "/html/filter/byCompleted.html");
+      }
+
       let filter: FilterSupport = {
         search: {
           status: FilterStatus.Complete
         }
       };
 
+
+
       let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(50);
+      mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "History's Strongest Disciple Kenichi",
         src : "http://kissmanga.com/Manga/History-s-Strongest-Disciple-Kenichi",
@@ -213,6 +342,24 @@ describe("KissManga live", () => {
     });
   });
 
-
-
 });
+
+
+
+function nockMe() {
+  // if(!process.env._MOCK_SITES_)
+  //   return;
+
+
+
+
+
+
+
+
+
+
+
+
+}
+

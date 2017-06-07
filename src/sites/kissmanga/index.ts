@@ -46,12 +46,12 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
     this.debug("filter mangas with: %o", filter);
 
     let search = processFilter(filter);
-
     let opts = this.buildMangasRequest(search.src);
     let headers = opts.headers || {};
     headers['Content-Type'] = headers['Content-Type'] || 'application/x-www-form-urlencoded; charset=UTF-8';
     headers['Content-Length'] = headers['Content-Length'] || search.params.length;
     opts.body = search.params.toString();
+
     let doc = await this.request.postDoc(opts);
     let mangas = await this.parser.filter(doc);
 
