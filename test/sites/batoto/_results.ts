@@ -12,7 +12,6 @@ let manga = { image: "http://img.bato.to/forums/uploads/501378b77edcdef486ef2260
       "Action",
       "Adventure",
       "Comedy",
-      "Drama",
       "Historical",
       "Sci-fi",
       "Shounen",
