@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "es2015",
     "noImplicitAny": true,
     "preserveConstEnums": true,
     "target": "es5",
@@ -8,6 +8,7 @@
     "alwaysStrict": true,
     "declaration": true,
 
+    "moduleResolution": "node",
     "typeRoots" : ["./node_modules/@types"],
     "types": [ "node", "mocha", "chai" ],
     "lib": ["ES6", "es2015","dom"]

@@ -8,6 +8,7 @@ watch
 /test/**/*.js.map
 /src/**/*.d.ts
 /test/**/*.d.ts
+/build
 
 
 !/test/sites/kissmanga/html/*.js
