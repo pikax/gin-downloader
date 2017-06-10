@@ -1,7 +1,7 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, FilterSupport, FilterStatus} from "../../declarations";
+import {Genre, FilterCondition, MangaFilter, FilterStatus} from "../../declarations";
 import {config} from "./config";
 import {resolve} from "url";
 import {find} from "lodash";
@@ -105,8 +105,8 @@ const ordered = [
 
 
 
-export const processFilter = (filter: FilterSupport): {src: string, params: any} => {
-  filter = procFilter(filter);
+export const processFilter = (mangafilter: MangaFilter): {src: string, params: any} => {
+  let filter = procFilter(mangafilter);
   let {search} = filter;
 
 

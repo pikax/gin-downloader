@@ -9,7 +9,7 @@ import {manga} from "./../../../src/sites/batoto";
 import results from "./_results";
 import auth from "./auth";
 import {
-  FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre,
+  FilterCondition, FilterMangaType, FilterStatus, MangaFilter, Genre,
   GenreCondition
 } from "../../../src/declarations";
 
@@ -69,7 +69,7 @@ describe("Batoto live", () => {
 
       images.should.be.null;
 
-    }catch (e){
+    }catch (e) {
       e.should.be.Throw;
     }
   });
@@ -141,7 +141,7 @@ describe("Batoto live", () => {
   describe("filter", () => {
 
     it("should filter by name", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         name: "Gintama"
       };
 
@@ -157,7 +157,7 @@ describe("Batoto live", () => {
 
 
     it("should filter by name endWith", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           name : {
             name: "Gintama",
@@ -177,7 +177,7 @@ describe("Batoto live", () => {
     });
 
     it("should filter by name startsWith", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           name : {
             name: "Gintama",
@@ -197,7 +197,7 @@ describe("Batoto live", () => {
     });
 
     it("should filter by in genre", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           genre : {
             inGenres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Historical, Genre.SciFi, Genre.Shounen]
@@ -216,7 +216,7 @@ describe("Batoto live", () => {
     });
 
     it("should filter by out genre", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           name: {
             name: "gin",
@@ -243,7 +243,7 @@ describe("Batoto live", () => {
     });
 
     it("should filter by Author", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           author: {
             name: "Sorachi",
@@ -263,7 +263,7 @@ describe("Batoto live", () => {
     });
 
     it("should filter by Status", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           status: FilterStatus.Complete,
           name: {
@@ -284,7 +284,7 @@ describe("Batoto live", () => {
     });
 
     it("should filter by Type", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           type: FilterMangaType.Manhwa
         }
@@ -307,7 +307,7 @@ describe("Batoto live", () => {
 
     it("should not include mature", async () => {
 
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         name: "ginta",
         search: {
           mature: false,
@@ -323,7 +323,7 @@ describe("Batoto live", () => {
     });
 
     it("should have rating between 5~5", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           rating: {
             from: 5,
@@ -341,7 +341,7 @@ describe("Batoto live", () => {
     });
 
     it("should have rating between 0~1", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           rating: {
             from: 1,
@@ -360,7 +360,7 @@ describe("Batoto live", () => {
 
     it("should have genre inclusion OR", async () => {
 
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         name: "ginta",
         search: {
           genre: {

@@ -6,7 +6,7 @@ import {MangaSite} from "../../common/mangasite";
 import {Parser} from "./parser";
 import {config} from "./config";
 import {Helper} from "./names";
-import {FilteredResults, FilterSupport, MangaSource, Site, SiteConfig} from "../../declarations";
+import {FilteredResults, MangaFilter, MangaSource, Site, SiteConfig} from "../../declarations";
 import {strategy} from "../../request/requestRetryStrategy";
 import {processFilter} from "./filter";
 
@@ -17,7 +17,7 @@ export class MangaFox extends MangaSite<SiteConfig, Parser, Helper> implements S
     super(config, new Parser, new Helper(), strategy);
   }
 
-  async filter(filter?: FilterSupport): Promise<FilteredResults> {
+  async filter(filter?: MangaFilter): Promise<FilteredResults> {
     this.debug("filter mangas with: %o", filter);
 
     let search = processFilter(filter);

@@ -105,8 +105,8 @@ export interface SiteParser {
 }
 
 export interface Site {
-  mangas(filter?: FilterSupport): Promise<MangaSource[]>;
-  filter(filter?: FilterSupport): Promise<FilteredResults>;
+  mangas(filter?: MangaFilter): Promise<MangaSource[]>;
+  filter(filter?: MangaFilter): Promise<FilteredResults>;
 
   latest(): Promise<Chapter[]>;
 
@@ -260,47 +260,50 @@ export enum FilterStatus {
 }
 
 export enum FilterMangaType {
-  Manga,
-  Manhwa,
-  Manhua,
-  Comic,
-  Artbook, // An artbook is a title that contains purely art and has no story
-  Other, // bato.to
+  Manga = <any>"Manga",
+  Manhwa = <any>"Manhwa",
+  Manhua = <any>"Manhua",
+  Comic = <any>"Comic",
+  Artbook = <any>"Artbook", // An artbook is a title that contains purely art and has no story
+  Other = <any>"Other", // bato.to
 }
 
+export interface NameFilter {
+  name: string;
+  condition?: FilterCondition;
+}
 
-export interface FilterSupport {
+export interface ValueFilter {
+  value: number;
+  condition?: FilterCondition;
+}
+
+export interface GenreFilter {
+  inGenres?: Genre[];
+  outGenres?: Genre[];
+  condition?: GenreCondition;
+}
+export interface RatingFilter  { // from
+  from?: number;
+  to?: number;
+}
+
+export interface AuthorFilter extends NameFilter { }
+export interface ArtistFilter extends NameFilter { }
+export interface ReleaseFilter extends ValueFilter { }
+
+export interface MangaFilter {
   name?: string;
   page?: number;
   search?: {
-    name?: {
-      name: string,
-      condition?: FilterCondition,
-    },
-    author?: {
-      name: string,
-      condition?: FilterCondition,
-    },
-    artist?: {
-      name: string,
-      condition?: FilterCondition,
-    },
+    name?: NameFilter | string,
+    author?: AuthorFilter | string,
+    artist?: ArtistFilter | string,
     status?: FilterStatus,
-    released?: {
-      value: number,
-      condition?: FilterCondition,
-    },
-    genre?: { // todo use this object instead of genres/outGenres
-      inGenres?: Genre[];
-      outGenres?: Genre[];
-      condition?: GenreCondition;
-    };
-    rating?: {
-      from?: number,
-      to?: number,
-    },
+    released?: ReleaseFilter | number,
+    genre?: GenreFilter | Genre[];
+    rating?: RatingFilter | number,
     mature?: boolean;
-
 
     type?: FilterMangaType,
   };
@@ -308,10 +311,29 @@ export interface FilterSupport {
   sort?: {
   };
 
-  genres?: Genre[]; // deprecated
-  outGenres?: Genre[]; // deprecated
+  genres?: Genre[]; // @deprecated
+  outGenres?: Genre[]; // @deprecated
 }
 
+export interface FilterSupport {
+  name?: string;
+  page?: number;
+  search?: {
+    name?: NameFilter,
+    author?: AuthorFilter,
+    artist?: ArtistFilter,
+    status?: FilterStatus,
+    released?: ReleaseFilter,
+    genre?: GenreFilter,
+    rating?: RatingFilter,
+    mature?: boolean;
+
+    type?: FilterMangaType,
+  };
+
+  sort?: {
+  };
+}
 
 export interface FilteredResults {
   results: MangaSource[];

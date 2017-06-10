@@ -7,7 +7,7 @@ import "./../../common";
 import {manga} from "./../../../src/sites/mangapanda";
 import results from "./_results";
 import {helper} from "../../../src/sites/mangapanda/names";
-import {FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
+import {FilterCondition, FilterMangaType, FilterStatus, MangaFilter, Genre} from "../../../src/declarations";
 
 
 describe("MangaPanda live", () => {
@@ -132,7 +132,7 @@ describe("MangaPanda live", () => {
   describe("filter", () => {
 
     it("should filter by name", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         name: "Gintama"
       };
 
@@ -145,7 +145,7 @@ describe("MangaPanda live", () => {
     });
 
     it("should filter by in genre", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         genres: [Genre.Action, Genre.Comedy,  Genre.SciFi, Genre.Shounen]
       };
 
@@ -158,7 +158,7 @@ describe("MangaPanda live", () => {
     });
 
     it("should filter by out genre", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         outGenres: [Genre.Romance],
         search: {
           name: {
@@ -181,7 +181,7 @@ describe("MangaPanda live", () => {
     });
 
     it("should filter by Author", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           author: {
             name: "Sorachi",
@@ -199,7 +199,7 @@ describe("MangaPanda live", () => {
     });
 
     it("should filter by Status", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           status: FilterStatus.Complete,
           name: {
@@ -217,7 +217,7 @@ describe("MangaPanda live", () => {
     });
 
     it("should filter by Type", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           type: FilterMangaType.Manhwa,
           name: {

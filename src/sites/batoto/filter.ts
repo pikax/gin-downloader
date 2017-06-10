@@ -1,7 +1,7 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, FilterSupport, FilterStatus, GenreCondition, FilterMangaType} from "../../declarations";
+import {Genre, FilterCondition, MangaFilter, FilterStatus, GenreCondition, FilterMangaType} from "../../declarations";
 import {config} from "./config";
 import {isNullOrUndefined} from "util";
 import {procFilter} from "../../common/helper";
@@ -132,8 +132,8 @@ dic[Genre.Medical] = "42";
 dic[Genre.NoChapters] = "44";
 
 
-export const processFilter = (filter: FilterSupport): {src: string} => {
-  filter = procFilter(filter);
+export const processFilter = (mangafilter: MangaFilter): {src: string} => {
+  let filter = procFilter(mangafilter);
 
   let {search} = filter;
   let fauthor = null;

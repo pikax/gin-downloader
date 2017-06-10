@@ -10,7 +10,7 @@ import {manga} from "./../../../src/sites/kissmanga/index";
 import {config} from "../../../src/sites/kissmanga/config";
 
 import results from "./_results";
-import { FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
+import { FilterStatus, MangaFilter, Genre} from "../../../src/declarations";
 import * as fs from "fs";
 import {_MOCK_} from "../../common";
 
@@ -234,7 +234,7 @@ describe("KissManga live", () => {
           .replyWithFile(200, __dirname + "/html/filter/byName.html");
       }
 
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         name: "Gintama"
       };
 
@@ -256,7 +256,7 @@ describe("KissManga live", () => {
           .post("/AdvanceSearch", "mangaName=&authorArtist=&genres=0&genres=1&genres=0&genres=0&genres=1&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=1&genres=0&genres=0&genres=0&genres=0&genres=1&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status=")
           .replyWithFile(200, __dirname + "/html/filter/byGenre.html");
       }
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         genres: [Genre.Comedy, Genre.Action, Genre.SciFi, Genre.Shounen]
       };
 
@@ -276,7 +276,7 @@ describe("KissManga live", () => {
           .replyWithFile(200, __dirname + "/html/filter/outGenre.html");
       }
 
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         outGenres: [Genre.FourKoma, Genre.Adult, Genre.Adventure, Genre.Manhwa, Genre.AwardWinning]
       };
 
@@ -297,7 +297,7 @@ describe("KissManga live", () => {
           .replyWithFile(200, __dirname + "/html/filter/byAuthor.html");
       }
 
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           author: {
             name: "Sorachi",
@@ -323,7 +323,7 @@ describe("KissManga live", () => {
           .replyWithFile(200, __dirname + "/html/filter/byCompleted.html");
       }
 
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           status: FilterStatus.Complete
         }
