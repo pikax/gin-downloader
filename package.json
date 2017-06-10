@@ -22,7 +22,7 @@
     "build:ts": "trash build && tsc --outDir build",
     "oldlint": "tslint -c tslint.json --project tsconfig.json --force",
     "lint": "tslint {src,test}/**/*.ts --format stylish",
-    "nyc": "nyc --check-coverage mocha test/**/*.spec.ts --recursive",
+    "nyc": "nyc --check-coverage mocha test/**/*.spec.ts test/**/**/*.spec.ts --recursive",
     "test": "cross-env TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} yarn run nyc",
     "test:Mock": "cross-env _MOCK_SITES_=YES TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} yarn run nyc",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
