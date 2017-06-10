@@ -7,7 +7,7 @@ import "./../../common";
 
 import {mangafox as manga} from "./../../../src";
 import results from "./_results";
-import {FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
+import {FilterCondition, FilterMangaType, FilterStatus, MangaFilter, Genre} from "../../../src/declarations";
 
 
 describe("MangaFox live", () => {
@@ -139,7 +139,7 @@ describe("MangaFox live", () => {
   describe("filter", () => {
 
     it("should filter by name", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         name: "Gintama"
       };
 
@@ -156,7 +156,7 @@ describe("MangaFox live", () => {
 
 
     it("should filter by name endWith", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           name : {
             name: "Gintama",
@@ -176,7 +176,7 @@ describe("MangaFox live", () => {
     });
 
     it("should filter by name startsWith", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           name : {
             name: "Gintama",
@@ -196,7 +196,7 @@ describe("MangaFox live", () => {
     });
 
     it("should filter by in genre", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         genres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Drama, Genre.Historical, Genre.SciFi, Genre.Shounen, Genre.Supernatural]
       };
 
@@ -211,7 +211,7 @@ describe("MangaFox live", () => {
     });
 
     it("should filter by out genre", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         outGenres: [Genre.Romance],
         search: {
           name: {
@@ -236,7 +236,7 @@ describe("MangaFox live", () => {
     });
 
     it("should filter by Author", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           author: {
             name: "Sorachi",
@@ -256,7 +256,7 @@ describe("MangaFox live", () => {
     });
 
     it("should filter by Status", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           status: FilterStatus.Complete,
           name: {
@@ -276,7 +276,7 @@ describe("MangaFox live", () => {
     });
 
     it("should filter by Type", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           type: FilterMangaType.Manhwa
         }

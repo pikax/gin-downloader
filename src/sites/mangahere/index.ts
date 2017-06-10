@@ -5,7 +5,7 @@ import {MangaSite} from "../../common/mangasite";
 import {Parser} from "./parser";
 import {config} from "./config";
 import {Helper} from "./names";
-import {FilteredResults, FilterSupport, SiteConfig} from "../../declarations";
+import {FilteredResults, MangaFilter, SiteConfig} from "../../declarations";
 import {processFilter} from "./filter";
 import {strategy} from "../../request/requestRetryStrategy";
 
@@ -16,7 +16,7 @@ export class MangaHere extends MangaSite<SiteConfig, Parser, Helper> {
   }
 
 
-  async filter(filter?: FilterSupport): Promise<FilteredResults> {
+  async filter(filter?: MangaFilter): Promise<FilteredResults> {
     this.debug("filter mangas with: %o", filter);
 
     let search = processFilter(filter);

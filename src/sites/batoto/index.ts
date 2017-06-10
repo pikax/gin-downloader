@@ -7,7 +7,7 @@ import {Parser} from "./parser";
 import {config} from "./config";
 import {Helper} from "./names";
 import {
-  FilterCondition, FilteredResults, FilterSupport, ImageSource, MangaSource, Site,
+  FilterCondition, FilteredResults, MangaFilter, ImageSource, MangaSource, Site,
   SiteConfig
 } from "../../declarations";
 
@@ -30,7 +30,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
       return this._urlCache[name];
     }
 
-    let filter: FilterSupport = {search: {name: {name, condition: FilterCondition.EndsWith}}};
+    let filter: MangaFilter = {search: {name: {name, condition: FilterCondition.EndsWith}}};
     let filterResults: FilteredResults;
     do {
       let page = 0;
@@ -61,11 +61,11 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
     return "";
   }
 
-  mangas(filter?: FilterSupport): Promise<MangaSource[]> {
+  mangas(filter?: MangaFilter): Promise<MangaSource[]> {
     return this.filter(filter).then(x => x.results);
   }
 
-  async filter(filter?: FilterSupport): Promise<FilteredResults> {
+  async filter(filter?: MangaFilter): Promise<FilteredResults> {
     this.debug("filter mangas with: %o", filter);
 
     let search = processFilter(filter);

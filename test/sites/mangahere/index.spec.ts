@@ -6,7 +6,7 @@ import "./../../common";
 import {manga} from "./../../../src/sites/mangahere";
 import results from "./_results";
 import {helper} from "../../../src/sites/mangahere/names";
-import {FilterCondition, FilterMangaType, FilterStatus, FilterSupport, Genre} from "../../../src/declarations";
+import {FilterCondition, FilterMangaType, FilterStatus, MangaFilter, Genre} from "../../../src/declarations";
 
 
 describe("MangaHere live", () => {
@@ -129,7 +129,7 @@ describe("MangaHere live", () => {
   describe("filter", () => {
 
     it("should filter by name", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         name: "Gintama"
       };
 
@@ -143,7 +143,7 @@ describe("MangaHere live", () => {
 
 
     it("should filter by name endWith", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           name : {
             name: "Gintama",
@@ -161,7 +161,7 @@ describe("MangaHere live", () => {
     });
 
     it("should filter by name startsWith", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           name : {
             name: "Gintama",
@@ -179,7 +179,7 @@ describe("MangaHere live", () => {
     });
 
     it("should filter by in genre", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           genre: {
             inGenres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Drama, Genre.Historical, Genre.SciFi, Genre.Shounen, Genre.Supernatural]
@@ -196,7 +196,7 @@ describe("MangaHere live", () => {
     });
 
     it("should filter by out genre", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
 
         search: {
           name: {
@@ -222,7 +222,7 @@ describe("MangaHere live", () => {
     });
 
     it("should filter by Author", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           author: {
             name: "Sorachi",
@@ -240,7 +240,7 @@ describe("MangaHere live", () => {
     });
 
     it("should filter by Status", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           status: FilterStatus.Complete,
           name: {
@@ -258,7 +258,7 @@ describe("MangaHere live", () => {
     });
 
     it("should filter by Type", async () => {
-      let filter: FilterSupport = {
+      let filter: MangaFilter = {
         search: {
           name: {
             name: "10"

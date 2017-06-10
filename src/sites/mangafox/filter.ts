@@ -1,7 +1,7 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, FilterSupport, FilterStatus, FilterMangaType} from "../../declarations";
+import {Genre, FilterCondition, MangaFilter, FilterStatus, FilterMangaType} from "../../declarations";
 import {config} from "./config";
 import {resolve} from "url";
 import {map} from "lodash";
@@ -88,8 +88,8 @@ correctName[Genre.Yuri] = Genre.Yuri.toString();
 
 
 
-export const processFilter = (filter: FilterSupport) : {src: string, params: any} => {
-  filter = procFilter(filter);
+export const processFilter = (mangafilter: MangaFilter) : {src: string, params: any} => {
+  let filter = procFilter(mangafilter);
   let { search, page} = filter;
 
   let filterType = null;

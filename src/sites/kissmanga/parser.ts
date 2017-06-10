@@ -3,7 +3,7 @@
  */
 import "../../declarations";
 import {
-  Chapter, FilteredResults, FilterSupport, MangaInfo, MangaSource, MangaXDoc,
+  Chapter, FilteredResults, MangaFilter, MangaInfo, MangaSource, MangaXDoc,
   SiteParser
 } from "../../declarations";
 import {resolve} from "url";

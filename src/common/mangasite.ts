@@ -4,7 +4,7 @@
 
 import {
   Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, Request,
-  FilterSupport, FilteredResults, MangaXDoc
+  MangaFilter, FilteredResults, MangaXDoc
 } from "../declarations";
 var debug =require("debug");
 import {IDebugger} from "debug";
@@ -60,7 +60,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     return mangas;
   }
 
-  filter(filter?: FilterSupport): Promise<FilteredResults> {
+  filter(filter?: MangaFilter): Promise<FilteredResults> {
     throw new Error("Method not implemented.");
   }
 
