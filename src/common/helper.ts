@@ -37,9 +37,11 @@ export const procFilter = (condition: FilterSupport | string, def?: FilterSuppor
       filter.search = {genre: {}};
     }
     if (genres) {
+      console.warn("filter.genres is deprecated, please use filter.search.genre.inGenres instead.");
       filter.search.genre.inGenres = genres;
     }
     if (outGenres) {
+      console.warn("filter.outGenres is deprecated, please use filter.search.genre.outGenres instead.");
       filter.search.genre.outGenres = outGenres;
     }
     // end
