@@ -238,7 +238,6 @@ mangafox.chapters("Gintama")
 	.then(console.log)
 ```
 
-
 - **infoChapters(name)** : returns {info: MangaInfo, chapters: Chapter[]} 
 manga info and chapters with single call
 ```javascript
@@ -246,11 +245,11 @@ mangafox.info("Gintama")
     .then(console.log);
 ```
 
-- **images(manga, chapter_number)** : return Promise<Promise<string>[]>
+- **images(manga, chapter_number)** : return Promise<Promise<{name:string,src:string>[]>
 ```javascript
-mangafox.chapters("Gintama", 1)
-    .then(Promise.all) //resolve all promises
-    .then(console.log)
+mangafox.images("Gintama", 1)
+      .then(x=>Promise.all(x)) //resolve all promises
+      .then(console.log)
 ```
 
 - **login(user, pw, remember?)**: return Promise<boolean>
