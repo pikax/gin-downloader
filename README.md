@@ -59,47 +59,52 @@ gin.mangapanda.filter({name:"gintama"})
 
 *FilterSupport* : **note** not every site supports all the filters/genres.
 ```typescript
-interface FilterSupport {
+
+interface NameFilter {
+  name: string;
+  condition?: FilterCondition;
+}
+
+interface ValueFilter {
+  value: number;
+  condition?: FilterCondition;
+}
+
+interface GenreFilter {
+  inGenres?: Genre[];
+  outGenres?: Genre[];
+  condition?: GenreCondition;
+}
+interface RatingFilter  { // from
+  from?: number;
+  to?: number;
+}
+
+interface AuthorFilter extends NameFilter { }
+interface ArtistFilter extends NameFilter { }
+interface ReleaseFilter extends ValueFilter { }
+
+interface MangaFilter {
   name?: string;
   page?: number;
   search?: {
-    name?: {
-      name: string,
-      condition?: FilterCondition,
-    },
-    author?: {
-      name: string,
-      condition?: FilterCondition,
-    },
-    artist?: {
-      name: string,
-      condition?: FilterCondition,
-    },
+    name?: NameFilter | string,
+    author?: AuthorFilter | string,
+    artist?: ArtistFilter | string,
     status?: FilterStatus,
-    released?: {
-      value: number,
-      condition?: FilterCondition,
-    },
-    genre?: { // todo use this object instead of genres/outGenres
-      inGenres?: Genre[];
-      outGenres?: Genre[];
-      condition?: GenreCondition;
-    };
-    rating?: {
-      from?: number,
-      to?: number,
-    },
+    released?: ReleaseFilter | number,
+    genre?: GenreFilter | Genre[];
+    rating?: RatingFilter | number, // number sets the from
     mature?: boolean;
-
 
     type?: FilterMangaType,
   };
 
-  sort?: { // placeholde for future
- 	};
+  sort?: {
+  };
 
-  genres?: Genre[]; // deprecated
-  outGenres?: Genre[]; // deprecated
+  genres?: Genre[]; // @deprecated
+  outGenres?: Genre[]; // @deprecated
 }
 
 // you can use the string directly in the filter
