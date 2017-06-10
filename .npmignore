@@ -2,6 +2,9 @@
 
 test/
 src/
+build/
+out/
+.*/
 
 ### Node template
 # Logs

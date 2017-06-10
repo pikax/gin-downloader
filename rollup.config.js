@@ -1,33 +1,18 @@
 /**
  * Created by pikax on 04/06/2017.
  */
-import typescript from 'rollup-plugin-typescript2';
-
+var cleanUp = require('rollup-plugin-cleanup');
 var pkg = require( './package.json' );
 
 
+module.exports =  {
+  entry: './build/index.js',
 
-export default {
-  entry: './src/index.ts',
-
-  plugins: [
-    typescript()
+  plugins:[
+    cleanUp({maxEmptyLines:1}),
   ],
+  format:'cjs', //probably changing to es when node supports it
 
-  dest: 'out/asdasdasd',
-  format: "cjs",
-
-
-  external: [ 'cheerio', 'lodash']
-
-  // targets: [
-  //   {
-  //     format: 'cjs',
-  //     dest: pkg.main
-  //   },
-  //   {
-  //     format: 'es',
-  //     dest: pkg.module
-  //   }
-  // ]
-}
+  dest: pkg.main,
+  external: [ 'cheerio', 'lodash', 'debug', 'url', 'vm', 'util']
+};
