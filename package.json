@@ -1,6 +1,6 @@
 {
   "name": "gin-downloader",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple manga scrapper for famous online manga websites.",
   "keywords": [
     "manga",
@@ -23,8 +23,8 @@
     "oldlint": "tslint -c tslint.json --project tsconfig.json --force",
     "lint": "tslint {src,test}/**/*.ts --format stylish",
     "nyc": "nyc --check-coverage mocha test/**/*.spec.ts --recursive",
-    "test": "set TS_NODE_COMPILER_OPTIONS={\"module\":\"commonjs\"} && yarn run nyc",
-    "test:Mock": "cross-env _MOCK_SITES_=YES npm run test",
+    "test": "cross-env TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} yarn run nyc",
+    "test:Mock": "cross-env _MOCK_SITES_=YES TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} yarn run nyc",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test:watch": "mocha -w --reporter min",
     "dist": "yarn run dist:build | yarn run dist:declaration",
