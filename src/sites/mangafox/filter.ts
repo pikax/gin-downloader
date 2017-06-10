@@ -5,6 +5,7 @@ import {Genre, FilterCondition, FilterSupport, FilterStatus, FilterMangaType} fr
 import {config} from "./config";
 import {resolve} from "url";
 import {map} from "lodash";
+import {procFilter} from "../../common/helper";
 
 const Supported: { [id: string]: Genre } = {};
 Supported[Genre.Action] = Genre.Action;
@@ -88,8 +89,8 @@ correctName[Genre.Yuri] = Genre.Yuri.toString();
 
 
 export const processFilter = (filter: FilterSupport) : {src: string, params: any} => {
-  filter = filter || {};
-  let {genres, outGenres, search, page} = filter;
+  filter = procFilter(filter);
+  let { search, page} = filter;
 
   let filterType = null;
 
@@ -106,10 +107,13 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
   let methodReleased = "eq";
   let methodRating = "eq";
 
+  let genres: Genre[] = null;
+  let outGenres: Genre[] = null;
+
 
 
   if (search) {
-    let { name, author, artist, rating, released, type} = search;
+    let { name, author, artist, rating, released, type, genre} = search;
 
     filterType = resolveType(type) || filterType;
 
@@ -141,6 +145,11 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
     if (released) {
       filterReleased = released.value || filterReleased;
       methodReleased = searchMethod(released.condition) || methodReleased;
+    }
+
+    if (genre) {
+      genres = genre.inGenres;
+      outGenres = genre.outGenres;
     }
   }
 

@@ -4,6 +4,7 @@
 import {Genre, FilterCondition, FilterSupport, FilterStatus, GenreCondition, FilterMangaType} from "../../declarations";
 import {config} from "./config";
 import {isNullOrUndefined} from "util";
+import {procFilter} from "../../common/helper";
 
 const Supported = [];
 Supported[Genre.Action] = Genre.Action;
@@ -131,11 +132,10 @@ dic[Genre.Medical] = "42";
 dic[Genre.NoChapters] = "44";
 
 
-export const processFilter = (filter: FilterSupport) : {src: string} => {
-  filter = filter || {};
-  let {genres, outGenres, search} = filter;
+export const processFilter = (filter: FilterSupport): {src: string} => {
+  filter = procFilter(filter);
 
-
+  let {search} = filter;
   let fauthor = null;
   let fstatus = null;
   let ftype = null;
@@ -146,6 +146,8 @@ export const processFilter = (filter: FilterSupport) : {src: string} => {
   let fmature = "y";
   let fratingFrom = 0;
   let fratingTo = 5;
+  let genres: Genre[] = null;
+  let outGenres: Genre[] = null;
 
   if (search) {
 
@@ -174,14 +176,14 @@ export const processFilter = (filter: FilterSupport) : {src: string} => {
     }
 
 
-    let {type, mature,rating} = search;
+    let {type, mature, rating} = search;
     if (type) {
       ftype = resolveType(type);
     }
 
     fmature = isNullOrUndefined(mature) || mature ? "y" : "n";
 
-    if(rating){
+    if (rating) {
       fratingFrom = rating.from || 0;
       fratingTo = rating.to || 5;
     }

@@ -5,6 +5,7 @@ import {Genre, FilterCondition, FilterSupport, FilterStatus, FilterMangaType} fr
 import {config} from "./config";
 import {resolve} from "url";
 import {find} from "lodash";
+import {procFilter} from "../../common/helper";
 
 const Supported = [];
 Supported[Genre.Action] = Genre.Action;
@@ -87,16 +88,16 @@ const ordered = [
 
 
 
-export const processFilter = (filter: FilterSupport) : {src: string, params: any} => {
-  filter = filter || {};
+export const processFilter = (filter: FilterSupport): {src: string, params: any} => {
+  filter = procFilter(filter);
   let {search, name, page} = filter;
 
   let mainsearch = name;
   let fstatus = null;
   let ftype = null;
 
-  let inGenres: Genre[] = filter.genres || [];
-  let outGenres: Genre[] = filter.outGenres || [];
+  let inGenres: Genre[] = null;
+  let outGenres: Genre[] = null;
 
   if (search) {
 
