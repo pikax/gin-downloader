@@ -5,6 +5,7 @@ import {Genre, FilterCondition, FilterSupport, FilterStatus} from "../../declara
 import {config} from "./config";
 import {resolve} from "url";
 import {find} from "lodash";
+import {procFilter} from "../../common/helper";
 
 const Supported = [];
 Supported[Genre.FourKoma] = Genre.FourKoma;
@@ -104,14 +105,16 @@ const ordered = [
 
 
 
-export const processFilter = (filter: FilterSupport) : {src: string, params: any} => {
-  filter = filter || {};
-  let {genres, outGenres, search} = filter;
+export const processFilter = (filter: FilterSupport): {src: string, params: any} => {
+  filter = procFilter(filter);
+  let {search} = filter;
 
 
   let fauthor = null;
   let fstatus = null;
   let fname = filter.name;
+  let genres: Genre[] = null;
+  let outGenres: Genre[] = null;
 
   if (search) {
     let nameFilter = search.name;
@@ -127,6 +130,12 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
     let statusFilter = search.status;
     if (statusFilter) {
       fstatus = resolveStatus(statusFilter);
+    }
+
+    let genreFilter = search.genre;
+    if (genreFilter) {
+      genres = genreFilter.inGenres;
+      outGenres = genreFilter.outGenres;
     }
   }
 

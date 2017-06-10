@@ -7,7 +7,7 @@ import getPrototypeOf = Reflect.getPrototypeOf;
 
 import "cheerio";
 
-// TODO refractor, move to distinct files
+// TODO refactor, move to distinct files
 
 
 

@@ -31,7 +31,8 @@
     "dist:rollup": "rollup -c",
     "dist:declaration": "yarn run dist:declaration:compile && yarn run dist:declaration:clean",
     "dist:declaration:compile": "tsc --module amd --outFile dist/types/index.js -d true --sourceMap false",
-    "dist:declaration:clean": "trash dist/types/index.js"
+    "dist:declaration:clean": "trash dist/types/index.js",
+    "clean":"trash src/**/*.js* src/**/*.d.ts test/**/*.js* test/**/*.d.ts"
   },
   "repository": "https://github.com/pikax/gin-downloader",
   "author": "pikax",

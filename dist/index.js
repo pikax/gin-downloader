@@ -2973,6 +2973,9 @@ var Batoto = (function (_super) {
                 switch (_a.label) {
                     case 0:
                         this.debug("filter mangas with: %o", filter);
+                        if (typeof filter === "string") {
+                            filter = { name: filter };
+                        }
                         search = processFilter$4(filter);
                         return [4 /*yield*/, this.getDoc(search.src)];
                     case 1:

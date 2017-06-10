@@ -5,6 +5,7 @@ import {Genre, FilterCondition, FilterSupport, FilterStatus, FilterMangaType} fr
 import {config} from "./config";
 import {resolve} from "url";
 import {map} from "lodash";
+import {procFilter} from "../../common/helper";
 
 const Supported: { [id: string]: Genre } = {};
 Supported[Genre.Action] = Genre.Action;
@@ -87,7 +88,7 @@ correctName[Genre.Yuri] = Genre.Yuri.toString();
 
 
 export const processFilter = (filter: FilterSupport) : {src: string, params?: any} => {
-  filter = filter || {};
+  filter = procFilter(filter);
   let {search, page} = filter;
 
   let filterType = null;
