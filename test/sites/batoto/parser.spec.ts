@@ -46,10 +46,10 @@ describe("Batoto offline", () => {
 
     let mangas = parser.mangas(doc);
     mangas.should.have.length.gte(results.mangas_count);
-    mangas.should.deep.include(  { name: '&',
-      src: 'http://bato.to/comic/_/--r4478',
-      status: 'Open',
-      mature: false })
+    mangas.should.deep.include(  { name: "&",
+      src: "http://bato.to/comic/_/--r4478",
+      status: "Open",
+      mature: false });
   });
 
   it("it should parse full manga info", async () => {
@@ -66,7 +66,10 @@ describe("Batoto offline", () => {
     info.synonyms.should.be.deep.eq(results.manga.synonyms);
     info.authors.map(x => x.toLowerCase()).should.be.deep.eq(results.manga.authors); // the website keeps changing between lower and uppercase
     info.artists.map(x => x.toLowerCase()).should.be.deep.eq(results.manga.artists); // the website keeps changing between lower and uppercase
-    info.genres.should.be.deep.eq(results.manga.genres);
+
+    for (let genre of results.manga.genres) { // batoto keeps adding/removing Drama from genres
+      info.genres.should.be.contain(genre);
+    }
     info.type.should.be.deep.eq(results.manga.type);
   });
 

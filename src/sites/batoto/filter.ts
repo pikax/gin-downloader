@@ -3,8 +3,6 @@
  */
 import {Genre, FilterCondition, FilterSupport, FilterStatus, GenreCondition, FilterMangaType} from "../../declarations";
 import {config} from "./config";
-import {resolve} from "url";
-import {find} from "lodash";
 import {isNullOrUndefined} from "util";
 
 const Supported = [];
