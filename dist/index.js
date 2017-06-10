@@ -121,14 +121,22 @@ var FilterStatus;
 })(FilterStatus || (FilterStatus = {}));
 var FilterMangaType;
 (function (FilterMangaType) {
-    FilterMangaType[FilterMangaType["Manga"] = 0] = "Manga";
-    FilterMangaType[FilterMangaType["Manhwa"] = 1] = "Manhwa";
-    FilterMangaType[FilterMangaType["Manhua"] = 2] = "Manhua";
-    FilterMangaType[FilterMangaType["Comic"] = 3] = "Comic";
-    FilterMangaType[FilterMangaType["Artbook"] = 4] = "Artbook";
-    FilterMangaType[FilterMangaType["Other"] = 5] = "Other";
+    FilterMangaType[FilterMangaType["Manga"] = "Manga"] = "Manga";
+    FilterMangaType[FilterMangaType["Manhwa"] = "Manhwa"] = "Manhwa";
+    FilterMangaType[FilterMangaType["Manhua"] = "Manhua"] = "Manhua";
+    FilterMangaType[FilterMangaType["Comic"] = "Comic"] = "Comic";
+    FilterMangaType[FilterMangaType["Artbook"] = "Artbook"] = "Artbook";
+    FilterMangaType[FilterMangaType["Other"] = "Other"] = "Other";
 })(FilterMangaType || (FilterMangaType = {}));
 
+var __assign$1 = (undefined && undefined.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var parseDoc = function (source, params) {
     if (params === void 0) { params = undefined; }
     var doc = cheerio.load(source);
@@ -136,6 +144,71 @@ var parseDoc = function (source, params) {
     return doc;
 };
 var sanitize = function (children) { return children.filter(function (x) { return x.type !== "text"; }); };
+var procFilter = function (condition, def) {
+    var filter = def || {};
+    if (typeof condition === "string") {
+        filter.name = condition;
+    }
+    else {
+        filter = __assign$1({}, filter, condition);
+
+        var genres = filter.genres, outGenres = filter.outGenres;
+        if (filter.search) {
+            if (!filter.search.genre) {
+                filter.search.genre = {};
+            }
+        }
+        else {
+            filter.search = { genre: {} };
+        }
+        if (genres) {
+            console.warn("filter.genres is deprecated, please use filter.search.genre.inGenres instead.");
+        }
+        if (outGenres) {
+            console.warn("filter.outGenres is deprecated, please use filter.search.genre.outGenres instead.");
+        }
+        if (genres || outGenres) {
+            filter.search.genre = {
+                inGenres: genres,
+                outGenres: outGenres
+            };
+        }
+
+        if (filter.search) {
+            var _a = filter.search, genre = _a.genre, name_1 = _a.name, author = _a.author, artist = _a.artist, released = _a.released, rating = _a.rating;
+            if (Array.isArray(genre)) {
+                var defGenre = def && def.search && def.search.genre;
+                filter.search.genre = __assign$1({}, defGenre, { inGenres: genre });
+            }
+            if (typeof name_1 === "string") {
+                filter.search.name = {
+                    name: name_1
+                };
+            }
+            if (typeof author === "string") {
+                filter.search.author = {
+                    name: author
+                };
+            }
+            if (typeof artist === "string") {
+                filter.search.artist = {
+                    name: artist
+                };
+            }
+            if (typeof released === "number") {
+                filter.search.released = {
+                    value: released
+                };
+            }
+            if (typeof rating === "number") {
+                filter.search.rating = {
+                    from: rating
+                };
+            }
+        }
+    }
+    return filter;
+};
 
 var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -720,7 +793,7 @@ var Helper = (function () {
 }());
 var helper = new Helper();
 
-var __assign$1 = (undefined && undefined.__assign) || Object.assign || function(t) {
+var __assign$2 = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
         for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -750,12 +823,12 @@ var RequestRetryStrategy = (function () {
     function RequestRetryStrategy() {
     }
     RequestRetryStrategy.prototype.request = function (options) {
-        var opts = __assign$1({}, DefaultOptions);
+        var opts = __assign$2({}, DefaultOptions);
         if (typeof options === "string") {
             opts.url = options;
         }
         else {
-            opts = __assign$1({}, opts, options);
+            opts = __assign$2({}, opts, options);
         }
         return requestRetry(opts);
     };
@@ -835,9 +908,9 @@ correctName[Genre.Tragedy] = Genre.Tragedy.toString();
 correctName[Genre.Webtoon] = "Webtoons";
 correctName[Genre.Yaoi] = Genre.Yaoi.toString();
 correctName[Genre.Yuri] = Genre.Yuri.toString();
-var processFilter = function (filter) {
-    filter = filter || {};
-    var genres = filter.genres, outGenres = filter.outGenres, search = filter.search, page = filter.page;
+var processFilter = function (mangafilter) {
+    var filter = procFilter(mangafilter);
+    var search = filter.search, page = filter.page;
     var filterType = null;
     var filterName = filter.name;
     var filterAuthor = null;
@@ -850,8 +923,10 @@ var processFilter = function (filter) {
     var methodArtist = "cw";
     var methodReleased = "eq";
     var methodRating = "eq";
+    var genres = null;
+    var outGenres = null;
     if (search) {
-        var name_1 = search.name, author_1 = search.author, artist_1 = search.artist, rating_1 = search.rating, released = search.released, type_1 = search.type;
+        var name_1 = search.name, author_1 = search.author, artist_1 = search.artist, rating_1 = search.rating, released = search.released, type_1 = search.type, genre = search.genre;
         filterType = resolveType(type_1) || filterType;
         if (name_1) {
             filterName = name_1.name || filterName;
@@ -876,6 +951,10 @@ var processFilter = function (filter) {
         if (released) {
             filterReleased = released.value || filterReleased;
             methodReleased = searchMethod(released.condition) || methodReleased;
+        }
+        if (genre) {
+            genres = genre.inGenres;
+            outGenres = genre.outGenres;
         }
     }
     var nameMethod = "name_method=" + methodName;
@@ -1267,8 +1346,8 @@ correctName$1[Genre.Supernatural] = Genre.Supernatural.toString();
 correctName$1[Genre.Tragedy] = Genre.Tragedy.toString();
 correctName$1[Genre.Yaoi] = Genre.Yaoi.toString();
 correctName$1[Genre.Yuri] = Genre.Yuri.toString();
-var processFilter$1 = function (filter) {
-    filter = filter || {};
+var processFilter$1 = function (mangafilter) {
+    var filter = procFilter(mangafilter);
     var search = filter.search, page = filter.page;
     var filterType = null;
     var filterName = filter.name;
@@ -1691,14 +1770,14 @@ var ordered = [
     Genre.Yaoi,
     Genre.Yuri,
 ];
-var processFilter$2 = function (filter) {
-    filter = filter || {};
+var processFilter$2 = function (mangafilter) {
+    var filter = procFilter(mangafilter);
     var search = filter.search, name = filter.name, page = filter.page;
     var mainsearch = name;
     var fstatus = null;
     var ftype = null;
-    var inGenres = filter.genres || [];
-    var outGenres = filter.outGenres || [];
+    var inGenres = null;
+    var outGenres = null;
     if (search) {
         if (!mainsearch) {
             var authorFilter = search.author || search.artist;
@@ -2224,12 +2303,14 @@ var ordered$1 = [
     Genre.Yaoi,
     Genre.Yuri,
 ];
-var processFilter$3 = function (filter) {
-    filter = filter || {};
-    var genres = filter.genres, outGenres = filter.outGenres, search = filter.search;
+var processFilter$3 = function (mangafilter) {
+    var filter = procFilter(mangafilter);
+    var search = filter.search;
     var fauthor = null;
     var fstatus = null;
     var fname = filter.name;
+    var genres = null;
+    var outGenres = null;
     if (search) {
         var nameFilter = search.name;
         if (nameFilter) {
@@ -2242,6 +2323,11 @@ var processFilter$3 = function (filter) {
         var statusFilter = search.status;
         if (statusFilter) {
             fstatus = resolveStatus$3(statusFilter);
+        }
+        var genreFilter_1 = search.genre;
+        if (genreFilter_1) {
+            genres = genreFilter_1.inGenres;
+            outGenres = genreFilter_1.outGenres;
         }
     }
     var mangaName = "mangaName=" + (fname || "");
@@ -2272,7 +2358,7 @@ function inOutGenre$3(genre, inGenre, outGenre) {
     return 0;
 }
 
-var __assign$2 = (undefined && undefined.__assign) || Object.assign || function(t) {
+var __assign$3 = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
         for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -2294,12 +2380,12 @@ var RequestCloudFareStrategy = (function () {
     function RequestCloudFareStrategy() {
     }
     RequestCloudFareStrategy.prototype.request = function (options) {
-        var opts = __assign$2({}, DefaultOptions$1);
+        var opts = __assign$3({}, DefaultOptions$1);
         if (typeof options === "string") {
             opts.url = options;
         }
         else {
-            opts = __assign$2({}, opts, options);
+            opts = __assign$3({}, opts, options);
         }
         return new Promise(function (res, rej) {
             var callback = function (err, response, body) {
@@ -2730,9 +2816,9 @@ dic[Genre.FourKoma] = "40";
 dic[Genre.Cooking] = "41";
 dic[Genre.Medical] = "42";
 dic[Genre.NoChapters] = "44";
-var processFilter$4 = function (filter) {
-    filter = filter || {};
-    var genres = filter.genres, outGenres = filter.outGenres, search = filter.search;
+var processFilter$4 = function (mangafilter) {
+    var filter = procFilter(mangafilter);
+    var search = filter.search;
     var fauthor = null;
     var fstatus = null;
     var ftype = null;
@@ -2743,6 +2829,8 @@ var processFilter$4 = function (filter) {
     var fmature = "y";
     var fratingFrom = 0;
     var fratingTo = 5;
+    var genres = null;
+    var outGenres = null;
     if (search) {
         var nameFilter = search.name;
         if (nameFilter) {
@@ -2872,7 +2960,7 @@ var __extends$4 = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign$3 = (undefined && undefined.__assign) || Object.assign || function(t) {
+var __assign$4 = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
         for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -2973,9 +3061,6 @@ var Batoto = (function (_super) {
                 switch (_a.label) {
                     case 0:
                         this.debug("filter mangas with: %o", filter);
-                        if (typeof filter === "string") {
-                            filter = { name: filter };
-                        }
                         search = processFilter$4(filter);
                         return [4 /*yield*/, this.getDoc(search.src)];
                     case 1:
@@ -3007,7 +3092,7 @@ var Batoto = (function (_super) {
     };
     Batoto.prototype.buildChapterRequest = function (url$$1) {
         var opts = _super.prototype.buildRequest.call(this, url$$1);
-        opts.headers = __assign$3({}, opts.headers, { Referer: "http://bato.to/reader" });
+        opts.headers = __assign$4({}, opts.headers, { Referer: "http://bato.to/reader" });
         return opts;
     };
 
@@ -3045,7 +3130,7 @@ var Batoto = (function (_super) {
                             rememberMe: rememberMe ? 1 : 0,
                             auth_key: authKey,
                         };
-                        request = __assign$3({}, request, { formData: body });
+                        request = __assign$4({}, request, { formData: body });
                         return [4 /*yield*/, this.request.postHtml(request)];
                     case 2:
                         html = _a.sent();

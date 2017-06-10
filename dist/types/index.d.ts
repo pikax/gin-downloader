@@ -73,8 +73,8 @@ declare module "declarations" {
         image(html: string): string;
     }
     export interface Site {
-        mangas(filter?: FilterSupport): Promise<MangaSource[]>;
-        filter(filter?: FilterSupport): Promise<FilteredResults>;
+        mangas(filter?: MangaFilter): Promise<MangaSource[]>;
+        filter(filter?: MangaFilter): Promise<FilteredResults>;
         latest(): Promise<Chapter[]>;
         info(name: string): Promise<MangaInfo>;
         chapters(name: string): Promise<Chapter[]>;
@@ -169,49 +169,69 @@ declare module "declarations" {
         Cancelled,
     }
     export enum FilterMangaType {
-        Manga = 0,
-        Manhwa = 1,
-        Manhua = 2,
-        Comic = 3,
-        Artbook = 4,
-        Other = 5,
+        Manga,
+        Manhwa,
+        Manhua,
+        Comic,
+        Artbook,
+        Other,
     }
-    export interface FilterSupport {
+    export interface NameFilter {
+        name: string;
+        condition?: FilterCondition;
+    }
+    export interface ValueFilter {
+        value: number;
+        condition?: FilterCondition;
+    }
+    export interface GenreFilter {
+        inGenres?: Genre[];
+        outGenres?: Genre[];
+        condition?: GenreCondition;
+    }
+    export interface RatingFilter {
+        from?: number;
+        to?: number;
+    }
+    export interface AuthorFilter extends NameFilter {
+    }
+    export interface ArtistFilter extends NameFilter {
+    }
+    export interface ReleaseFilter extends ValueFilter {
+    }
+    export interface MangaFilter {
         name?: string;
         page?: number;
         search?: {
-            name?: {
-                name: string;
-                condition?: FilterCondition;
-            };
-            author?: {
-                name: string;
-                condition?: FilterCondition;
-            };
-            artist?: {
-                name: string;
-                condition?: FilterCondition;
-            };
+            name?: NameFilter | string;
+            author?: AuthorFilter | string;
+            artist?: ArtistFilter | string;
             status?: FilterStatus;
-            released?: {
-                value: number;
-                condition?: FilterCondition;
-            };
-            genre?: {
-                inGenres?: Genre[];
-                outGenres?: Genre[];
-                condition?: GenreCondition;
-            };
-            rating?: {
-                from?: number;
-                to?: number;
-            };
+            released?: ReleaseFilter | number;
+            genre?: GenreFilter | Genre[];
+            rating?: RatingFilter | number;
             mature?: boolean;
             type?: FilterMangaType;
         };
         sort?: {};
         genres?: Genre[];
         outGenres?: Genre[];
+    }
+    export interface FilterSupport {
+        name?: string;
+        page?: number;
+        search?: {
+            name?: NameFilter;
+            author?: AuthorFilter;
+            artist?: ArtistFilter;
+            status?: FilterStatus;
+            released?: ReleaseFilter;
+            genre?: GenreFilter;
+            rating?: RatingFilter;
+            mature?: boolean;
+            type?: FilterMangaType;
+        };
+        sort?: {};
     }
     export interface FilteredResults {
         results: MangaSource[];
@@ -237,11 +257,12 @@ declare module "request/headers" {
     }
 }
 declare module "common/helper" {
-    import { MangaXDoc } from "declarations";
+    import { FilterSupport, MangaFilter, MangaXDoc } from "declarations";
     export const parseDoc: (source: string, params?: {
         location: string;
     }) => MangaXDoc;
     export const sanitize: (children: CheerioElement[]) => CheerioElement[];
+    export const procFilter: (condition: string | MangaFilter, def?: MangaFilter) => FilterSupport;
 }
 declare module "request/index" {
     /**
@@ -271,7 +292,7 @@ declare module "common/mangasite" {
     /**
      * Created by rodriguesc on 24/03/2017.
      */
-    import { Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, FilterSupport, FilteredResults, MangaXDoc } from "declarations";
+    import { Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, MangaFilter, FilteredResults, MangaXDoc } from "declarations";
     import { IDebugger } from "debug";
     import { RequestStrategy } from "request/headers";
     import { GinRequest } from "request/index";
@@ -289,7 +310,7 @@ declare module "common/mangasite" {
         readonly request: GinRequest;
         protected constructor(config: C, parser: P, nameHelper: N, strategy: RequestStrategy);
         mangas(): Promise<MangaSource[]>;
-        filter(filter?: FilterSupport): Promise<FilteredResults>;
+        filter(filter?: MangaFilter): Promise<FilteredResults>;
         latest(): Promise<Chapter[]>;
         info(name: string): Promise<MangaInfo>;
         chapters(name: string): Promise<Chapter[]>;
@@ -363,8 +384,8 @@ declare module "sites/mangafox/filter" {
     /**
      * Created by rodriguesc on 30/03/2017.
      */
-    import { FilterSupport } from "declarations";
-    export const processFilter: (filter: FilterSupport) => {
+    import { MangaFilter } from "declarations";
+    export const processFilter: (mangafilter: MangaFilter) => {
         src: string;
         params: any;
     };
@@ -376,10 +397,10 @@ declare module "sites/mangafox/index" {
     import { MangaSite } from "common/mangasite";
     import { Parser } from "sites/mangafox/parser";
     import { Helper } from "sites/mangafox/names";
-    import { FilteredResults, FilterSupport, Site, SiteConfig } from "declarations";
+    import { FilteredResults, MangaFilter, Site, SiteConfig } from "declarations";
     export class MangaFox extends MangaSite<SiteConfig, Parser, Helper> implements Site {
         constructor();
-        filter(filter?: FilterSupport): Promise<FilteredResults>;
+        filter(filter?: MangaFilter): Promise<FilteredResults>;
     }
     export const manga: Site;
     export default manga;
@@ -426,8 +447,8 @@ declare module "sites/mangahere/filter" {
     /**
      * Created by rodriguesc on 30/03/2017.
      */
-    import { FilterSupport } from "declarations";
-    export const processFilter: (filter: FilterSupport) => {
+    import { MangaFilter } from "declarations";
+    export const processFilter: (mangafilter: MangaFilter) => {
         src: string;
         params?: any;
     };
@@ -439,10 +460,10 @@ declare module "sites/mangahere/index" {
     import { MangaSite } from "common/mangasite";
     import { Parser } from "sites/mangahere/parser";
     import { Helper } from "sites/mangahere/names";
-    import { FilteredResults, FilterSupport, SiteConfig } from "declarations";
+    import { FilteredResults, MangaFilter, SiteConfig } from "declarations";
     export class MangaHere extends MangaSite<SiteConfig, Parser, Helper> {
         constructor();
-        filter(filter?: FilterSupport): Promise<FilteredResults>;
+        filter(filter?: MangaFilter): Promise<FilteredResults>;
     }
     export const manga: MangaHere;
     export default manga;
@@ -487,8 +508,8 @@ declare module "sites/mangapanda/filter" {
     /**
      * Created by rodriguesc on 30/03/2017.
      */
-    import { FilterSupport } from "declarations";
-    export const processFilter: (filter: FilterSupport) => {
+    import { MangaFilter } from "declarations";
+    export const processFilter: (mangafilter: MangaFilter) => {
         src: string;
         params: any;
     };
@@ -500,11 +521,11 @@ declare module "sites/mangapanda/index" {
     import { MangaSite } from "common/mangasite";
     import { Parser } from "sites/mangapanda/parser";
     import { Helper } from "sites/mangapanda/names";
-    import { FilteredResults, FilterSupport, SiteConfig } from "declarations";
+    import { FilteredResults, MangaFilter, SiteConfig } from "declarations";
     export class MangaPanda extends MangaSite<SiteConfig, Parser, Helper> {
         constructor();
         protected resolveChapterSource(name: string, chapter: number): Promise<string>;
-        filter(filter?: FilterSupport): Promise<FilteredResults>;
+        filter(filter?: MangaFilter): Promise<FilteredResults>;
     }
     export const manga: MangaPanda;
     export default manga;
@@ -561,8 +582,8 @@ declare module "sites/kissmanga/filter" {
     /**
      * Created by rodriguesc on 30/03/2017.
      */
-    import { FilterSupport } from "declarations";
-    export const processFilter: (filter: FilterSupport) => {
+    import { MangaFilter } from "declarations";
+    export const processFilter: (mangafilter: MangaFilter) => {
         src: string;
         params: any;
     };
@@ -586,12 +607,12 @@ declare module "sites/kissmanga/index" {
     import { MangaSite } from "common/mangasite";
     import { Parser } from "sites/kissmanga/parser";
     import { Helper } from "sites/kissmanga/names";
-    import { FilteredResults, FilterSupport, ImageSource, MangaSource, Site, SiteConfig } from "declarations";
+    import { FilteredResults, MangaFilter, ImageSource, MangaSource, Site, SiteConfig } from "declarations";
     export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements Site {
         constructor();
         private getVM();
-        mangas(filter?: FilterSupport): Promise<MangaSource[]>;
-        filter(filter?: FilterSupport): Promise<FilteredResults>;
+        mangas(filter?: MangaFilter): Promise<MangaSource[]>;
+        filter(filter?: MangaFilter): Promise<FilteredResults>;
         images(name: string, chapNumber: number): Promise<Promise<ImageSource>[]>;
     }
     export const manga: Site;
@@ -642,8 +663,8 @@ declare module "sites/batoto/filter" {
     /**
      * Created by rodriguesc on 30/03/2017.
      */
-    import { FilterSupport } from "declarations";
-    export const processFilter: (filter: FilterSupport) => {
+    import { MangaFilter } from "declarations";
+    export const processFilter: (mangafilter: MangaFilter) => {
         src: string;
     };
 }
@@ -654,14 +675,14 @@ declare module "sites/batoto/index" {
     import { MangaSite } from "common/mangasite";
     import { Parser } from "sites/batoto/parser";
     import { Helper } from "sites/batoto/names";
-    import { FilteredResults, FilterSupport, MangaSource, Site, SiteConfig } from "declarations";
+    import { FilteredResults, MangaFilter, MangaSource, Site, SiteConfig } from "declarations";
     import { OptionsWithUrl } from "request";
     export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Site {
         private _urlCache;
         constructor();
         resolveMangaUrl(name: string): Promise<string>;
-        mangas(filter?: FilterSupport): Promise<MangaSource[]>;
-        filter(filter?: FilterSupport): Promise<FilteredResults>;
+        mangas(filter?: MangaFilter): Promise<MangaSource[]>;
+        filter(filter?: MangaFilter): Promise<FilteredResults>;
         resolveChapterSource(name: string, chapter: number): Promise<string>;
         buildChapterRequest(url: string): OptionsWithUrl;
         isLoggedIn(): Promise<boolean>;
