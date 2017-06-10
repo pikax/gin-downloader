@@ -12,7 +12,7 @@ import {processFilter} from "./filter";
 
 
 
-export class MangaFox extends MangaSite<SiteConfig, Parser, Helper> implements Site{
+export class MangaFox extends MangaSite<SiteConfig, Parser, Helper> implements Site {
   public constructor() {
     super(config, new Parser, new Helper(), strategy);
   }

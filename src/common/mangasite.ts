@@ -6,7 +6,7 @@ import {
   Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, Request,
   FilterSupport, FilteredResults, MangaXDoc
 } from "../declarations";
-import * as debug from "debug";
+var debug =require("debug");
 import {IDebugger} from "debug";
 
 import {find} from "lodash";

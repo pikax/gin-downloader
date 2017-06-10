@@ -341,7 +341,6 @@ describe("Batoto live", () => {
     });
 
     it("should have rating between 0~1", async () => {
-
       let filter: FilterSupport = {
         search: {
           rating: {

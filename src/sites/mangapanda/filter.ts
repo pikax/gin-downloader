@@ -129,7 +129,7 @@ export const processFilter = (filter: FilterSupport) : {src: string, params: any
   const genreFilter = `genre=${ordered.map(x => inOutGenre(x, inGenres, outGenres)).join("")}`;
   const status = `status=${(fstatus || "")}`;
   const pg = `p=${page * 30 || 0}`;
-  const type = `rd=${ftype || 0}`
+  const type = `rd=${ftype || 0}`;
 
   return {src: resolve(config.site, "/search/"),
     params: [msearch, type, status, genreFilter, pg].join("&")

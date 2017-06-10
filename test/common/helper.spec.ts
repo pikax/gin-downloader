@@ -35,7 +35,7 @@ describe("Helper.js", () => {
     }catch(e){
       e.should.be.throw;
     }
-  })
+  });
 
   it("should not get html", async () => {
     let url = "ht222tps://github.com/";

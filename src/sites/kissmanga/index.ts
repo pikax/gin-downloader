@@ -12,7 +12,6 @@ import {parse, resolve} from "url";
 import {Script} from "vm";
 import {processFilter} from "./filter";
 import {strategy} from "../../request/requestCloudFareStrategy";
-import {OptionsWithUrl} from "request";
 
 
 
@@ -48,8 +47,8 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
     let search = processFilter(filter);
     let opts = this.buildMangasRequest(search.src);
     let headers = opts.headers || {};
-    headers['Content-Type'] = headers['Content-Type'] || 'application/x-www-form-urlencoded; charset=UTF-8';
-    headers['Content-Length'] = headers['Content-Length'] || search.params.length;
+    headers["Content-Type"] = headers["Content-Type"] || "application/x-www-form-urlencoded; charset=UTF-8";
+    headers["Content-Length"] = headers["Content-Length"] || search.params.length;
     opts.body = search.params.toString();
 
     let doc = await this.postDoc(opts);
