@@ -146,7 +146,9 @@ describe("MangaPanda live", () => {
 
     it("should filter by in genre", async () => {
       let filter: MangaFilter = {
-        genres: [Genre.Action, Genre.Comedy,  Genre.SciFi, Genre.Shounen]
+        search: {
+          genre: [Genre.Action, Genre.Comedy,  Genre.SciFi, Genre.Shounen]
+        }
       };
 
       let mangas = await manga.filter(filter);
@@ -159,7 +161,6 @@ describe("MangaPanda live", () => {
 
     it("should filter by out genre", async () => {
       let filter: MangaFilter = {
-        outGenres: [Genre.Romance],
         search: {
           name: {
             name: "gin",
@@ -167,6 +168,9 @@ describe("MangaPanda live", () => {
           },
           author: {
             name: "Sora",
+          },
+          genre: {
+            outGenres: [Genre.Romance]
           }
         }
 

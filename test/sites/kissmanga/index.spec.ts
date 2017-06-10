@@ -257,7 +257,9 @@ describe("KissManga live", () => {
           .replyWithFile(200, __dirname + "/html/filter/byGenre.html");
       }
       let filter: MangaFilter = {
-        genres: [Genre.Comedy, Genre.Action, Genre.SciFi, Genre.Shounen]
+        search: {
+          genre:  [Genre.Comedy, Genre.Action, Genre.SciFi, Genre.Shounen]
+        }
       };
 
       let mangas = await manga.filter(filter);
@@ -277,7 +279,11 @@ describe("KissManga live", () => {
       }
 
       let filter: MangaFilter = {
-        outGenres: [Genre.FourKoma, Genre.Adult, Genre.Adventure, Genre.Manhwa, Genre.AwardWinning]
+        search: {
+          genre: {
+            outGenres: [Genre.FourKoma, Genre.Adult, Genre.Adventure, Genre.Manhwa, Genre.AwardWinning]
+          }
+        }
       };
 
       let mangas = await manga.filter(filter);
@@ -342,23 +348,3 @@ describe("KissManga live", () => {
   });
 
 });
-
-
-
-function nockMe() {
-  // if(!process.env._MOCK_SITES_)
-  //   return;
-
-
-
-
-
-
-
-
-
-
-
-
-}
-
