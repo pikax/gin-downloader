@@ -10,6 +10,7 @@ export declare class MangaSite<C extends SiteConfig, P extends SiteParser, N ext
     private _parser;
     protected verbose: IDebugger;
     protected debug: IDebugger;
+    protected error: IDebugger;
     private _config;
     private _nameHelper;
     private _request;

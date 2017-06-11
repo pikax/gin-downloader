@@ -329,6 +329,7 @@ var MangaSite = (function () {
     function MangaSite(config, parser, nameHelper, strategy) {
         this.debug = debug("gin-downloader:" + config.name);
         this.verbose = debug("gin-downloader:" + config.name + ":verbose");
+        this.error = debug("gin-downloader:" + config.name + ":error");
         this._config = config;
         this._nameHelper = nameHelper;
         this._parser = parser;
@@ -425,7 +426,7 @@ var MangaSite = (function () {
                         return [2 /*return*/, info];
                     case 4:
                         e_1 = _a.sent();
-                        this.debug(e_1);
+                        this.error("%o", e_1);
                         throw new Error(name + " not found!");
                     case 5: return [2 /*return*/];
                 }
@@ -457,7 +458,7 @@ var MangaSite = (function () {
                         return [2 /*return*/, chapters];
                     case 4:
                         e_2 = _a.sent();
-                        this.debug(e_2);
+                        this.error("%o", e_2);
                         throw new Error(name + " not found!");
                     case 5: return [2 /*return*/];
                 }
@@ -495,7 +496,7 @@ var MangaSite = (function () {
                         return [2 /*return*/, { info: info, chapters: chapters }];
                     case 6:
                         e_3 = _a.sent();
-                        this.debug(e_3);
+                        this.error("%o", e_3);
                         throw new Error(name + " not found!");
                     case 7: return [2 /*return*/];
                 }
