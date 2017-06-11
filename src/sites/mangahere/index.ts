@@ -21,7 +21,7 @@ export class MangaHere extends MangaSite<SiteConfig, Parser, Helper> {
 
     let search = processFilter(filter);
 
-    let doc = await this.request.getDoc(search.src + "?" + search.params);
+    let doc = await this.request.getDoc(search.src);
     let mangas = await this.parser.filter(doc);
 
     this.debug(`mangas: ${mangas.results.length}`);
