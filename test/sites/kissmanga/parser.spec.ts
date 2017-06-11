@@ -16,7 +16,7 @@ describe("KissManga offline", () => {
   let mangas = "./test/sites/kissmanga/html/mangas.html";
   let gintama = "./test/sites/kissmanga/html/Gintama.html";
   let latest = "./test/sites/kissmanga/html/latest.html";
-  let chapter = "./test/sites/kissmanga/html/ch001.html";
+  let chapter = "./test/sites/kissmanga/html/Lesson-042.html";
 
   let fpMangas: string;
   let fpGintama: string;
@@ -65,7 +65,6 @@ describe("KissManga offline", () => {
     info.authors.should.be.deep.eq(results.manga.authors);
     info.artists.should.be.deep.eq(results.manga.artists);
     info.genres.should.be.deep.eq(results.manga.genres);
-    info.views.should.be.deep.eq(results.manga.views);
   });
 
 

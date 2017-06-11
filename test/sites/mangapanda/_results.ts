@@ -28,5 +28,5 @@ export default {
 
 
 
-  image_src : "mangapanda.com/gintama/1/gintama",
+  image_src : "mangapanda.com/gintama/41/gintama",
 };

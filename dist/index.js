@@ -1520,7 +1520,7 @@ var MangaHere = (function (_super) {
                     case 0:
                         this.debug("filter mangas with: %o", filter);
                         search = processFilter$1(filter);
-                        return [4 /*yield*/, this.request.getDoc(search.src + "?" + search.params)];
+                        return [4 /*yield*/, this.request.getDoc(search.src)];
                     case 1:
                         doc = _a.sent();
                         return [4 /*yield*/, this.parser.filter(doc)];
@@ -2542,7 +2542,7 @@ var KissManga = (function (_super) {
 }(MangaSite));
 var manga$6 = new KissManga();
 
-var site$4 = "http://bato.to/";
+var site$4 = "https://bato.to/";
 var config$8 = {
     name: "Batoto",
     site: site$4,
