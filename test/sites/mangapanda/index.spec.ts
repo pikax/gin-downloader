@@ -4,41 +4,71 @@
 
 import "./../../common";
 
+import * as nock from "nock";
+
+
 import {manga} from "./../../../src/sites/mangapanda";
 import results from "./_results";
-import {helper} from "../../../src/sites/mangapanda/names";
 import {FilterCondition, FilterMangaType, FilterStatus, MangaFilter, Genre} from "../../../src/declarations";
+
+import {config} from "../../../src/sites/mangapanda/config";
+import {_MOCK_} from "../../common";
 
 
 describe("MangaPanda live", () => {
 
   it("should get all mangas", async () => {
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/alphabetical")
+        .replyWithFile(200, __dirname + "/html/mangas.html");
+    }
+
     let mangas = await manga.mangas();
     mangas.should.have.length.gte(results.mangas_count);
   });
 
   it("should get latest chaps", async () => {
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/latest")
+        .replyWithFile(200, __dirname + "/html/latest.html");
+    }
+
     let latest = await manga.latest();
     latest.should.to.have.length.gte(50);
   });
 
   it("should get info", async () => {
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/gintama")
+        .replyWithFile(200, __dirname + "/html/Gintama.html");
+    }
+
     let name = "Gintama";
     let info = await manga.info(name);
 
-        info.should.exist;
+    info.should.exist;
 
-        info.title.should.be.eq(results.manga.title);
-        info.synopsis.should.contain(results.manga.synopsis);
-        info.status.should.be.eq(results.manga.status);
+    info.title.should.be.eq(results.manga.title);
+    info.synopsis.should.contain(results.manga.synopsis);
+    info.status.should.be.eq(results.manga.status);
 
-        info.synonyms.should.be.deep.eq(results.manga.synonyms);
-        info.authors.should.be.deep.eq(results.manga.authors);
-        info.artists.should.be.deep.eq(results.manga.artists);
-        info.genres.should.be.deep.eq(results.manga.genres);
+    info.synonyms.should.be.deep.eq(results.manga.synonyms);
+    info.authors.should.be.deep.eq(results.manga.authors);
+    info.artists.should.be.deep.eq(results.manga.artists);
+    info.genres.should.be.deep.eq(results.manga.genres);
   });
 
   it("should resolve name to name", async () => {
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/alphabetical")
+        .replyWithFile(200, __dirname + "/html/mangas.html")
+      ;
+    }
+
     let mangas = await manga.mangas();
 
     for (let obj of mangas){
@@ -52,6 +82,12 @@ describe("MangaPanda live", () => {
 
 
   it("should not find manga by name", async () => {
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/my-stupid-name")
+        .reply(404);
+    }
+
     let name = "my stupid name";
     let chapter = 1;
 
@@ -68,6 +104,13 @@ describe("MangaPanda live", () => {
 
 
   it("should not find get chapters", async () => {
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/Gintamass")
+        .reply(404);
+    }
+
+
     let name = "Gintamass";
 
     try {
@@ -82,6 +125,14 @@ describe("MangaPanda live", () => {
   });
 
   it("should not find chapter", async () => {
+    // chapters
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/gintama")
+        .replyWithFile(200, __dirname + "/html/Gintama.html");
+    }
+
+
     let name = "Gintama";
     let chapter = -354564;
 
@@ -96,6 +147,12 @@ describe("MangaPanda live", () => {
   });
 
   it("should not find images chapter ", async () => {
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/gintama")
+        .replyWithFile(200, __dirname + "/html/Gintama.html");
+    }
+
     let name = "Gintama";
     let chapter = -5151;
 
@@ -111,6 +168,13 @@ describe("MangaPanda live", () => {
 
 
   it("should get chapters", async () => {
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/gintama")
+        .replyWithFile(200, __dirname + "/html/Gintama.html");
+    }
+
+
     let name = "Gintama";
 
     let chapters = await manga.chapters(name);
@@ -118,6 +182,19 @@ describe("MangaPanda live", () => {
   });
 
   it("should get Gintama : chapter 41", async () => {
+    /*start*/
+    if (_MOCK_) {
+      nock(config.site)
+        .get("/gintama/")
+        .replyWithFile(200, __dirname + "/html/Gintama.html");
+
+      nock(config.site)
+        .get(/gintama\/41/)
+        .replyWithFile(200, __dirname + "/html/41.html")
+        .persist();
+
+    }
+    /*end*/
     let name = "Gintama";
     let chapter = 41;
 
@@ -132,6 +209,14 @@ describe("MangaPanda live", () => {
   describe("filter", () => {
 
     it("should filter by name", async () => {
+      if (_MOCK_) {
+        // filter by Name
+        nock(config.site)
+          .get("/search/?w=Gintama&rd=0&status=&genre=0000000000000000000000000000000000000&p=0")
+          .replyWithFile(200, __dirname + "/html/filter/byName.html");
+      }
+
+
       let filter: MangaFilter = {
         name: "Gintama"
       };
@@ -145,6 +230,14 @@ describe("MangaPanda live", () => {
     });
 
     it("should filter by in genre", async () => {
+      if (_MOCK_) {
+        // filter by Name
+        nock(config.site)
+          .get("/search/?w=&rd=0&status=&genre=1010000000000000000000100010000000000&p=0")
+          .replyWithFile(200, __dirname + "/html/filter/byGenre.html");
+      }
+
+
       let filter: MangaFilter = {
         search: {
           genre: [Genre.Action, Genre.Comedy,  Genre.SciFi, Genre.Shounen]
@@ -160,6 +253,14 @@ describe("MangaPanda live", () => {
     });
 
     it("should filter by out genre", async () => {
+      if (_MOCK_) {
+        // filter by Name
+        nock(config.site)
+          .get("/search/?w=Sora&rd=0&status=&genre=0000000000000000000020000000000000000&p=0")
+          .replyWithFile(200, __dirname + "/html/filter/outGenre.html");
+      }
+
+
       let filter: MangaFilter = {
         search: {
           name: {
@@ -185,6 +286,14 @@ describe("MangaPanda live", () => {
     });
 
     it("should filter by Author", async () => {
+      if (_MOCK_) {
+        // filter by Name
+        nock(config.site)
+          .get("/search/?w=Sorachi&rd=0&status=&genre=0000000000000000000000000000000000000&p=0")
+          .replyWithFile(200, __dirname + "/html/filter/byAuthor.html");
+      }
+
+
       let filter: MangaFilter = {
         search: {
           author: {
@@ -203,6 +312,14 @@ describe("MangaPanda live", () => {
     });
 
     it("should filter by Status", async () => {
+      if (_MOCK_) {
+        // filter by Name
+        nock(config.site)
+          .get("/search/?w=&rd=0&status=2&genre=0000000000000000000000000000000000000&p=0")
+          .replyWithFile(200, __dirname + "/html/filter/byCompleted.html");
+      }
+
+
       let filter: MangaFilter = {
         search: {
           status: FilterStatus.Complete,
@@ -221,6 +338,14 @@ describe("MangaPanda live", () => {
     });
 
     it("should filter by Type", async () => {
+      if (_MOCK_) {
+        // filter by Name
+        nock(config.site)
+          .get("/search/?w=&rd=1&status=&genre=0000000000000000000000000000000000000&p=0")
+          .replyWithFile(200, __dirname + "/html/filter/byType.html");
+      }
+
+
       let filter: MangaFilter = {
         search: {
           type: FilterMangaType.Manhwa,
