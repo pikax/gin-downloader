@@ -6,7 +6,7 @@ import {
   Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, Request,
   MangaFilter, FilteredResults, MangaXDoc
 } from "../declarations";
-var debug =require("debug");
+const debug = require("debug");
 import {IDebugger} from "debug";
 
 import {find} from "lodash";
@@ -21,6 +21,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
   private _parser: P;
   protected verbose: IDebugger;
   protected debug: IDebugger;
+  protected error: IDebugger;
   private _config: C;
   private  _nameHelper: N;
   private  _request: GinRequest;
@@ -41,6 +42,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
   protected constructor(config: C, parser: P, nameHelper: N, strategy: RequestStrategy) {
     this.debug  = debug(`gin-downloader:${config.name}`);
     this.verbose = debug(`gin-downloader:${config.name}:verbose`);
+    this.error = debug(`gin-downloader:${config.name}:error`);
 
     this._config = config;
     this._nameHelper = nameHelper;
@@ -90,7 +92,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
       return info;
     }
     catch (e) {
-      this.debug(e);
+      this.error("%o", e);
       throw new Error(`${name} not found!`);
     }
   }
@@ -112,7 +114,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
       return chapters;
     }
     catch (e) {
-      this.debug(e);
+      this.error("%o", e);
       throw new Error(`${name} not found!`);
     }
   }
@@ -138,7 +140,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
       return {info, chapters};
     }
     catch (e) {
-      this.debug(e);
+      this.error("%o", e);
       throw new Error(`${name} not found!`);
     }
   }
