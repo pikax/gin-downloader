@@ -473,7 +473,7 @@ describe("Batoto live", () => {
       mangas.results.should.not.deep.include({
         name: "Gintama - Iroha Uta (Doujinshi)",
         src : "http://bato.to/comic/_/gintama-iroha-uta-doujinshi-r11951",
-        status: 'Open',
+        status: "Open",
         mature : true
       });
     });
@@ -553,7 +553,7 @@ describe("Batoto live", () => {
       mangas.results.should.deep.include({
         name: "Gintama - Iroha Uta (Doujinshi)",
         src : "http://bato.to/comic/_/gintama-iroha-uta-doujinshi-r11951",
-        status : 'Open',
+        status : "Open",
         mature: true
       });
     });

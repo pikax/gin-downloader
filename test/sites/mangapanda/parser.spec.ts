@@ -15,7 +15,7 @@ describe("MangaHere offline", () => {
   let mangas = "./test/sites/mangapanda/html/mangas.html";
   let gintama = "./test/sites/mangapanda/html/Gintama.html";
   let latest = "./test/sites/mangapanda/html/latest.html";
-  let chapter = "./test/sites/mangapanda/html/ch001.html";
+  let chapter = "./test/sites/mangapanda/html/41.html";
 
   let fpMangas: string;
   let fpGintama: string;
@@ -33,7 +33,7 @@ describe("MangaHere offline", () => {
   it("should resolve image path chapter", () => {
     let doc = parseDoc(fpChapter, {location: `${helper.resolveUrl("Gintama")}`});
     parser.imagesPaths(doc)
-      .should.have.have.lengthOf(58);
+      .should.have.length.gte(17);
   });
 
   it("should parse image from chapter", () => {
@@ -85,7 +85,7 @@ describe("MangaHere offline", () => {
     let doc = parseDoc(fpLatest, {location: `${helper.resolveUrl("Gintama")}`});
 
     parser.latest(doc)
-      .should.have.length.to.be.greaterThan(98);
+      .should.have.length.to.be.greaterThan(70);
   });
 
 
@@ -93,7 +93,7 @@ describe("MangaHere offline", () => {
     let doc = parseDoc(fpChapter, {location: `${helper.resolveUrl("Gintama")}`});
 
     parser.imagesPaths(doc)
-      .should.have.length.gte(58);
+      .should.have.length.gte(17);
 
   });
 

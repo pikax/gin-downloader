@@ -32,7 +32,7 @@ describe("Batoto offline", () => {
   it("should resolve image path chapter", () => {
     let doc = parseDoc(fpChapter, {location: `http://bato.to/comic/_/comics/gintama-r94`});
     let paths = parser.imagesPaths(doc);
-    paths.should.have.have.lengthOf(58);
+    paths.should.have.length.gte(19);
   });
 
   it("should parse image from chapter", () => {
@@ -86,7 +86,7 @@ describe("Batoto offline", () => {
     let doc = parseDoc(fpChapter, {location: "http://bato.to/comic/_/comics/gintama-r94"});
 
     parser.imagesPaths(doc)
-      .should.have.length.gte(58);
+      .should.have.length.gte(19);
 
   });
 

@@ -11,7 +11,6 @@ import {config} from "../../../src/sites/kissmanga/config";
 
 import results from "./_results";
 import { FilterStatus, MangaFilter, Genre} from "../../../src/declarations";
-import * as fs from "fs";
 import {_MOCK_} from "../../common";
 
 

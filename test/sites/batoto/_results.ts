@@ -29,6 +29,6 @@ export default {
   chapter_count : 10, // unregistered users are only allow to read the last chapters
 
   manga,
-  image_src : "http://img.bato.to/comics/g/gintama/1/yanime/English/read4d76e94677ad0/Gintama_v01_ch01%5BYanime%5D_Gintama_v01_ch01_p014d76e94716071.png"
+  image_src : "http://img.bato.to/comics/2017/05/20/g/read591fb1e5ad4d4/img000001.png"
 
 };

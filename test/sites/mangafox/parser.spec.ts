@@ -16,7 +16,7 @@ describe("MangaFox offline", () => {
   let mangas = "./test/sites/mangafox/html/mangas.html";
   let gintama = "./test/sites/mangafox/html/Gintama.html";
   let latest = "./test/sites/mangafox/html/latest.html";
-  let chapter = "./test/sites/mangafox/html/ch001.html";
+  let chapter = "./test/sites/mangafox/html/c042.html";
 
   let fpMangas: string;
   let fpGintama: string;
@@ -33,7 +33,7 @@ describe("MangaFox offline", () => {
   it("should resolve image path chapter", () => {
     let doc = parseDoc(fpChapter, {location: `${helper.resolveUrl("Gintama")}`});
     parser.imagesPaths(doc)
-      .should.have.have.lengthOf(58);
+      .should.have.length.gte(17);
   });
 
   it("should parse image from chapter", () => {
@@ -94,7 +94,7 @@ describe("MangaFox offline", () => {
     let doc = parseDoc(fpChapter, {location: `${helper.resolveUrl("Gintama")}`});
 
     parser.imagesPaths(doc)
-      .should.have.length.gte(58);
+      .should.have.length.gte(17);
 
   });
 
