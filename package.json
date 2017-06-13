@@ -16,7 +16,6 @@
   "main": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "homepage": "https://github.com/pikax/gin-downloader#readme",
-
   "scripts": {
     "build": "yarn run build:ts",
     "build:ts": "trash build && tsc --outDir build",
@@ -31,7 +30,7 @@
     "dist:build": "yarn build && yarn dist:rollup",
     "dist:rollup": "rollup -c",
     "dist:declaration": "copyfiles -u 1 ./build/**/*d.ts dist/types",
-    "clean":"trash src/**/*.js* src/**/*.d.ts test/**/*.js* test/**/*.d.ts"
+    "clean": "trash src/**/*.js* src/**/*.d.ts test/**/*.js* test/**/*.d.ts"
   },
   "repository": "https://github.com/pikax/gin-downloader",
   "author": "pikax",
@@ -65,14 +64,14 @@
     "@types/chai": "^4.0.0",
     "@types/mocha": "^2.2.40",
     "@types/nock": "^8.2.1",
-    "@types/node": "^7.0.29",
+    "@types/node": "^7.0.31",
     "chai": "^4.0.2",
     "coveralls": "^2.13.0",
     "cross-env": "^5.0.1",
     "mocha": "^3.4.2",
     "nock": "^9.0.13",
     "nyc": "^11.0.2",
-    "rollup": "^0.42.0",
+    "rollup": "^0.43.0",
     "rollup-analyzer": "^1.0.2",
     "rollup-plugin-cleanup": "^1.0.0",
     "ts-node": "^3.0.6",
@@ -82,7 +81,7 @@
   "dependencies": {
     "@types/cheerio": "^0.22.1",
     "@types/debug": "~0.0.29",
-    "@types/lodash": "^4.14.65",
+    "@types/lodash": "^4.14.66",
     "@types/qs": "^6.2.31",
     "@types/request": "^0.0.43",
     "cheerio": "^1.0.0-rc.1",
