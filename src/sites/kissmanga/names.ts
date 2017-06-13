@@ -127,6 +127,11 @@ const names: { [id: string]: string; } = {
   "Yagate Kimi ni Naru": "Yagate-kun-ni-Naru", // http://kissmanga.com/Manga/Yagate-Kimi-ni-Naru
   "Zettai Zetsubou Shoujo - Danganronpa Another Episode - Genocider Mode": "Zettai-Zetsubou-Shoujo-Danganronpa-Another-Episode---Genocider-Mode", // http://kissmanga.com/Manga/Zettai-Zetsubou-Shoujo-Danganronpa-Another-Episode-Genocider-Mode
 
+  "Asayake wa Koganeiro - The ": "Asayake-wa-Koganeiro-The-IDOLM-STER", // http://kissmanga.com/Manga/Asayake-wa-Koganeiro-The
+  "K・O・I": "K-I-O", // http://kissmanga.com/Manga/K・O・I
+  "Kaichou wa Maid-sama!Special": "Kaichou-wa-Maid-sama-Special", // http://kissmanga.com/Manga/Kaichou-wa-Maid-samaSpecial
+  "Mafia;s D'ughter: Operation Makeover": "Mafia-s-Daughter-Operation-Makeover", // http://kissmanga.com/Manga/Mafia-s-D-ughter-Operation-Makeover
+
 
 
 
