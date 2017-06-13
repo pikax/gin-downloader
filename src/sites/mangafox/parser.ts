@@ -11,6 +11,8 @@ import * as url from "url";
 
 import {config} from "./config";
 import {sanitize} from "../../common/helper";
+import {strategy} from "../../request/requestRetryStrategy";
+import {ancestorWhere} from "tslint";
 
 
 export class Parser implements SiteParser {
@@ -23,8 +25,8 @@ export class Parser implements SiteParser {
         src: el.attribs["href"],
 
         status: el.attribs.class.indexOf("manga_open") >= 0
-            ? FilterStatus.Ongoing.toString()
-             : FilterStatus.Complete.toString()
+          ? FilterStatus.Ongoing.toString()
+          : FilterStatus.Complete.toString()
 
       };
     });
@@ -83,16 +85,19 @@ export class Parser implements SiteParser {
 
     let synonyms = titleElem.find("h3").text().split("; ");
 
+    let tds = titleElem.find("table tr td");
 
-    let released = titleElem.find("table tr td a").first().text();
-    let authors = [titleElem.find("table tr td a").eq(1).text()];
-    let artists = [titleElem.find("table tr td a").eq(2).text()];
-    let genres = titleElem.find("table tr td a").slice(3).map((i, el) => el.children[0].nodeValue).get();
+    let released = tds.first().text().trim();
+    let authors = tds.eq(1).children("a").map((x, el) => $(el).text()).get().filter(x => x);
+    let artists = tds.eq(2).children("a").map((x, el) => $(el).text()).get().filter(x => x);
+    let genres = tds.slice(3).children("a").map((x, el) => $(el).text()).get().filter(x => x);
 
-    let sSstatus = seriesInfo.find("div .data span").eq(0).html().trim();
+    let spans = seriesInfo.find("div.data span");
+
+    let sSstatus = spans.eq(0).text().trim();
     let status = sSstatus.slice(0, sSstatus.indexOf(","));
-    let ranked = seriesInfo.find("div .data span").eq(2).text();
-    let rating = seriesInfo.find("div .data span").eq(3).text();
+    let ranked = spans.eq(2).text();
+    let rating = spans.eq(3).text();
     let scanlators = seriesInfo.find("div.data span a").slice(1).map((i, el) => el.children[0].nodeValue).get();
 
     let synopsis = titleElem.find("p").text();
@@ -168,7 +173,7 @@ export class Parser implements SiteParser {
     let paths: string[] = [];
 
     $("#top_bar > div > div > select > option").slice(0, -1).each((i, el) => {
-        paths[i] = resolve($.location, `${el.attribs.value}.html`);
+      paths[i] = resolve($.location, `${el.attribs.value}.html`);
     });
 
     return paths;
@@ -191,38 +196,71 @@ export class Parser implements SiteParser {
   }
 
 
-  filter($: MangaXDoc): Promise<FilteredResults> | FilteredResults {
+  async filter($: MangaXDoc): Promise<FilteredResults> | FilteredResults {
     let lastPageElement = $("#nav > ul > li > a").slice(-2, -1);
 
-    let mangas: MangaSource[] = [];
-    $(".manga_text").each((i, el) => {
+
+    let searchAgain = $("#page > div.left > div.border.clear").text();
+    if (searchAgain && searchAgain.startsWith("Sorry, can‘t")){
+      console.warn(searchAgain);
+      return Promise.reject({
+        type: "server",
+        error: searchAgain
+      });
+    }
+
+
+    let elements: CheerioElement[] = [];
+
+    $(".manga_text").each((i, el) => elements[i] = el);
+
+    const pmangas = elements.map(async (el, i) => {
 
       let children = sanitize(el.children);
 
       let a = children.find(x => x.name === "a");
       let info = children.find(x => x.name === "p" && x.attribs && !!x.attribs.title);
 
+
+
       let parentA = sanitize(el.parent.children)[0];
-      let completed = sanitize(parentA.children).find(x => x.name === "em" && x.attribs && x.attribs.class === "tag_completed");
+      let aChildren = sanitize(parentA.children);
+      let completed = aChildren.find(x => x && x.name === "em" && x.attribs && x.attribs.class === "tag_completed");
+      let img = aChildren[0].children.find(x => x && x.name === "img");
 
 
-      mangas[i] = {
-        name : a.lastChild.nodeValue,
-        src : a.attribs.href,
+      let name = a.lastChild.nodeValue;
 
-        mature : info.attribs.title.indexOf("Mature") >= 0,
-        status : completed ? FilterStatus.Complete.toString() : FilterStatus.Ongoing.toString(),
+      if (name.length > 35 && name.endsWith("...")) { // name too big, got trimmed
+        const url = resolve(config.site, "/ajax/series.php");
+        const formData = {sid: +a.attribs.rel};
+        const ajax = await strategy.request({url, formData, method: "POST"});
+
+        // is an array
+        if (ajax) {
+          name = JSON.parse(ajax)[0].replace(/(&quot;)/g, "\"");
+        }
+      }
+
+      return {
+        name,
+        src: a.attribs.href,
+
+        image: img.attribs.src,
+
+        mature: info && info.attribs.title.indexOf("Mature") >= 0,
+        status: completed ? FilterStatus.Complete.toString() : FilterStatus.Ongoing.toString(),
       };
     });
 
 
+    let mangas = await Promise.all(pmangas);
+
+
     let page = 1;
-    let query = url.parse($.location).query;
-    if (query) {
-      let m = query.toString().match(/page=(\d+)/g);
-      if (m) {
-        page = +m[1];
-      }
+    let m = $.location.match(/page=(\d+)$/);
+    if (m) {
+      page = +m[1];
     }
 
     let lastPage = 1;
