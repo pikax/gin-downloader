@@ -4,7 +4,7 @@
 
 
 
-import * as nock from "nock";
+import nock = require("nock");
 
 import {manga} from "./../../../src/sites/kissmanga/index";
 import {config} from "../../../src/sites/kissmanga/config";
@@ -17,6 +17,10 @@ import {_MOCK_} from "../../common";
 
 
 describe("KissManga live", () => {
+
+  beforeEach(()=>{
+    console.log("should it mock? - > "+ _MOCK_)
+  })
 
   it("should get all mangas", async () => {
     // should get all mangas

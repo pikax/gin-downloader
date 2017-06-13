@@ -49,6 +49,8 @@ export interface MangaSource {
 
   status?: string;
   mature?: boolean;
+
+  image?: string;
 }
 
 export interface Chapter {
