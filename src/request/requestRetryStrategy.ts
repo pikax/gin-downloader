@@ -26,6 +26,9 @@ const DefaultOptions = {
   forever: true,
   // proxy: config.proxy, // Note the fully-qualified path to Fiddler proxy. No "https" is required, even for https connections to outside.
 
+  proxy: 'http://127.0.0.1:8888',
+
+
   // The below parameters are specific to request-retry
   maxAttempts: MaxRetries,   // (default) try N times
   retryDelay: Interval,  // (default) wait before trying again

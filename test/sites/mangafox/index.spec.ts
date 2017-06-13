@@ -215,6 +215,10 @@ describe("MangaFox live", () => {
 
   describe("filter", () => {
 
+    beforeEach((done)=>{
+      setTimeout(done, 5000);
+    })
+
     it("should filter by name", async () => {
       if (_MOCK_) {
         // filter by Name

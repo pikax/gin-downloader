@@ -16,6 +16,7 @@ export const parseDoc = (source: string, params: {location: string} = undefined)
 export const sanitize = (children: CheerioElement[]) => children.filter(x => x.type !== "text");
 
 
+
 export const procFilter = (condition: MangaFilter | string, def?: MangaFilter): FilterSupport => {
   let filter: MangaFilter = def || {};
 

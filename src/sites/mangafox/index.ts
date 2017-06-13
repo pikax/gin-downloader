@@ -31,5 +31,6 @@ export class MangaFox extends MangaSite<SiteConfig, Parser, Helper> implements S
   }
 }
 
+
 export const manga: Site = new MangaFox();
 export default manga;
