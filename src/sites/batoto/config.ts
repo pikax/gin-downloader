@@ -4,7 +4,7 @@
 import {SiteConfig} from "../../declarations";
 import {resolve} from "url";
 
-const site = "https://bato.to/";
+const site = "http://bato.to/";
 export const config: SiteConfig = {
     name : "Batoto",
     site : site,

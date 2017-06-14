@@ -8,7 +8,7 @@ import {config} from "./config";
 import {Helper} from "./names";
 import {
   FilterCondition, FilteredResults, MangaFilter, ImageSource, MangaSource, Site,
-  SiteConfig
+  SiteConfig, FilterSupport
 } from "../../declarations";
 
 import {processFilter} from "./filter";
@@ -30,7 +30,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
       return this._urlCache[name];
     }
 
-    let filter: MangaFilter = {search: {name: {name, condition: FilterCondition.EndsWith}}};
+    let filter: MangaFilter = {search: {name: {name: name.replace(/\+/g, "%2B"), condition: FilterCondition.Contains}}};
     let filterResults: FilteredResults;
     do {
       let page = 0;
@@ -44,6 +44,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
       let {results} = filterResults;
 
       let result: string;
+
 
       for (let obj of results) {
         if (obj.name === name) {
@@ -68,6 +69,33 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
   async filter(filter?: MangaFilter): Promise<FilteredResults> {
     this.debug("filter mangas with: %o", filter);
 
+
+    // if (typeof filter === "string") {
+    //
+    //   filter.replace('+','%2B');
+    //
+    //   let i = filter.indexOf("+ ");
+    //   if (i > -1) {
+    //     filter = filter.slice(0, i);
+    //   }
+    // }
+    // else {
+    //   let i;
+    //   if (filter.name && (i = filter.name.indexOf("+ ")) > -1) {
+    //     filter.name = filter.name.slice(0, i);
+    //   }
+    //   if (filter.search &&   (i = (<FilterSupport>filter.search.name).name.indexOf("+ ")) > -1) {
+    //     (<FilterSupport>filter.search.name).name =  (<FilterSupport>filter.search.name).name.slice(0, i);
+    //   }
+    //
+    //   if(filter.name){
+    //     filter.name = filter.name.replace('+','%2B');
+    //   }
+    // }
+
+
+
+
     let search = processFilter(filter);
 
     let doc = await this.getDoc(search.src);
@@ -87,7 +115,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
     return Parser.convertChapterReaderUrl(src);
   }
 
-  buildChapterRequest(url: string) : OptionsWithUrl {
+  buildChapterRequest(url: string): OptionsWithUrl {
     let opts = super.buildRequest(url);
     opts.headers = {...opts.headers, Referer: "http://bato.to/reader" };
     return opts;
