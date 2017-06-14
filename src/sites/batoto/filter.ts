@@ -5,6 +5,7 @@ import {Genre, FilterCondition, MangaFilter, FilterStatus, GenreCondition, Filte
 import {config} from "./config";
 import {isNullOrUndefined} from "util";
 import {procFilter} from "../../common/helper";
+import * as url from "url";
 
 const Supported = [];
 Supported[Genre.Action] = Genre.Action;
@@ -154,6 +155,7 @@ export const processFilter = (mangafilter: MangaFilter): {src: string} => {
     let nameFilter = search.name;
     if (nameFilter) {
       fname = nameFilter.name;
+
       nameCondition = resolveCondition(nameFilter.condition); // not support equals just Starts|Ends|Contains
     }
 
@@ -204,7 +206,7 @@ export const processFilter = (mangafilter: MangaFilter): {src: string} => {
   const rating_high = `rating_high=${fratingTo || 5}`; // 0~5
   const mature = `mature=${fmature || "y"}`; // n == false
 
-  return {src: config.mangas_url + "?" + [
+  return {src: url.resolve(config.mangas_url, "?" + [
     mangaName,
     nameCond,
     authorArtist,
@@ -216,7 +218,7 @@ export const processFilter = (mangafilter: MangaFilter): {src: string} => {
     mature,
     rating_low,
     rating_high,
-    page].join("&")
+    page].join("&"))
   };
 };
 

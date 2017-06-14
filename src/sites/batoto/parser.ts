@@ -15,7 +15,6 @@ import {sanitize} from "../../common/helper";
 
 export class Parser implements SiteParser {
 
-
   mangas($: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
     const rows = $("tr[id^='comic_rowo']");
     const location = $.location;
@@ -113,9 +112,9 @@ export class Parser implements SiteParser {
 
     let title = $("h1.ipsType_pagetitle").text().trim();
     let image = $ipsBox.find("img").attr("src");
-    let synonyms = $tr.eq(1).children("span").map((i, e) => e.lastChild.nodeValue.slice(1)).get();
-    let authors = $tr.eq(3).children("a").map((i, e) => e.lastChild.nodeValue).get();
-    let artists = $tr.eq(5).children("a").map((i, e) => e.lastChild.nodeValue).get();
+    let synonyms = $tr.eq(1).children("span").map((i, e) => e.lastChild && e.lastChild.nodeValue.slice(1)).get().filter(x => x);
+    let authors = $tr.eq(3).children("a").map((i, e) => e.lastChild && e.lastChild.nodeValue).get().filter(x => x);
+    let artists = $tr.eq(5).children("a").map((i, e) => e.lastChild && e.lastChild.nodeValue).get().filter(x => x);
     let genres = $tr.eq(7).children("a").map((i, e) => e.lastChild.lastChild).filter((x, e) => !!e).map((i, e) => e.nodeValue.slice(1)).get();
     let synopsis = $tr.eq(13).text();
     let type = $tr.eq(9).text().trim(); // TODO curate this result, Manga (Japanese)
@@ -216,6 +215,7 @@ export class Parser implements SiteParser {
 
   filter($: MangaXDoc): Promise<FilteredResults> | FilteredResults {
     let results = this.mangas($);
+
     let next = $(".input_submit");
 
 

@@ -154,7 +154,7 @@ export const processFilter = (mangafilter: MangaFilter) : {src: string, params: 
   }
 
   const nameMethod = `name_method=${methodName}`; // NOTE name search set to contains
-  const mangaName = `name=${filterName || ""}`;
+  const mangaName = `name=${encodeURIComponent(filterName) || ""}`;
   const type = `type=${filterType || ""}`;
   const authorMethod = `author_method=${methodAuthor}`;
   const author = `author=${filterAuthor || ""}`;
