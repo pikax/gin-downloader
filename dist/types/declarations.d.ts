@@ -30,6 +30,7 @@ export interface MangaSource {
     src: string;
     status?: string;
     mature?: boolean;
+    image?: string;
 }
 export interface Chapter {
     chap_number?: string | number;
