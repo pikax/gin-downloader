@@ -34,30 +34,26 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*":
-  version "7.0.29"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.29.tgz#ccfcec5b7135c7caf6c4ffb8c7f33102340d99df"
+"@types/node@*", "@types/node@^7.0.31":
+  version "7.0.31"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.31.tgz#80ea4d175599b2a00149c29a10a4eb2dff592e86"
 
 "@types/node@^6.0.46":
   version "6.0.77"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.77.tgz#3e4d569a427f17085e1ee4ecd3c31befb56af7b5"
 
-"@types/node@^7.0.31":
-  version "7.0.31"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.31.tgz#80ea4d175599b2a00149c29a10a4eb2dff592e86"
-
 "@types/qs@^6.2.31":
   version "6.2.31"
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.2.31.tgz#7d929bd877f9cd3ece6415c602b7cf9b077133f1"
 
-"@types/request@^0.0.43":
-  version "0.0.43"
-  resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.43.tgz#fcc59cfd88e63034e813c6884a0aade2d0f7e935"
+"@types/request@^0.0.44":
+  version "0.0.44"
+  resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.44.tgz#77572176765376d2ba98654079311650cf4113af"
   dependencies:
     "@types/form-data" "*"
     "@types/node" "*"
 
-acorn@^4.0.4:
+acorn@4.x:
   version "4.0.13"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.13.tgz#105495ae5361d697bd195c825192e1ad7f253787"
 
@@ -1208,9 +1204,9 @@ lru-cache@^4.0.1:
     pseudomap "^1.0.1"
     yallist "^2.0.0"
 
-magic-string@^0.19.0:
-  version "0.19.1"
-  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.19.1.tgz#14d768013caf2ec8fdea16a49af82fc377e75201"
+magic-string@*:
+  version "0.21.3"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.21.3.tgz#87e201009ebfde6f46dc5757305a70af71e31624"
   dependencies:
     vlq "^0.2.1"
 
@@ -1742,15 +1738,15 @@ rollup-analyzer@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/rollup-analyzer/-/rollup-analyzer-1.0.2.tgz#aa0b97a5a4fa61686a111b133f9cf4a7985c5ca6"
 
-rollup-plugin-cleanup@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-cleanup/-/rollup-plugin-cleanup-1.0.0.tgz#03f2be7a3b2ea496dd1b753050037f9363983224"
+rollup-plugin-cleanup@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-cleanup/-/rollup-plugin-cleanup-1.0.1.tgz#ca056c74fe6ea21783f99851963b173cbe8e9359"
   dependencies:
-    acorn "^4.0.4"
-    magic-string "^0.19.0"
-    rollup-pluginutils "^2.0.1"
+    acorn "4.x"
+    magic-string "*"
+    rollup-pluginutils "*"
 
-rollup-pluginutils@^2.0.1:
+rollup-pluginutils@*:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.0.1.tgz#7ec95b3573f6543a46a6461bd9a7c544525d0fc0"
   dependencies:

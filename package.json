@@ -73,7 +73,7 @@
     "nyc": "^11.0.2",
     "rollup": "^0.43.0",
     "rollup-analyzer": "^1.0.2",
-    "rollup-plugin-cleanup": "^1.0.0",
+    "rollup-plugin-cleanup": "^1.0.1",
     "ts-node": "^3.0.6",
     "tslint": "^5.4.3",
     "typescript": "^2.3.4"
@@ -83,7 +83,7 @@
     "@types/debug": "~0.0.29",
     "@types/lodash": "^4.14.66",
     "@types/qs": "^6.2.31",
-    "@types/request": "^0.0.43",
+    "@types/request": "^0.0.44",
     "cheerio": "^1.0.0-rc.1",
     "cloudscraper": "^1.4.1",
     "debug": "~2.6.3",
