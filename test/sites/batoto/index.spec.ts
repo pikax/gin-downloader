@@ -220,7 +220,7 @@ describe("Batoto live", () => {
     images.should.have.length.gte(17);
 
     let img = await images[0];
-    img.src.should.contain("http://img.bato.to/comics/2017/05/20/g/read591fb1e5ad4d4/img000001.png");
+    img.src.should.contain("http://img.bato.to/comics/2017/05/");
   });
 
 

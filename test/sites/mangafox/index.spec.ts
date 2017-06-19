@@ -25,7 +25,7 @@ describe("MangaFox live", () => {
         .replyWithFile(200, __dirname + "/html/mangas.html");
     }
 
-    let mangas = await  manga.mangas({name: "Gintama"});
+    let mangas = await  manga.mangas();
     mangas.should.have.length.gte(results.mangas_count);
   });
 
