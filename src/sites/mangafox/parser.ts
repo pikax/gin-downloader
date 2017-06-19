@@ -196,7 +196,7 @@ export class Parser implements SiteParser {
   }
 
 
-  async filter($: MangaXDoc): Promise<FilteredResults> | FilteredResults {
+  async filter($: MangaXDoc): Promise<FilteredResults> {
     let lastPageElement = $("#nav > ul > li > a").slice(-2, -1);
 
 
