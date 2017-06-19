@@ -144,6 +144,10 @@ var parseDoc = function (source, params) {
     return doc;
 };
 var sanitize = function (children) { return children.filter(function (x) { return x.type !== "text"; }); };
+var sanitizeName = function (name) {
+    var regex = /(?:’|–|Ζ|∞|[\u00b0-\u00bf]|[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
+    return name.replace(regex, encodeURIComponent);
+};
 var procFilter = function (condition, def) {
     var filter = def || {};
     if (typeof condition === "string") {
@@ -206,6 +210,12 @@ var procFilter = function (condition, def) {
                 };
             }
         }
+    }
+    if (filter.name) {
+        filter.name = sanitizeName(filter.name);
+    }
+    if (filter.search && filter.search.name && filter.search.name.name) {
+        filter.search.name.name = sanitizeName(filter.search.name.name);
     }
     return filter;
 };
@@ -371,12 +381,12 @@ var MangaSite = (function () {
                     case 0:
                         this.debug("getting mangas");
                         opts = this.buildMangasRequest(this.config.mangas_url);
-                        return [4 /*yield*/, this.request.getDoc(opts)
+                        return [4          , this.request.getDoc(opts)
                                 .then(this.parser.mangas)];
                     case 1:
                         mangas = _a.sent();
                         this.debug("mangas: " + mangas.length);
-                        return [2 /*return*/, mangas];
+                        return [2           , mangas];
                 }
             });
         });
@@ -392,11 +402,11 @@ var MangaSite = (function () {
                     case 0:
                         this.debug("getting latest");
                         opts = this.buildLatestRequest(this.config.latest_url);
-                        return [4 /*yield*/, this.request.getDoc(opts).then(this.parser.latest)];
+                        return [4          , this.request.getDoc(opts).then(this.parser.latest)];
                     case 1:
                         mangas = _a.sent();
                         this.verbose("got " + mangas.length + " chapters");
-                        return [2 /*return*/, mangas];
+                        return [2           , mangas];
                 }
             });
         });
@@ -414,21 +424,21 @@ var MangaSite = (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, this.resolveMangaUrl(name)];
+                        return [4          , this.resolveMangaUrl(name)];
                     case 2:
                         src = _a.sent();
                         opts = this.buildInfoRequest(src);
-                        return [4 /*yield*/, this.request.getDoc(opts).then(this.parser.info)];
+                        return [4          , this.request.getDoc(opts).then(this.parser.info)];
                     case 3:
                         info = _a.sent();
                         this.verbose("info:%o", info);
                         this.debug("got info for " + name);
-                        return [2 /*return*/, info];
+                        return [2           , info];
                     case 4:
                         e_1 = _a.sent();
                         this.error("%o", e_1);
                         throw new Error(name + " not found!");
-                    case 5: return [2 /*return*/];
+                    case 5: return [2           ];
                 }
             });
         });
@@ -446,21 +456,21 @@ var MangaSite = (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, this.resolveMangaUrl(name)];
+                        return [4          , this.resolveMangaUrl(name)];
                     case 2:
                         src = _a.sent();
                         opts = this.buildInfoRequest(src);
-                        return [4 /*yield*/, this.request.getDoc(opts).then(this.parser.chapters)];
+                        return [4          , this.request.getDoc(opts).then(this.parser.chapters)];
                     case 3:
                         chapters = _a.sent();
                         this.verbose("chapters:%o", chapters);
                         this.debug("got chapters for " + name);
-                        return [2 /*return*/, chapters];
+                        return [2           , chapters];
                     case 4:
                         e_2 = _a.sent();
                         this.error("%o", e_2);
                         throw new Error(name + " not found!");
-                    case 5: return [2 /*return*/];
+                    case 5: return [2           ];
                 }
             });
         });
@@ -478,27 +488,27 @@ var MangaSite = (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 6, , 7]);
-                        return [4 /*yield*/, this.resolveMangaUrl(name)];
+                        return [4          , this.resolveMangaUrl(name)];
                     case 2:
                         src = _a.sent();
                         opts = this.buildInfoRequest(src);
-                        return [4 /*yield*/, this.request.getDoc(opts)];
+                        return [4          , this.request.getDoc(opts)];
                     case 3:
                         doc = _a.sent();
-                        return [4 /*yield*/, this.parser.info(doc)];
+                        return [4          , this.parser.info(doc)];
                     case 4:
                         info = _a.sent();
-                        return [4 /*yield*/, this.parser.chapters(doc)];
+                        return [4          , this.parser.chapters(doc)];
                     case 5:
                         chapters = _a.sent();
                         this.verbose("info:%o\nchapters:%o", chapters);
                         this.debug("got info & chapters for " + name);
-                        return [2 /*return*/, { info: info, chapters: chapters }];
+                        return [2           , { info: info, chapters: chapters }];
                     case 6:
                         e_3 = _a.sent();
                         this.error("%o", e_3);
                         throw new Error(name + " not found!");
-                    case 7: return [2 /*return*/];
+                    case 7: return [2           ];
                 }
             });
         });
@@ -517,14 +527,14 @@ var MangaSite = (function () {
                             throw new Error("Please provide a chapter");
                         }
                         this.debug("getting images for %s : %s", name, chapter);
-                        return [4 /*yield*/, this.resolveChapterSource(name, chapter)];
+                        return [4          , this.resolveChapterSource(name, chapter)];
                     case 1:
                         chap = _a.sent();
                         opts = this.buildChapterRequest(chap);
-                        return [4 /*yield*/, this.request.getDoc(opts).then(this.parser.imagesPaths)];
+                        return [4          , this.request.getDoc(opts).then(this.parser.imagesPaths)];
                     case 2:
                         paths = _a.sent();
-                        return [2 /*return*/, paths.map(function (x) { return _this.processImagePath(_this.buildImagePathsRequest(x)); })];
+                        return [2           , paths.map(function (x) { return _this.processImagePath(_this.buildImagePathsRequest(x)); })];
                 }
             });
         });
@@ -565,7 +575,7 @@ var MangaSite = (function () {
             var chapters, chap;
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.chapters(name)];
+                    case 0: return [4          , this.chapters(name)];
                     case 1:
                         chapters = _a.sent();
                         chap = _.find(chapters, { chap_number: chapter });
@@ -573,7 +583,7 @@ var MangaSite = (function () {
                         if (!chap) {
                             throw new Error("Chapter not found");
                         }
-                        return [2 /*return*/, chap.src];
+                        return [2           , chap.src];
                 }
             });
         });
@@ -583,10 +593,10 @@ var MangaSite = (function () {
             var image;
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getHtml(opts).then(this.parser.image)];
+                    case 0: return [4          , this.getHtml(opts).then(this.parser.image)];
                     case 1:
                         image = _a.sent();
-                        return [2 /*return*/, {
+                        return [2           , {
                                 name: url.parse(image).pathname.split("/").reverse()[0],
                                 src: image
                             }];
@@ -607,6 +617,85 @@ var config = {
 var debug$2 = require("debug")("gin-downloader:mangafox");
 var verbose$1 = require("debug")("gin-downloader:mangafox:verbose");
 verbose$1("using %O", config);
+
+var __assign$2 = (undefined && undefined.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+
+var requestRetry = require("requestretry");
+var MaxRetries = 50;
+var Timeout = 10000;
+var Interval = 500;
+var DefaultOptions = {
+    method: "GET",
+    gzip: true,
+    timeout: Timeout,
+    followAllRedirects: true,
+    jar: true,
+    forever: true,
+
+    maxAttempts: MaxRetries,
+    retryDelay: Interval,
+    retryStrategy: requestRetry.RetryStrategies.HTTPOrNetworkError,
+    fullResponse: false,
+};
+var RequestRetryStrategy = (function () {
+    function RequestRetryStrategy() {
+    }
+    RequestRetryStrategy.prototype.request = function (options) {
+        var opts = __assign$2({}, DefaultOptions);
+        if (typeof options === "string") {
+            opts.url = options;
+        }
+        else {
+            opts = __assign$2({}, opts, options);
+        }
+        return requestRetry(opts);
+    };
+    return RequestRetryStrategy;
+}());
+var strategy = new RequestRetryStrategy();
+
+var __awaiter$2 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve$$1, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve$$1(result.value) : new P(function (resolve$$1) { resolve$$1(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator$2 = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _$$1 = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_$$1) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _$$1.label++; return { value: op[1], done: false };
+                case 5: _$$1.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _$$1.ops.pop(); _$$1.trys.pop(); continue;
+                default:
+                    if (!(t = _$$1.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _$$1 = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _$$1.label = op[1]; break; }
+                    if (op[0] === 6 && _$$1.label < t[1]) { _$$1.label = t[1]; t = op; break; }
+                    if (t && _$$1.label < t[2]) { _$$1.label = t[2]; _$$1.ops.push(op); break; }
+                    if (t[2]) _$$1.ops.pop();
+                    _$$1.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _$$1);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 
 var Parser = (function () {
     function Parser() {
@@ -659,14 +748,16 @@ var Parser = (function () {
         var image = imgElem.attr("src");
         var title = imgElem.attr("alt");
         var synonyms = titleElem.find("h3").text().split("; ");
-        var released = titleElem.find("table tr td a").first().text();
-        var authors = [titleElem.find("table tr td a").eq(1).text()];
-        var artists = [titleElem.find("table tr td a").eq(2).text()];
-        var genres = titleElem.find("table tr td a").slice(3).map(function (i, el) { return el.children[0].nodeValue; }).get();
-        var sSstatus = seriesInfo.find("div .data span").eq(0).html().trim();
+        var tds = titleElem.find("table tr td");
+        var released = tds.first().text().trim();
+        var authors = tds.eq(1).children("a").map(function (x, el) { return $(el).text(); }).get().filter(function (x) { return x; });
+        var artists = tds.eq(2).children("a").map(function (x, el) { return $(el).text(); }).get().filter(function (x) { return x; });
+        var genres = tds.slice(3).children("a").map(function (x, el) { return $(el).text(); }).get().filter(function (x) { return x; });
+        var spans = seriesInfo.find("div.data span");
+        var sSstatus = spans.eq(0).text().trim();
         var status = sSstatus.slice(0, sSstatus.indexOf(","));
-        var ranked = seriesInfo.find("div .data span").eq(2).text();
-        var rating = seriesInfo.find("div .data span").eq(3).text();
+        var ranked = spans.eq(2).text();
+        var rating = spans.eq(3).text();
         var scanlators = seriesInfo.find("div.data span a").slice(1).map(function (i, el) { return el.children[0].nodeValue; }).get();
         var synopsis = titleElem.find("p").text();
         return {
@@ -736,38 +827,77 @@ var Parser = (function () {
         return m[0].slice(5);
     };
     Parser.prototype.filter = function ($) {
-        var lastPageElement = $("#nav > ul > li > a").slice(-2, -1);
-        var mangas = [];
-        $(".manga_text").each(function (i, el) {
-            var children = sanitize(el.children);
-            var a = children.find(function (x) { return x.name === "a"; });
-            var info = children.find(function (x) { return x.name === "p" && x.attribs && !!x.attribs.title; });
-            var parentA = sanitize(el.parent.children)[0];
-            var completed = sanitize(parentA.children).find(function (x) { return x.name === "em" && x.attribs && x.attribs.class === "tag_completed"; });
-            mangas[i] = {
-                name: a.lastChild.nodeValue,
-                src: a.attribs.href,
-                mature: info.attribs.title.indexOf("Mature") >= 0,
-                status: completed ? FilterStatus.Complete.toString() : FilterStatus.Ongoing.toString(),
-            };
+        return __awaiter$2(this, void 0, void 0, function () {
+            var _this = this;
+            var lastPageElement, searchAgain, elements, pmangas, mangas, page, m, lastPage;
+            return __generator$2(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        lastPageElement = $("#nav > ul > li > a").slice(-2, -1);
+                        searchAgain = $("#page > div.left > div.border.clear").text();
+                        if (searchAgain && searchAgain.startsWith("Sorry, can‘t")) {
+                            console.warn(searchAgain);
+                            return [2           , Promise.reject({
+                                    type: "server",
+                                    error: searchAgain
+                                })];
+                        }
+                        elements = [];
+                        $(".manga_text").each(function (i, el) { return elements[i] = el; });
+                        pmangas = elements.map(function (el, i) { return __awaiter$2(_this, void 0, void 0, function () {
+                            var children, a, info, parentA, aChildren, completed, img, name, url_1, formData, ajax;
+                            return __generator$2(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        children = sanitize(el.children);
+                                        a = children.find(function (x) { return x.name === "a"; });
+                                        info = children.find(function (x) { return x.name === "p" && x.attribs && !!x.attribs.title; });
+                                        parentA = sanitize(el.parent.children)[0];
+                                        aChildren = sanitize(parentA.children);
+                                        completed = aChildren.find(function (x) { return x && x.name === "em" && x.attribs && x.attribs.class === "tag_completed"; });
+                                        img = aChildren[0].children.find(function (x) { return x && x.name === "img"; });
+                                        name = a.lastChild.nodeValue;
+                                        if (!(name.length > 35 && name.endsWith("..."))) return [3          , 2];
+                                        url_1 = url.resolve(config.site, "/ajax/series.php");
+                                        formData = { sid: +a.attribs.rel };
+                                        return [4          , strategy.request({ url: url_1, formData: formData, method: "POST" })];
+                                    case 1:
+                                        ajax = _a.sent();
+
+                                        if (ajax) {
+                                            name = JSON.parse(ajax)[0].replace(/(&quot;)/g, "\"");
+                                        }
+                                        _a.label = 2;
+                                    case 2: return [2           , {
+                                            name: name,
+                                            src: a.attribs.href,
+                                            image: img.attribs.src,
+                                            mature: info && info.attribs.title.indexOf("Mature") >= 0,
+                                            status: completed ? FilterStatus.Complete.toString() : FilterStatus.Ongoing.toString(),
+                                        }];
+                                }
+                            });
+                        }); });
+                        return [4          , Promise.all(pmangas)];
+                    case 1:
+                        mangas = _a.sent();
+                        page = 1;
+                        m = $.location.match(/page=(\d+)$/);
+                        if (m) {
+                            page = +m[1];
+                        }
+                        lastPage = 1;
+                        if (lastPageElement) {
+                            lastPage = +lastPageElement.text();
+                        }
+                        return [2           , {
+                                results: mangas,
+                                page: page,
+                                total: lastPage
+                            }];
+                }
+            });
         });
-        var page = 1;
-        var query = url.parse($.location).query;
-        if (query) {
-            var m = query.toString().match(/page=(\d+)/g);
-            if (m) {
-                page = +m[1];
-            }
-        }
-        var lastPage = 1;
-        if (lastPageElement) {
-            lastPage = +lastPageElement.text();
-        }
-        return {
-            results: mangas,
-            page: page,
-            total: lastPage
-        };
     };
     return Parser;
 }());
@@ -793,49 +923,6 @@ var Helper = (function () {
     return Helper;
 }());
 var helper = new Helper();
-
-var __assign$2 = (undefined && undefined.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-
-var requestRetry = require("requestretry");
-var MaxRetries = 50;
-var Timeout = 10000;
-var Interval = 500;
-var DefaultOptions = {
-    method: "GET",
-    gzip: true,
-    timeout: Timeout,
-    followAllRedirects: true,
-    jar: true,
-    forever: true,
-
-    maxAttempts: MaxRetries,
-    retryDelay: Interval,
-    retryStrategy: requestRetry.RetryStrategies.HTTPOrNetworkError,
-    fullResponse: false,
-};
-var RequestRetryStrategy = (function () {
-    function RequestRetryStrategy() {
-    }
-    RequestRetryStrategy.prototype.request = function (options) {
-        var opts = __assign$2({}, DefaultOptions);
-        if (typeof options === "string") {
-            opts.url = options;
-        }
-        else {
-            opts = __assign$2({}, opts, options);
-        }
-        return requestRetry(opts);
-    };
-    return RequestRetryStrategy;
-}());
-var strategy = new RequestRetryStrategy();
 
 var Supported = {};
 Supported[Genre.Action] = Genre.Action;
@@ -959,7 +1046,7 @@ var processFilter = function (mangafilter) {
         }
     }
     var nameMethod = "name_method=" + methodName;
-    var mangaName = "name=" + (filterName || "");
+    var mangaName = "name=" + (encodeURIComponent(filterName) || "");
     var type = "type=" + (filterType || "");
     var authorMethod = "author_method=" + methodAuthor;
     var author = "author=" + (filterAuthor || "");
@@ -1094,14 +1181,14 @@ var MangaFox = (function (_super) {
                     case 0:
                         this.debug("filter mangas with: %o", filter);
                         search = processFilter(filter);
-                        return [4 /*yield*/, this.request.getDoc(search.src + "?" + search.params)];
+                        return [4          , this.request.getDoc(search.src + "?" + search.params)];
                     case 1:
                         doc = _a.sent();
-                        return [4 /*yield*/, this.parser.filter(doc)];
+                        return [4          , this.parser.filter(doc)];
                     case 2:
                         mangas = _a.sent();
                         this.debug("mangas: " + mangas.results.length);
-                        return [2 /*return*/, mangas];
+                        return [2           , mangas];
                 }
             });
         });
@@ -1471,7 +1558,7 @@ var __extends$1 = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __awaiter$2 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+var __awaiter$3 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve$$1, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
@@ -1479,7 +1566,7 @@ var __awaiter$2 = (undefined && undefined.__awaiter) || function (thisArg, _argu
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator$2 = (undefined && undefined.__generator) || function (thisArg, body) {
+var __generator$3 = (undefined && undefined.__generator) || function (thisArg, body) {
     var _$$1 = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
     return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
@@ -1513,21 +1600,21 @@ var MangaHere = (function (_super) {
         return _super.call(this, config$2, new Parser$1(), new Helper$1(), strategy) || this;
     }
     MangaHere.prototype.filter = function (filter) {
-        return __awaiter$2(this, void 0, void 0, function () {
+        return __awaiter$3(this, void 0, void 0, function () {
             var search, doc, mangas;
-            return __generator$2(this, function (_a) {
+            return __generator$3(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         this.debug("filter mangas with: %o", filter);
                         search = processFilter$1(filter);
-                        return [4 /*yield*/, this.request.getDoc(search.src)];
+                        return [4          , this.request.getDoc(search.src)];
                     case 1:
                         doc = _a.sent();
-                        return [4 /*yield*/, this.parser.filter(doc)];
+                        return [4          , this.parser.filter(doc)];
                     case 2:
                         mangas = _a.sent();
                         this.debug("mangas: " + mangas.results.length);
-                        return [2 /*return*/, mangas];
+                        return [2           , mangas];
                 }
             });
         });
@@ -1846,7 +1933,7 @@ var __extends$2 = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __awaiter$3 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+var __awaiter$4 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve$$1, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
@@ -1854,7 +1941,7 @@ var __awaiter$3 = (undefined && undefined.__awaiter) || function (thisArg, _argu
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator$3 = (undefined && undefined.__generator) || function (thisArg, body) {
+var __generator$4 = (undefined && undefined.__generator) || function (thisArg, body) {
     var _$$1 = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
     return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
@@ -1888,31 +1975,31 @@ var MangaPanda = (function (_super) {
         return _super.call(this, config$4, new Parser$2(), new Helper$2(), strategy) || this;
     }
     MangaPanda.prototype.resolveChapterSource = function (name, chapter) {
-        return __awaiter$3(this, void 0, void 0, function () {
+        return __awaiter$4(this, void 0, void 0, function () {
             var mangaUri;
-            return __generator$3(this, function (_a) {
+            return __generator$4(this, function (_a) {
                 mangaUri = this.nameHelper.resolveUrl(name);
 
-                return [2 /*return*/, url.resolve(mangaUri + "/", chapter.toString())];
+                return [2           , url.resolve(mangaUri + "/", chapter.toString())];
             });
         });
     };
     MangaPanda.prototype.filter = function (filter) {
-        return __awaiter$3(this, void 0, void 0, function () {
+        return __awaiter$4(this, void 0, void 0, function () {
             var search, doc, mangas;
-            return __generator$3(this, function (_a) {
+            return __generator$4(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         this.debug("filter mangas with: %o", filter);
                         search = processFilter$2(filter);
-                        return [4 /*yield*/, this.request.getDoc(search.src + "?" + search.params)];
+                        return [4          , this.request.getDoc(search.src + "?" + search.params)];
                     case 1:
                         doc = _a.sent();
-                        return [4 /*yield*/, this.parser.filter(doc)];
+                        return [4          , this.parser.filter(doc)];
                     case 2:
                         mangas = _a.sent();
                         this.debug("mangas: " + mangas.results.length);
-                        return [2 /*return*/, mangas];
+                        return [2           , mangas];
                 }
             });
         });
@@ -2076,8 +2163,11 @@ var Parser$3 = (function () {
     Parser.prototype.buildVM = function (cajs, lojs) {
         var scripts = [cajs,
             lojs,
-            "chko = secret || chko; key = CryptoJS.SHA256(chko);",
-            "for (var img in lstImages) imgs.push(wrapKA(lstImages[img]).toString());"
+            "chko = (secret && chko + secret) || chko; key = CryptoJS.SHA256(chko);",
+            "for (var img in lstImages) {" +
+                "imgs.push(wrapKA(lstImages[img]).toString())" +
+                "" +
+                "};"
         ];
         return this._vm = new vm.Script(scripts.join("\n"));
     };
@@ -2230,6 +2320,10 @@ var names$2 = {
     "Wow Toilet": "Wow-Sergeant",
     "Yagate Kimi ni Naru": "Yagate-kun-ni-Naru",
     "Zettai Zetsubou Shoujo - Danganronpa Another Episode - Genocider Mode": "Zettai-Zetsubou-Shoujo-Danganronpa-Another-Episode---Genocider-Mode",
+    "Asayake wa Koganeiro - The ": "Asayake-wa-Koganeiro-The-IDOLM-STER",
+    "K・O・I": "K-I-O",
+    "Kaichou wa Maid-sama!Special": "Kaichou-wa-Maid-sama-Special",
+    "Mafia;s D'ughter: Operation Makeover": "Mafia-s-Daughter-Operation-Makeover",
     "Valkyrie%20Profile": "Valkyrie%20Profile",
 };
 var latin_map = { "Á": "A", "Ă": "A", "Ắ": "A", "Ặ": "A", "Ằ": "A", "Ẳ": "A", "Ẵ": "A", "Ǎ": "A", "Â": "A", "Ấ": "A", "Ậ": "A", "Ầ": "A", "Ẩ": "A", "Ẫ": "A", "Ä": "A", "Ǟ": "A", "Ȧ": "A", "Ǡ": "A", "Ạ": "A", "Ȁ": "A", "À": "A", "Ả": "A", "Ȃ": "A", "Ā": "A", "Ą": "A", "Å": "A", "Ǻ": "A", "Ḁ": "A", "Ⱥ": "A", "Ã": "A", "Ꜳ": "AA", "Æ": "AE", "Ǽ": "AE", "Ǣ": "AE", "Ꜵ": "AO", "Ꜷ": "AU", "Ꜹ": "AV", "Ꜻ": "AV", "Ꜽ": "AY", "Ḃ": "B", "Ḅ": "B", "Ɓ": "B", "Ḇ": "B", "Ƀ": "B", "Ƃ": "B", "Ć": "C", "Č": "C", "Ç": "C", "Ḉ": "C", "Ĉ": "C", "Ċ": "C", "Ƈ": "C", "Ȼ": "C", "Ď": "D", "Ḑ": "D", "Ḓ": "D", "Ḋ": "D", "Ḍ": "D", "Ɗ": "D", "Ḏ": "D", "ǲ": "D", "ǅ": "D", "Đ": "D", "Ƌ": "D", "Ǳ": "DZ", "Ǆ": "DZ", "É": "E", "Ĕ": "E", "Ě": "E", "Ȩ": "E", "Ḝ": "E", "Ê": "E", "Ế": "E", "Ệ": "E", "Ề": "E", "Ể": "E", "Ễ": "E", "Ḙ": "E", "Ë": "E", "Ė": "E", "Ẹ": "E", "Ȅ": "E", "È": "E", "Ẻ": "E", "Ȇ": "E", "Ē": "E", "Ḗ": "E", "Ḕ": "E", "Ę": "E", "Ɇ": "E", "Ẽ": "E", "Ḛ": "E", "Ꝫ": "ET", "Ḟ": "F", "Ƒ": "F", "Ǵ": "G", "Ğ": "G", "Ǧ": "G", "Ģ": "G", "Ĝ": "G", "Ġ": "G", "Ɠ": "G", "Ḡ": "G", "Ǥ": "G", "Ḫ": "H", "Ȟ": "H", "Ḩ": "H", "Ĥ": "H", "Ⱨ": "H", "Ḧ": "H", "Ḣ": "H", "Ḥ": "H", "Ħ": "H", "Í": "I", "Ĭ": "I", "Ǐ": "I", "Î": "I", "Ï": "I", "Ḯ": "I", "İ": "I", "Ị": "I", "Ȉ": "I", "Ì": "I", "Ỉ": "I", "Ȋ": "I", "Ī": "I", "Į": "I", "Ɨ": "I", "Ĩ": "I", "Ḭ": "I", "Ꝺ": "D", "Ꝼ": "F", "Ᵹ": "G", "Ꞃ": "R", "Ꞅ": "S", "Ꞇ": "T", "Ꝭ": "IS", "Ĵ": "J", "Ɉ": "J", "Ḱ": "K", "Ǩ": "K", "Ķ": "K", "Ⱪ": "K", "Ꝃ": "K", "Ḳ": "K", "Ƙ": "K", "Ḵ": "K", "Ꝁ": "K", "Ꝅ": "K", "Ĺ": "L", "Ƚ": "L", "Ľ": "L", "Ļ": "L", "Ḽ": "L", "Ḷ": "L", "Ḹ": "L", "Ⱡ": "L", "Ꝉ": "L", "Ḻ": "L", "Ŀ": "L", "Ɫ": "L", "ǈ": "L", "Ł": "L", "Ǉ": "LJ", "Ḿ": "M", "Ṁ": "M", "Ṃ": "M", "Ɱ": "M", "Ń": "N", "Ň": "N", "Ņ": "N", "Ṋ": "N", "Ṅ": "N", "Ṇ": "N", "Ǹ": "N", "Ɲ": "N", "Ṉ": "N", "Ƞ": "N", "ǋ": "N", "Ñ": "N", "Ǌ": "NJ", "Ó": "O", "Ŏ": "O", "Ǒ": "O", "Ô": "O", "Ố": "O", "Ộ": "O", "Ồ": "O", "Ổ": "O", "Ỗ": "O", "Ö": "O", "Ȫ": "O", "Ȯ": "O", "Ȱ": "O", "Ọ": "O", "Ő": "O", "Ȍ": "O", "Ò": "O", "Ỏ": "O", "Ơ": "O", "Ớ": "O", "Ợ": "O", "Ờ": "O", "Ở": "O", "Ỡ": "O", "Ȏ": "O", "Ꝋ": "O", "Ꝍ": "O", "Ō": "O", "Ṓ": "O", "Ṑ": "O", "Ɵ": "O", "Ǫ": "O", "Ǭ": "O", "Ø": "O", "Ǿ": "O", "Õ": "O", "Ṍ": "O", "Ṏ": "O", "Ȭ": "O", "Ƣ": "OI", "Ꝏ": "OO", "Ɛ": "E", "Ɔ": "O", "Ȣ": "OU", "Ṕ": "P", "Ṗ": "P", "Ꝓ": "P", "Ƥ": "P", "Ꝕ": "P", "Ᵽ": "P", "Ꝑ": "P", "Ꝙ": "Q", "Ꝗ": "Q", "Ŕ": "R", "Ř": "R", "Ŗ": "R", "Ṙ": "R", "Ṛ": "R", "Ṝ": "R", "Ȑ": "R", "Ȓ": "R", "Ṟ": "R", "Ɍ": "R", "Ɽ": "R", "Ꜿ": "C", "Ǝ": "E", "Ś": "S", "Ṥ": "S", "Š": "S", "Ṧ": "S", "Ş": "S", "Ŝ": "S", "Ș": "S", "Ṡ": "S", "Ṣ": "S", "Ṩ": "S", "Ť": "T", "Ţ": "T", "Ṱ": "T", "Ț": "T", "Ⱦ": "T", "Ṫ": "T", "Ṭ": "T", "Ƭ": "T", "Ṯ": "T", "Ʈ": "T", "Ŧ": "T", "Ɐ": "A", "Ꞁ": "L", "Ɯ": "M", "Ʌ": "V", "Ꜩ": "TZ", "Ú": "U", "Ŭ": "U", "Ǔ": "U", "Û": "U", "Ṷ": "U", "Ü": "U", "Ǘ": "U", "Ǚ": "U", "Ǜ": "U", "Ǖ": "U", "Ṳ": "U", "Ụ": "U", "Ű": "U", "Ȕ": "U", "Ù": "U", "Ủ": "U", "Ư": "U", "Ứ": "U", "Ự": "U", "Ừ": "U", "Ử": "U", "Ữ": "U", "Ȗ": "U", "Ū": "U", "Ṻ": "U", "Ų": "U", "Ů": "U", "Ũ": "U", "Ṹ": "U", "Ṵ": "U", "Ꝟ": "V", "Ṿ": "V", "Ʋ": "V", "Ṽ": "V", "Ꝡ": "VY", "Ẃ": "W", "Ŵ": "W", "Ẅ": "W", "Ẇ": "W", "Ẉ": "W", "Ẁ": "W", "Ⱳ": "W", "Ẍ": "X", "Ẋ": "X", "Ý": "Y", "Ŷ": "Y", "Ÿ": "Y", "Ẏ": "Y", "Ỵ": "Y", "Ỳ": "Y", "Ƴ": "Y", "Ỷ": "Y", "Ỿ": "Y", "Ȳ": "Y", "Ɏ": "Y", "Ỹ": "Y", "Ź": "Z", "Ž": "Z", "Ẑ": "Z", "Ⱬ": "Z", "Ż": "Z", "Ẓ": "Z", "Ȥ": "Z", "Ẕ": "Z", "Ƶ": "Z", "Ĳ": "IJ", "Œ": "OE", "ᴀ": "A", "ᴁ": "AE", "ʙ": "B", "ᴃ": "B", "ᴄ": "C", "ᴅ": "D", "ᴇ": "E", "ꜰ": "F", "ɢ": "G", "ʛ": "G", "ʜ": "H", "ɪ": "I", "ʁ": "R", "ᴊ": "J", "ᴋ": "K", "ʟ": "L", "ᴌ": "L", "ᴍ": "M", "ɴ": "N", "ᴏ": "O", "ɶ": "OE", "ᴐ": "O", "ᴕ": "OU", "ᴘ": "P", "ʀ": "R", "ᴎ": "N", "ᴙ": "R", "ꜱ": "S", "ᴛ": "T", "ⱻ": "E", "ᴚ": "R", "ᴜ": "U", "ᴠ": "V", "ᴡ": "W", "ʏ": "Y", "ᴢ": "Z", "á": "a", "ă": "a", "ắ": "a", "ặ": "a", "ằ": "a", "ẳ": "a", "ẵ": "a", "ǎ": "a", "â": "a", "ấ": "a", "ậ": "a", "ầ": "a", "ẩ": "a", "ẫ": "a", "ä": "a", "ǟ": "a", "ȧ": "a", "ǡ": "a", "ạ": "a", "ȁ": "a", "à": "a", "ả": "a", "ȃ": "a", "ā": "a", "ą": "a", "ᶏ": "a", "ẚ": "a", "å": "a", "ǻ": "a", "ḁ": "a", "ⱥ": "a", "ã": "a", "ꜳ": "aa", "æ": "ae", "ǽ": "ae", "ǣ": "ae", "ꜵ": "ao", "ꜷ": "au", "ꜹ": "av", "ꜻ": "av", "ꜽ": "ay", "ḃ": "b", "ḅ": "b", "ɓ": "b", "ḇ": "b", "ᵬ": "b", "ᶀ": "b", "ƀ": "b", "ƃ": "b", "ɵ": "o", "ć": "c", "č": "c", "ç": "c", "ḉ": "c", "ĉ": "c", "ɕ": "c", "ċ": "c", "ƈ": "c", "ȼ": "c", "ď": "d", "ḑ": "d", "ḓ": "d", "ȡ": "d", "ḋ": "d", "ḍ": "d", "ɗ": "d", "ᶑ": "d", "ḏ": "d", "ᵭ": "d", "ᶁ": "d", "đ": "d", "ɖ": "d", "ƌ": "d", "ı": "i", "ȷ": "j", "ɟ": "j", "ʄ": "j", "ǳ": "dz", "ǆ": "dz", "é": "e", "ĕ": "e", "ě": "e", "ȩ": "e", "ḝ": "e", "ê": "e", "ế": "e", "ệ": "e", "ề": "e", "ể": "e", "ễ": "e", "ḙ": "e", "ë": "e", "ė": "e", "ẹ": "e", "ȅ": "e", "è": "e", "ẻ": "e", "ȇ": "e", "ē": "e", "ḗ": "e", "ḕ": "e", "ⱸ": "e", "ę": "e", "ᶒ": "e", "ɇ": "e", "ẽ": "e", "ḛ": "e", "ꝫ": "et", "ḟ": "f", "ƒ": "f", "ᵮ": "f", "ᶂ": "f", "ǵ": "g", "ğ": "g", "ǧ": "g", "ģ": "g", "ĝ": "g", "ġ": "g", "ɠ": "g", "ḡ": "g", "ᶃ": "g", "ǥ": "g", "ḫ": "h", "ȟ": "h", "ḩ": "h", "ĥ": "h", "ⱨ": "h", "ḧ": "h", "ḣ": "h", "ḥ": "h", "ɦ": "h", "ẖ": "h", "ħ": "h", "ƕ": "hv", "í": "i", "ĭ": "i", "ǐ": "i", "î": "i", "ï": "i", "ḯ": "i", "ị": "i", "ȉ": "i", "ì": "i", "ỉ": "i", "ȋ": "i", "ī": "i", "į": "i", "ᶖ": "i", "ɨ": "i", "ĩ": "i", "ḭ": "i", "ꝺ": "d", "ꝼ": "f", "ᵹ": "g", "ꞃ": "r", "ꞅ": "s", "ꞇ": "t", "ꝭ": "is", "ǰ": "j", "ĵ": "j", "ʝ": "j", "ɉ": "j", "ḱ": "k", "ǩ": "k", "ķ": "k", "ⱪ": "k", "ꝃ": "k", "ḳ": "k", "ƙ": "k", "ḵ": "k", "ᶄ": "k", "ꝁ": "k", "ꝅ": "k", "ĺ": "l", "ƚ": "l", "ɬ": "l", "ľ": "l", "ļ": "l", "ḽ": "l", "ȴ": "l", "ḷ": "l", "ḹ": "l", "ⱡ": "l", "ꝉ": "l", "ḻ": "l", "ŀ": "l", "ɫ": "l", "ᶅ": "l", "ɭ": "l", "ł": "l", "ǉ": "lj", "ſ": "s", "ẜ": "s", "ẛ": "s", "ẝ": "s", "ḿ": "m", "ṁ": "m", "ṃ": "m", "ɱ": "m", "ᵯ": "m", "ᶆ": "m", "ń": "n", "ň": "n", "ņ": "n", "ṋ": "n", "ȵ": "n", "ṅ": "n", "ṇ": "n", "ǹ": "n", "ɲ": "n", "ṉ": "n", "ƞ": "n", "ᵰ": "n", "ᶇ": "n", "ɳ": "n", "ñ": "n", "ǌ": "nj", "ó": "o", "ŏ": "o", "ǒ": "o", "ô": "o", "ố": "o", "ộ": "o", "ồ": "o", "ổ": "o", "ỗ": "o", "ö": "o", "ȫ": "o", "ȯ": "o", "ȱ": "o", "ọ": "o", "ő": "o", "ȍ": "o", "ò": "o", "ỏ": "o", "ơ": "o", "ớ": "o", "ợ": "o", "ờ": "o", "ở": "o", "ỡ": "o", "ȏ": "o", "ꝋ": "o", "ꝍ": "o", "ⱺ": "o", "ō": "o", "ṓ": "o", "ṑ": "o", "ǫ": "o", "ǭ": "o", "ø": "o", "ǿ": "o", "õ": "o", "ṍ": "o", "ṏ": "o", "ȭ": "o", "ƣ": "oi", "ꝏ": "oo", "ɛ": "e", "ᶓ": "e", "ɔ": "o", "ᶗ": "o", "ȣ": "ou", "ṕ": "p", "ṗ": "p", "ꝓ": "p", "ƥ": "p", "ᵱ": "p", "ᶈ": "p", "ꝕ": "p", "ᵽ": "p", "ꝑ": "p", "ꝙ": "q", "ʠ": "q", "ɋ": "q", "ꝗ": "q", "ŕ": "r", "ř": "r", "ŗ": "r", "ṙ": "r", "ṛ": "r", "ṝ": "r", "ȑ": "r", "ɾ": "r", "ᵳ": "r", "ȓ": "r", "ṟ": "r", "ɼ": "r", "ᵲ": "r", "ᶉ": "r", "ɍ": "r", "ɽ": "r", "ↄ": "c", "ꜿ": "c", "ɘ": "e", "ɿ": "r", "ś": "s", "ṥ": "s", "š": "s", "ṧ": "s", "ş": "s", "ŝ": "s", "ș": "s", "ṡ": "s", "ṣ": "s", "ṩ": "s", "ʂ": "s", "ᵴ": "s", "ᶊ": "s", "ȿ": "s", "ɡ": "g", "ᴑ": "o", "ᴓ": "o", "ᴝ": "u", "ť": "t", "ţ": "t", "ṱ": "t", "ț": "t", "ȶ": "t", "ẗ": "t", "ⱦ": "t", "ṫ": "t", "ṭ": "t", "ƭ": "t", "ṯ": "t", "ᵵ": "t", "ƫ": "t", "ʈ": "t", "ŧ": "t", "ᵺ": "th", "ɐ": "a", "ᴂ": "ae", "ǝ": "e", "ᵷ": "g", "ɥ": "h", "ʮ": "h", "ʯ": "h", "ᴉ": "i", "ʞ": "k", "ꞁ": "l", "ɯ": "m", "ɰ": "m", "ᴔ": "oe", "ɹ": "r", "ɻ": "r", "ɺ": "r", "ⱹ": "r", "ʇ": "t", "ʌ": "v", "ʍ": "w", "ʎ": "y", "ꜩ": "tz", "ú": "u", "ŭ": "u", "ǔ": "u", "û": "u", "ṷ": "u", "ü": "u", "ǘ": "u", "ǚ": "u", "ǜ": "u", "ǖ": "u", "ṳ": "u", "ụ": "u", "ű": "u", "ȕ": "u", "ù": "u", "ủ": "u", "ư": "u", "ứ": "u", "ự": "u", "ừ": "u", "ử": "u", "ữ": "u", "ȗ": "u", "ū": "u", "ṻ": "u", "ų": "u", "ᶙ": "u", "ů": "u", "ũ": "u", "ṹ": "u", "ṵ": "u", "ᵫ": "ue", "ꝸ": "um", "ⱴ": "v", "ꝟ": "v", "ṿ": "v", "ʋ": "v", "ᶌ": "v", "ⱱ": "v", "ṽ": "v", "ꝡ": "vy", "ẃ": "w", "ŵ": "w", "ẅ": "w", "ẇ": "w", "ẉ": "w", "ẁ": "w", "ⱳ": "w", "ẘ": "w", "ẍ": "x", "ẋ": "x", "ᶍ": "x", "ý": "y", "ŷ": "y", "ÿ": "y", "ẏ": "y", "ỵ": "y", "ỳ": "y", "ƴ": "y", "ỷ": "y", "ỿ": "y", "ȳ": "y", "ẙ": "y", "ɏ": "y", "ỹ": "y", "ź": "z", "ž": "z", "ẑ": "z", "ʑ": "z", "ⱬ": "z", "ż": "z", "ẓ": "z", "ȥ": "z", "ẕ": "z", "ᵶ": "z", "ᶎ": "z", "ʐ": "z", "ƶ": "z", "ɀ": "z", "ﬀ": "ff", "ﬃ": "ffi", "ﬄ": "ffl", "ﬁ": "fi", "ﬂ": "fl", "ĳ": "ij", "œ": "oe", "ﬆ": "st", "ₐ": "a", "ₑ": "e", "ᵢ": "i", "ⱼ": "j", "ₒ": "o", "ᵣ": "r", "ᵤ": "u", "ᵥ": "v", "ₓ": "x" };
@@ -2417,7 +2511,7 @@ var __extends$3 = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __awaiter$4 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+var __awaiter$5 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve$$1, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
@@ -2425,7 +2519,7 @@ var __awaiter$4 = (undefined && undefined.__awaiter) || function (thisArg, _argu
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator$4 = (undefined && undefined.__generator) || function (thisArg, body) {
+var __generator$5 = (undefined && undefined.__generator) || function (thisArg, body) {
     var _$$1 = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
     return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
@@ -2458,23 +2552,23 @@ var KissManga = (function (_super) {
         return _super.call(this, config$6, new Parser$3(), new Helper$3(), strategy$2) || this;
     }
     KissManga.prototype.getVM = function () {
-        return __awaiter$4(this, void 0, void 0, function () {
+        return __awaiter$5(this, void 0, void 0, function () {
             var vm$$1, tkCa, tkLo, tkLst, lst;
-            return __generator$4(this, function (_a) {
+            return __generator$5(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         vm$$1 = this.parser.VM;
                         if (vm$$1) {
-                            return [2 /*return*/, vm$$1];
+                            return [2           , vm$$1];
                         }
                         tkCa = this.request.getHtml(url.resolve(this.config.site, "/Scripts/ca.js"));
                         tkLo = this.request.getHtml(url.resolve(this.config.site, "/Scripts/lo.js"));
                         tkLst = [tkCa,
                             tkLo];
-                        return [4 /*yield*/, Promise.all(tkLst)];
+                        return [4          , Promise.all(tkLst)];
                     case 1:
                         lst = _a.sent();
-                        return [2 /*return*/, this.parser.buildVM(lst[0], lst[1])];
+                        return [2           , this.parser.buildVM(lst[0], lst[1])];
                 }
             });
         });
@@ -2483,9 +2577,9 @@ var KissManga = (function (_super) {
         return this.filter().then(function (x) { return x.results; });
     };
     KissManga.prototype.filter = function (filter) {
-        return __awaiter$4(this, void 0, void 0, function () {
+        return __awaiter$5(this, void 0, void 0, function () {
             var search, opts, headers, doc, mangas;
-            return __generator$4(this, function (_a) {
+            return __generator$5(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         this.debug("filter mangas with: %o", filter);
@@ -2495,35 +2589,35 @@ var KissManga = (function (_super) {
                         headers["Content-Type"] = headers["Content-Type"] || "application/x-www-form-urlencoded; charset=UTF-8";
                         headers["Content-Length"] = headers["Content-Length"] || search.params.length;
                         opts.body = search.params.toString();
-                        return [4 /*yield*/, this.postDoc(opts)];
+                        return [4          , this.postDoc(opts)];
                     case 1:
                         doc = _a.sent();
-                        return [4 /*yield*/, this.parser.filter(doc)];
+                        return [4          , this.parser.filter(doc)];
                     case 2:
                         mangas = _a.sent();
                         this.debug("mangas: " + mangas.results.length);
-                        return [2 /*return*/, mangas];
+                        return [2           , mangas];
                 }
             });
         });
     };
     KissManga.prototype.images = function (name, chapNumber) {
-        return __awaiter$4(this, void 0, void 0, function () {
+        return __awaiter$5(this, void 0, void 0, function () {
             var chapters, chapter, html, secret, vm$$1, imgs, srcs;
-            return __generator$4(this, function (_a) {
+            return __generator$5(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.chapters(name)];
+                    case 0: return [4          , this.chapters(name)];
                     case 1:
                         chapters = _a.sent();
                         chapter = _.find(chapters, { chap_number: chapNumber });
                         if (!chapter) {
                             throw new Error("Chapter not found!");
                         }
-                        return [4 /*yield*/, this.getHtml(chapter.src)];
+                        return [4          , this.getHtml(chapter.src)];
                     case 2:
                         html = _a.sent();
                         secret = this.parser.getSecret(html);
-                        return [4 /*yield*/, this.getVM()];
+                        return [4          , this.getVM()];
                     case 3:
                         vm$$1 = _a.sent();
                         imgs = this.parser.imagesList(html, secret, vm$$1);
@@ -2533,7 +2627,7 @@ var KissManga = (function (_super) {
                                 src: x
                             };
                         });
-                        return [2 /*return*/, srcs.map(function (x) { return Promise.resolve(x); })];
+                        return [2           , srcs.map(function (x) { return Promise.resolve(x); })];
                 }
             });
         });
@@ -2542,7 +2636,7 @@ var KissManga = (function (_super) {
 }(MangaSite));
 var manga$6 = new KissManga();
 
-var site$4 = "https://bato.to/";
+var site$4 = "http://bato.to/";
 var config$8 = {
     name: "Batoto",
     site: site$4,
@@ -2619,9 +2713,9 @@ var Parser$4 = (function () {
         var $tr = $ipbTable.find("tr > td");
         var title = $("h1.ipsType_pagetitle").text().trim();
         var image = $ipsBox.find("img").attr("src");
-        var synonyms = $tr.eq(1).children("span").map(function (i, e) { return e.lastChild.nodeValue.slice(1); }).get();
-        var authors = $tr.eq(3).children("a").map(function (i, e) { return e.lastChild.nodeValue; }).get();
-        var artists = $tr.eq(5).children("a").map(function (i, e) { return e.lastChild.nodeValue; }).get();
+        var synonyms = $tr.eq(1).children("span").map(function (i, e) { return e.lastChild && e.lastChild.nodeValue.slice(1); }).get().filter(function (x) { return x; });
+        var authors = $tr.eq(3).children("a").map(function (i, e) { return e.lastChild && e.lastChild.nodeValue; }).get().filter(function (x) { return x; });
+        var artists = $tr.eq(5).children("a").map(function (i, e) { return e.lastChild && e.lastChild.nodeValue; }).get().filter(function (x) { return x; });
         var genres = $tr.eq(7).children("a").map(function (i, e) { return e.lastChild.lastChild; }).filter(function (x, e) { return !!e; }).map(function (i, e) { return e.nodeValue.slice(1); }).get();
         var synopsis = $tr.eq(13).text();
         var type = $tr.eq(9).text().trim();
@@ -2875,7 +2969,7 @@ var processFilter$4 = function (mangafilter) {
     var rating_low = "rating_low=" + (fratingFrom || 0);
     var rating_high = "rating_high=" + (fratingTo || 5);
     var mature = "mature=" + (fmature || "y");
-    return { src: config$8.mangas_url + "?" + [
+    return { src: url.resolve(config$8.mangas_url, "?" + [
             mangaName,
             nameCond,
             authorArtist,
@@ -2888,7 +2982,7 @@ var processFilter$4 = function (mangafilter) {
             rating_low,
             rating_high,
             page
-        ].join("&")
+        ].join("&"))
     };
 };
 function resolveType$3(type) {
@@ -2969,7 +3063,7 @@ var __assign$4 = (undefined && undefined.__assign) || Object.assign || function(
     }
     return t;
 };
-var __awaiter$5 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+var __awaiter$6 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve$$1, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
@@ -2977,7 +3071,7 @@ var __awaiter$5 = (undefined && undefined.__awaiter) || function (thisArg, _argu
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator$5 = (undefined && undefined.__generator) || function (thisArg, body) {
+var __generator$6 = (undefined && undefined.__generator) || function (thisArg, body) {
     var _$$1 = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
     return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
@@ -3012,15 +3106,15 @@ var Batoto = (function (_super) {
         return _this;
     }
     Batoto.prototype.resolveMangaUrl = function (name) {
-        return __awaiter$5(this, void 0, void 0, function () {
+        return __awaiter$6(this, void 0, void 0, function () {
             var filter, filterResults, page, results, result, _i, results_1, obj;
-            return __generator$5(this, function (_a) {
+            return __generator$6(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this._urlCache[name]) {
-                            return [2 /*return*/, this._urlCache[name]];
+                            return [2           , this._urlCache[name]];
                         }
-                        filter = { search: { name: { name: name, condition: FilterCondition.EndsWith } } };
+                        filter = { search: { name: { name: name.replace(/\+/g, "%2B"), condition: FilterCondition.Contains } } };
                         _a.label = 1;
                     case 1:
                         page = 0;
@@ -3028,7 +3122,7 @@ var Batoto = (function (_super) {
                             page = filterResults.page + 1;
                         }
                         filter.page = page;
-                        return [4 /*yield*/, this.filter(filter)];
+                        return [4          , this.filter(filter)];
                     case 2:
                         filterResults = _a.sent();
                         results = filterResults.results;
@@ -3041,13 +3135,13 @@ var Batoto = (function (_super) {
                             this._urlCache[obj.name] = obj.src;
                         }
                         if (result) {
-                            return [2 /*return*/, result];
+                            return [2           , result];
                         }
                         _a.label = 3;
                     case 3:
-                        if (filterResults.page < filterResults.total && filterResults.results.length > 0) return [3 /*break*/, 1];
+                        if (filterResults.page < filterResults.total && filterResults.results.length > 0) return [3          , 1];
                         _a.label = 4;
-                    case 4: return [2 /*return*/, ""];
+                    case 4: return [2           , ""];
                 }
             });
         });
@@ -3056,37 +3150,37 @@ var Batoto = (function (_super) {
         return this.filter(filter).then(function (x) { return x.results; });
     };
     Batoto.prototype.filter = function (filter) {
-        return __awaiter$5(this, void 0, void 0, function () {
+        return __awaiter$6(this, void 0, void 0, function () {
             var search, doc, mangas;
-            return __generator$5(this, function (_a) {
+            return __generator$6(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         this.debug("filter mangas with: %o", filter);
                         search = processFilter$4(filter);
-                        return [4 /*yield*/, this.getDoc(search.src)];
+                        return [4          , this.getDoc(search.src)];
                     case 1:
                         doc = _a.sent();
-                        return [4 /*yield*/, this.parser.filter(doc)];
+                        return [4          , this.parser.filter(doc)];
                     case 2:
                         mangas = _a.sent();
                         this.debug("mangas: " + mangas.results.length);
-                        return [2 /*return*/, mangas];
+                        return [2           , mangas];
                 }
             });
         });
     };
     Batoto.prototype.resolveChapterSource = function (name, chapter) {
-        return __awaiter$5(this, void 0, void 0, function () {
+        return __awaiter$6(this, void 0, void 0, function () {
             var src;
-            return __generator$5(this, function (_a) {
+            return __generator$6(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, _super.prototype.resolveChapterSource.call(this, name, chapter)];
+                    case 0: return [4          , _super.prototype.resolveChapterSource.call(this, name, chapter)];
                     case 1:
                         src = _a.sent();
                         if (!src) {
-                            return [2 /*return*/, src];
+                            return [2           , src];
                         }
-                        return [2 /*return*/, Parser$4.convertChapterReaderUrl(src)];
+                        return [2           , Parser$4.convertChapterReaderUrl(src)];
                 }
             });
         });
@@ -3098,29 +3192,29 @@ var Batoto = (function (_super) {
     };
 
     Batoto.prototype.isLoggedIn = function () {
-        return __awaiter$5(this, void 0, void 0, function () {
+        return __awaiter$6(this, void 0, void 0, function () {
             var html, match;
-            return __generator$5(this, function (_a) {
+            return __generator$6(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getHtml("http://bato.to/search")];
+                    case 0: return [4          , this.getHtml("http://bato.to/search")];
                     case 1:
                         html = _a.sent();
                         match = html.match(/>Sign Out<\/a\>/m);
-                        return [2 /*return*/, !!match];
+                        return [2           , !!match];
                 }
             });
         });
     };
     Batoto.prototype.logIn = function (user, pw, rememberMe) {
         if (rememberMe === void 0) { rememberMe = true; }
-        return __awaiter$5(this, void 0, void 0, function () {
+        return __awaiter$6(this, void 0, void 0, function () {
             var url$$1, request, $, authKey, body, html;
-            return __generator$5(this, function (_a) {
+            return __generator$6(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url$$1 = "http://bato.to/forums/index.php?app=core&module=global&section=login&do=process";
                         request = this.buildRequest(url$$1);
-                        return [4 /*yield*/, this.getDoc(request)];
+                        return [4          , this.getDoc(request)];
                     case 1:
                         $ = _a.sent();
                         authKey = $("#login > input[name='auth_key']").attr("value");
@@ -3132,10 +3226,10 @@ var Batoto = (function (_super) {
                             auth_key: authKey,
                         };
                         request = __assign$4({}, request, { formData: body });
-                        return [4 /*yield*/, this.request.postHtml(request)];
+                        return [4          , this.request.postHtml(request)];
                     case 2:
                         html = _a.sent();
-                        return [2 /*return*/, !!html.match(/<strong>You are now signed in<\/strong>/m)];
+                        return [2           , !!html.match(/<strong>You are now signed in<\/strong>/m)];
                 }
             });
         });
