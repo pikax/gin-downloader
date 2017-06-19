@@ -186,6 +186,7 @@ export class Parser implements SiteParser {
   imagesList(html: string, secret: string, vm: Script): string[] {
     let lstImages = html.getMatches(/wrapKA\("([^"]*)"/gm, 1);
 
+
     const sandbox = {
       lstImages,
       imgs : Array<string>(),
@@ -221,8 +222,11 @@ export class Parser implements SiteParser {
   buildVM(cajs: string, lojs: string) {
     let scripts = [cajs
       , lojs
-      , "chko = secret || chko; key = CryptoJS.SHA256(chko);"
-      , "for (var img in lstImages) imgs.push(wrapKA(lstImages[img]).toString());"
+      , "chko = (secret && chko + secret) || chko; key = CryptoJS.SHA256(chko);"
+      , "for (var img in lstImages) {" +
+      "imgs.push(wrapKA(lstImages[img]).toString())" +
+      "" +
+      "};"
     ];
 
     return this._vm = new Script(scripts.join("\n"));
