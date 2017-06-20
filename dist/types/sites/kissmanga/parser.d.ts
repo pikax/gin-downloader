@@ -6,6 +6,8 @@ import "../../declarations";
 import { Chapter, FilteredResults, MangaInfo, MangaSource, MangaXDoc, SiteParser } from "../../declarations";
 import { Script } from "vm";
 export declare class Parser implements SiteParser {
+    readonly secretAlgorithm: string;
+    private _secretAlgorithm;
     private _vm;
     private static fixNames;
     private static resolveName;
@@ -18,7 +20,7 @@ export declare class Parser implements SiteParser {
     imagesPaths(doc: MangaXDoc): string[];
     image(html: string): string;
     readonly VM: Script;
-    buildVM(cajs: string, lojs: string): Script;
+    buildVM(cajs: string, lojs: string, algorithm: string): Script;
     filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults;
     static ResolveChapterVolume(title: string): string;
     static ResolveChapterNumber(title: string): number;

@@ -2022,6 +2022,13 @@ verbose$4("using %O", config$6);
 var Parser$3 = (function () {
     function Parser() {
     }
+    Object.defineProperty(Parser.prototype, "secretAlgorithm", {
+        get: function () {
+            return this._secretAlgorithm;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Parser.prototype.mangas = function ($) {
         var mangas = [];
         $("table.listing > tbody > tr").slice(2).each(function (i, el) {
@@ -2063,7 +2070,6 @@ var Parser$3 = (function () {
                 chapter = -7;
                 console.warn("couldn't resolve the chapter for '%s', please refer to %s", src, "https://github.com/pikax/gin-downloader/issues/7");
             }
-
             chapters[i] = {
                 name: mangaName,
                 chap_number: chapter,
@@ -2141,11 +2147,13 @@ var Parser$3 = (function () {
         return sandbox.imgs.map(function (x) { return /url=([^&]*)/.exec(x)[1]; }).map(decodeURIComponent);
     };
     Parser.prototype.getSecret = function (html) {
-        var m = /\["([^"]*)"]; chko[^\[]*\[(\d+)]/gm.exec(html);
-        if (m) {
-            return m[1].decodeEscapeSequence();
+        var matches = [];
+        var m;
+        var regex = /(var (_[\da-z]*) = \["([^"]*)"]; chko =([^\[]*\[\d+][^;]*); [^)]*\))/gm;
+        while (m = regex.exec(html)) {
+            matches.push(m[1]);
         }
-        return null;
+        return matches.join(";");
     };
     Parser.prototype.imagesPaths = function (doc) {
         throw new Error("no needed");
@@ -2160,15 +2168,16 @@ var Parser$3 = (function () {
         enumerable: true,
         configurable: true
     });
-    Parser.prototype.buildVM = function (cajs, lojs) {
+    Parser.prototype.buildVM = function (cajs, lojs, algorithm) {
         var scripts = [cajs,
             lojs,
-            "chko = (secret && chko + secret) || chko; key = CryptoJS.SHA256(chko);",
+            algorithm,
             "for (var img in lstImages) {" +
                 "imgs.push(wrapKA(lstImages[img]).toString())" +
-                "" +
                 "};"
         ];
+        debug$5("building vm with: %o", algorithm);
+        this._secretAlgorithm = algorithm;
         return this._vm = new vm.Script(scripts.join("\n"));
     };
     Parser.prototype.filter = function (doc) {
@@ -2551,14 +2560,14 @@ var KissManga = (function (_super) {
     function KissManga() {
         return _super.call(this, config$6, new Parser$3(), new Helper$3(), strategy$2) || this;
     }
-    KissManga.prototype.getVM = function () {
+    KissManga.prototype.getVM = function (secret) {
         return __awaiter$5(this, void 0, void 0, function () {
             var vm$$1, tkCa, tkLo, tkLst, lst;
             return __generator$5(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         vm$$1 = this.parser.VM;
-                        if (vm$$1) {
+                        if (vm$$1 && this.parser.secretAlgorithm === secret) {
                             return [2           , vm$$1];
                         }
                         tkCa = this.request.getHtml(url.resolve(this.config.site, "/Scripts/ca.js"));
@@ -2568,7 +2577,7 @@ var KissManga = (function (_super) {
                         return [4          , Promise.all(tkLst)];
                     case 1:
                         lst = _a.sent();
-                        return [2           , this.parser.buildVM(lst[0], lst[1])];
+                        return [2           , this.parser.buildVM(lst[0], lst[1], secret)];
                 }
             });
         });
@@ -2617,7 +2626,7 @@ var KissManga = (function (_super) {
                     case 2:
                         html = _a.sent();
                         secret = this.parser.getSecret(html);
-                        return [4          , this.getVM()];
+                        return [4          , this.getVM(secret)];
                     case 3:
                         vm$$1 = _a.sent();
                         imgs = this.parser.imagesList(html, secret, vm$$1);
