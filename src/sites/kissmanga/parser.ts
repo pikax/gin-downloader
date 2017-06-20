@@ -67,27 +67,36 @@ export class Parser implements SiteParser {
       let mangaName = ma.children.map(x => x.nodeValue).join("").leftTrim();
 
 
+      let chapter: string|number = "completed";
+      let vol = undefined;
       let ca = tds[1].children.find(x => x.name === "a");
-      let src = ca.attribs.href;
-      // let aname = ca.lastChild.nodeValue;
+      let src: string = ma.attribs.href;
+      if (ca) {
+        src = ca.attribs.href;
+        // let aname = ca.lastChild.nodeValue;
 
-      let vol = _.last(src.match(/(?:vol-)(\d+)/i));
+        vol = _.last(src.match(/(?:vol-)(\d+)/i));
 
-      const chapRegexes = [
-        /(?:(?:ch|chapter|ep)-)(\d+(-\d{1,3})?)/i,
-        /(\d+(-\d{1,3})?)(?:\?)/,
+        const chapRegexes = [
+          /(?:(?:ch|chapter|ep)-)(\d+(-\d{1,3})?)/i,
+          /(\d+(-\d{1,3})?)(?:\?)/,
 
-        /(?:\/)(\d+(-\d{1,3})?)/
-      ];
+          /(?:\/)(\d+(-\d{1,3})?)/
+        ];
 
-      let chapter =  _.reduce(chapRegexes, (result, value) => {
-        return result || _.head(_.slice(src.match(value), 1, 2));
-      }, null);
+ 	  chapter = _.reduce(chapRegexes, (result, value) => {
+          return result || _.head(_.slice(src.match(value), 1, 2));
+        }, null);
 
-      // TODO resolve chapter number or type
-      if (!chapter) {
-        chapter = -7;
-        console.warn("couldn't resolve the chapter for '%s', please refer to %s", src , "https://github.com/pikax/gin-downloader/issues/7" );
+        // TODO resolve chapter number or type
+        if (!chapter) {
+          chapter = -7;
+          console.warn("couldn't resolve the chapter for '%s', please refer to %s", src , "https://github.com/pikax/gin-downloader/issues/7" );
+        }
+      }
+
+      if (chapter === "completed") {
+        console.warn("couldn't resolve the chapter for '%s', probably is completed", mangaName );
       }
 
       chapters[i] = {
@@ -96,7 +105,6 @@ export class Parser implements SiteParser {
         src: resolve(config.latest_url, src),
         volume: vol
       };
-
     });
     return chapters;
   }
