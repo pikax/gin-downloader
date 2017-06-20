@@ -12,7 +12,6 @@ import * as url from "url";
 import {config} from "./config";
 import {sanitize} from "../../common/helper";
 import {strategy} from "../../request/requestRetryStrategy";
-import {ancestorWhere} from "tslint";
 
 
 export class Parser implements SiteParser {

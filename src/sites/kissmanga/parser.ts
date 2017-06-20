@@ -8,14 +8,17 @@ import {
 } from "../../declarations";
 import {resolve} from "url";
 
-import {config} from "./config";
+import {config, debug} from "./config";
 import {Script, createContext} from "vm";
 import {unescape} from "querystring";
 import {sanitize} from "../../common/helper";
 import * as _ from "lodash";
 
 export class Parser implements SiteParser {
-
+  get secretAlgorithm(): string {
+    return this._secretAlgorithm;
+  }
+  private _secretAlgorithm: string;
   private _vm: Script;
 
   private static fixNames: { [id: string]: string; } = {
@@ -77,26 +80,15 @@ export class Parser implements SiteParser {
         /(?:\/)(\d+(-\d{1,3})?)/
       ];
 
-
       let chapter =  _.reduce(chapRegexes, (result, value) => {
         return result || _.head(_.slice(src.match(value), 1, 2));
       }, null);
-
 
       // TODO resolve chapter number or type
       if (!chapter) {
         chapter = -7;
         console.warn("couldn't resolve the chapter for '%s', please refer to %s", src , "https://github.com/pikax/gin-downloader/issues/7" );
       }
-
-
-
-
-
-      // chapter = chapter.replace("-", ".");
-
-      // console.log(chapter)
-
 
       chapters[i] = {
         name: mangaName,
@@ -186,7 +178,6 @@ export class Parser implements SiteParser {
   imagesList(html: string, secret: string, vm: Script): string[] {
     let lstImages = html.getMatches(/wrapKA\("([^"]*)"/gm, 1);
 
-
     const sandbox = {
       lstImages,
       imgs : Array<string>(),
@@ -200,11 +191,13 @@ export class Parser implements SiteParser {
   }
 
   getSecret(html: string): string {
-    let m = /\["([^"]*)"]; chko[^\[]*\[(\d+)]/gm.exec(html);
-    if (m) {
-      return m[1].decodeEscapeSequence();
+    let matches = [];
+    let m;
+    let regex = /(var (_[\da-z]*) = \["([^"]*)"]; chko =([^\[]*\[\d+][^;]*); [^)]*\))/gm;
+    while (m = regex.exec(html)) {
+      matches.push(m[1]);
     }
-    return null;
+    return matches.join(";");
   }
 
   imagesPaths(doc: MangaXDoc): string[] {
@@ -219,15 +212,17 @@ export class Parser implements SiteParser {
     return this._vm;
   }
 
-  buildVM(cajs: string, lojs: string) {
+  buildVM(cajs: string, lojs: string, algorithm: string) {
     let scripts = [cajs
       , lojs
-      , "chko = (secret && chko + secret) || chko; key = CryptoJS.SHA256(chko);"
+      , algorithm
       , "for (var img in lstImages) {" +
       "imgs.push(wrapKA(lstImages[img]).toString())" +
-      "" +
       "};"
     ];
+
+    debug("building vm with: %o", algorithm);
+    this._secretAlgorithm = algorithm;
 
     return this._vm = new Script(scripts.join("\n"));
   }
@@ -240,7 +235,6 @@ export class Parser implements SiteParser {
       total: 1
     };
   }
-
 
 
   static ResolveChapterVolume(title: string): string {

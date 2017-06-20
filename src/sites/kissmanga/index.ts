@@ -20,21 +20,20 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
     super(config, new Parser(), new Helper(), strategy);
   }
 
-  private async getVM(): Promise<Script> {
+  private async getVM(secret: string): Promise<Script> {
     let vm = this.parser.VM;
-    if (vm) {
+    if (vm && this.parser.secretAlgorithm === secret) {
       return vm;
     }
 
     let tkCa = this.request.getHtml(resolve(this.config.site, "/Scripts/ca.js"));
-
     let tkLo = this.request.getHtml(resolve(this.config.site, "/Scripts/lo.js"));
     let tkLst = [tkCa
       , tkLo];
 
     let lst = await Promise.all(tkLst);
 
-    return this.parser.buildVM(lst[0], lst[1]);
+    return this.parser.buildVM(lst[0], lst[1], secret);
   }
 
   mangas(filter?: MangaFilter): Promise<MangaSource[]> {
@@ -72,7 +71,7 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
       let html = await this.getHtml(chapter.src);
       let secret = this.parser.getSecret(html);
 
-      let vm = await this.getVM();
+      let vm = await this.getVM(secret);
 
       let imgs = this.parser.imagesList(html, secret, vm);
 
