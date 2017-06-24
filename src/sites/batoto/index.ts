@@ -14,7 +14,7 @@ import {
 import {processFilter} from "./filter";
 import {strategy} from "../../request/requestRetryStrategy";
 import {OptionsWithUrl} from "request";
-
+import {capitalize, deburr} from "lodash";
 
 
 export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Site {
@@ -29,8 +29,8 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
     if (this._urlCache[name]) {
       return this._urlCache[name];
     }
+    let filter: MangaFilter = {search: {name: {name: name, condition: FilterCondition.Contains}}};
 
-    let filter: MangaFilter = {search: {name: {name: name.replace(/\+/g, "%2B"), condition: FilterCondition.Contains}}};
     let filterResults: FilteredResults;
     do {
       let page = 0;
@@ -43,14 +43,18 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
 
       let {results} = filterResults;
 
+      this.debug("filtered results: %o", results);
+
       let result: string;
 
-
+      // console.log(results);
       for (let obj of results) {
         if (obj.name === name) {
           result = obj.src;
         }
-
+        else if (obj.name.startsWith(name) && obj.name === `${name} (${capitalize(deburr(name.replace("ә", "a")))})`){
+          result = obj.src;
+        }
         this._urlCache[obj.name] = obj.src; // add to cache
       }
 
@@ -98,7 +102,8 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
 
     let search = processFilter(filter);
 
-    let doc = await this.getDoc(search.src);
+
+    let doc = await this.getDoc({url: search.src, qs: search.qs});
     let mangas = await this.parser.filter(doc);
 
     this.debug(`mangas: ${mangas.results.length}`);
@@ -107,7 +112,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
   }
 
 
-  async resolveChapterSource(name: string, chapter: number): Promise<string> {
+  protected async resolveChapterSource(name: string, chapter: number): Promise<string> {
     let src = await super.resolveChapterSource(name, chapter);
     if (!src) {
       return src;
@@ -115,7 +120,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
     return Parser.convertChapterReaderUrl(src);
   }
 
-  buildChapterRequest(url: string): OptionsWithUrl {
+  protected buildChapterRequest(url: string): OptionsWithUrl {
     let opts = super.buildRequest(url);
     opts.headers = {...opts.headers, Referer: "http://bato.to/reader" };
     return opts;
