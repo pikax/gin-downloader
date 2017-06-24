@@ -5,7 +5,7 @@ import {Genre, FilterCondition, MangaFilter, FilterStatus, GenreCondition, Filte
 import {config} from "./config";
 import {isNullOrUndefined} from "util";
 import {procFilter} from "../../common/helper";
-import * as url from "url";
+import {helper} from "./names";
 
 const Supported = [];
 Supported[Genre.Action] = Genre.Action;
@@ -133,7 +133,7 @@ dic[Genre.Medical] = "42";
 dic[Genre.NoChapters] = "44";
 
 
-export const processFilter = (mangafilter: MangaFilter): {src: string} => {
+export const processFilter = (mangafilter: MangaFilter): {src: string, qs: any} => {
   let filter = procFilter(mangafilter);
 
   let {search} = filter;
@@ -191,35 +191,66 @@ export const processFilter = (mangafilter: MangaFilter): {src: string} => {
     }
   }
 
-  const mangaName = `name=${fname || ""}`;
-  const nameCond = nameCondition && `name_cond=${nameCondition}`;
-  const authorArtist =  `artist_name=${(fauthor || "")}`;
-  const authorCond = authorCondition && `artist_name_cond=${authorCondition}`;
+  // const mangaName = `name=${fname || ""}`;
+  // const nameCond = nameCondition && `name_cond=${nameCondition}`;
+  // const authorArtist =  `artist_name=${(fauthor || "")}`;
+  // const authorCond = authorCondition && `artist_name_cond=${authorCondition}`;
+  //
+  // const genreFilter = "genres=" + ordered.map(x => inOutGenre(x, genres, outGenres)).filter(x => x !== "").join(";");
+  // const genreCon = ( genreCondition && `genre_cond=${genreCondition}` ) || "genre_cond=and"; // todo change me
+  // const status = `status=${(fstatus || "")}`;
+  // const type = `type=${ftype}`;
+  // const page = `p=${(filter.page || 1)}`;
+  //
+  // const rating_low = `rating_low=${fratingFrom || 0}`; // 0~5
+  // const rating_high = `rating_high=${fratingTo || 5}`; // 0~5
+  // const mature = `mature=${fmature || "y"}`; // n == false
 
-  const genreFilter = "genres=" + ordered.map(x => inOutGenre(x, genres, outGenres)).filter(x => x !== "").join(";");
-  const genreCon = ( genreCondition && `genre_cond=${genreCondition}` ) || "genre_cond=and"; // todo change me
-  const status = `status=${(fstatus || "")}`;
-  const type = `type=${ftype}`;
-  const page = `p=${(filter.page || 1)}`;
+  const mangaName = helper.toName(fname);
+  const name_cond = nameCondition;
+  const artist_name =  fauthor;
+  const artist_name_cond = authorCondition;
 
-  const rating_low = `rating_low=${fratingFrom || 0}`; // 0~5
-  const rating_high = `rating_high=${fratingTo || 5}`; // 0~5
-  const mature = `mature=${fmature || "y"}`; // n == false
+  const genreFilter = ordered.map(x => inOutGenre(x, genres, outGenres)).filter(x => x !== "").join(";");
+  const genre_cond = genreCondition || "genre_cond=and"; // todo change me
+  const status = fstatus;
+  const type = ftype;
+  const p = filter.page || 1;
 
-  return {src: url.resolve(config.mangas_url, "?" + [
-    mangaName,
-    nameCond,
-    authorArtist,
-    authorCond,
-    genreFilter,
-    genreCon,
+  const rating_low = fratingFrom || 0; // 0~5
+  const rating_high = fratingTo || 5; // 0~5
+  const mature = fmature || "y"; // n == false
+
+  return {src: config.mangas_url,
+  qs: {
+    name: mangaName,
+    name_cond,
+    artist_name,
+    artist_name_cond,
+    genres: genreFilter,
+    genre_cond,
     status,
     type,
     mature,
     rating_low,
     rating_high,
-    page].join("&"))
-  };
+    p
+  }};
+  //
+  // return {src: url.resolve(config.mangas_url, "?" + [
+  //   mangaName,
+  //   nameCond,
+  //   authorArtist,
+  //   authorCond,
+  //   genreFilter,
+  //   genreCon,
+  //   status,
+  //   type,
+  //   mature,
+  //   rating_low,
+  //   rating_high,
+  //   page].join("&"))
+  // };
 };
 
 
