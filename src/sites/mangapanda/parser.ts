@@ -6,7 +6,7 @@ import {resolve} from "url";
 import config, {error} from "./config";
 import {
   Chapter, FilteredResults, FilterStatus, MangaInfo, MangaSource, MangaXDoc,
-  SiteParser
+  SiteParser,
   LicencedError,
 } from "../../declarations";
 import * as url from "url";
