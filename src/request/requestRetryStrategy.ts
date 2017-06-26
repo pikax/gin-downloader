@@ -11,7 +11,7 @@ import {OptionsWithUrl} from "request";
 
 const MaxRetries = 50;
 const Timeout = 10000;
-const Interval = 500;
+const Interval = 1000;
 
 
 
