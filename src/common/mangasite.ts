@@ -14,6 +14,7 @@ import {parse} from "url";
 import {RequestStrategy} from "../request/headers";
 import {GinRequest} from "../request/index";
 import {OptionsWithUrl} from "request";
+import {gin} from "./interface";
 
 export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends NameHelper> implements Site {
 
@@ -226,3 +227,22 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
 }
 
 export default Site;
+
+
+
+/// <reference path="interface.ts" />
+
+namespace gin {
+
+
+  import GinSite = gin.GinSite;
+  class GinSiteImpl implements GinSite {
+
+
+
+  }
+
+}
+
+
+
