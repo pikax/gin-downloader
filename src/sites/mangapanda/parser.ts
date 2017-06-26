@@ -7,6 +7,7 @@ import config from "./config";
 import {
   Chapter, FilteredResults, FilterStatus, MangaInfo, MangaSource, MangaXDoc,
   SiteParser
+  LicencedError,
 } from "../../declarations";
 import * as url from "url";
 
@@ -91,6 +92,7 @@ export class Parser implements SiteParser {
     let direction = $tds.eq(13).text();
 
 
+
     let genres = $("span.genretags").map((x, el) => el.lastChild.nodeValue).get();
     let synopsis = $("#readmangasum > p").text();
 
@@ -104,7 +106,8 @@ export class Parser implements SiteParser {
       artists,
       genres,
       synopsis,
-      direction
+      direction,
+
     };
   }
 
@@ -143,6 +146,8 @@ export class Parser implements SiteParser {
   imagesPaths($: MangaXDoc): string[] {
 
     let paths: string[] = [];
+
+ 
 
     $("#pageMenu > option").each((i, el) => {
       paths[i] = resolve($.location, `${el.attribs.value}`);

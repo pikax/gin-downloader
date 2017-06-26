@@ -4,6 +4,7 @@
 import {
   Chapter, FilteredResults, FilterStatus, MangaInfo, MangaSource, MangaXDoc,
   SiteParser
+  LicencedError,
 } from "../../declarations";
 
 import {resolve} from "url";
@@ -101,6 +102,14 @@ export class Parser implements SiteParser {
 
     let synopsis = titleElem.find("p").text();
 
+
+    let licensed = false;
+
+    let warning = $(".warning").text();
+    if(warning && warning.indexOf("has been licensed") >= 0){
+      licensed = true;
+    }
+
     return {
       image,
       title,
@@ -113,12 +122,21 @@ export class Parser implements SiteParser {
       status,
       ranked,
       rating,
-      scanlators
+      scanlators,
+
+      licensed
+
     };
   }
 
   chapters($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
     let chapters: Chapter[] = [];
+    let licensed = false;
+
+    let warning = $(".warning").text();
+    if (warning && warning.indexOf("has been licensed") >= 0){
+      licensed = true;
+    }
 
     $(".chlist > li > div").each((i, el) => {
 
@@ -144,7 +162,7 @@ export class Parser implements SiteParser {
         volume = sanitize(slide.children)[1].children[0].nodeValue;
       }
 
-      chapters.push(Parser.parseChapter(a, span, volume, date));
+      chapters.push({...Parser.parseChapter(a, span, volume, date), licensed});
 
     });
 
@@ -168,8 +186,13 @@ export class Parser implements SiteParser {
   }
 
   imagesPaths($: MangaXDoc): string[] {
-
     let paths: string[] = [];
+
+
+    let warning = $("#top_bar > span").text();
+    if (warning && warning.indexOf("Sorry, its licensed, and not available") >= 0) {
+      throw new LicencedError(warning.trim());
+    }
 
     $("#top_bar > div > div > select > option").slice(0, -1).each((i, el) => {
       paths[i] = resolve($.location, `${el.attribs.value}.html`);
