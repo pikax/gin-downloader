@@ -62,6 +62,8 @@ export interface Chapter {
   language?: string;
   scanlator?: string;
   dateAdded?: string;
+
+  licensed?: boolean;
 }
 
 
@@ -85,6 +87,8 @@ export interface MangaInfo {
 
   views?: string;
   type?: string;
+
+  licensed?: boolean;
 }
 
 
@@ -341,4 +345,23 @@ export interface FilteredResults {
   results: MangaSource[];
   page: number;
   total: number;
+}
+
+
+export class LicencedError{
+  get inner(): Error {
+    return this._inner;
+  }
+  get error(): string{
+    return this._error;
+  }
+
+
+  private _error: any;
+  private _inner: Error;
+
+  constructor(error: string, inner?: Error) {
+    this._error = error;
+    this._inner = inner;
+  }
 }

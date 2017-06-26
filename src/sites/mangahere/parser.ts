@@ -3,7 +3,7 @@
  */
 
 import {
-  Chapter, FilteredResults, FilterStatus, MangaInfo, MangaSource, MangaXDoc,
+  Chapter, FilteredResults, FilterStatus, LicencedError, MangaInfo, MangaSource, MangaXDoc,
   SiteParser
 } from "../../declarations";
 
@@ -90,6 +90,14 @@ export class Parser implements SiteParser {
 
     let synopsis = li.reverse()[0].children.reverse().find(x => x.name == "p").children[0].nodeValue;
 
+    let licensed = false;
+
+    if ($("#main > article > div > div.manga_detail > div.detail_list > div > strong").length > 0){
+      licensed = true;
+    }
+
+
+
     return {
       image,
       title,
@@ -99,11 +107,18 @@ export class Parser implements SiteParser {
       genres,
       synopsis,
       status,
+
+      licensed
     };
   }
 
   chapters($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
     let chapters: Chapter[] = [];
+    let licensed = false;
+
+    if ($("#main > article > div > div.manga_detail > div.detail_list > div > strong").length > 0){
+      licensed = true;
+    }
 
     $("span.left > a").each((i, el) => {
       let span = el.parent;
@@ -112,16 +127,14 @@ export class Parser implements SiteParser {
       let date = sanitize(li.children).reverse()[0].lastChild.nodeValue;
       let a = el;
 
-
-
-      chapters.push(Parser.parseChapter(a, span, date));
+      chapters.push({... Parser.parseChapter(a, span, date), licensed});
 
     });
 
     return chapters;
   }
 
-  private static parseChapter(a: CheerioElement, span: CheerioElement, date: string) : Chapter {
+  private static parseChapter(a: CheerioElement, span: CheerioElement, date: string): Chapter {
     let aText = a.lastChild.nodeValue.trim();
     let name = (span && span.lastChild.nodeValue) || aText;
     let href = a.attribs.href;
@@ -137,6 +150,11 @@ export class Parser implements SiteParser {
   imagesPaths($: MangaXDoc): string[] {
 
     let paths: string[] = [];
+
+    let licensed = $("body > section > div.mangaread_error > div.mt10.color_ff00.mb10.center").text();
+    if (licensed && licensed.indexOf("It's not available in MangaHere.") >= 0){
+      throw new LicencedError(licensed);
+    }
 
     $("body > section.readpage_top > div.go_page.clearfix > span > select > option").each((i, el) => {
       paths[i] = resolve($.location, `${el.attribs.value}`);
