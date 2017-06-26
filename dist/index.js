@@ -652,7 +652,7 @@ var __assign$3 = (undefined && undefined.__assign) || Object.assign || function(
 var requestRetry = require("requestretry");
 var MaxRetries = 50;
 var Timeout = 10000;
-var Interval = 500;
+var Interval = 1000;
 var DefaultOptions = {
     method: "GET",
     gzip: true,
