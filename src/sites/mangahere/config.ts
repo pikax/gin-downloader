@@ -16,4 +16,5 @@ export default config;
 
 export const debug = require("debug")("gin-downloader:mangahere");
 export const verbose = require("debug")("gin-downloader:mangahere:verbose");
+export const error = require("debug")("gin-downloader:mangahere:error");
 verbose("using %O", config);

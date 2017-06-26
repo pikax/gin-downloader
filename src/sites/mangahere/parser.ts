@@ -12,7 +12,7 @@ import "../../declarations";
 import {resolve} from "url";
 import * as url from "url";
 
-import {config} from "./config";
+import {config, error} from "./config";
 import {sanitize} from "../../common/helper";
 
 
@@ -169,10 +169,12 @@ export class Parser implements SiteParser {
 
     let m = html.match(__imgID__);
     if (!m || m.length === 0) {
+      error("first image regex failed using\nhtml:%s", html);
       throw new Error("Image not found");
     }
     m = m[0].match(__img__);
     if (!m || m.length === 0) {
+      error("second image regex failed using\nhtml:%s", html);
       throw new Error("Image not found");
     }
 

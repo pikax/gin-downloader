@@ -3,14 +3,14 @@
  */
 import {
   Chapter, FilteredResults, FilterStatus, MangaInfo, MangaSource, MangaXDoc,
-  SiteParser
+  SiteParser,
   LicencedError,
 } from "../../declarations";
 
 import {resolve} from "url";
 import * as url from "url";
 
-import {config} from "./config";
+import {config, error} from "./config";
 import {sanitize} from "../../common/helper";
 import {strategy} from "../../request/requestRetryStrategy";
 
@@ -106,7 +106,7 @@ export class Parser implements SiteParser {
     let licensed = false;
 
     let warning = $(".warning").text();
-    if(warning && warning.indexOf("has been licensed") >= 0){
+    if (warning && warning.indexOf("has been licensed") >= 0){
       licensed = true;
     }
 
@@ -207,10 +207,13 @@ export class Parser implements SiteParser {
 
     let m = html.match(__imgID__);
     if (!m || m.length === 0) {
+      error("first image regex failed using\nhtml:%s", html);
       throw new Error("Image not found");
     }
     m = m[0].match(__img__);
     if (!m || m.length === 0) {
+      error("second image regex failed using\nhtml:%s", html);
+
       throw new Error("Image not found");
     }
 

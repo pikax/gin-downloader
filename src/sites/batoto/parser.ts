@@ -8,7 +8,7 @@ import {
 } from "../../declarations";
 import {resolve} from "url";
 
-import {config} from "./config";
+import {config, error} from "./config";
 import {uniq, takeWhile, last, slice} from "lodash";
 import {sanitize} from "../../common/helper";
 
@@ -207,6 +207,7 @@ export class Parser implements SiteParser {
     let m = regex.exec(html); // get the first match
 
     if (!m) {
+      error("image regex failed using:\nhtml:%s", html);
       throw new Error("Image not found");
     }
     return m[1];

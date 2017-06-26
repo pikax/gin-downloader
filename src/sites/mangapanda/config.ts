@@ -15,4 +15,5 @@ export default config;
 
 export const debug = require("debug")("gin-downloader:mangapanda");
 export const verbose = require("debug")("gin-downloader:mangapanda:verbose");
+export const error = require("debug")("gin-downloader:mangapanda:error");
 verbose("using %O", config);

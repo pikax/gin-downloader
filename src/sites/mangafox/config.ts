@@ -10,10 +10,10 @@ export const config: SiteConfig = {
     site : site,
     mangas_url : resolve(site, "/manga/"),
     latest_url : resolve(site, "/releases/")
-
 };
 export default config;
 
 export const debug = require("debug")("gin-downloader:mangafox");
 export const verbose = require("debug")("gin-downloader:mangafox:verbose");
+export const error = require("debug")("gin-downloader:mangafox:error");
 verbose("using %O", config);
