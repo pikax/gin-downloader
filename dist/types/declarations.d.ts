@@ -40,6 +40,7 @@ export interface Chapter {
     language?: string;
     scanlator?: string;
     dateAdded?: string;
+    licensed?: boolean;
 }
 export interface MangaInfo {
     image: string;
@@ -58,6 +59,7 @@ export interface MangaInfo {
     direction?: string;
     views?: string;
     type?: string;
+    licensed?: boolean;
 }
 export interface ImageSource {
     src: string;
@@ -237,4 +239,11 @@ export interface FilteredResults {
     results: MangaSource[];
     page: number;
     total: number;
+}
+export declare class LicencedError {
+    readonly inner: Error;
+    readonly error: string;
+    private _error;
+    private _inner;
+    constructor(error: string, inner?: Error);
 }

@@ -128,6 +128,27 @@ var FilterMangaType;
     FilterMangaType[FilterMangaType["Artbook"] = "Artbook"] = "Artbook";
     FilterMangaType[FilterMangaType["Other"] = "Other"] = "Other";
 })(FilterMangaType || (FilterMangaType = {}));
+var LicencedError = (function () {
+    function LicencedError(error, inner) {
+        this._error = error;
+        this._inner = inner;
+    }
+    Object.defineProperty(LicencedError.prototype, "inner", {
+        get: function () {
+            return this._inner;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LicencedError.prototype, "error", {
+        get: function () {
+            return this._error;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return LicencedError;
+}());
 
 var __assign$1 = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -616,9 +637,10 @@ var config = {
 };
 var debug$2 = require("debug")("gin-downloader:mangafox");
 var verbose$1 = require("debug")("gin-downloader:mangafox:verbose");
+var error$1 = require("debug")("gin-downloader:mangafox:error");
 verbose$1("using %O", config);
 
-var __assign$2 = (undefined && undefined.__assign) || Object.assign || function(t) {
+var __assign$3 = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
         for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -648,12 +670,12 @@ var RequestRetryStrategy = (function () {
     function RequestRetryStrategy() {
     }
     RequestRetryStrategy.prototype.request = function (options) {
-        var opts = __assign$2({}, DefaultOptions);
+        var opts = __assign$3({}, DefaultOptions);
         if (typeof options === "string") {
             opts.url = options;
         }
         else {
-            opts = __assign$2({}, opts, options);
+            opts = __assign$3({}, opts, options);
         }
         return requestRetry(opts);
     };
@@ -661,6 +683,14 @@ var RequestRetryStrategy = (function () {
 }());
 var strategy = new RequestRetryStrategy();
 
+var __assign$2 = (undefined && undefined.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var __awaiter$2 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve$$1, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -760,6 +790,11 @@ var Parser = (function () {
         var rating = spans.eq(3).text();
         var scanlators = seriesInfo.find("div.data span a").slice(1).map(function (i, el) { return el.children[0].nodeValue; }).get();
         var synopsis = titleElem.find("p").text();
+        var licensed = false;
+        var warning = $(".warning").text();
+        if (warning && warning.indexOf("has been licensed") >= 0) {
+            licensed = true;
+        }
         return {
             image: image,
             title: title,
@@ -772,11 +807,17 @@ var Parser = (function () {
             status: status,
             ranked: ranked,
             rating: rating,
-            scanlators: scanlators
+            scanlators: scanlators,
+            licensed: licensed
         };
     };
     Parser.prototype.chapters = function ($) {
         var chapters = [];
+        var licensed = false;
+        var warning = $(".warning").text();
+        if (warning && warning.indexOf("has been licensed") >= 0) {
+            licensed = true;
+        }
         $(".chlist > li > div").each(function (i, el) {
 
             var children = sanitize(el.children);
@@ -790,7 +831,7 @@ var Parser = (function () {
             if (slide) {
                 volume = sanitize(slide.children)[1].children[0].nodeValue;
             }
-            chapters.push(Parser.parseChapter(a, span, volume, date));
+            chapters.push(__assign$2({}, Parser.parseChapter(a, span, volume, date), { licensed: licensed }));
         });
         return chapters;
     };
@@ -808,6 +849,10 @@ var Parser = (function () {
     };
     Parser.prototype.imagesPaths = function ($) {
         var paths = [];
+        var warning = $("#top_bar > span").text();
+        if (warning && warning.indexOf("Sorry, its licensed, and not available") >= 0) {
+            throw new LicencedError(warning.trim());
+        }
         $("#top_bar > div > div > select > option").slice(0, -1).each(function (i, el) {
             paths[i] = url.resolve($.location, el.attribs.value + ".html");
         });
@@ -818,10 +863,12 @@ var Parser = (function () {
         var __img__ = /src=".*\?token[^"]*/gmi;
         var m = html.match(__imgID__);
         if (!m || m.length === 0) {
+            error$1("first image regex failed using\nhtml:%s", html);
             throw new Error("Image not found");
         }
         m = m[0].match(__img__);
         if (!m || m.length === 0) {
+            error$1("second image regex failed using\nhtml:%s", html);
             throw new Error("Image not found");
         }
         return m[0].slice(5);
@@ -1206,8 +1253,17 @@ var config$2 = {
 };
 var debug$3 = require("debug")("gin-downloader:mangahere");
 var verbose$2 = require("debug")("gin-downloader:mangahere:verbose");
+var error$2 = require("debug")("gin-downloader:mangahere:error");
 verbose$2("using %O", config$2);
 
+var __assign$4 = (undefined && undefined.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var Parser$1 = (function () {
     function Parser() {
     }
@@ -1261,6 +1317,10 @@ var Parser$1 = (function () {
             ? FilterStatus.Ongoing.toString()
             : FilterStatus.Complete.toString();
         var synopsis = li.reverse()[0].children.reverse().find(function (x) { return x.name == "p"; }).children[0].nodeValue;
+        var licensed = false;
+        if ($("#main > article > div > div.manga_detail > div.detail_list > div > strong").length > 0) {
+            licensed = true;
+        }
         return {
             image: image,
             title: title,
@@ -1270,16 +1330,21 @@ var Parser$1 = (function () {
             genres: genres,
             synopsis: synopsis,
             status: status,
+            licensed: licensed
         };
     };
     Parser.prototype.chapters = function ($) {
         var chapters = [];
+        var licensed = false;
+        if ($("#main > article > div > div.manga_detail > div.detail_list > div > strong").length > 0) {
+            licensed = true;
+        }
         $("span.left > a").each(function (i, el) {
             var span = el.parent;
             var li = span.parent;
             var date = sanitize(li.children).reverse()[0].lastChild.nodeValue;
             var a = el;
-            chapters.push(Parser.parseChapter(a, span, date));
+            chapters.push(__assign$4({}, Parser.parseChapter(a, span, date), { licensed: licensed }));
         });
         return chapters;
     };
@@ -1296,6 +1361,10 @@ var Parser$1 = (function () {
     };
     Parser.prototype.imagesPaths = function ($) {
         var paths = [];
+        var licensed = $("body > section > div.mangaread_error > div.mt10.color_ff00.mb10.center").text();
+        if (licensed && licensed.indexOf("It's not available in MangaHere.") >= 0) {
+            throw new LicencedError(licensed);
+        }
         $("body > section.readpage_top > div.go_page.clearfix > span > select > option").each(function (i, el) {
             paths[i] = url.resolve($.location, "" + el.attribs.value);
         });
@@ -1306,10 +1375,12 @@ var Parser$1 = (function () {
         var __img__ = /src=".*\?token[^"]*/gmi;
         var m = html.match(__imgID__);
         if (!m || m.length === 0) {
+            error$2("first image regex failed using\nhtml:%s", html);
             throw new Error("Image not found");
         }
         m = m[0].match(__img__);
         if (!m || m.length === 0) {
+            error$2("second image regex failed using\nhtml:%s", html);
             throw new Error("Image not found");
         }
         return m[0].slice(5);
@@ -1632,6 +1703,7 @@ var config$4 = {
 };
 var debug$4 = require("debug")("gin-downloader:mangapanda");
 var verbose$3 = require("debug")("gin-downloader:mangapanda:verbose");
+var error$3 = require("debug")("gin-downloader:mangapanda:error");
 verbose$3("using %O", config$4);
 
 var Parser$2 = (function () {
@@ -1698,7 +1770,7 @@ var Parser$2 = (function () {
             artists: artists,
             genres: genres,
             synopsis: synopsis,
-            direction: direction
+            direction: direction,
         };
     };
     Parser.prototype.chapters = function ($) {
@@ -1733,7 +1805,12 @@ var Parser$2 = (function () {
     };
     Parser.prototype.image = function (html) {
         var __img__ = /src="[^"]*" alt/gmi;
-        return html.match(__img__)[0].slice(5, -5).replace(/.v=\d+/, "");
+        var m = html.match(__img__);
+        if (!m || m.length === 0) {
+            error$3("second image regex failed using\nhtml:%s", html);
+            throw new Error("Image not found");
+        }
+        return m[0].slice(5, -5).replace(/.v=\d+/, "");
     };
     Parser.prototype.filter = function ($) {
         var mangas = [];
@@ -2017,6 +2094,7 @@ var config$6 = {
 };
 var debug$5 = require("debug")("gin-downloader:kissmanga");
 var verbose$4 = require("debug")("gin-downloader:kissmanga:verbose");
+var error$4 = require("debug")("gin-downloader:kissmanga:error");
 verbose$4("using %O", config$6);
 
 var Parser$3 = (function () {
@@ -2053,22 +2131,30 @@ var Parser$3 = (function () {
             var ma = tds[0].children.find(function (x) { return x.name === "a"; });
 
             var mangaName = ma.children.map(function (x) { return x.nodeValue; }).join("").leftTrim();
+            var chapter = "completed";
+            var vol = undefined;
             var ca = tds[1].children.find(function (x) { return x.name === "a"; });
-            var src = ca.attribs.href;
+            var src = ma.attribs.href;
+            if (ca) {
+                src = ca.attribs.href;
 
-            var vol = _.last(src.match(/(?:vol-)(\d+)/i));
-            var chapRegexes = [
-                /(?:(?:ch|chapter|ep)-)(\d+(-\d{1,3})?)/i,
-                /(\d+(-\d{1,3})?)(?:\?)/,
-                /(?:\/)(\d+(-\d{1,3})?)/
-            ];
-            var chapter = _.reduce(chapRegexes, function (result, value) {
-                return result || _.head(_.slice(src.match(value), 1, 2));
-            }, null);
+                vol = _.last(src.match(/(?:vol-)(\d+)/i));
+                var chapRegexes = [
+                    /(?:(?:ch|chapter|ep)-)(\d+(-\d{1,3})?)/i,
+                    /(\d+(-\d{1,3})?)(?:\?)/,
+                    /(?:\/)(\d+(-\d{1,3})?)/
+                ];
+                chapter = _.reduce(chapRegexes, function (result, value) {
+                    return result || _.head(_.slice(src.match(value), 1, 2));
+                }, null);
 
-            if (!chapter) {
-                chapter = -7;
-                console.warn("couldn't resolve the chapter for '%s', please refer to %s", src, "https://github.com/pikax/gin-downloader/issues/7");
+                if (!chapter) {
+                    chapter = -7;
+                    console.warn("couldn't resolve the chapter for '%s', please refer to %s", src, "https://github.com/pikax/gin-downloader/issues/7");
+                }
+            }
+            if (chapter === "completed") {
+                console.warn("couldn't resolve the chapter for '%s', probably is completed", mangaName);
             }
             chapters[i] = {
                 name: mangaName,
@@ -2462,7 +2548,7 @@ function inOutGenre$3(genre, inGenre, outGenre) {
     return 0;
 }
 
-var __assign$3 = (undefined && undefined.__assign) || Object.assign || function(t) {
+var __assign$5 = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
         for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -2484,12 +2570,12 @@ var RequestCloudFareStrategy = (function () {
     function RequestCloudFareStrategy() {
     }
     RequestCloudFareStrategy.prototype.request = function (options) {
-        var opts = __assign$3({}, DefaultOptions$1);
+        var opts = __assign$5({}, DefaultOptions$1);
         if (typeof options === "string") {
             opts.url = options;
         }
         else {
-            opts = __assign$3({}, opts, options);
+            opts = __assign$5({}, opts, options);
         }
         return new Promise(function (res, rej) {
             var callback = function (err, response, body) {
@@ -2654,6 +2740,7 @@ var config$8 = {
 };
 var debug$6 = require("debug")("gin-downloader:batoto");
 var verbose$5 = require("debug")("gin-downloader:batoto:verbose");
+var error$5 = require("debug")("gin-downloader:batoto:error");
 verbose$5("using %O", config$8);
 
 var Parser$4 = (function () {
@@ -2794,6 +2881,7 @@ var Parser$4 = (function () {
         var regex = /(?:id="comic_page".*)((http|https):\/\/img\.bato\.to\/comics\/[^"]*)/gm;
         var m = regex.exec(html);
         if (!m) {
+            error$5("image regex failed using:\nhtml:%s", html);
             throw new Error("Image not found");
         }
         return m[1];
@@ -3064,7 +3152,7 @@ var __extends$4 = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign$4 = (undefined && undefined.__assign) || Object.assign || function(t) {
+var __assign$6 = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
         for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -3196,7 +3284,7 @@ var Batoto = (function (_super) {
     };
     Batoto.prototype.buildChapterRequest = function (url$$1) {
         var opts = _super.prototype.buildRequest.call(this, url$$1);
-        opts.headers = __assign$4({}, opts.headers, { Referer: "http://bato.to/reader" });
+        opts.headers = __assign$6({}, opts.headers, { Referer: "http://bato.to/reader" });
         return opts;
     };
 
@@ -3234,7 +3322,7 @@ var Batoto = (function (_super) {
                             rememberMe: rememberMe ? 1 : 0,
                             auth_key: authKey,
                         };
-                        request = __assign$4({}, request, { formData: body });
+                        request = __assign$6({}, request, { formData: body });
                         return [4          , this.request.postHtml(request)];
                     case 2:
                         html = _a.sent();
