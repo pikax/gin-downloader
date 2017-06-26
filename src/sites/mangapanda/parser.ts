@@ -3,7 +3,7 @@
  */
 
 import {resolve} from "url";
-import config from "./config";
+import config, {error} from "./config";
 import {
   Chapter, FilteredResults, FilterStatus, MangaInfo, MangaSource, MangaXDoc,
   SiteParser
@@ -147,7 +147,7 @@ export class Parser implements SiteParser {
 
     let paths: string[] = [];
 
- 
+
 
     $("#pageMenu > option").each((i, el) => {
       paths[i] = resolve($.location, `${el.attribs.value}`);
@@ -159,7 +159,14 @@ export class Parser implements SiteParser {
   image(html: string): string {
     const __img__ = /src="[^"]*" alt/gmi;
 
-    return html.match(__img__)[0].slice(5, -5).replace(/.v=\d+/, "");
+    let m = html.match(__img__);
+    if (!m || m.length === 0) {
+      error("second image regex failed using\nhtml:%s", html);
+
+      throw new Error("Image not found");
+    }
+
+    return m[0].slice(5, -5).replace(/.v=\d+/, "");
   }
 
   filter($: MangaXDoc): Promise<FilteredResults> | FilteredResults {

@@ -16,4 +16,5 @@ export default config;
 
 export const debug = require("debug")("gin-downloader:kissmanga");
 export const verbose = require("debug")("gin-downloader:kissmanga:verbose");
+export const error = require("debug")("gin-downloader:kissmanga:error);
 verbose("using %O", config);
