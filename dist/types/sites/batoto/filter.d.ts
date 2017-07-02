@@ -4,4 +4,5 @@
 import { MangaFilter } from "../../declarations";
 export declare const processFilter: (mangafilter: MangaFilter) => {
     src: string;
+    qs: any;
 };

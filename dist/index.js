@@ -8,6 +8,17 @@ var url = require('url');
 var vm = require('vm');
 var util = require('util');
 
+var LazyImage = (function () {
+    function LazyImage(_value) {
+        this._value = _value;
+    }
+    Object.defineProperty(LazyImage.prototype, "value", {
+        get: function () { return this._value(); },
+        enumerable: true,
+        configurable: true
+    });
+    return LazyImage;
+}());
 var regexLastDigit = /\d+(\.\d{1,3})?$/;
 var regexFirstDigit = /\d+(\.\d{1,3})?/;
 String.prototype.lastDigit = function () {
@@ -166,8 +177,8 @@ var parseDoc = function (source, params) {
 };
 var sanitize = function (children) { return children.filter(function (x) { return x.type !== "text"; }); };
 var sanitizeName = function (name) {
-    var regex = /(?:’|–|Ζ|∞|[\u00b0-\u00bf]|[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
-    return name.replace(regex, encodeURIComponent);
+    return name;
+
 };
 var procFilter = function (condition, def) {
     var filter = def || {};
@@ -611,17 +622,15 @@ var MangaSite = (function () {
     };
     MangaSite.prototype.processImagePath = function (opts) {
         return __awaiter$1(this, void 0, void 0, function () {
-            var image;
+            var _this = this;
             return __generator$1(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4          , this.getHtml(opts).then(this.parser.image)];
-                    case 1:
-                        image = _a.sent();
-                        return [2           , {
-                                name: url.parse(image).pathname.split("/").reverse()[0],
-                                src: image
-                            }];
-                }
+                return [2           , new LazyImage(function () {
+                        return _this.getHtml(opts).then(_this.parser.image)
+                            .then(function (x) { return ({
+                            name: url.parse(x).pathname.split("/").reverse()[0],
+                            src: x
+                        }); });
+                    })];
             });
         });
     };
@@ -2722,7 +2731,7 @@ var KissManga = (function (_super) {
                                 src: x
                             };
                         });
-                        return [2           , srcs.map(function (x) { return Promise.resolve(x); })];
+                        return [2           , srcs.map(function (x) { return Promise.resolve(new LazyImage(function () { return Promise.resolve(x); })); })];
                 }
             });
         });
@@ -2918,7 +2927,16 @@ var Helper$4 = (function () {
     function Helper() {
     }
     Helper.prototype.toName = function (name) {
-        throw new Error("Not supported");
+        if (!name)
+            return name;
+        if (name.endsWith('?!')) {
+            return name.slice(0, -1);
+        }
+        if (name === "enígmә")
+            return "Enigma";
+        if (name === "Pietà")
+            return "Pieta";
+        return name;
     };
     Helper.prototype.resolveUrl = function (name) {
         return config$8.site + "Manga/" + this.toName(name);
@@ -3054,33 +3072,35 @@ var processFilter$4 = function (mangafilter) {
             fratingTo = rating.to || 5;
         }
     }
-    var mangaName = "name=" + (fname || "");
-    var nameCond = nameCondition && "name_cond=" + nameCondition;
-    var authorArtist = "artist_name=" + (fauthor || "");
-    var authorCond = authorCondition && "artist_name_cond=" + authorCondition;
-    var genreFilter = "genres=" + ordered$2.map(function (x) { return inOutGenre$4(x, genres, outGenres); }).filter(function (x) { return x !== ""; }).join(";");
-    var genreCon = (genreCondition && "genre_cond=" + genreCondition) || "genre_cond=and";
-    var status = "status=" + (fstatus || "");
-    var type = "type=" + ftype;
-    var page = "p=" + (filter.page || 1);
-    var rating_low = "rating_low=" + (fratingFrom || 0);
-    var rating_high = "rating_high=" + (fratingTo || 5);
-    var mature = "mature=" + (fmature || "y");
-    return { src: url.resolve(config$8.mangas_url, "?" + [
-            mangaName,
-            nameCond,
-            authorArtist,
-            authorCond,
-            genreFilter,
-            genreCon,
-            status,
-            type,
-            mature,
-            rating_low,
-            rating_high,
-            page
-        ].join("&"))
-    };
+
+    var mangaName = helper$8.toName(fname);
+    var name_cond = nameCondition;
+    var artist_name = fauthor;
+    var artist_name_cond = authorCondition;
+    var genreFilter = ordered$2.map(function (x) { return inOutGenre$4(x, genres, outGenres); }).filter(function (x) { return x !== ""; }).join(";");
+    var genre_cond = genreCondition || "genre_cond=and";
+    var status = fstatus;
+    var type = ftype;
+    var p = filter.page || 1;
+    var rating_low = fratingFrom || 0;
+    var rating_high = fratingTo || 5;
+    var mature = fmature || "y";
+    return { src: config$8.mangas_url,
+        qs: {
+            name: mangaName,
+            name_cond: name_cond,
+            artist_name: artist_name,
+            artist_name_cond: artist_name_cond,
+            genres: genreFilter,
+            genre_cond: genre_cond,
+            status: status,
+            type: type,
+            mature: mature,
+            rating_low: rating_low,
+            rating_high: rating_high,
+            p: p
+        } };
+
 };
 function resolveType$3(type) {
     switch (type) {
@@ -3211,7 +3231,7 @@ var Batoto = (function (_super) {
                         if (this._urlCache[name]) {
                             return [2           , this._urlCache[name]];
                         }
-                        filter = { search: { name: { name: name.replace(/\+/g, "%2B"), condition: FilterCondition.Contains } } };
+                        filter = { search: { name: { name: name, condition: FilterCondition.Contains } } };
                         _a.label = 1;
                     case 1:
                         page = 0;
@@ -3223,10 +3243,15 @@ var Batoto = (function (_super) {
                     case 2:
                         filterResults = _a.sent();
                         results = filterResults.results;
+                        this.debug("filtered results: %o", results);
                         result = void 0;
+
                         for (_i = 0, results_1 = results; _i < results_1.length; _i++) {
                             obj = results_1[_i];
                             if (obj.name === name) {
+                                result = obj.src;
+                            }
+                            else if (obj.name.startsWith(name) && obj.name === name + " (" + _.capitalize(_.deburr(name.replace("ә", "a"))) + ")") {
                                 result = obj.src;
                             }
                             this._urlCache[obj.name] = obj.src;
@@ -3254,7 +3279,7 @@ var Batoto = (function (_super) {
                     case 0:
                         this.debug("filter mangas with: %o", filter);
                         search = processFilter$4(filter);
-                        return [4          , this.getDoc(search.src)];
+                        return [4          , this.getDoc({ url: search.src, qs: search.qs })];
                     case 1:
                         doc = _a.sent();
                         return [4          , this.parser.filter(doc)];

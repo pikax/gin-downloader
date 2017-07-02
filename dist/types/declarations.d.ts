@@ -4,6 +4,7 @@
  */
 import { URL } from "url";
 import "cheerio";
+import { ImageSource } from "../dist/types/src/declarations";
 export interface MangaXDoc extends CheerioStatic {
     location: string;
 }
@@ -18,6 +19,11 @@ export interface Request {
 export interface NameHelper {
     toName(name: string): string;
     resolveUrl(name: string): string;
+}
+export declare class LazyImage {
+    private _value;
+    readonly value: Promise<ImageSource>;
+    constructor(_value: () => Promise<ImageSource>);
 }
 export interface SiteConfig {
     site: string;
@@ -84,7 +90,7 @@ export interface Site {
         info: MangaInfo;
         chapters: Chapter[];
     }>;
-    images(name: string, chapter: number): Promise<Promise<ImageSource>[]>;
+    images(name: string, chapter: number): Promise<Promise<LazyImage>[]>;
     resolveMangaUrl(name: string): Promise<string> | string;
 }
 declare global  {

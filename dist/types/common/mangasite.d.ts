@@ -1,7 +1,7 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
-import { Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, MangaFilter, FilteredResults, MangaXDoc } from "../declarations";
+import { Chapter, SiteConfig, MangaInfo, MangaSource, NameHelper, SiteParser, Site, MangaFilter, FilteredResults, MangaXDoc, LazyImage } from "../declarations";
 import { IDebugger } from "debug";
 import { RequestStrategy } from "../request/headers";
 import { GinRequest } from "../request/index";
@@ -28,7 +28,7 @@ export declare class MangaSite<C extends SiteConfig, P extends SiteParser, N ext
         info: MangaInfo;
         chapters: Chapter[];
     }>;
-    images(name: string, chapter: any): Promise<Promise<ImageSource>[]>;
+    images(name: string, chapter: any): Promise<Promise<LazyImage>[]>;
     resolveMangaUrl(name: string): Promise<string> | string;
     protected buildRequest(url: string): OptionsWithUrl;
     protected buildMangasRequest(url: string): OptionsWithUrl;

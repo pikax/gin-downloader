@@ -12,8 +12,8 @@ export declare class Batoto extends MangaSite<SiteConfig, Parser, Helper> implem
     resolveMangaUrl(name: string): Promise<string>;
     mangas(filter?: MangaFilter): Promise<MangaSource[]>;
     filter(filter?: MangaFilter): Promise<FilteredResults>;
-    resolveChapterSource(name: string, chapter: number): Promise<string>;
-    buildChapterRequest(url: string): OptionsWithUrl;
+    protected resolveChapterSource(name: string, chapter: number): Promise<string>;
+    protected buildChapterRequest(url: string): OptionsWithUrl;
     isLoggedIn(): Promise<boolean>;
     logIn(user: string, pw: string, rememberMe?: boolean): Promise<boolean>;
 }
