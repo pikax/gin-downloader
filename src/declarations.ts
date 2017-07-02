@@ -6,6 +6,7 @@ import {URL} from "url";
 import getPrototypeOf = Reflect.getPrototypeOf;
 
 import "cheerio";
+import {ImageSource} from "../dist/types/src/declarations";
 
 // TODO refactor, move to distinct files
 
@@ -33,6 +34,15 @@ export interface Request {
 export interface NameHelper {
   toName(name: string): string;
   resolveUrl(name: string): string;
+}
+
+
+export class LazyImage {
+
+  get value(){ return this._value(); }
+
+  constructor(private _value: () => Promise<ImageSource>) {
+  }
 }
 
 
@@ -121,7 +131,7 @@ export interface Site {
 
   infoChapters(name: string): Promise<{info: MangaInfo, chapters: Chapter[]}>;
 
-  images(name: string, chapter: number): Promise<Promise<ImageSource>[]>;
+  images(name: string, chapter: number): Promise<Promise<LazyImage>[]>;
 
   resolveMangaUrl(name: string): Promise<string>|string;
 }

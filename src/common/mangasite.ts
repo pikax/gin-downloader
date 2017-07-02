@@ -4,7 +4,7 @@
 
 import {
   Chapter, SiteConfig, ImageSource, MangaInfo, MangaSource, NameHelper, SiteParser, Site, Request,
-  MangaFilter, FilteredResults, MangaXDoc
+  MangaFilter, FilteredResults, MangaXDoc, LazyImage
 } from "../declarations";
 const debug = require("debug");
 import {IDebugger} from "debug";
@@ -14,6 +14,7 @@ import {parse} from "url";
 import {RequestStrategy} from "../request/headers";
 import {GinRequest} from "../request/index";
 import {OptionsWithUrl} from "request";
+
 
 export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends NameHelper> implements Site {
 
@@ -145,7 +146,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     }
   }
 
-  async images(name: string, chapter: any): Promise<Promise<ImageSource>[]> {
+  async images(name: string, chapter: any): Promise<Promise<LazyImage>[]> {
     if (!name) {
       throw new Error("Please provide a name");
     }
@@ -215,13 +216,14 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     return chap.src;
   }
 
-  private async processImagePath(opts: any): Promise<ImageSource> {
-    let image = await this.getHtml(opts).then(this.parser.image);
-
-    return {
-      name : parse(image).pathname.split("/").reverse()[0],
-      src : image
-    };
+  private async processImagePath(opts: any): Promise<LazyImage> {
+    return new LazyImage(() => {
+      return this.getHtml(opts).then(this.parser.image)
+        .then(x => ({
+          name: parse(x).pathname.split("/").reverse()[0],
+          src: x
+        }));
+    });
   }
 }
 

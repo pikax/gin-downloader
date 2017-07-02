@@ -6,7 +6,7 @@ import {MangaSite} from "../../common/mangasite";
 import {Parser} from "./parser";
 import {config} from "./config";
 import {Helper} from "./names";
-import {FilteredResults, MangaFilter, ImageSource, MangaSource, Site, SiteConfig} from "../../declarations";
+import {FilteredResults, MangaFilter, ImageSource, MangaSource, Site, SiteConfig, LazyImage} from "../../declarations";
 import {find} from "lodash";
 import {parse, resolve} from "url";
 import {Script} from "vm";
@@ -59,7 +59,7 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
   }
 
 
-  async images(name: string, chapNumber: number): Promise<Promise<ImageSource>[]> {
+  async images(name: string, chapNumber: number): Promise<Promise<LazyImage>[]> {
     let chapters = await this.chapters(name);
 
 
@@ -81,7 +81,7 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
           src: x
         };
       });
-      return srcs.map(x => Promise.resolve(x));
+      return srcs.map(x => Promise.resolve(new LazyImage(() => Promise.resolve(x)) ));
   }
 
   // protected buildMangasRequest(url: string): OptionsWithUrl{

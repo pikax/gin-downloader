@@ -245,10 +245,10 @@ mangafox.info("Gintama")
     .then(console.log);
 ```
 
-- **images(manga, chapter_number)** : return Promise<Promise<{name:string,src:string>[]>
+- **images(manga, chapter_number)** : return Promise<Promise<{value: {name:string,src:string}>[]>;
 ```javascript
 mangafox.images("Gintama", 1)
-      .then(x=>Promise.all(x)) //resolve all promises
+      .then(x=>Promise.all(x.map(t=>t.value))) //resolve all promises
       .then(console.log)
 ```
 
