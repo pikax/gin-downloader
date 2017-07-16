@@ -5,20 +5,28 @@
 import {OptionsWithUrl} from "request";
 const cloudscraper = require("cloudscraper");
 
-import {RequestStrategy} from "./index";
-import config from "./../config";
+import {RequestStrategy} from "./headers";
 
 
+// const Timeout = 20000;
 
-// specific options for cloudscraper lib
+
 const DefaultOptions = {
-  // none
+  method: "GET",
+
+  jar: true,
+
+  gzip: true,
+  // timeout: Timeout,
+  followAllRedirects: true,
+
+  forever: true,
 };
 
 
 export class RequestCloudFareStrategy implements RequestStrategy {
   request(options: string | OptionsWithUrl): Promise<any> {
-    let opts: OptionsWithUrl = <any>{...DefaultOptions, ...config.config};
+    let opts: OptionsWithUrl = <any>{...DefaultOptions};
 
     if (typeof options === "string") {
       opts.url = options;
@@ -45,5 +53,7 @@ export class RequestCloudFareStrategy implements RequestStrategy {
   }
 }
 
+
 export const strategy = new RequestCloudFareStrategy();
+
 export default strategy;

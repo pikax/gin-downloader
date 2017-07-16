@@ -5,13 +5,15 @@ import {MangaFilter} from "./filter";
 
 
 export enum Type {
-  Manga = <any>"Manga",
-  Manhwa = <any>"Manhwa",
-  Manhua = <any>"Manhua",
-  Comic = <any>"Comic",
-  Artbook = <any>"Artbook", // An artbook is a title that contains purely art and has no story
-  Other = <any>"Other", // bato.to
+  Manga = "Manga",
+  Manhwa = "Manhwa",
+  Manhua = "Manhua",
+  Comic = "Comic",
+  Artbook = "Artbook", // An artbook is a title that contains purely art and has no story
+  Other = "Other", // bato.to
 }
+
+
 
 export interface Source {
   src: string;
