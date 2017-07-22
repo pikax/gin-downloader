@@ -13,6 +13,7 @@ import config from "./../config";
 // specific options for cloudscraper lib
 const DefaultOptions = {
   // none
+  method: "GET"
 };
 
 

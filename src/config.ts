@@ -1,8 +1,7 @@
 /**
  * Created by pikax on 16/07/2017.
  */
-import {CoreOptions} from "request";
-import {RequestStrategy, strategies} from "./request/index";
+import {RequestStrategy, Options, CoreOptions, strategies} from "./request/index";
 
 // import {RequestRetryStrategy} from "./request/requestRetryStrategy";
 // import {RequestRetryStrategy} from "./request/requestRetryStrategy";
@@ -20,7 +19,10 @@ export interface GinConfig {
   request?: CoreOptions;
 }
 
-const DefaultConfig: GinConfig = {
+/*TODO this shouldn't be a function, this should be a const only, but the default config is called by the strategies
+* that means when we load the strategies module, it needs to load this one first but this uses strategies.
+* */
+const DefaultConfig: () => GinConfig = () => ({
   maxRetries: 50,
   timeout: 10000,
   interval: 1000,
@@ -49,14 +51,14 @@ const DefaultConfig: GinConfig = {
       "Accept-Encoding": "gzip,deflate",
     }
   }
-};
+});
 
 export class Config {
   private _use: GinConfig;
   private _config: GinConfig;
 
 
-  get defaultConfig() { return DefaultConfig; }
+  get defaultConfig() { return DefaultConfig(); }
 
   get config(): GinConfig { return this._config || (this._config = this.buildConfig()); }
 
@@ -70,21 +72,26 @@ export class Config {
     this._config = this.buildConfig(use);
   }
 
+  reset() {
+    this._config = this.defaultConfig;
+    this._use = null;
+  }
+
   private buildConfig(conf: GinConfig= {}) {
-    let c: GinConfig = { ...DefaultConfig,
+    let c: GinConfig = { ...this.defaultConfig,
       ...conf,
     };
 
     if (conf.request) {
       c.request = {
-        ...DefaultConfig.request,
+        ...this.defaultConfig.request,
         ...conf.request
       };
     }
 
     if (conf.sites) {
       c.sites = {
-        ...DefaultConfig.sites,
+        ...this.defaultConfig.sites,
         ...conf.sites
       };
     }

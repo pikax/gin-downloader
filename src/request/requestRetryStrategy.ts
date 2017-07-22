@@ -5,9 +5,7 @@ import * as url from "url";
 
 
 const requestRetry = require("requestretry");
-import {OptionsWithUrl} from "request";
-
-import {RequestStrategy} from "./index";
+import {RequestStrategy, OptionsWithUrl} from "./index";
 import config from "./../config";
 
 

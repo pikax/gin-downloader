@@ -3,10 +3,9 @@
  */
 
 
-
-
-
-
-describe("get mangas", ()=>{
+describe("get mangas", () => {
 
 });
+
+
+import "./common";
