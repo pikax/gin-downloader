@@ -30,10 +30,10 @@ describe("request pool", () => {
 
 
     function mockRequest<T>(value?: T) {
-     return makeMockedStrategy(() => {
-       // console.log(`took ${Date.now() - dt}ms to finish expecting ${requestInterval}`);
-       return Promise.resolve(value || 1);
-     });
+      return makeMockedStrategy(() => {
+        // console.log(`took ${Date.now() - dt}ms to finish expecting ${requestInterval}`);
+        return Promise.resolve(value || 1);
+      });
     }
 
 
@@ -53,20 +53,42 @@ describe("request pool", () => {
       const requestInterval = 500;
       const queue = new IntervalPool({match: /-/, requestInterval});
 
-      try{
-        const strategy = makeMockedStrategy(() => promiseSetTimeout(requestInterval + 100).then(x => {throw new Error('fail')}));
-
+      try {
+        const strategy = makeMockedStrategy(() => promiseSetTimeout(requestInterval + 100).then(x => {throw new Error("fail"); }));
 
         await queue.queue("", strategy);
-
-        '1'.should.be.eq(2);
+        "1".should.be.eq(2); // it should never it this
       }
       catch (e){
         e.should.be.throw;
       }
 
+    });
 
 
+    it("should fail middle but should continue ", async () => {
+      const n = 7;
+      const requestInterval = 500;
+      const queue = new IntervalPool({match: /-/, requestInterval});
+
+      const strategy = makeMockedStrategy(() => promiseSetTimeout(requestInterval + 100).then(x => {throw new Error("fail"); }));
+
+      const p: Promise<number>[] = [];
+
+      for (let i = 1; i <= n; i++) {
+        p.push(queue.queue("", i % 3 === 0 ? strategy : mockRequest(i)));
+      }
+
+      for(let i= 0; i< p.length; i++){
+        try {
+          const v = await p[i];
+
+          v.should.be.eq(i + 1);
+        }
+        catch (e){
+          ((i + 1) % 3).should.be.eq(0);
+        }
+      }
     });
 
     it("should wait 500ms", async () => {

@@ -15,13 +15,7 @@ export interface ActivePool {
   item?: Lazy<Promise<any>>;
   isActive: boolean;
 }
-export type HistoryPool = ActivePool & {resolved?: Date, started?: Date, created: Date};
-
-const activePools: {[poolId: string]: ActivePool} = {};
-
-const historyPools: {[poolId: string]: HistoryPool[]} = {};
-
-
+export type HistoryPool = ActivePool & {resolved?: Date, started?: Date, created: Date, failed?: boolean, error?: any};
 
 export interface QueuePool {
   queue(uri: GinUrlOptions, strategy: RequestStrategy): Promise<any>;
@@ -31,37 +25,24 @@ export interface QueuePool {
 
 
 function request(uri: GinUrlOptions, strategy: RequestStrategy): Promise<any> {
-  let pool: GinPoolConfig;
+  let pool: GinPoolQueue;
 
   if (!ginConfig.config.pooling || !(pool = getPool(uri))) {
     return strategy.request(uri);
   }
 
-  if (pool.requestInterval) {
-    // return processPoolByInterval(pool, uri);
-  }
-
-
+  return pool.queue.queue(uri, strategy);
 }
 
-//
-// function processPoolByInterval(pool: GinPoolConfig, uri: GinUrlOptions): Promise<any> {
-//
-//
-// }
 
-
-function getPool(uri: GinUrlOptions) {
+function getPool(uri: GinUrlOptions): GinPoolQueue {
   pools = pools || buildPool();
 
   const url = isOptionsWithUrl(uri)
     ? uri.baseUrl
     : uri;
 
-
-
-  const m = pools.find(x => !!url.match(x.match));
-  return m;
+  return pools.find(x => !!url.match(x.match));
 }
 
 
@@ -102,42 +83,40 @@ function buildPool(): Array<GinPoolQueue> {
 
 
 
-
-class PoolQueue {
-
-  private _queue: ActivePool[] = [];
-  private _history: HistoryPool[] = [];
-
-  constructor(private _config: GinPoolConfig) {
-  }
-
-  queue(uri: GinUrlOptions, strategy: RequestStrategy) {
-
-    if (!!this._config.requestInterval) {
-      return this.processInterval(uri, strategy);
-    }
-
-
-  }
-
-
-  private processInterval(uri: GinUrlOptions, strategy: RequestStrategy) {
-    if (this._queue.length > 0) {
-
-
-    }
-
-
-
-  }
-
-
-}
+//
+// class PoolQueue {
+//
+//   private _queue: ActivePool[] = [];
+//   private _history: HistoryPool[] = [];
+//
+//   constructor(private _config: GinPoolConfig) {
+//   }
+//
+//   queue(uri: GinUrlOptions, strategy: RequestStrategy) {
+//
+//     if (!!this._config.requestInterval) {
+//       return this.processInterval(uri, strategy);
+//     }
+//
+//
+//   }
+//
+//
+//   private processInterval(uri: GinUrlOptions, strategy: RequestStrategy) {
+//     if (this._queue.length > 0) {
+//
+//
+//     }
+//
+//
+//
+//   }
+//
+//
+// }
 
 
 export class IntervalPool implements QueuePool {
-
-
   private _currId: number = 0;
 
   private _active: ActivePool;
@@ -172,13 +151,14 @@ export class IntervalPool implements QueuePool {
     };
     this._history.set(id, history);
 
-    let lazy = new Lazy(async () =>{
-      history.started = new Date();
-
-      const x = await strategy.request(uri)
-      history.resolved = new Date();
-
-      return x;
+    let lazy = new Lazy(async () => {
+      try {
+        history.started = new Date();
+        return await strategy.request(uri);
+      }
+      finally {
+        history.resolved = new Date();
+      }
     } );
 
     if (last) {
@@ -188,30 +168,34 @@ export class IntervalPool implements QueuePool {
     return this.execItem(id, lazy);
   }
 
-  private async execItem(id: number, lazy: Lazy<Promise<any>>){
+  private async execItem(id: number, lazy: Lazy<Promise<any>>) {
     const h = this._history.get(id);
 
-    this.active = {
-      id,
-      uri: h.uri,
-      isActive: true,
-    };
-    h.item = lazy;
-    const v = await lazy.value;
-    h.isActive = false;
-
-    this.active = null;
-    return v;
+    try {
+      this.active = {
+        id,
+        uri: h.uri,
+        isActive: true,
+      };
+      h.item = lazy;
+      return await lazy.value.catch(x => {
+        throw h.error = x;
+      });
+    }
+    finally {
+      h.failed = true;
+      h.isActive = false;
+      this.active = null;
+    }
   }
 
-  private waitForLast(last: HistoryPool, lazy: Lazy<Promise<any>>): Lazy<Promise<any>>{
+  private waitForLast(last: HistoryPool, lazy: Lazy<Promise<any>>): Lazy<Promise<any>> {
     const {requestInterval} = this._config;
-
-    const item = new Lazy(async () => {
-      while (last.isActive){
-        await last.item.value; // just wait until the last finish
+    return new Lazy(async () => {
+      while (last.isActive) {
+        await last.item.value // just wait until the last finish or fails, if it fails we should ignore the exception
+          .catch((e) => e);
       }
-
       const dt = last.resolved;
       const passedTime = Date.now() - dt.getTime();
 
@@ -222,12 +206,7 @@ export class IntervalPool implements QueuePool {
       }
       return await lazy.value;
     });
-
-    // await last.item.value; // just wait
-    return item;
   }
-
-
 
   private getNextId() {
     return this._currId++;
