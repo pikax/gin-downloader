@@ -2,10 +2,8 @@
  * Created by pikax on 22/07/2017.
  */
 
-import "./common";
-
 import {strategies} from "./../src/request/index";
-import * as nock from "nock";
+import "./common";
 
 
 //todo mock some funcionality, like retry and the cloudfare bypass
@@ -33,8 +31,8 @@ describe("request strategies", () => {
 
 
 
-  describe("cloudFare", () => {
-    let request = strategies.cloudFare.request;
+  describe("cloudFlare", () => {
+    let request = strategies.cloudflare.request;
 
     it("should get google.com by url", async () => {
       let http = await request("http://www.google.com");

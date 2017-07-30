@@ -1,13 +1,8 @@
-import * as url from "url";
-/**
- * Created by pikax on 23/05/2017.
- */
+import config from "src/config";
+import {GinUrlOptions, OptionsWithUrl, RequestStrategy} from "./index";
 
 
 const requestRetry = require("requestretry");
-import {RequestStrategy, OptionsWithUrl} from "./index";
-import config from "./../config";
-
 
 
 // specific options for requestretry lib
@@ -17,7 +12,7 @@ const DefaultOptions = {
 };
 
 export class RequestRetryStrategy implements RequestStrategy {
-  request(options: string | OptionsWithUrl): Promise<any> {
+  request(options: GinUrlOptions): Promise<any> {
     let opts: OptionsWithUrl = <any>{...DefaultOptions, ... config.config};
 
     if (typeof options === "string") {

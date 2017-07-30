@@ -3,37 +3,39 @@
  */
 
 
-import {Options} from "request";
+import {Options, OptionsWithUrl} from "request";
+import {RequestCloudFlareStrategy} from "./requestCloudFlareStrategy";
+import {RequestRetryStrategy} from "./requestRetryStrategy";
+
 export {Options, CoreOptions, OptionsWithUrl} from "request";
 
 //
 // import {RequestRetryStrategy} from "./requestRetryStrategy";
-// import {RequestCloudFareStrategy} from "./requestCloudFareStrategy";
+// import {RequestCloudFlareStrategy} from "./requestCloudFareStrategy";
 
 
-import requestRetryStrategy, {RequestRetryStrategy} from "./requestRetryStrategy";
-import requestCloudFareStrategy, {RequestCloudFareStrategy} from "./requestCloudFareStrategy";
+export type GinUrlOptions = string | OptionsWithUrl;
 
 
 export interface RequestStrategy {
-  request(options: string|Options): Promise<any>;
+  request(options: GinUrlOptions): Promise<any>;
 }
 
-/*: {retry: RequestStrategy, cloudFare: RequestStrategy} */
+/*: {retry: RequestStrategy, cloudflare: RequestStrategy} */
 
 
 
 
 export const strategies = {
   retry: new RequestRetryStrategy(),
-  cloudFare: new RequestCloudFareStrategy(),
+  cloudflare: new RequestCloudFlareStrategy(),
 };
 
 
 //
-// const s: {retry: RequestRetryStrategy, cloudFare: RequestCloudFareStrategy} = {
+// const s: {retry: RequestRetryStrategy, cloudflare: RequestCloudFlareStrategy} = {
 //   retry: requestRetryStrategy,
-//   cloudFare: requestCloudFareStrategy,
+//   cloudflare: requestCloudFareStrategy,
 // };
 //
 //

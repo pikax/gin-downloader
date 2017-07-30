@@ -17,7 +17,7 @@ const DefaultOptions = {
 };
 
 
-export class RequestCloudFareStrategy implements RequestStrategy {
+export class RequestCloudFlareStrategy implements RequestStrategy {
   request(options: string | OptionsWithUrl): Promise<any> {
     let opts: OptionsWithUrl = <any>{...DefaultOptions, ...config.config};
 
@@ -46,5 +46,5 @@ export class RequestCloudFareStrategy implements RequestStrategy {
   }
 }
 
-export const strategy = new RequestCloudFareStrategy();
+export const strategy = new RequestCloudFlareStrategy();
 export default strategy;

@@ -8,11 +8,26 @@ import {RequestStrategy, Options, CoreOptions, strategies} from "./request/index
 
 
 
-export interface GinConfig {
+export interface GinPoolConfig {
+  simultaneousRequests?: number;
+  requestInterval?: number;
 
+  match: RegExp;
+}
+
+
+//
+// export interface GinSiteConfig {
+//   strategy: RequestStrategy;
+// }
+
+export interface GinConfig {
   maxRetries?: number;
   timeout?: number;
   interval?: number;
+
+
+  pooling?: {[poolId: string]: GinPoolConfig};
 
   sites?: {[key: string]: RequestStrategy};
 
@@ -27,14 +42,20 @@ const DefaultConfig: () => GinConfig = () => ({
   timeout: 10000,
   interval: 1000,
 
+  pooling: {
+    MangafoxSearch: {
+        requestInterval: 5000,
+        match: /mangafox\.me\/search\.php/
+    }
+  },
+
 
   sites: {
     batoto: strategies.retry,
     mangafox: strategies.retry,
     mangapanda: strategies.retry,
     mangahere: strategies.retry,
-
-    kissmanga: strategies.cloudFare,
+    kissmanga: strategies.cloudflare,
   },
 
   request: {
@@ -100,7 +121,7 @@ export class Config {
   }
 }
 
-export const ginConfig = new Config()
+export const ginConfig = new Config();
 export default ginConfig;
 
 

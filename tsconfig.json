@@ -8,6 +8,12 @@
     "alwaysStrict": true,
     "declaration": true,
 
+    "baseUrl": ".",
+    "paths": {
+      "./src/*" : ["src/*"],
+      "./test/*" : ["__test__/*"]
+    },
+
     "moduleResolution": "node",
     "typeRoots" : ["./node_modules/@types"],
     "types": [ "node", "mocha", "chai" ],
