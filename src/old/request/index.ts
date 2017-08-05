@@ -94,6 +94,7 @@ export class GinRequest  {
       .then(x => parseDoc(x, {location: (<any>opts).url || opts }));
   }
 
+
 }
 
 

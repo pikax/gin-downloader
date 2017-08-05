@@ -34,6 +34,7 @@ export interface GinConfig {
   request?: CoreOptions;
 }
 
+
 /*TODO this shouldn't be a function, this should be a const only, but the default config is called by the strategies
 * that means when we load the strategies module, it needs to load this one first but this uses strategies.
 * */
@@ -46,6 +47,13 @@ const DefaultConfig: () => GinConfig = () => ({
     MangafoxSearch: {
         requestInterval: 5000,
         match: /mangafox\.me\/search\.php/
+    },
+
+
+    // NOTE this should be always the last one!
+    "*": {
+      simultaneousRequests: 30,
+      match: /.*/,
     }
   },
 
@@ -63,6 +71,7 @@ const DefaultConfig: () => GinConfig = () => ({
     gzip: true,
     followAllRedirects: true,
     forever: true,
+    proxy: process.env.proxy,
     headers: {
       "Accept-Charset": "utf-8;q=0.7,*;q=0.3",
       "Accept-Language": "en-US,en;q=0.8",
@@ -87,7 +96,7 @@ export class Config {
   get use(): GinConfig {
     return this._use;
   }
-  set use(use: GinConfig) {
+  set use(use: Partial<GinConfig>) {
     this._use = use;
 
     this._config = this.buildConfig(use);
@@ -116,7 +125,6 @@ export class Config {
         ...conf.sites
       };
     }
-
     return c;
   }
 }

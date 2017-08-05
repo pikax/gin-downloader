@@ -1,13 +1,15 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, MangaFilter, FilterStatus, GenreCondition, FilterMangaType} from "../../declarations";
 import {config} from "./config";
 import {isNullOrUndefined} from "util";
 import {procFilter} from "../../common/helper";
 import {helper} from "./names";
+import {FilterCondition, Genre} from "src/enum";
+import {MangaFilter} from "src/filter";
+import {FilterMangaType} from "dist/types/src/declarations";
 
-const Supported = [];
+const Supported: {[id: string]: Genre} = {};
 Supported[Genre.Action] = Genre.Action;
 Supported[Genre.Adventure] = Genre.Adventure;
 Supported[Genre.Comedy] = Genre.Comedy;
@@ -133,7 +135,7 @@ dic[Genre.Medical] = "42";
 dic[Genre.NoChapters] = "44";
 
 
-export const processFilter = (mangafilter: MangaFilter): {src: string, qs: any} => {
+export const processFilter = (mangafilter: MangaFilter): { src: string, qs: any } => {
   let filter = procFilter(mangafilter);
 
   let {search} = filter;
@@ -208,7 +210,7 @@ export const processFilter = (mangafilter: MangaFilter): {src: string, qs: any} 
 
   const mangaName = helper.toName(fname);
   const name_cond = nameCondition;
-  const artist_name =  fauthor;
+  const artist_name = fauthor;
   const artist_name_cond = authorCondition;
 
   const genreFilter = ordered.map(x => inOutGenre(x, genres, outGenres)).filter(x => x !== "").join(";");
@@ -221,21 +223,23 @@ export const processFilter = (mangafilter: MangaFilter): {src: string, qs: any} 
   const rating_high = fratingTo || 5; // 0~5
   const mature = fmature || "y"; // n == false
 
-  return {src: config.mangas_url,
-  qs: {
-    name: mangaName,
-    name_cond,
-    artist_name,
-    artist_name_cond,
-    genres: genreFilter,
-    genre_cond,
-    status,
-    type,
-    mature,
-    rating_low,
-    rating_high,
-    p
-  }};
+  return {
+    src: config.mangas_url,
+    qs: {
+      name: mangaName,
+      name_cond,
+      artist_name,
+      artist_name_cond,
+      genres: genreFilter,
+      genre_cond,
+      status,
+      type,
+      mature,
+      rating_low,
+      rating_high,
+      p
+    }
+  };
   //
   // return {src: url.resolve(config.mangas_url, "?" + [
   //   mangaName,
@@ -254,7 +258,7 @@ export const processFilter = (mangafilter: MangaFilter): {src: string, qs: any} 
 };
 
 
-function  resolveType(type: FilterMangaType) {
+function resolveType(type: FilterMangaType) {
 
   switch (type) {
     case FilterMangaType.Manga:

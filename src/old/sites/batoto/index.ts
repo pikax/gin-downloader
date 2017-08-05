@@ -131,7 +131,7 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
 
   async isLoggedIn(): Promise<boolean> {
     let html = await this.getHtml("http://bato.to/search");
-    let match = html.match(/>Sign Out<\/a\>/m);
+    let match = html.match(/>Sign Out<\/a>/m);
     return !!match;
   }
 

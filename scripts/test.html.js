@@ -22,7 +22,7 @@ const cloudscraperPromise =  (opts)=>{
     };
 
     if (opts.method === "POST") {
-      cloudscraper.post(opts.url, opts.body, callback);
+      cloudscraper.post(opts.url, opts.body, callback, null);
     }
     else {
       cloudscraper.request(opts, callback);
@@ -126,8 +126,8 @@ async function processPages(strategy, pages){
     let headers = page.referer && {referer:page.referer}
 
     await strategy({url:page.uri, gzip: true, headers,fullResponse:false} )
-      .then(x=> writeFile(path.resolve(__dirname, '../test/sites', page.path), x))
-      .then(x=>console.log("'%s' file saved",path.resolve(__dirname, '../test/sites', page.path)))
+      .then(x=> writeFile(path.resolve(__dirname, '../__test__/sites', page.path), x))
+      .then(x=>console.log("'%s' file saved",path.resolve(__dirname, '../__test__/sites', page.path)))
       .then(x=>delay(page.delay || 0))
 
 
@@ -149,8 +149,8 @@ async function resolveCFRequest(){
       let method = body ? 'POST' : 'GET';
 
       await cloudscraperPromise({url:page.uri, method: method, body,   gzip: true} )
-        .then(x=> writeFile(path.resolve(__dirname, '../test/sites', page.path), x))
-        .then(x=>console.log("'%s' file saved",path.resolve(__dirname, '../test/sites', page.path)))
+        .then(x=> writeFile(path.resolve(__dirname, '../__test__/sites', page.path), x))
+        .then(x=>console.log("'%s' file saved",path.resolve(__dirname, '../__test__/sites', page.path)))
       ;
     }
   }

@@ -2,6 +2,7 @@ import {OptionsWithUrl} from "request";
 import {ginConfig, GinPoolConfig} from "src/config";
 import {Lazy, promiseSetTimeout} from "src/util";
 import {GinUrlOptions, RequestStrategy} from "./index";
+import {Url} from "url";
 
 const Queue = require("promise-queue") as Queue;
 
@@ -11,11 +12,12 @@ interface Queue {
   add<T>(generator: () => Promise<T>): Promise<T>;
 
   getQueueLength(): number;
+
   getPendingLength(): number;
 }
 
 
-type GinPoolQueue = GinPoolConfig & {queue: QueuePool};
+export type GinPoolQueue = GinPoolConfig & { queue: QueuePool };
 
 let pools: Array<GinPoolQueue>;
 
@@ -26,7 +28,10 @@ export interface ActivePool {
   item?: Lazy<Promise<any>>;
   isActive: boolean;
 }
-export type HistoryPool = ActivePool & {resolved?: Date, started?: Date, created: Date, failed?: boolean, error?: any};
+
+export type HistoryPool =
+  ActivePool
+  & { resolved?: Date, started?: Date, created: Date, failed?: boolean, error?: any };
 
 export interface QueuePool {
   queue(uri: GinUrlOptions, strategy: RequestStrategy): Promise<any>;
@@ -35,7 +40,7 @@ export interface QueuePool {
 }
 
 
-function request(uri: GinUrlOptions, strategy: RequestStrategy): Promise<any> {
+export function request(uri: GinUrlOptions, strategy: RequestStrategy): Promise<any> {
   let pool: GinPoolQueue;
 
   if (!ginConfig.config.pooling || !(pool = getPool(uri))) {
@@ -46,11 +51,11 @@ function request(uri: GinUrlOptions, strategy: RequestStrategy): Promise<any> {
 }
 
 
-function getPool(uri: GinUrlOptions): GinPoolQueue {
+export function getPool(uri: GinUrlOptions): GinPoolQueue {
   pools = pools || buildPool();
 
   const url = isOptionsWithUrl(uri)
-    ? uri.baseUrl
+    ? uri.url.toString()
     : uri;
 
   return pools.find(x => !!url.match(x.match));
@@ -61,10 +66,13 @@ function isOptionsWithUrl(uri: GinUrlOptions): uri is OptionsWithUrl {
   return (<OptionsWithUrl>uri).url !== undefined;
 }
 
+export function rebuildPool() {
+  pools = buildPool();
+}
 
 
 function buildPool(): Array<GinPoolQueue> {
-  const {pooling } = ginConfig.config;
+  const {pooling} = ginConfig.config;
 
   const pools: Array<GinPoolQueue> = [];
 
@@ -92,7 +100,6 @@ function buildPool(): Array<GinPoolQueue> {
 }
 
 
-
 export class IntervalPool implements QueuePool {
   private _currId: number = 0;
 
@@ -100,10 +107,14 @@ export class IntervalPool implements QueuePool {
   // private _history: {[id: string]: HistoryPool} = {};
   private _history = new Map<number, HistoryPool>();
 
-  get history(): HistoryPool[] {return Array.from(this._history.values()); } // copy list
+  get history(): HistoryPool[] {
+    return Array.from(this._history.values());
+  } // copy list
 
 
-  get isActive(): boolean {return !!this._active; }
+  get isActive(): boolean {
+    return !!this._active;
+  }
 
 
   private set active(value: ActivePool) {
@@ -136,7 +147,7 @@ export class IntervalPool implements QueuePool {
       finally {
         history.resolved = new Date();
       }
-    } );
+    });
 
     if (last) {
       lazy = history.item = this.waitForLast(last, lazy);
@@ -195,7 +206,9 @@ export class ConcurrentQueue implements QueuePool {
   private _currId: number = 0;
 
   private _history = new Map<number, HistoryPool>();
-  get history(): HistoryPool[] {return Array.from(this._history.values()); } // copy list
+  get history(): HistoryPool[] {
+    return Array.from(this._history.values());
+  } // copy list
 
   private readonly _queue: Queue;
 
@@ -223,7 +236,7 @@ export class ConcurrentQueue implements QueuePool {
       finally {
         history.resolved = new Date();
       }
-    } );
+    });
 
     return this._queue.add(() => this.exec(lazy, history));
   }

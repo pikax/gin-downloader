@@ -3302,7 +3302,7 @@ var Batoto = (function (_super) {
             });
         });
     };
-    Batoto.prototype.logIn = function (user, pw, rememberMe) {
+    Batoto.prototype.login = function (user, pw, rememberMe) {
         if (rememberMe === void 0) { rememberMe = true; }
         return __awaiter$6(this, void 0, void 0, function () {
             var url$$1, request, $, authKey, body, html;

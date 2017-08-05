@@ -4,10 +4,12 @@
 
 
 import {FilterCondition, FilterStatus, Genre, GenreCondition, Type} from "./enum";
+import {gin} from "src/interface";
+import MangaSource = gin.MangaSource;
 
 export type GenreCollection = Array<Genre>;
 
-export interface NameFilter {
+export interface NameFilterCondition {
   name: string;
   condition?: FilterCondition;
 }
@@ -22,54 +24,61 @@ export interface GenreFilter {
   outGenres?: GenreCollection;
   condition?: GenreCondition;
 }
+
 export interface RatingFilter { // from
   from?: number;
   to?: number;
 }
 
+export type NameFilter = NameFilterCondition;
 
 export type AuthorFilter = NameFilter;
 export type ArtistFilter = NameFilter;
 export type ReleaseFilter = ValueFilter;
 
+export interface Search {
+  name?: NameFilter ;
+  author?: AuthorFilter | string;
+  artist?: ArtistFilter | string;
+  status?: FilterStatus | string;
+  released?: ReleaseFilter | number;
+  genre?: GenreFilter;
+  rating?: RatingFilter;
+  mature?: boolean;
 
-export interface MangaFilter {
-  name?: string;
-  search?: {
-    name?: NameFilter | string,
-    author?: AuthorFilter | string,
-    artist?: ArtistFilter | string,
-    status?: FilterStatus,
-    released?: ReleaseFilter | number,
-    genre?: GenreFilter | GenreCollection;
-    rating?: RatingFilter | number,
-    mature?: boolean;
-
-    type?: Type,
-  };
-
-  sort?: {};
-
-  page?: number;
+  type?: Type;
 }
 
+export interface MangaFilter extends filter.FilterSupport {
+  name?: string;
+}
 
+export type MangaSource = gin.MangaSource;
+
+export interface FilteredResults {
+  results: MangaSource[];
+  page: number;
+  total: number;
+}
 
 export namespace filter {
+
+
+  export interface Search {
+    name?: NameFilter;
+    author?: AuthorFilter;
+    artist?: ArtistFilter;
+    status?: FilterStatus;
+    released?: ReleaseFilter;
+    genre?: GenreFilter;
+    rating?: RatingFilter;
+    mature?: boolean;
+
+    type?: Type;
+  }
+
   export interface FilterSupport {
-    search?: {
-      name?: NameFilter,
-      author?: AuthorFilter,
-      artist?: ArtistFilter,
-      status?: FilterStatus,
-      released?: ReleaseFilter,
-      genre?: GenreFilter,
-      rating?: RatingFilter,
-      mature?: boolean;
-
-      type?: Type,
-    };
-
+    search?: Search;
     sort?: {};
 
     page?: number;

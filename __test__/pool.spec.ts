@@ -1,8 +1,10 @@
 import "./common";
 import {GinUrlOptions, RequestStrategy} from "src/request";
-import {ConcurrentQueue, HistoryPool, IntervalPool} from "src/request/pool";
+import {ConcurrentQueue, getPool, HistoryPool, IntervalPool, rebuildPool} from "src/request/pool";
+import * as ginPool from "src/request/pool";
 import {isCombinedNodeFlagSet} from "tslint";
 import {promiseSetTimeout} from "src/util";
+import {GinConfig, ginConfig} from "src/config";
 
 class MockedRequestStrategy implements RequestStrategy {
   request(options: GinUrlOptions): Promise<any> {
@@ -27,6 +29,85 @@ describe("request pool", () => {
       return Promise.resolve(value || 1);
     });
   }
+
+
+  it("should get default pool", () => {
+    const p = getPool("test.com");
+
+    p.should.not.be.null;
+    p.should.not.be.undefined;
+  });
+
+
+  it("should not get to build the pool type", () => {
+    try {
+      ginConfig.use = {
+        pooling:
+          {test: {match: /.*/}}
+      };
+      rebuildPool();
+
+      const p = getPool("test.com");
+      "2".should.be.eq(1);
+    }
+    catch (e) {
+      e.should.be.throw;
+    }
+    finally {
+      ginConfig.reset();
+      rebuildPool();
+    }
+  });
+
+  it("should not get pool", async () => {
+    try {
+      ginConfig.use = {pooling: undefined};
+      rebuildPool();
+
+      const p = getPool("test.com");
+      (p === undefined).should.be.true;
+
+      const v = await ginPool.request("test", mockRequest("1"));
+      v.should.be.eq("1");
+    }
+    finally {
+      ginConfig.reset();
+      rebuildPool();
+    }
+  });
+
+  it("should get pool for mangafox", () => {
+    let p = getPool("mangafox.me/search.php");
+
+    p.should.not.be.null;
+    p.should.not.be.undefined;
+
+    p = getPool({url: "mangafox.me/search.php"});
+
+    p.should.not.be.null;
+    p.should.not.be.undefined;
+
+
+  });
+
+  it("should use pool to request to mangafox", async () => {
+    const url = "http://mangafox.me/search.php?someparam=1";
+
+    const interval = ginConfig.config.pooling.MangafoxSearch.requestInterval;
+
+    const dt = Date.now();
+
+    const r = await  Promise.all([
+      ginPool.request(url, mockRequest("1")),
+      ginPool.request(url, mockRequest("1"))
+    ]);
+
+    r.forEach(x => x.should.be.eq("1"));
+
+    const lapsed = Date.now() - dt;
+    interval.should.be.gte(1);
+    lapsed.should.be.gte(interval);
+  });
 
   describe("interval pool", () => {
 
@@ -338,7 +419,7 @@ describe("request pool", () => {
       await queue.queue("", strategy)
         .then(x => {
           const lapsed = Date.now() - dt;
-           // console.log(`2 - took ${lapsed}ms to finish expecting ${simultaneousRequests}`);
+          // console.log(`2 - took ${lapsed}ms to finish expecting ${simultaneousRequests}`);
           lapsed.should.not.be.lt((simultaneousRequests + 100) * 2);
         });
     });

@@ -19,7 +19,7 @@ const DefaultOptions = {
 
 export class RequestCloudFlareStrategy implements RequestStrategy {
   request(options: string | OptionsWithUrl): Promise<any> {
-    let opts: OptionsWithUrl = <any>{...DefaultOptions, ...config.config};
+    let opts: OptionsWithUrl = <any>{...DefaultOptions, ...config.config.request};
 
     if (typeof options === "string") {
       opts.url = options;

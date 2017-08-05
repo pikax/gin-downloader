@@ -1,6 +1,6 @@
 import config from "src/config";
 import {GinUrlOptions, OptionsWithUrl, RequestStrategy} from "./index";
-
+import {pick} from "lodash";
 
 const requestRetry = require("requestretry");
 
@@ -13,8 +13,7 @@ const DefaultOptions = {
 
 export class RequestRetryStrategy implements RequestStrategy {
   request(options: GinUrlOptions): Promise<any> {
-    let opts: OptionsWithUrl = <any>{...DefaultOptions, ... config.config};
-
+    let opts: OptionsWithUrl = <any>{...DefaultOptions, ... config.config.request, ...pick(config.config, "maxRetries", "timeout", "interval")};
     if (typeof options === "string") {
       opts.url = options;
     }

@@ -1,0 +1,440 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+Search by series name
+</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta property="fb:admins" content="683024937"/><meta property="fb:app_id" content="111670815619329"/>
+<script src="http://kissmanga.com/Scripts/jquery17.min.js" type="text/javascript"></script>
+ 
+<link href="http://kissmanga.com/Content/css/tpl_style.css?v=2" rel="stylesheet" type="text/css"/>
+<link href="http://kissmanga.com/Content/css/upload-progress.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="http://kissmanga.com/Content/images/favicon.ico" type="image/x-icon"/>
+<!--[if IE 6]><link href="http://kissmanga.com/Content/css/tpl_ie_6.css"  rel="stylesheet" type="text/css" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" type="text/css" href="http://kissmanga.com/Content/css/tpl_ie_7.css" /><![endif]-->
+<!--[if IE 8]><link rel="stylesheet" type="text/css" href="http://kissmanga.com/Content/css/tpl_ie_7.css" /><![endif]-->
+<script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-1712467-9']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+</head>
+<body>
+<div id="containerRoot">
+<div id="head">
+<h3>
+<div style="position: relative; text-align: right; margin: -40px 46px 20px 0px; font: bold 13px Arial;">
+<div id="topHolderBox" style="width: 230px; height: 27px;">
+<img src="http://kissmanga.com/Content/images/user-small.png" style="vertical-align: middle; margin-bottom: 5px">
+<a href="http://kissmanga.com/Login">Login</a> or <a href="http://kissmanga.com/Register">
+Register</a>
+</div>
+</div>
+<div id="search" style="position: relative">
+<form id="formSearch" method="post">
+<p>
+<input size="40" id="keyword" name="keyword" value="" class="text" autocomplete="off"/>
+<select id="selectSearch">
+<option value="Manga">Series Name</option>
+<option value="AuthorArtist">Author/Artist</option>
+</select>
+<input id="imgSearch" type="image" src="http://kissmanga.com/Content/images/search.png" class="button" onclick="return false;"/>
+</p>
+<div id="result_box" style="display: none; margin-top: -3px; max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+</div>
+<div style="float: left; width: 250px; text-align: left; margin-left: 2px">
+<div style="float: left; width: 90px">
+<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2FKissManga&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;action=like&amp;colorscheme=dark&amp;font&amp;height=21&amp;appId=111670815619329" scrolling="no" frameborder="0" style="border: none; overflow: hidden; width: 100px;
+                                height: 21px;" allowtransparency="true"></iframe>
+</div>
+<div style="float: left; width: 85px">
+ 
+<div class="g-plusone" data-size="medium" data-href="http://kissmanga.com">
+</div>
+ 
+<script type="text/javascript">
+                                (function () {
+                                    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                                    po.src = 'https://apis.google.com/js/plusone.js';
+                                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+                                })();
+                            </script>
+</div>
+</div>
+<div style="margin: 10px 48px 10px 0">
+<a href="http://kissmanga.com/AdvanceSearch">
+<img src="http://kissmanga.com/Content/images/read.png" width="16px" border="0" style="vertical-align: middle"/>&nbsp;&nbsp;Advanced
+Search</a>
+</div>
+</form>
+</div>
+<script type="text/javascript">
+                    $('#imgSearch').click(function () {
+                        Submit();
+                    });
+
+                    var delay = (function () {
+                        var timer = 0;
+                        return function (callback, ms) {
+                            clearTimeout(timer);
+                            timer = setTimeout(callback, ms);
+                        };
+                    })();
+
+                    $('#keyword').keyup(function () {
+                        delay(function () {
+                            Suggest();
+                        }, 500);
+                    });
+
+                    $('#selectSearch').change(function () {
+                        Suggest();
+                    });
+
+                    $("#selectSearch option").each(function () {
+                        var url = location.href;
+                        if (url.indexOf($(this).attr('value')) != -1)
+                            $(this).attr("selected", "selected");
+                    });
+
+                    function Submit() {
+                        if ($.trim($('#keyword').val()).length < 2) {
+                            $('#keyword').blur();
+                            alert('Keyword must be more than one character!');
+                        }
+                        else {
+                            $("#formSearch").attr('action', "http://kissmanga.com/Search/" + $('#selectSearch').val());
+                            $("#formSearch").submit();
+                        }
+                    }
+
+                    function Suggest() {
+                        var keyword = $.trim($('#keyword').val());
+                        if (keyword != "" && $.trim($('#keyword').val()).length > 2) {
+                            $('#result_box').html("<span id='loader'></span>");
+                            $('#result_box').css('display', 'block');
+                            $.ajax(
+                            {
+                                type: "POST",
+                                url: "/Search/SearchSuggest",
+                                data: "type=" + $('#selectSearch').val() + '&keyword=' + keyword,
+                                success: function (message) {
+                                    if (message != "") {
+                                        message += '<a href="#" onclick="return false;">---------------</a>';
+                                        message += '<a href="#" onclick="return false;">PRESS ENTER TO SEARCH MORE...</a>';
+
+                                        $('#result_box').html(message);
+                                    }
+                                    else {
+                                        $('#result_box').html('<a href="#" onclick="return false;">Press Enter to search...</a>');
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            $('#result_box').html('');
+                            $('#result_box').css('display', 'none');
+                        }
+                    }
+                </script>
+</h3>
+<h1>
+<a href="http://kissmanga.com" title="Read manga online - kissmanga.com" class="logo">Read online manga - kissmanga.com</a></h1>
+</div>
+ 
+<div class="clear">
+</div>
+<div id="headnav">
+<div id="navbar">
+<div id="navcontainer">
+<ul>
+<li id="liHome"><a href="http://kissmanga.com">Home</a></li>
+<li id="liDS"><a href="http://kissmanga.com/MangaList">Manga
+List</a></li>
+<li id="liComic"><a target="_blank" href="http://readcomiconline.to/">Comic
+List</a></li>
+<li id="liReport"><a rel="nofollow" target="_blank" href="https://m.me/KissManga">
+Report Error</a></li>
+<li id="liRequest"><a href="/Message/RequestManga">
+Request Manga</a></li>
+<li id="liCommunity"><a rel="nofollow" target="_blank" href="http://forum.kissanime.com">
+Forum</a></li>
+<li id="liAnimeOnline"><a target="_blank" title="High quality anime online" href="http://kissanime.ru/">
+Watch anime</a></li>
+<li id="liGame"><a target="_blank" href="http://novelplanet.com">Read Novel</a></li>
+<li id="liFlappy"><a target="_blank" title="Anime Merchandise Shop" href="https://animemerchant.com/">Shop</a></li>
+</ul>
+</div>
+</div>
+<script type="text/javascript">
+    var path = 'Search';
+    var action = 'AdvanceSearch';
+    if (path == 'Home')
+        $('#liHome a').attr('id', 'currentTab');
+    else if (path == 'Manga' || path == 'Genre' || path == 'Group' || path == 'AuthorArtist')
+        $('#liDS a').attr('id', 'currentTab');
+    else if (action == 'Report')
+        $('#liReport a').attr('id', 'currentTab');
+    else if (action == 'RequestManga')
+        $('#liRequest a').attr('id', 'currentTab');
+    else if (action == 'Guide')
+        $('#liGuide a').attr('id', 'currentTab')
+    else
+        $('#navcontainer a[href*="' + path + '"]').attr('id', 'currentTab');
+</script>
+</div>
+ 
+<div id="container">
+<div id="leftside">
+<div class="bigBarContainer">
+<div class="barTitle">
+Search by series name
+</div>
+<div class="barContent">
+<div class="arrow-general">
+&nbsp;</div>
+<div>
+<style>.tooltip{display:none;background:url('../../Content/images/black_big.png') no-repeat;height:180px;padding:25px 10px 0px 30px;width:450px;font-size:11px;color:#fff;}.alphabet{background:none repeat scroll 0 0 #161616;color:gray;text-align:center;font-size:14px;}.alphabet a{font-weight:bold;}</style>
+<script type="text/javascript" src="../../Scripts/jqueryTooltip.js"></script>
+<img style="vertical-align: middle" title="Latest update" src="../../Content/images/newupdate.png"/>
+Latest Update &nbsp;&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+Top Popular Manga&nbsp;&nbsp;&nbsp;
+<input type="checkbox" id="chbDoujinshi"/>
+Display Doujinshi
+<div class="clear">
+&nbsp;</div>
+<script type="text/javascript">
+            $('#chbDoujinshi').click(function () {
+                if ($(this).is(':checked'))
+                    document.cookie = "vns_doujinshi=1; expires=Thu, 2 Aug 2020 20:47:11 UTC;path=/";
+                else
+                    document.cookie = "vns_doujinshi=0; expires=Thu, 2 Aug 2020 20:47:11 UTC;path=/";
+                window.location.reload();
+            });
+    </script>
+<div class="clear">
+&nbsp;</div>
+<div style="text-align: center; padding: 10px 0px 10px 0px;">
+<iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" id="adsIfrme1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" src="http://kissmanga.com/ads/adprotect300.aspx" width="300px" height="250px">
+</iframe>
+</div>
+<div class="clear">
+&nbsp;</div>
+<table class="listing">
+<tr class="head">
+<th width="70%">
+Series Name
+</th>
+<th width="30%">
+Latest chapter
+</th>
+</tr>
+<tr style="height: 10px">
+</tr>
+<tr class="odd">
+<td title='
+                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/10-29-2011/3347542i106736.jpg" style="float: left; padding-right: 10px" />
+                <div style="float: left; width: 300px">
+                    <a class="bigChar" href="/Manga/Yamanko">Yamanko</a>
+                    <p>
+                        Though it was a bit strange, three people ended up meeting. One, who looks younger than her age and able to see the supernatural. Another who is possessed by a "Yamanko" which refers to "Yama no ko", or ...
+                    </p>
+                </div>'>
+<a href="/Manga/Yamanko">
+Yamanko</a>
+</td>
+<td>
+Completed
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+    $(".listing td[title]").tooltip({ offset: [10, 200], effect: 'slide', predelay: 300 }).dynamic({ bottom: { direction: 'down', bounce: true} });
+</script>
+</div>
+</div>
+</div>
+</div>
+<div id="rightside">
+<div class="rightBox">
+<div class="barTitle">
+Search by genres</div>
+<div class="barContent">
+<div class="arrow-general">
+&nbsp;</div>
+<div>
+<a href="/Genre/4-Koma" title="a&nbsp;comic-strip&nbsp;format, generally consists of&nbsp;gag comic strips&nbsp;within four&nbsp;panels&nbsp;of equal size ordered from top to bottom.">
+4-Koma</a><br/>
+<a href="/Genre/Action" title="A work typically depicting fighting, violence, chaos, and fast paced  motion.">
+Action</a><br/>
+<a href="/Genre/Adult" title="Contains content that is suitable only for adults. Titles in this  category may include prolonged scenes of intense violence and/or graphic  sexual content and nudity.">
+Adult</a><br/>
+<a href="/Genre/Adventure" title="If a character in the story goes on a trip or along that line, your best  bet is that it is an adventure manga.  Otherwise, it's up to your  personal prejudice on this case.">
+Adventure</a><br/>
+<a href="/Genre/Comedy" title="A dramatic work that is light and often humorous or satirical in tone  and that usually contains a happy resolution of the thematic conflict.">
+Comedy</a><br/>
+<a href="/Genre/Comic" title="n/a">
+Comic</a><br/>
+<a href="/Genre/Cooking" title="n/a">
+Cooking</a><br/>
+<a href="/Genre/Doujinshi" title="Fan based work inspired by official anime or manga. For MangaUpdates,  original works DO NOT fall under this category">
+Doujinshi</a><br/>
+<a href="/Genre/Drama" title="A work meant to bring on an emotional response, such as instilling  sadness or tension.">
+Drama</a><br/>
+<a href="/Genre/Ecchi" title="Possibly the line between hentai and non-hentai, ecchi usually refers to  fanservice put in to attract a certain group of fans.">
+Ecchi</a><br/>
+<a href="/Genre/Fantasy" title="Anything that involves, but not limited to, magic, dream world, and  fairy tales.">
+Fantasy</a><br/>
+<a href="/Genre/Gender-Bender" title="Girls dressing up as guys, guys dressing up as girls.. Guys turning into  girls, girls turning into guys.. I think you get the picture.">
+Gender Bender</a><br/>
+<a href="/Genre/Harem" title="A series involving one male character and many female characters  (usually attracted to the male character). A Reverse Harem is when the  genders are reversed.">
+Harem</a><br/>
+<a href="/Genre/Historical" title="Having to do with old or ancient times.">
+Historical</a><br/>
+<a href="/Genre/Horror" title="A painful emotion of fear, dread, and abhorrence; a shuddering with terror and detestation; the feeling inspired by something frightful and shocking.">
+Horror</a><br/>
+<a href="/Genre/Josei" title="Literally Woman. Targets women 18-30. Female equivalent to seinen. Unlike shoujo the romance is more realistic and less idealized. The storytelling is more explicit and mature.
+&nbsp;">
+Josei</a><br/>
+<a href="/Genre/Lolicon" title="Representing a sexual attraction to young or under-age girls.">
+Lolicon</a><br/>
+<a href="/Genre/Manga" title="Manga is the Japanese word for comics and consists of comicsand print cartoons">
+Manga</a><br/>
+<a href="/Genre/Manhua" title="Manhua are Chinese comics originally produced in China.">
+Manhua</a><br/>
+<a href="/Genre/Manhwa" title="Manhwa is the general Korean term for comics and print cartoons (common usage also includes animated cartoons).&nbsp;">
+Manhwa</a><br/>
+<a href="/Genre/Martial-Arts" title="As the name suggests, anything martial arts related. Any of several arts of combat or self-defense, such as aikido, karate, judo, or tae kwon do, kendo, fencing, and so on and so forth.">
+Martial Arts</a><br/>
+<a href="/Genre/Mature" title="Contains subject matter which may be too extreme for people under the age of 17. Titles in this category may contain intense violence, blood and gore, sexual content and/or strong language.">
+Mature</a><br/>
+<a href="/Genre/Mecha" title="A work   involving and usually concentrating on all types of large robotic machines.">
+Mecha</a><br/>
+<a href="/Genre/Medical" title="n/a">
+Medical</a><br/>
+<a href="/Genre/Music" title="n/a">
+Music</a><br/>
+<a href="/Genre/Mystery" title="Usually an unexplained event occurs, and the main protagonist attempts to find out what caused it.">
+Mystery</a><br/>
+<a href="/Genre/One-shot" title="One shot">
+One shot</a><br/>
+<a href="/Genre/Psychological" title="Usually deals with the philosophy of a state of mind, in most cases  detailing abnormal psychology.">
+Psychological</a><br/>
+<a href="/Genre/Reincarnation" title="The protagonist has been reborn in a new world">
+Reincarnation</a><br/>
+<a href="/Genre/Romance" title="Any love related story.  We will define love as between man and woman in  this case. Other than that, it is up to your own imagination of what  love is.">
+Romance</a><br/>
+<a href="/Genre/School-Life" title="Having a major setting of the story deal with some type of school.">
+School Life</a><br/>
+<a href="/Genre/Sci-fi" title="Short for science fiction, these works involve twists on technology and  other science related phenomena which are contrary or stretches of the  modern day scientific world.">
+Sci-fi</a><br/>
+<a href="/Genre/Seinen" title="Seinen means young Man. Manga and anime that specifically targets  young adult males around the ages of 18 to 25 are seinen titles.The  stories in seinen works appeal to university students and those in the  working world. Typically the story lines deal with the issues of  adulthood.">
+Seinen</a><br/>
+<a href="/Genre/Shotacon" title="Representing a sexual attraction to young or under-age boys.">
+Shotacon</a><br/>
+<a href="/Genre/Shoujo" title="A work intended and primarily written for females.  Usually involves a  lot of romance and strong character development.">
+Shoujo</a><br/>
+<a href="/Genre/Shoujo-Ai" title="Often synonymous with yuri, this can be thought of as somewhat less  extreme. Girl's Love, so to speak.">
+Shoujo Ai</a><br/>
+<a href="/Genre/Shounen" title="A work intended and primarily written for males.  These  works usually  involve fighting and/or violence.">
+Shounen</a><br/>
+<a href="/Genre/Shounen-Ai" title="Often synonymous with yaoi, this can be thought of as somewhat less  extreme. Boy's Love, so to speak.">
+Shounen Ai</a><br/>
+<a href="/Genre/Slice-of-Life" title="
+As the name suggests, this genre represents day-to-day tribulations of one/many character(s). These challenges/events could technically happen in real life and are often -if not all the time- set in the present timeline in a world that mirrors our own.
+
+">
+Slice of Life</a><br/>
+<a href="/Genre/Smut" title="Deals with series that are considered profane or offensive, particularly with regards to sexual content">
+Smut</a><br/>
+<a href="/Genre/Sports" title="As the name suggests, anything sports related. Baseball, basketball, hockey, soccer, golf, and racing just to name a few.">
+Sports</a><br/>
+<a href="/Genre/Supernatural" title="Usually   entails amazing and unexplained powers or events which defy the laws of   physics.">
+Supernatural</a><br/>
+<a href="/Genre/Time-Travel" title="The protagonist has gone back or forward in time...">
+Time Travel</a><br/>
+<a href="/Genre/Tragedy" title="
+Contains events resulting in great loss and misfortune.
+">
+Tragedy</a><br/>
+<a href="/Genre/Transported" title="The protagonist has been transported to a different universe...">
+Transported</a><br/>
+<a href="/Genre/Webtoon" title="A&nbsp;webtoon&nbsp;is an animated cartoon, often created by an amateur, that is distributed via the Web. Webtoons are usually drawn in full color and published in chapters.">
+Webtoon</a><br/>
+<a href="/Genre/Yaoi" title="This   work usually involves intimate relationships between men.">
+Yaoi</a><br/>
+<a href="/Genre/Yuri" title="This   work usually involves intimate relationships between women.">
+Yuri</a><br/>
+</div>
+</div>
+</div>
+<div class="clear2">
+&nbsp;</div>
+<div>
+<div style="text-align: center">
+<iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" id="adsIfrme2" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" src="http://kissmanga.com/ads/adprotect160.aspx" width="160px" height="600px">
+</iframe>
+</div>
+</div>
+</div>
+</div>
+ 
+<div class="clear">
+&nbsp;</div>
+<div class="clear">
+&nbsp;</div>
+<div class="clear">
+&nbsp;</div>
+<div style="z-index: 0; position: absolute; top: 220px; left: 0px; width: 100%; height: 600px;
+    overflow: hidden; visibility: hidden">
+<div id="divFloatLeft" style="position: absolute; visibility: visible; left: -2000px">
+<iframe frameborder="0" marginwidth="0" marginheight="0" scrolling="no" src="/ads/adprotect160.aspx" width="160px" height="600px"></iframe>
+</div>
+<div id="divFloatRight" style="position: absolute; visibility: visible; right: -2000px">
+<iframe frameborder="0" marginwidth="0" marginheight="0" scrolling="no" src="/ads/adprotect160-2.aspx" width="160px" height="600px"></iframe>
+</div>
+</div>
+<script type="text/javascript">
+    function DoAdsPosition() {
+        var browserWidth = $(window).width();
+        var webWidth = 1000;
+        var bannerWidth = 160;
+        var blankWidth = (browserWidth - webWidth) / 2;
+        var margin = 15;
+
+        $('#divFloatLeft').css('left', browserWidth - webWidth - blankWidth - bannerWidth - margin);
+        $('#divFloatLeft').show();
+
+        $('#divFloatRight').css('right', browserWidth - webWidth - blankWidth - bannerWidth - margin);
+        $('#divFloatRight').show();
+    }
+
+    DoAdsPosition();
+    $(window).resize(function () {
+        DoAdsPosition();
+    });
+</script>
+</div>
+<script src="http://www.ti553.com/InterYield/bindevent.do?e=click&affiliate=kissanime&subid=kissmanga&ecpm=0&debug=false&snoozeMinutes=1&adCountIntervalHours=2&maxAdCountsPerInterval=1&pop=under&chromeoption=pdf&doublepop=false&attributionDisabled=true&endpoint=http%3A%2F%2Fwww.ti553.com" type="text/javascript"></script>
+<div id="footer">
+<div id="footcontainer" style="position: relative">
+<p>
+<a href="http://kissmanga.com">KissManga.com</a>. Copyrights and trademarks for the manga, and other promotional materials are held by their respective owners and their use is allowed under the fair use clause of the Copyright Law.
+<a href="/Message/PrivacyPolicy">Privacy Policy</a>
+&nbsp;&nbsp;</p>
+<div style="position: absolute; left: 200px; top: 20px">
+</div>
+</div>
+</div>
+<script type="text/javascript">
+        $('#footer').css('top', $(document).height() - $('#containerRoot').height());
+    </script>
+</body>
+</html>
