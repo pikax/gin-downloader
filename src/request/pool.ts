@@ -3,6 +3,17 @@ import {ginConfig, GinPoolConfig} from "src/config";
 import {Lazy, promiseSetTimeout} from "src/util";
 import {GinUrlOptions, RequestStrategy} from "./index";
 
+const Queue = require("promise-queue") as Queue;
+
+interface Queue {
+  new (maxConcurrent: number, maxQueued?: number): Queue;
+
+  add<T>(generator: () => Promise<T>): Promise<T>;
+
+  getQueueLength(): number;
+  getPendingLength(): number;
+}
+
 
 type GinPoolQueue = GinPoolConfig & {queue: QueuePool};
 
@@ -62,12 +73,12 @@ function buildPool(): Array<GinPoolQueue> {
 
     let queue: QueuePool;
 
-    if (pool.requestInterval){
+    if (pool.requestInterval) {
       queue = new IntervalPool(pool);
     }
     else {
       if (pool.simultaneousRequests) {
-        throw new Error("not implemented pool");
+        queue = new ConcurrentQueue(pool);
       }
       else {
         throw new Error("unknown pool type");
@@ -80,40 +91,6 @@ function buildPool(): Array<GinPoolQueue> {
   return pools;
 }
 
-
-
-
-//
-// class PoolQueue {
-//
-//   private _queue: ActivePool[] = [];
-//   private _history: HistoryPool[] = [];
-//
-//   constructor(private _config: GinPoolConfig) {
-//   }
-//
-//   queue(uri: GinUrlOptions, strategy: RequestStrategy) {
-//
-//     if (!!this._config.requestInterval) {
-//       return this.processInterval(uri, strategy);
-//     }
-//
-//
-//   }
-//
-//
-//   private processInterval(uri: GinUrlOptions, strategy: RequestStrategy) {
-//     if (this._queue.length > 0) {
-//
-//
-//     }
-//
-//
-//
-//   }
-//
-//
-// }
 
 
 export class IntervalPool implements QueuePool {
@@ -214,4 +191,59 @@ export class IntervalPool implements QueuePool {
 }
 
 
+export class ConcurrentQueue implements QueuePool {
+  private _currId: number = 0;
+
+  private _history = new Map<number, HistoryPool>();
+  get history(): HistoryPool[] {return Array.from(this._history.values()); } // copy list
+
+  private readonly _queue: Queue;
+
+
+  constructor(private _config: GinPoolConfig) {
+    this._queue = new Queue(_config.simultaneousRequests);
+  }
+
+
+  async queue(uri: GinUrlOptions, strategy: RequestStrategy): Promise<any> {
+    const id = this.getNextId();
+
+    const history: HistoryPool = {
+      id,
+      uri,
+      isActive: true,
+      created: new Date(),
+    };
+
+    let lazy = new Lazy(async () => {
+      try {
+        history.started = new Date();
+        return await strategy.request(uri);
+      }
+      finally {
+        history.resolved = new Date();
+      }
+    } );
+
+    return this._queue.add(() => this.exec(lazy, history));
+  }
+
+  async exec(lazy: Lazy<Promise<any>>, history: HistoryPool) {
+    try {
+      history.item = lazy;
+      return await lazy.value.catch(x => {
+        throw history.error = x;
+      });
+    }
+    finally {
+      history.failed = true;
+      history.isActive = false;
+    }
+  }
+
+
+  private getNextId() {
+    return this._currId++;
+  }
+}
 
