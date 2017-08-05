@@ -2106,6 +2106,10 @@ process-nextick-args@~1.0.6:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-1.0.7.tgz#150e20b756590ad3f91093f25a4f2ad8bff30ba3"
 
+promise-queue@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/promise-queue/-/promise-queue-2.2.3.tgz#8534d76bf4673c3baa3a82bba01bd295cc30f14f"
+
 propagate@0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/propagate/-/propagate-0.4.0.tgz#f3fcca0a6fe06736a7ba572966069617c130b481"
