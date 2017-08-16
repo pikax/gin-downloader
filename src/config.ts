@@ -26,6 +26,7 @@ export interface GinConfig {
   timeout?: number;
   interval?: number;
 
+  disableHttps?: boolean; // NOTE not sure, probably move to other place
 
   pooling?: {[poolId: string]: GinPoolConfig};
 
@@ -56,6 +57,8 @@ const DefaultConfig: () => GinConfig = () => ({
       match: /.*/,
     }
   },
+
+  disableHttps: true,
 
 
   sites: {

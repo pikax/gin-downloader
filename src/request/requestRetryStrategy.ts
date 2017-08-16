@@ -21,6 +21,12 @@ export class RequestRetryStrategy implements RequestStrategy {
       opts = {...opts, ...options};
     }
 
+
+    //TODO find a better place for this
+    if (config.config.disableHttps){
+      opts.url = opts.url.toString().replace("https", "http");
+    }
+
     return requestRetry(opts);
   }
 }

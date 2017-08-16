@@ -2,7 +2,7 @@ import {capitalize, deburr} from "lodash";
 import {OptionsWithUrl} from "request";
 import {FilterCondition} from "src/enum";
 import {FilteredResults, MangaFilter} from "src/filter";
-import {gin, Site} from "src/interface";
+import {gin, LoginSite, Site} from "src/interface";
 import {MangaSite} from "src/mangasite";
 import {config} from "./config";
 
@@ -12,7 +12,7 @@ import {Parser} from "./parser";
 import MangaSource = gin.MangaSource;
 import SiteConfig = gin.SiteConfig;
 
-export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Site {
+export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements LoginSite {
   sitename = "batoto";
 
   private _urlCache: { [id: string]: string } = {}; // provide a cache for resolved urls
@@ -143,7 +143,6 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Sit
       rememberMe: rememberMe ? 1 : 0,
       auth_key: authKey,
     };
-
 
     request = {
       ...request, formData: body,

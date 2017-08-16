@@ -8,19 +8,25 @@
     "alwaysStrict": true,
     "declaration": true,
 
+    "traceResolution": false,
+
     "baseUrl": ".",
     "paths": {
-      "./src/*" : ["src/*"],
-      "./test/*" : ["__test__/*"]
+      "*" : ["*"]
     },
-
+    "declarationDir": "dist",
     "moduleResolution": "node",
     "typeRoots" : ["./node_modules/@types"],
-    "types": [ "node", "mocha", "chai" ],
-    "lib": ["ES6", "es2015","dom"]
+
+    "lib": ["es6", "es2015","dom", "es7"]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/old/",
+    "src/sites/kissmanga",
+    "src/sites/mangafox",
+    "src/sites/mangahere",
+    "src/sites/mangapanda"
   ],
   "include": [
     "src/**/*.ts"

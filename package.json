@@ -30,7 +30,9 @@
     "dist:build": "yarn build && yarn dist:rollup",
     "dist:rollup": "rollup -c",
     "dist:declaration": "copyfiles -u 1 ./build/**/*d.ts dist/types",
-    "clean": "trash src/**/*.js* src/**/*.d.ts test/**/*.js* test/**/*.d.ts"
+    "clean": "trash src/**/*.js* src/**/*.d.ts test/**/*.js* test/**/*.d.ts",
+    
+    "watch": "rollup --watch --config"
   },
   "repository": "https://github.com/pikax/gin-downloader",
   "author": "pikax",
@@ -62,6 +64,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.0.1",
+    "@types/fs-extra": "^4.0.0",
     "@types/mocha": "^2.2.40",
     "@types/nock": "^8.2.1",
     "@types/node": "^8.0.17",
@@ -69,12 +72,14 @@
     "chai": "^4.1.0",
     "coveralls": "^2.13.0",
     "cross-env": "^5.0.1",
+    "fs-extra": "^4.0.1",
     "mocha": "^3.4.2",
     "nock": "^9.0.14",
     "nyc": "^11.0.3",
     "rollup": "^0.45.2",
     "rollup-analyzer": "^1.0.2",
     "rollup-plugin-cleanup": "^1.0.1",
+    "rollup-plugin-typescript2": "^0.5.0",
     "rollup-watch": "^4.3.1",
     "ts-node": "^3.3.0",
     "tsconfig-paths": "^2.2.0",

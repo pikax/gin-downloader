@@ -5,8 +5,7 @@ import {ginConfig} from "src/config";
 import {FilteredResults, MangaFilter} from "src/filter";
 
 import {Chapter, gin, GinImage, GinImagePromise, ImageCollection, Info, Site, InfoChapter} from "src/interface";
-import {OptionsWithUrl} from "src/request";
-import {RequestStrategy} from "src/request/index";
+import {RequestStrategy, OptionsWithUrl} from "src/request/index";
 import {request} from "src/request/pool";
 import {Lazy, parseDoc} from "src/util";
 import {parse} from "url";
@@ -147,6 +146,27 @@ export abstract class MangaSite<C extends SiteConfig, P extends SiteParser, N ex
     }
   }
 
+  async infoChaptersByUrl(src: string): Promise<InfoChapter> {
+    this.debug(`getting info & chapters for ${src}`);
+
+    try {
+      let opts = this.buildInfoRequest(src);
+      let doc = await this.getDoc(opts);
+
+      let info = await this.parser.info(doc);
+      let chapters = await this.parser.chapters(doc);
+
+      this.verbose("info:%o\nchapters:%o", chapters);
+      this.debug(`got info & chapters for ${src}`);
+
+      return {...info, chapters};
+    }
+    catch (e) {
+      this.error("%o", e);
+      throw new Error(`${src} not found!`);
+    }
+  }
+
   async images(name: string, chapter: any): Promise<ImageCollection> {
     if (!name) {
       throw new Error("Please provide a name");
@@ -163,6 +183,15 @@ export abstract class MangaSite<C extends SiteConfig, P extends SiteParser, N ex
 
     return paths.map(x => this.processImagePath(this.buildImagePathsRequest(x)));
   }
+
+
+  async imagesByUrl(url: string): Promise<ImageCollection> {
+    let opts = this.buildChapterRequest(url);
+    let paths = await this.getDoc(opts).then(this.parser.imagesPaths);
+
+    return paths.map(x => this.processImagePath(this.buildImagePathsRequest(x)));
+  }
+
 
   resolveMangaUrl(name: string): Promise<string> | string {
     return this.nameHelper.resolveUrl(name);

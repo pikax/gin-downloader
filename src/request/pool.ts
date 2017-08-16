@@ -235,6 +235,7 @@ export class ConcurrentQueue implements QueuePool {
       }
       finally {
         history.resolved = new Date();
+        delete history.item;
       }
     });
 

@@ -71,36 +71,47 @@ export type GinImagePromise = Lazy<Promise<GinImage>>;
 export type ChapterCollection = Chapter[];
 export type MangaCollection = Manga[];
 export type ImageCollection = GinImagePromise[];
-export type InfoChapter = Info & {chapters: ChapterCollection};
-
+export type InfoChapter = Info & { chapters: ChapterCollection };
 
 
 export interface Site {
   mangas(filter?: MangaFilter): Promise<MangaCollection>;
+
   filter(filter?: MangaFilter): Promise<MangaResults>;
 
   latest(): Promise<ChapterCollection>;
 
   info(name: string): Promise<Info>;
+
   chapters(name: string): Promise<ChapterCollection>;
 
   infoChapters(name: string): Promise<InfoChapter>;
+
   images(name: string, chapter: string): Promise<ImageCollection>;
+
+
+  infoChaptersByUrl(url: string): Promise<InfoChapter>; // todo not sure, probably hide this behind symbol
+  imagesByUrl(url: string): Promise<ImageCollection>; // todo not sure, probably hide this behind symbol
 }
 
 export interface LoginSite extends Site {
   login(user: string, pw: string, rememberMe?: boolean): Promise<boolean>;
 }
+
 export namespace gin {
 
   export interface Request {
     getHtml(requestedPath: string | URL, params?: any): Promise<string>;
+
     getBytes(requestedPath: string | URL, params?: any): Promise<any>;
+
     getDoc(requestedPath: string): Promise<MangaXDoc>;
 
     postHtml(requestedPath: string | URL, params?: any): Promise<string>;
+
     postBytes(requestedPath: string | URL, params?: any): Promise<any>;
-    postDoc(requestedPath: string| URL, params?: any): Promise<MangaXDoc>;
+
+    postDoc(requestedPath: string | URL, params?: any): Promise<MangaXDoc>;
   }
 
 
@@ -117,7 +128,7 @@ export namespace gin {
 
 
   export interface GinSite extends Site {
-    resolveMangaUrl(name: string): Promise<string>|string;
+    resolveMangaUrl(name: string): Promise<string> | string;
   }
 
 
@@ -128,19 +139,23 @@ export namespace gin {
 
   export interface SiteParser {
     mangas(doc: MangaXDoc): Promise<MangaSource[]> | MangaSource[];
+
     filter(doc: MangaXDoc): Promise<MangaResults> | MangaResults;
 
     latest(doc: MangaXDoc): Promise<ChapterSource[]> | ChapterSource[];
 
     info(doc: MangaXDoc): Promise<Info> | Info;
+
     chapters(doc: MangaXDoc): Promise<ChapterSource[]> | ChapterSource[];
 
     imagesPaths(doc: MangaXDoc): string[];
+
     image(html: string): string;
   }
 
   export interface NameHelper {
     toName(name: string): string;
+
     resolveUrl(name: string): string;
   }
 }

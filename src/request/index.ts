@@ -4,8 +4,8 @@
 
 
 import {Options, OptionsWithUrl} from "request";
-import {RequestCloudFlareStrategy} from "./requestCloudFlareStrategy";
-import {RequestRetryStrategy} from "./requestRetryStrategy";
+import {strategy as cloudFlareStrategy} from "./requestCloudFlareStrategy";
+import {strategy as retryStrategy} from "./requestRetryStrategy";
 
 export {Options, CoreOptions, OptionsWithUrl} from "request";
 
@@ -26,9 +26,9 @@ export interface RequestStrategy {
 
 
 
-export const strategies = {
-  retry: new RequestRetryStrategy(),
-  cloudflare: new RequestCloudFlareStrategy(),
+export const strategies: {retry: RequestStrategy, cloudflare: RequestStrategy} = {
+  retry: retryStrategy,
+  cloudflare: cloudFlareStrategy,
 };
 
 

@@ -7,6 +7,7 @@ import results from "./_results";
 
 
 import {parser} from "src/sites/batoto/parser";
+import {strategy} from "src/request/requestRetryStrategy";
 import {readFileSync} from "fs";
 import {parseDoc} from "src/util";
 
@@ -96,4 +97,12 @@ describe("Batoto offline", () => {
     parser.chapters(doc)
       .should.have.length.gte(results.chapter_count);
   });
+
+  it('other', async ()=>{
+    const html = await strategy.request("http://bato.to/comic/_/comics/mi-seijuku-r19038");
+
+
+    let info = parser.info(html);
+    console.log(info);
+  })
 });
