@@ -24,7 +24,7 @@ export declare class Parser implements SiteParser {
     buildVM(cajs: string, lojs: string, algorithm: string): Script;
     filter(doc: MangaXDoc): Promise<FilteredResults> | FilteredResults;
     static ResolveChapterVolume(title: string): string;
-    static ResolveChapterNumber(title: string): number;
+    static ResolveChapterNumber(title: string): string;
     static ResolveChapterName(title: string): string;
 }
 export declare const parser: Parser;

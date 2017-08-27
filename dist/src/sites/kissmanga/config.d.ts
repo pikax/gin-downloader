@@ -1,7 +1,5 @@
-/**
- * Created by rodriguesc on 24/03/2017.
- */
-import { SiteConfig } from "../../declarations";
+import { gin } from "src/interface";
+import SiteConfig = gin.SiteConfig;
 export declare const config: SiteConfig;
 export default config;
 export declare const debug: any;

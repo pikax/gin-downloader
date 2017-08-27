@@ -65,7 +65,7 @@ export interface Site {
     info(name: string): Promise<Info>;
     chapters(name: string): Promise<ChapterCollection>;
     infoChapters(name: string): Promise<InfoChapter>;
-    images(name: string, chapter: string): Promise<ImageCollection>;
+    images(name: string, chapter: string | number): Promise<ImageCollection>;
     infoChaptersByUrl(url: string): Promise<InfoChapter>;
     imagesByUrl(url: string): Promise<ImageCollection>;
 }

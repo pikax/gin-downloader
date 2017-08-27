@@ -25,7 +25,6 @@ const names: { [id: string]: string; } = {
   "Hell's Kitchen": "Hell’s-Kitchen",
   "Ayeshah’s Secret": "Ayeshah-s-Secret",
   "Ansatsu Kyoushitsu Spin-off  Koro-sense Q!": "Ansatsu-Kyoushitsu-Spin-off--Koro-sense-Q",
-  "Atelier - Escha & Logy": "Escha-Logy-no-Atelier-Tasogare-no-Sora-no-Renkinjutsushi",
 
 
   // TODO double check this conditions
@@ -131,9 +130,45 @@ const names: { [id: string]: string; } = {
   "K・O・I": "K-I-O", // http://kissmanga.com/Manga/K・O・I
   "Kaichou wa Maid-sama!Special": "Kaichou-wa-Maid-sama-Special", // http://kissmanga.com/Manga/Kaichou-wa-Maid-samaSpecial
   "Mafia;s D'ughter: Operation Makeover": "Mafia-s-Daughter-Operation-Makeover", // http://kissmanga.com/Manga/Mafia-s-D-ughter-Operation-Makeover
+  "Cylcia = Code": "Cylcia-Code", // http://kissmanga.com/Manga/Cylcia-Code
 
+  "Komatsubara ga Koibito ni Naritasou ni Kochira o Miteiru!" : "Komatsubara-ga-Koibito-ni-Naritasou-ni-Kochira-o-Miteiru-", // http://kissmanga.com/Manga/Komatsubara-ga-Koibito-ni-Naritasou-ni-Kochira-o-Miteiru-
+  "Slayers: The Road of the Ring" : "Slayers--The-Road-of-the-Ring", // http://kissmanga.com/Manga/Slayers--The-Road-of-the-Ring
+  "THE IDOLM@STER MILLION LIVE! Blooming Clover" : "THE-IDOLM-STER-MILLION-LIVE--Blooming-Clover", // http://kissmanga.com/Manga/THE-IDOLM-STER-MILLION-LIVE--Blooming-Clover
 
-
+  "Ansatsu Kyoushitsu Spin-off Koro-sense Q!" : "Ansatsu-Kyoushitsu-Spin-off--Koro-sense-Q", // http://kissmanga.com/Manga/Ansatsu-Kyoushitsu-Spin-off--Koro-sense-Q
+  "Atelier - Escha & Logy" : "Atelier-Escha-Logy", // http://kissmanga.com/Manga/Atelier-Escha-Logy
+  "Cinderella Girls Shuffle!!" : "Idolm-ster-Cinderella-Girls-Shuffle", // http://kissmanga.com/Manga/Idolm-ster-Cinderella-Girls-Shuffle
+  "Dearly Stars: Innocent Blue" : "Idolm-ster-Dearly-Stars-Innocent-Blue", // http://kissmanga.com/Manga/Idolm-ster-Dearly-Stars-Innocent-Blue
+  "On-site ☆ Report" : "On-site-Report", // http://kissmanga.com/Manga/On-site-Report
+  "ShiraYuki PaniMix! ﻿" : "ShiraYuki-PaniMix-", // http://kissmanga.com/Manga/ShiraYuki-PaniMix-
+  "THE  - Million Live!" : "THE-iDOLM-STER-Million-Live", // http://kissmanga.com/Manga/THE-iDOLM-STER-Million-Live
+  "THE  - Million Live! Back Stage" : "THE-iDOLM-STER-Million-Live-Back-Stage", // http://kissmanga.com/Manga/THE-iDOLM-STER-Million-Live-Back-Stage
+  "THE  (Mana)" : "THE-iDOLM-STER-Mana", // http://kissmanga.com/Manga/THE-iDOLM-STER-Mana
+  "THE  2 - Colorful Days" : "THE-iDOLM-STER-2-Colorful-Days", // http://kissmanga.com/Manga/THE-iDOLM-STER-2-Colorful-Days
+  "THE  2 - Nemuri Hime" : "THE-iDOLM-STER-2-Nemuri-Hime", // http://kissmanga.com/Manga/THE-iDOLM-STER-2-Nemuri-Hime
+  "THE  2 - The world is all one !!" : "THE-iDOLM-STER-2-The-world-is-all-one", // http://kissmanga.com/Manga/THE-iDOLM-STER-2-The-world-is-all-one
+  "THE  Break!" : "THE-iDOLM-STER-Break", // http://kissmanga.com/Manga/THE-iDOLM-STER-Break
+  "THE  Cinderella Girls - Comic Anthology cool" : "THE-iDOLM-STER-Cinderella-Girls-Comic-Anthology-cool", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Comic-Anthology-cool
+  "THE  Cinderella Girls - Comic Anthology cute" : "THE-iDOLM-STER-Cinderella-Girls-Comic-Anthology-cute", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Comic-Anthology-cute
+  "THE  Cinderella Girls - Comic Anthology passion" : "THE-iDOLM-STER-Cinderella-Girls-Comic-Anthology-passion", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Comic-Anthology-passion
+  "THE  Cinderella Girls - Ensemble!" : "THE-iDOLM-STER-Cinderella-Girls-Ensemble", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Ensemble
+  "THE  Cinderella Girls - Honjitsu no Idol-san" : "THE-iDOLM-STER-Cinderella-Girls-Honjitsu-no-Idol-san", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Honjitsu-no-Idol-san
+  "THE  Cinderella Girls - New Generations" : "THE-iDOLM-STER-Cinderella-Girls-New-Generations", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-New-Generations
+  "THE  Cinderella Girls - Rockin' Girl" : "THE-iDOLM-STER-Cinderella-Girls-Rockin-Girl", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Rockin-Girl
+  "THE  Cinderella Girls Shuffle!! - Ame TOKIDOKI Hare" : "THE-iDOLM-STER-Cinderella-Girls-Shuffle-Ame-TOKIDOKI-Hare", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Shuffle-Ame-TOKIDOKI-Hare
+  "THE  Cinderella Girls Shuffle!! - Cinderella★Egg" : "THE-iDOLM-STER-Cinderella-Girls-Shuffle-Cinderella★Egg", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Shuffle-Cinderella★Egg
+  "THE  Cinderella Girls Shuffle!! - Idol wa Hajimemashita" : "Idol-wa-Hajimemashita", // http://kissmanga.com/Manga/Idol-wa-Hajimemashita
+  "THE  Cinderella Girls Shuffle!! - Piyoderera" : "THE-iDOLM-STER-Cinderella-Girls-Shuffle-Piyoderera", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Shuffle-Piyoderera
+  "THE  Cinderella Girls Shuffle!! - Rin-chan Lesson!" : "THE-iDOLM-STER-Cinderella-Girls-Shuffle-Rin-chan-Lesson", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Shuffle-Rin-chan-Lesson
+  "THE  Cinderella Girls Shuffle!! - Uraraka Rhythm" : "THE-iDOLM-STER-Cinderella-Girls-Shuffle-Uraraka-Rhythm", // http://kissmanga.com/Manga/THE-iDOLM-STER-Cinderella-Girls-Shuffle-Uraraka-Rhythm
+  "THE  MILLION LIVE! Blooming Clover" : "THE-IDOLM-STER-MILLION-LIVE--Blooming-Clover", // http://kissmanga.com/Manga/THE-IDOLM-STER-MILLION-LIVE--Blooming-Clover
+  "THE  Neue Green for Dearly Stars" : "THE-iDOLM-STER-Neue-Green-for-Dearly-Stars", // http://kissmanga.com/Manga/THE-iDOLM-STER-Neue-Green-for-Dearly-Stars
+  "THE  relations" : "THE-iDOLM-STER-relations", // http://kissmanga.com/Manga/THE-iDOLM-STER-relations
+  "THE  Splash Red for Dearly Stars" : "THE-iDOLM-STER-Splash-Red-for-Dearly-Stars", // http://kissmanga.com/Manga/THE-iDOLM-STER-Splash-Red-for-Dearly-Stars
+  "THE  -Your " : "THE-iDOLM-STER-Your-Mess-ge", // http://kissmanga.com/Manga/THE-iDOLM-STER-Your-Mess-ge
+  "Uchiage Hanabi, Shita kara Miru ka? Yoko kara Miru ka?" : "Uchiage-Hanabi--Shita-kara-Miru-ka--Yoko-kara-Miru-ka", // http://kissmanga.com/Manga/Uchiage-Hanabi--Shita-kara-Miru-ka--Yoko-kara-Miru-ka
+  "Yuri Yuri : I Want To Hold You" : "Yuri-Yuri-M-ster-I-Want-To-Hold-You", // http://kissmanga.com/Manga/Yuri-Yuri-M-ster-I-Want-To-Hold-You
 
   "Valkyrie%20Profile": "Valkyrie%20Profile",
 };

@@ -6,7 +6,7 @@
 import nock = require("nock");
 import {_MOCK_} from "__test__/common";
 import {FilterStatus, Genre} from "src/enum";
-import {MangaFilter} from "src/filter";
+import {MangaFilter, MangaSource} from "src/filter";
 
 import {manga} from "src/sites/kissmanga";
 import {config} from "src/sites/kissmanga/config";
@@ -78,18 +78,18 @@ describe("KissManga live", () => {
         .replyWithFile(200, __dirname + "/html/mangas.html");
     }
 
-    let mangas = await manga.mangas();
+    let mangas: MangaSource[] = await manga.mangas() as any;
 
     for (let obj of mangas){
       let expected = obj.src;
       let origName = obj.name;
-      let finalUrl = manga.resolveMangaUrl(origName);
+      let finalUrl = (manga as any).resolveMangaUrl(origName);
 
       finalUrl.should.be.eq(expected, `with name "${origName}"`);
 
-      // if(expected !== finalUrl)
-      //   console.log(`"${origName}": "${expected}"; // ${finalUrl}`);
-
+      // if (finalUrl !== expected) {
+      //   console.log(`"${origName}" : "${_.last(expected.split("/"))}", // ${expected}`);
+      // }
     }
   });
 
@@ -223,7 +223,7 @@ describe("KissManga live", () => {
     images.should.have.length.gte(17);
 
     let img = await images[0];
-    img.src.should.contain(results.image_src);
+    (await img.value).src.should.contain(results.image_src);
   });
 
   describe("Filter", () => {

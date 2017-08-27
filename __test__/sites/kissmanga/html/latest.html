@@ -6,7 +6,7 @@ Online manga list
 - Page 1
 </title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta property="fb:admins" content="683024937"/><meta property="fb:app_id" content="111670815619329"/>
 <script src="http://kissmanga.com/Scripts/jquery17.min.js" type="text/javascript"></script>
- 
+
 <link href="http://kissmanga.com/Content/css/tpl_style.css?v=2" rel="stylesheet" type="text/css"/>
 <link href="http://kissmanga.com/Content/css/upload-progress.css" rel="stylesheet" type="text/css">
 <link rel="shortcut icon" href="http://kissmanga.com/Content/images/favicon.ico" type="image/x-icon"/>
@@ -28,6 +28,25 @@ Online manga list
         })();
 
     </script>
+<script data-cfasync="false" type="text/javascript">
+    var freestar = freestar || {};
+    freestar.hitTime = Date.now();
+    freestar.queue = freestar.queue || [];
+    freestar.config = freestar.config || {};
+    freestar.debug = window.location.search.indexOf('fsdebug') === -1 ? false : true;
+
+    // Tag IDs set here, must match Tags served in the Body for proper setup
+    freestar.config.enabled_slots = [
+        "Kissmanga_728x90_320x50_ATF",
+        "Kissmanga_300x250_728x90_320x50_BTF",
+        "Kissmanga_160x600_Sidebar_Left",
+        "Kissmanga_160x600_Sidebar_Right_1",
+        "Kissmanga_160x600_Sidebar_Right_2"
+    ];
+
+    !function (a, b) { var c = b.getElementsByTagName("script")[0], d = b.createElement("script"), e = "https://a.pub.network/kissmanga"; e += freestar.debug ? "/qa/pubfig.min.js" : "/pubfig.min.js", d.async = !0, d.src = e, c.parentNode.insertBefore(d, c) } (window, document);
+
+</script>
 </head>
 <body>
 <div id="containerRoot">
@@ -43,7 +62,7 @@ Register</a>
 <div id="search" style="position: relative">
 <form id="formSearch" method="post">
 <p>
-<input size="40" id="keyword" name="keyword" value="" class="text" autocomplete="off"/>
+<input size="40" id="keyword" name="keyword" value class="text" autocomplete="off"/>
 <select id="selectSearch">
 <option value="Manga">Series Name</option>
 <option value="AuthorArtist">Author/Artist</option>
@@ -58,10 +77,10 @@ Register</a>
                                 height: 21px;" allowtransparency="true"></iframe>
 </div>
 <div style="float: left; width: 85px">
- 
+
 <div class="g-plusone" data-size="medium" data-href="http://kissmanga.com">
 </div>
- 
+
 <script type="text/javascript">
                                 (function () {
                                     var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
@@ -151,7 +170,7 @@ Search</a>
 <h1>
 <a href="http://kissmanga.com" title="Read manga online - kissmanga.com" class="logo">Read online manga - kissmanga.com</a></h1>
 </div>
- 
+
 <div class="clear">
 </div>
 <div id="headnav">
@@ -200,10 +219,10 @@ New manga</a>
 </p>
 </div>
 </div>
- 
+
 <div id="container">
 <div id="rightside">
- 
+
 <div class="rightBox">
 <div class="barTitle">
 Search by status</div>
@@ -218,7 +237,7 @@ Search by status</div>
 </div>
 <div class="clear">
 &nbsp;</div>
- 
+
 <div class="rightBox">
 <div class="barTitle">
 Search by genres</div>
@@ -348,7 +367,20 @@ List manga
 <div class="barContent">
 <div class="arrow-general">
 &nbsp;</div>
-<style>.alphabet{background:none repeat scroll 0 0 #161616;color:gray;text-align:center;font-size:14px;}.alphabet a{font-weight:bold;}</style>
+<style>
+    .alphabet
+    {
+        background: none repeat scroll 0 0 #161616;
+        color: gray;
+        text-align: center;
+        font-size: 14px;
+    }
+    
+    .alphabet a
+    {
+        font-weight: bold;
+    }
+</style>
 <div class="alphabet">
 <a href="/MangaList">All</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=0">#</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=a">A</a>&nbsp;&nbsp;|&nbsp;&nbsp; <a href="?c=b">B</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=c">C</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=d">D</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=e">E</a> &nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=f">F</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=g">G</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=h">H</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 <a href="?c=i">I</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=j">J</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=k">K</a>&nbsp;&nbsp;|&nbsp;&nbsp; <a href="?c=l">L</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=m">M</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?c=n">N</a>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -358,7 +390,31 @@ List manga
 <div class="clear" style="height: 15px">
 &nbsp;</div>
 <div>
-<style>.tooltip{display:none;background:url('../../Content/images/black_big.png') no-repeat;height:180px;padding:25px 10px 0px 30px;width:450px;font-size:11px;color:#fff;}.alphabet{background:none repeat scroll 0 0 #161616;color:gray;text-align:center;font-size:14px;}.alphabet a{font-weight:bold;}</style>
+<style>
+    .tooltip
+    {
+        display: none;
+        background: url('../../Content/images/black_big.png') no-repeat;
+        height: 180px;
+        padding: 25px 10px 0px 30px;
+        width: 450px;
+        font-size: 11px;
+        color: #fff;
+    }
+
+    .alphabet
+    {
+        background: none repeat scroll 0 0 #161616; 
+        color:gray; 
+        text-align:center; 
+        font-size:14px; 
+    }
+
+    .alphabet a
+    {
+        font-weight:bold;
+    }
+</style>
 <script type="text/javascript" src="../../Scripts/jqueryTooltip.js"></script>
 <img style="vertical-align: middle" title="Latest update" src="../../Content/images/newupdate.png"/>
 Latest Update &nbsp;&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
@@ -396,305 +452,323 @@ Latest chapter
 <tr style="height: 10px">
 </tr>
 <tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/6-11-2017/1043672i259752.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Star-Dream-Idol-Project">Star Dream Idol Project</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/1-25-2017/293651200.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Nanatsu-no-Taizai-Seven-Days-Touzoku-to-Seishoujo&quot;>Nanatsu no Taizai: Seven Days ~Touzoku to Seishoujo~</a>
                     <p>
-                        The shining lights, the magnificent stage! Friendships created through singing, making a future through dancing, the girls embark on their journey towards their dreams! One who has lost status due to a ...
+                        A spin-off of Nanatsu no Taizai showing how Ban and Elaine met in more detail.In the land north of Britannia, there is a forest where humans are not allowed to go, and it is known as the &quot;Fairy Kings ...
                     </p>
-                </div>'>
-<a href="/Manga/Star-Dream-Idol-Project">
-Star Dream Idol Project</a>
+                </div>">
+<a href="/Manga/Nanatsu-no-Taizai-Seven-Days-Touzoku-to-Seishoujo">
+Nanatsu no Taizai: Seven Days ~Touzoku to Seishoujo~</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Star-Dream-Idol-Project/Ch-021?id=376959">Ch.021</a>
+<a href="/Manga/Nanatsu-no-Taizai-Seven-Days-Touzoku-to-Seishoujo/Final-Chapter---Oath?id=379837">Final Chapter - ...</a>
 </td>
 </tr>
 <tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/7-25-2017/1567042c8ba0.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Today-s-Ryuko">Todays Ryuko</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/11-25-2015/658932i226714.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/White-Epic&quot;>White Epic</a>
                     <p>
-                        
-
-
-Ryuko is a rambunctious little girl who, while caring greatly about fashion, is unable to control her more wild instincts. To the chagrin of her parents, she loves chasing lizards and making a mess ...
+                        N/A
                     </p>
-                </div>'>
-<a href="/Manga/Today-s-Ryuko">
-Today's Ryuko</a>
+                </div>">
+<a href="/Manga/White-Epic">
+White Epic</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Today-s-Ryuko/Ch-001?id=376951">Ch.001</a>
+<a href="/Manga/White-Epic/Chapter--095---Chapter-095?id=379836">Chapter. 095 - Chapter ...</a>
 </td>
 </tr>
 <tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/10-19-2015/2974231vamp.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Vampire-Sphere">Vampire Sphere</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/5-9-2017/6336082i257176.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Hana-Haru&quot;>Hana Haru</a>
                     <p>
-                        Nine years ago, three seeds were planted, and now they turn into three roses. Behind the girls have been chosen, their wings of destiny open. Bloodlines and hunters, roses and demons, love is like a symphony ...
+                        A werewolf love for a human girlIn a cold winter, little girl Hana and her family found a boy covered in blood, the boy is a werewolf baby. They picked up the boy, named him Haru, treated him and accepted ...
                     </p>
-                </div>'>
-<a href="/Manga/Vampire-Sphere">
-Vampire Sphere</a>
+                </div>">
+<a href="/Manga/Hana-Haru">
+Hana Haru</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Vampire-Sphere/Ch-096?id=376950">Ch.096</a>
+<a href="/Manga/Hana-Haru/ch-010?id=379835">ch.010</a>
 </td>
 </tr>
 <tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/11-26-2015/3062612i214313.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Wotaku-ni-Koi-wa-Muzukashii">Wotaku ni Koi wa Muzukashii</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/9-24-2011/97245321.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Cheese-in-the-Trap&quot;>Cheese in the Trap</a>
                     <p>
-                        A gaming otaku and a fujoshi reunite for the first time since middle school at work.
+                        Hong Sul is a ordinary college student. Yoo Jung is the schools most popular upperclass man. Hes good looking, rich, smart, and even nice. However, Hong Sul thinks theres more to Yoo Jung than what ...
                     </p>
-                </div>'>
-<a href="/Manga/Wotaku-ni-Koi-wa-Muzukashii">
-Wotaku ni Koi wa Muzukashii</a>
+                </div>">
+<a href="/Manga/Cheese-in-the-Trap">
+Cheese in the Trap</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Wotaku-ni-Koi-wa-Muzukashii/Vol-003-Ch-019--Episode-019?id=370771">Vol.003 Ch.019: ...</a>
+<a href="/Manga/Cheese-in-the-Trap/Cheese-in-the-Trap---169?id=379834">Cheese in the Trap ...</a>
 </td>
 </tr>
 <tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/4-4-2017/3630302i196419.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Sennen-Joou">Sennen Joou</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/7-5-2014/4245652d86ef8722bfbe744747787e87213cf29.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Normal-Class-8&quot;>Normal Class 8</a>
                     <p>
-                        A new discovered 10th planet, called Lametal, will collide with earth on 9th September 1999. While the impact wont affect the giant ice planet critically, earth will be destroyed.Yayoi, daughter of Lametals ...
+                        Kam Dongwon has an unusually large head, and due to it hes constantly teased. So he transfers to a new school, enters &quot;the normal class 8&quot; that has not so normal kids, and his crazy new school life b ...
                     </p>
-                </div>'>
-<a href="/Manga/Sennen-Joou">
-Sennen Joou</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Sennen-Joou/Vol-001-Ch-008?id=376948">Vol.001 Ch.008</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/4-24-2017/6627162i255531.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Prince-Don-t-Do-This">Prince, Dont Do This!</a>
-                    <p>
-                        In order to fulfil her mission of bringing peace to the land, the Princess of Uighur is going to travel to Changan and marry a prince. Her task is extremely difficult! She has to increase her IQ, finish ...
-                    </p>
-                </div>'>
-<a href="/Manga/Prince-Don-t-Do-This">
-Prince, Don't Do This!</a>
+                </div>">
+<a href="/Manga/Normal-Class-8">
+Normal Class 8</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Prince-Don-t-Do-This/Ch-062?id=376947">Ch.062</a>
+<a href="/Manga/Normal-Class-8/vol-003-ch-163?id=379833">vol.003 ch.163</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/3-13-2017/2707442011_1489440814.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/My-Dear-Cold-Blooded-King&quot;>My Dear Cold-Blooded King</a>
+                    <p>
+                        Born a humble peasant, Kihara Mei has lived simply day by day as a merchant in the capitol, and never assumed things would change. But, one fateful day would change the course of her life, when faced with ...
+                    </p>
+                </div>">
+<a href="/Manga/My-Dear-Cold-Blooded-King">
+My Dear Cold-Blooded King</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/My-Dear-Cold-Blooded-King/Ep--026?id=379832">Ep. 026</a>
 </td>
 </tr>
 <tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/10-8-2011/7115452i111256.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Shingeki-no-Kyojin">Shingeki no Kyojin</a>
-                    <p>
-                        Several hundred years ago, humans were nearly exterminated by giants. Giants are typically several stories tall, seem to have no intelligence, devour human beings and, worst of all, seem to do it for the ...
-                    </p>
-                </div>'>
-<a href="/Manga/Shingeki-no-Kyojin">
-Shingeki no Kyojin</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Shingeki-no-Kyojin/Chapter-096?id=376940">Chapter 096</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/10-17-2011/5633212i108053.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Real-Clothes">Real Clothes</a>
-                    <p>
-                        Kinue is a saleswoman in the futon section of a department store. Despite her plain clothes and poor makeup, she ends up being transferred to the womens clothing department, where she has to be trained ...
-                    </p>
-                </div>'>
-<a href="/Manga/Real-Clothes">
-Real Clothes</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Real-Clothes/Chapter-096?id=376939">Chapter 096</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/10-25-2012/6780362Nanatsu_no_Taizai01_02-03_RHN.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Nanatsu-no-Taizai">Nanatsu no Taizai</a>
-                    <p>
-                        The "Seven Deadly Sins", a group of evil knights who conspired to overthrow the kingdom of Britannia, were said to have been eradicated by the Holy Knights, although some claim that they still live. Ten ...
-                    </p>
-                </div>'>
-<a href="/Manga/Nanatsu-no-Taizai">
-Nanatsu no Taizai</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Nanatsu-no-Taizai/Chapter-229?id=376938">Chapter 229</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/5-26-2017/273420227170b6.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Souboutei-Kowasu-Beshi">Souboutei Kowasu Beshi</a>
-                    <p>
-                        &nbsp;
 
-
-
-A mysterious mansion has towered proudly over the Tokyo district of Numanakarai since the Taisho period. Those who enter either never escape, or leave having experienced horrors untold, and with ...
-                    </p>
-                </div>'>
-<a href="/Manga/Souboutei-Kowasu-Beshi">
-Souboutei Kowasu Beshi</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Souboutei-Kowasu-Beshi/Vol-001-Ch-004--Kurenai-vs--Seiichi?id=376937">Vol.001 Ch.004: ...</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/5-12-2016/86593127f7404b31f1.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Youjo-Senki">Youjo Senki</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/9-8-2011/38165121_Magician_cover.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Magician&quot;>Magician</a>
                     <p>
-                        A young girl fights on the frontlines in war. She has blonde hair, blue eyes, and nearly transparent white skin, and she flies through the air and mercilessly strikes down her opponents. Her name is Tanya ...
+                        In the village of Adatt, Re-Mi, the tomboy granddaughter of a local witch, sees the infamous mage Eldermask en route to her hometown. Wanting to find out whos stronger, she sets off to challenge him with ...
                     </p>
-                </div>'>
-<a href="/Manga/Youjo-Senki">
-Youjo Senki</a>
+                </div>">
+<a href="/Manga/Magician">
+Magician</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Youjo-Senki/Ch-021--Norden-VIII?id=376936">Ch.021: Norden ...</a>
+<a href="/Manga/Magician/Magician--KIM-Sarae----373?id=244505">Vol.003 - 373</a>
 </td>
 </tr>
 <tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/12-2-2014/3834222i202172.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Bluechair">Bluechair</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/2-24-2015/8474762ac47b3.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Happiness-OSHIMI-Shuzo&quot;>Happiness (OSHIMI Shuzo)</a>
+                    <p>
+                        Makoto Okazaki is your run of the mill high-schooler, a perfect bullying target und a closet pervert. One Night he decides to return a DVD to a friend of his and ventures out into the night. He notices ...
+                    </p>
+                </div>">
+<a href="/Manga/Happiness-OSHIMI-Shuzo">
+Happiness (OSHIMI Shuzo)</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Happiness-OSHIMI-Shuzo/Chapter-031?id=379830">Chapter 031</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/11-22-2011/7215592i116041.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Prison-School&quot;>Prison School</a>
+                    <p>
+                        Hachimitsu Academy, known for its strict academic standards and even stricter school code, is making a giant change this year. In the first time in school history, they are allowing boys to be admitted. ...
+                    </p>
+                </div>">
+<a href="/Manga/Prison-School">
+Prison School</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Prison-School/Chapter-262?id=379829">Chapter 262</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/3-24-2012/2455992i117328.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Clover-TETSUHIRO-Hirakawa&quot;>Clover (TETSUHIRO Hirakawa)</a>
+                    <p>
+                        Three childhood friends are meeting again in high school. Hayato (see cover) the crazy one, Kenji the big one who wouldnt hurt a fly, and Tomoki the solitary one are the main characters of this fighting ...
+                    </p>
+                </div>">
+<a href="/Manga/Clover-TETSUHIRO-Hirakawa">
+Clover (TETSUHIRO Hirakawa)</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Clover-TETSUHIRO-Hirakawa/Chapter-322?id=379828">Chapter 322</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/12-16-2014/59500125129.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Jiang-Ye&quot;>Jiang Ye</a>
+                    <p>
+                        One of Tang Dynasty&rsquo;s ordinary soldiers, a small yet courageous boy, Ning Que, received an order to escort a carriage. He bids his farwell to Weicheng, and heads towards Chang An!
+                    </p>
+                </div>">
+<a href="/Manga/Jiang-Ye">
+Jiang Ye</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Jiang-Ye/ch-036?id=379827">ch.036</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/7-19-2012/6394312d53c45c.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Mahou-Shoujo-of-the-End&quot;>Mahou Shoujo of the End</a>
+                    <p>
+                        Kogami Kii hates his normal everyday life and wishes for something to happen. One day in the middle of class, he looks out the window and sees his teacher&rsquo;s head explode when a little girl hits it. ...
+                    </p>
+                </div>">
+<a href="/Manga/Mahou-Shoujo-of-the-End">
+Mahou Shoujo of the End</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Mahou-Shoujo-of-the-End/Mahou-Shoujo-of-the-End---051?id=379825">Mahou Shoujo of ...</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/6-20-2016/1816312217ea8.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Goblin-Slayer&quot;>Goblin Slayer</a>
+                    <p>
+                        A young priestess has formed her first adventuring party, but almost immediately they find themselves in distress. Its the Goblin Slayer who comes to their rescue--a man whos dedicated his life to the ...
+                    </p>
+                </div>">
+<a href="/Manga/Goblin-Slayer">
+Goblin Slayer</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Goblin-Slayer/Chapter-015?id=379824">Chapter 015</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/6-22-2015/142993285b47ce4c4ff7.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Dragon-Ball-Chou&quot;>Dragon Ball Chou</a>
+                    <p>
+                        Related Series
+Dragon Ball&nbsp;(Prequel)
+                    </p>
+                </div>">
+<a href="/Manga/Dragon-Ball-Chou">
+Dragon Ball Chou</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Dragon-Ball-Chou/027---Training--Daily-Life--and---?id=379823">027 - Training, ...</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/10-2-2016/2722a1b723f6.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Uratarou&quot;>Uratarou</a>
+                    <p>
+                        As a child, Princess Taira Chiyo escaped from being captured by the Minamoto army due to the the sacrifice of her mother.  Now at the age of 15, she travels the land searching for immortality.  Following ...
+                    </p>
+                </div>">
+<a href="/Manga/Uratarou">
+Uratarou</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Uratarou/Chapter-045?id=379822">Chapter 045</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/8-30-2011/25280821722474734aaa.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Gintama&quot;>Gintama</a>
+                    <p>
+                        The samurai didnt stand a chance. First, the aliens invaded Japan. Next, they took all the jobs. And then they confiscated everyones swords. So what does a hotheaded former samurai like Sakata &quot;Gin&quot; ...
+                    </p>
+                </div>">
+<a href="/Manga/Gintama">
+Gintama</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Gintama/Lesson-648?id=379821">Lesson 648</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/12-2-2014/3834222i202172.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Bluechair&quot;>Bluechair</a>
                     <p>
                         Bluechair follows the musings of Shen, a mysterious figure in a colorful plane of existence where thoughts and reality seem to blend together. What is the blue chair? What compels him to sit on it? Where ...
                     </p>
-                </div>'>
+                </div>">
 <a href="/Manga/Bluechair">
 Bluechair</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Bluechair/ch-484?id=376935">ch.484</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/5-2-2017/88342i256503.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Hoshi-to-Kuzu-Don-t-Worry-Be-Happy">Hoshi to Kuzu - Dont Worry, Be Happy</a>
-                    <p>
-                        Anzu is poor but very ambitious and aims for a bright future. Her first step is to be student council president but that chance is destroyed by the equally ambitious and egocentric Yamabuki. She just has ...
-                    </p>
-                </div>'>
-<a href="/Manga/Hoshi-to-Kuzu-Don-t-Worry-Be-Happy">
-Hoshi to Kuzu - Don't Worry, Be Happy</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Hoshi-to-Kuzu-Don-t-Worry-Be-Happy/Vol-001-Ch-003?id=376934">Vol.001 Ch.003</a>
+<a href="/Manga/Bluechair/ch-493?id=379819">ch.493</a>
 </td>
 </tr>
 <tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/2-19-2015/9859292a3b32.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Dagashi-Kashi">Dagashi Kashi</a>
-                    <p>
-                        Shikada Kokonotsus father owns a rural sweets shop, and his plan is for Kokonotsu to take it over one day. However, Kokonotsu wants to be a manga author instead! One day in summer, the cute but weird ...
-                    </p>
-                </div>'>
-<a href="/Manga/Dagashi-Kashi">
-Dagashi Kashi</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Dagashi-Kashi/Vol-004-Ch-070--Mini-Cola?id=376933">Vol.004 Ch.070: ...</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/9-7-2016/2549172i243047.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Premarital-Relationship">Premarital Relationship</a>
-                    <p>
-                        "Han sang-hyun" Is a boy that dreams to become a manhwaka, and one day he hears a story that falls like lightning from a clear sky. And that is that he had a fiance he never knew about. After not being ...
-                    </p>
-                </div>'>
-<a href="/Manga/Premarital-Relationship">
-Premarital Relationship</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Premarital-Relationship/ch-033?id=376932">ch.033</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/6-1-2016/8132972i238876.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Kenja-no-Mago">Kenja no Mago</a>
-                    <p>
-                        N/A
-                    </p>
-                </div>'>
-<a href="/Manga/Kenja-no-Mago">
-Kenja no Mago</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Kenja-no-Mago/Ch-016?id=376931">Ch.016</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/1-26-2017/3413822i233677.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Yumi-s-Cells">Yumis Cells</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/1-26-2017/3413822i233677.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Yumi-s-Cells&quot;>Yumis Cells</a>
                     <p>
                         A story of Yumi and her brain cells.
 
                     </p>
-                </div>'>
+                </div>">
 <a href="/Manga/Yumi-s-Cells">
 Yumi's Cells</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
@@ -704,15 +778,15 @@ Yumi's Cells</a>
 <a href="/Manga/Yumi-s-Cells/Ep-175---He-Seems-Just-Fine?id=344976">Ep.175 - He Seems ...</a>
 </td>
 </tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/5-16-2017/4618332180.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Siren-s-Lament">Sirens Lament</a>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/5-16-2017/4618332180.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Siren-s-Lament&quot;>Sirens Lament</a>
                     <p>
                         Content with her ordinary life, Lyra is somewhat of a wallflower. However, her comfortable lifestyle suddenly goes astray when she accidentally plunges into the world of sirens. Entangled in a curse, Lyra ...
                     </p>
-                </div>'>
+                </div>">
 <a href="/Manga/Siren-s-Lament">
 Siren's Lament</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
@@ -722,565 +796,557 @@ Siren's Lament</a>
 <a href="/Manga/Siren-s-Lament/Siren-s-Shorts-003?id=366326">Siren's Shorts ...</a>
 </td>
 </tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/4-21-2016/6686782f165a84a.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Romsen-Saga">Romsen Saga</a>
-                    <p>
-                        In the Kingdom of Bandiera, the royal prophet has announced the incoming resurrection of the Demon King, 500 years after the first King sealed it. Four heroes were thus chosen and sent to the location ...
-                    </p>
-                </div>'>
-<a href="/Manga/Romsen-Saga">
-Romsen Saga</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Romsen-Saga/Vol-001-Ch-005-005?id=376928">Vol.001 Ch.005. ...</a>
-</td>
-</tr>
 <tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/7-31-2017/98392i262066.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Ninja-Shinobu-chan-no-Junjou">Ninja Shinobu-chan no Junjou</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/8-1-2015/35801021437588881.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Da-Zhu-Zai&quot;>Da Zhu Zai</a>
                     <p>
-                        A slice-of-life series about a girl named Shinobu, who is perfectly normal and not a ninja whatsoever.
+                        The Great Thousand World. It is a place where numerous planes intersect, a place where many clans live and a place where a group of lords assemble. The Heavenly Sovereigns appear one by one from the Lower ...
                     </p>
-                </div>'>
-<a href="/Manga/Ninja-Shinobu-chan-no-Junjou">
-Ninja Shinobu-chan no Junjou</a>
+                </div>">
+<a href="/Manga/Da-Zhu-Zai">
+Da Zhu Zai</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Ninja-Shinobu-chan-no-Junjou/Vol-001-Ch-004--A-Kind-Girl?id=376927">Vol.001 Ch.004: ...</a>
+<a href="/Manga/Da-Zhu-Zai/ch-058?id=379816">ch.058</a>
 </td>
 </tr>
 <tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/5-23-2016/19233026b64c.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Dawn-of-the-Frozen-Wastelands">Dawn of the Frozen Wastelands</a>
-                    <p>
-                        Now, in the world of frozen wastelands war of destiny that transcends time and space befalls upon heroes.
-
-                    </p>
-                </div>'>
-<a href="/Manga/Dawn-of-the-Frozen-Wastelands">
-Dawn of the Frozen Wastelands</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Dawn-of-the-Frozen-Wastelands/Ch-007--Dream?id=376926">Ch.007: Dream</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/7-31-2017/9296302i260541.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/My-Wife-is-a-Gangster">My Wife is a Gangster</a>
-                    <p>
-                        The gentle virtuous housewife used to be a leader of the gang?! After attacked by assassins and her husband got kidnapped, the gentle wife becomes a gangster again to defeat her enemy fiercely with bravery ...
-                    </p>
-                </div>'>
-<a href="/Manga/My-Wife-is-a-Gangster">
-My Wife is a Gangster</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/My-Wife-is-a-Gangster/Ch-003?id=376925">Ch.003</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/4-17-2015/3941182d10ae8d1.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Xianxia-Shijie">Xianxia Shijie</a>
-                    <p>
-                        The Mythical Realm: A world of blood, a world where the strong triumph over the weak, Ye Yun descended to hell to slay hordes of Demons and ascend to Heaven to slay the Gods just to prove his existence ...
-                    </p>
-                </div>'>
-<a href="/Manga/Xianxia-Shijie">
-Xianxia Shijie</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Xianxia-Shijie/Ch-010?id=376924">Ch.010</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-15-2012/6751862i123165.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Mieru-Hito">Mieru Hito</a>
-                    <p>
-                        Myoujin is a guide for spirits. Unlike most people, he can see ghosts, ghosts who live and wander in the same world we do. But hes got something even more special up his sleeve: he can touch them. Okegawa ...
-                    </p>
-                </div>'>
-<a href="/Manga/Mieru-Hito">
-Mieru Hito</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Mieru-Hito/Vol-005-Ch-035--Homura?id=376923">Vol.005 Ch.035: ...</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-5-2017/1409132e0c56674b961c2e714eeb8c367d15e13.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Steins-Gate-Mugen-Enten-no-Arc-Light">Steins;Gate - Mugen Enten no Arc Light</a>
-                    <p>
-                        The manga tells the story of what Mayuri experiences during the final chapter of the visual novel, anime episode 23, and the lives of Mayuri, Okabe, Daru, Suzuha, and Luka in the year after Okabes first ...
-                    </p>
-                </div>'>
-<a href="/Manga/Steins-Gate-Mugen-Enten-no-Arc-Light">
-Steins;Gate - Mugen Enten no Arc Light</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-Completed
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-3-2016/8244702a89ba1cb.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Chuan-Yue-Xi-Yuan-3000-Hou">Chuan Yue Xi Yuan 3000 Hou</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/9-4-2015/618920284deb802.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/SStudy&quot;>SStudy</a>
                     <p>
                         N/A
                     </p>
-                </div>'>
-<a href="/Manga/Chuan-Yue-Xi-Yuan-3000-Hou">
-Chuan Yue Xi Yuan 3000 Hou</a>
+                </div>">
+<a href="/Manga/SStudy">
+SStudy</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Chuan-Yue-Xi-Yuan-3000-Hou/Ch-097?id=376921">Ch.097</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-5-2017/44431526bfe0c2a8bc1d56e5b3e3476f4df6628.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Whited-Nighttime">Whited Nighttime</a>
-                    <p>
-                        Ling Long is a normal girl. She just wants to get through her day without any problems, but makes a mess out of it again. Why? Its because her online friend has suddenly stopped contacting her. As time ...
-                    </p>
-                </div>'>
-<a href="/Manga/Whited-Nighttime">
-Whited Nighttime</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Whited-Nighttime/Ch-001--A-Strange-Dream?id=376917">Ch.001: A Strange ...</a>
+<a href="/Manga/SStudy/ch-068?id=379815">ch.068</a>
 </td>
 </tr>
 <tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-5-2017/43652223aa4bc76b59164d781ca1bc79eb87822.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Great-Man-Game">Great Man Game</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/1-30-2016/8566692i228927.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Spirit-Blade-Mountain&quot;>Spirit Blade Mountain</a>
                     <p>
-                        "Greatful Magic" a widely popular card game in the world. In Japan is "Greatful Magic" youngest champion is Narashi Hiro. One day when he was challenged by the runner up, he met with Nikke who promised ...
+                        There�s a mountain called Spirit Blade Mountain. Inside or by the mountain resides Wizards, also known as Spirit Blade Masters. Together they form the Spirit Blade clan. Spirit Blade is synonymous with ...
                     </p>
-                </div>'>
-<a href="/Manga/Great-Man-Game">
-Great Man Game</a>
+                </div>">
+<a href="/Manga/Spirit-Blade-Mountain">
+Spirit Blade Mountain</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Great-Man-Game/Vol-001-Ch-001--Chapter-001?id=376914">Vol.001 Ch.001: ...</a>
+<a href="/Manga/Spirit-Blade-Mountain/Spirit-Blade-Mountain---233?id=379814">Spirit Blade Mountain ...</a>
 </td>
 </tr>
 <tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-5-2017/5601912946f9490903ce3a55e400e26d30f9e3c.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Nonbiri-VRMMOki">Nonbiri VRMMOki</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/10-25-2012/6780362Nanatsu_no_Taizai01_02-03_RHN.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Nanatsu-no-Taizai&quot;>Nanatsu no Taizai</a>
                     <p>
-                        2 loli and their brother embark on a journey like SAO but just not include the dying in real life part
+                        The &quot;Seven Deadly Sins&quot;, a group of evil knights who conspired to overthrow the kingdom of Britannia, were said to have been eradicated by the Holy Knights, although some claim that they still live. Ten ...
                     </p>
-                </div>'>
-<a href="/Manga/Nonbiri-VRMMOki">
-Nonbiri VRMMOki</a>
+                </div>">
+<a href="/Manga/Nanatsu-no-Taizai">
+Nanatsu no Taizai</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Nonbiri-VRMMOki/Vol-001-Ch-001--Chapter-001?id=376911">Vol.001 Ch.001: ...</a>
+<a href="/Manga/Nanatsu-no-Taizai/Chapter-232?id=379809">Chapter 232</a>
 </td>
 </tr>
 <tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/7-12-2017/2969942i255257.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Black-Lily-to-Sayuri-chan">Black Lily to Sayuri-chan</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/8-3-2014/9094672n008-009.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Harigane-Service&quot;>Harigane Service</a>
                     <p>
-                        A high class all girls school that grooms their students to become a proper lady with manners&hellip; or so it should&rsquo;ve been. But somehow the public morals is a bit loose&hellip; the proud honour ...
+                        n/a
                     </p>
-                </div>'>
-<a href="/Manga/Black-Lily-to-Sayuri-chan">
-Black Lily to Sayuri-chan</a>
+                </div>">
+<a href="/Manga/Harigane-Service">
+Harigane Service</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Black-Lily-to-Sayuri-chan/Vol-001-Ch-002?id=376909">Vol.001 Ch.002</a>
+<a href="/Manga/Harigane-Service/Harigane-Service-056?id=379812">Harigane Service ...</a>
 </td>
 </tr>
 <tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-5-2017/29484621517030a7c15f1a6a9a7644f49a2d028.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Ikusa-x-Koi">Ikusa x Koi</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/9-7-2016/2549172i243047.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Premarital-Relationship&quot;>Premarital Relationship</a>
                     <p>
-                        Akutsu Takuma wants nothing more than to be left alone, to live and study in peace. He has a terrifying face, which has prevented him from making friends and earned him the nickname "Akuma" (devil). However, ...
+                        &quot;Han sang-hyun&quot; Is a boy that dreams to become a manhwaka, and one day he hears a story that falls like lightning from a clear sky. And that is that he had a fiance he never knew about. After not being ...
                     </p>
-                </div>'>
-<a href="/Manga/Ikusa-x-Koi">
-Ikusa x Koi</a>
+                </div>">
+<a href="/Manga/Premarital-Relationship">
+Premarital Relationship</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Ikusa-x-Koi/Vol-001-Ch-001--Fighting-Maiden?id=376906">Vol.001 Ch.001: ...</a>
+<a href="/Manga/Premarital-Relationship/ch-038?id=379811">ch.038</a>
 </td>
 </tr>
 <tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-5-2017/5455512e86d469fb.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Tsuiraku-JK-to-Haijin-Kyoushi">Tsuiraku JK to Haijin Kyoushi</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/7-28-2013/974132img000003.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Black-Haze&quot;>Black Haze</a>
                     <p>
-                        Mikoto Ochiai is ready to jump off the rooftop of her high schools building after she got rejected by the boy she loves. However, her physics and home room teacher Jin Haiba suddenly appears on the rooftop ...
+                        After a mission gone awry, the doubtful main character, Rood, is sent to a famous magic school, Helios. Here, he must protect an important persons son who has a very bad time at the school.
                     </p>
-                </div>'>
-<a href="/Manga/Tsuiraku-JK-to-Haijin-Kyoushi">
-Tsuiraku JK to Haijin Kyoushi</a>
+                </div>">
+<a href="/Manga/Black-Haze">
+Black Haze</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Tsuiraku-JK-to-Haijin-Kyoushi/Ch-001?id=376905">Ch.001</a>
+<a href="/Manga/Black-Haze/Chapter--224---Chapter-224?id=379810">Chapter. 224 - Chapter ...</a>
 </td>
 </tr>
 <tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-5-2017/5500732125f1703720d2bf76b1f7fd04fd7dfc8.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Cross-account">Cross account</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/9-6-2013/8038592e20823eebaae51b1f43c7c626688880f.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/The-Gamer&quot;>The Gamer</a>
                     <p>
-                        A romantic comedy about a boy and his social media rage; a story of social media and the crossing fates of a young man and a young woman who were never supposed to meet.
+                        What would happen if your world suddenly turned into a game?If you could level up and raise your stats?An adventure of a life-turned-game
+&nbsp;
                     </p>
-                </div>'>
-<a href="/Manga/Cross-account">
-Cross account</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Cross-account/Vol-001-Ch-001--Imagination-X-Reality?id=376903">Vol.001 Ch.001: ...</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/6-7-2017/6498642c9d0c005.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Rhapsody-of-Mulan">Rhapsody of Mulan</a>
-                    <p>
-                        Betrayed by his own blood brother&hellip;.what can be more surprising? Being reborn into the body of his little sister! A story of revenge and rebirth.
-                    </p>
-                </div>'>
-<a href="/Manga/Rhapsody-of-Mulan">
-Rhapsody of Mulan</a>
+                </div>">
+<a href="/Manga/The-Gamer">
+The Gamer</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/Rhapsody-of-Mulan/Ch-010--Do-Humans-Taste-Good-?id=376900">Ch.010: Do Humans ...</a>
+<a href="/Manga/The-Gamer/S003---Chapter-065?id=379808">S003 - Chapter ...</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/3-2-2015/6354582647b66cb7.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Xian-Ni&quot;>Xian Ni</a>
+                    <p>
+                        Saints, the most formidable beings under the heaven. Follow Tie Zhu as he entered one of the elite sects: Heng Yue Sect and work his way toward to become a saint.
+                    </p>
+                </div>">
+<a href="/Manga/Xian-Ni">
+Xian Ni</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Xian-Ni/Chapter-049?id=379807">Chapter 049</a>
 </td>
 </tr>
 <tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/6-2-2017/75322523b56abe990.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/The-Game-of-Points">The Game of Points</a>
-                    <p>
-                        �This is a game of the world. Complete the task and get whatever you want. � So-called genius, Xia Tian, is invited to a college where students challenge each other to fulfill their own desires. He encounters ...
-                    </p>
-                </div>'>
-<a href="/Manga/The-Game-of-Points">
-The Game of Points</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/The-Game-of-Points/Ch-017--Another-Game-Begins?id=376899">Ch.017: Another ...</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/7-16-2012/8957992i84839.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Hero-Gyakkyou-no-Tohai">Hero - Gyakkyou no Tohai</a>
-                    <p>
-                        Set in 2002, three years after the death of Akagi Shigeru, this sequel to&nbsp;Ten - Tenna Toori no Kaidanjichronicles Hiroyukis quest to follow the late Akagis advice and live life freely even if it ...
-                    </p>
-                </div>'>
-<a href="/Manga/Hero-Gyakkyou-no-Tohai">
-Hero - Gyakkyou no Tohai</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Hero-Gyakkyou-no-Tohai/Vol-004-Ch-024--Elucidation?id=376897">Vol.004 Ch.024: ...</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/7-30-2012/52357824813337.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Nozomi-to-Kimio">Nozomi to Kimio</a>
-                    <p>
-                        Suga Kimio finds himself hiding in the girls locker room, unable to move or escape the situation as the girls in his school crowd in. Although he originally had no ulterior motives, he found himself panicking ...
-                    </p>
-                </div>'>
-<a href="/Manga/Nozomi-to-Kimio">
-Nozomi to Kimio</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Nozomi-to-Kimio/Vol-005-Ch-032?id=376896">Vol.005 Ch.032</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/11-10-2015/3769961survival.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Survival">Survival</a>
-                    <p>
-                        An inexplicable catastrophe plunges Japan at the bottom of the sea. A boy survives misfortune, but he has been abandoned in a land surrounded by seas on all sides. His effort to stay alive compels him ...
-                    </p>
-                </div>'>
-<a href="/Manga/Survival">
-Survival</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Survival/Vol-006-Ch-105--Danger-022?id=376895">Vol.006 Ch.105: ...</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/3-8-2016/4456122ab734f.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Chimamire-Sukeban-Chainsaw">Chimamire Sukeban Chainsaw</a>
-                    <p>
-                        Geekos weird, creepy, friendless classmate Nero has destroyed all of their mutual classmates, perverting them into her grotesque, monstrous minions. Now shes sending them after Geeko, the only survivor. ...
-                    </p>
-                </div>'>
-<a href="/Manga/Chimamire-Sukeban-Chainsaw">
-Chimamire Sukeban Chainsaw</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Chimamire-Sukeban-Chainsaw/Vol-012-Ch-082?id=376894">Vol.012 Ch.082</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/9-11-2011/6699482d-frag.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/D-Frag">D-Frag</a>
-                    <p>
-                        Kazama Kenji likes to believe he is something of a delinquent. Moreover, others seem to like to agree that he is. Of course, Kenjis gang finds their way to a group of four not-so-normal girls - Chitose, ...
-                    </p>
-                </div>'>
-<a href="/Manga/D-Frag">
-D-Frag</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/D-Frag/Ch-088--That-May-Not-Be-True?id=376893">Ch.088: That May ...</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/3-31-2015/9225902c30213405a6.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Chihou-Kishi-Hans-no-Junan">Chihou Kishi Hans no Junan</a>
-                    <p>
-                        Sick of the trickery in the royal court, former knight captain Hans now serves at a remote station in the countryside. But his peaceful and idyllic days end when some Japanese people with superhuman abilities ...
-                    </p>
-                </div>'>
-<a href="/Manga/Chihou-Kishi-Hans-no-Junan">
-Chihou Kishi Hans no Junan</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Chihou-Kishi-Hans-no-Junan/Ch-027?id=376892">Ch.027</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/12-4-2013/63773329d19302d8c1841ff8790f3e36947be0e.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Mob-Psycho-100">Mob Psycho 100</a>
-                    <p>
-                        Kageyama Shigeo (a.k.a. "Mob") is a 8th grader with psychic abilities. He could bend spoons and lift objects with his mind from a young age, but he slowly began to withhold from using his abilities in ...
-                    </p>
-                </div>'>
-<a href="/Manga/Mob-Psycho-100">
-Mob Psycho 100</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Mob-Psycho-100/Ch-100-007?id=376891">Ch.100.007</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/4-23-2012/8983922fe3455a.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Haikyuu">Haikyuu!!</a>
-                    <p>
-                        Hinata Shouyou, upon seeing a volleyball match, is aiming to become "The Small Giant", and joins his middle school volleyball club. After finding new members, they set out for the middle school tournament, ...
-                    </p>
-                </div>'>
-<a href="/Manga/Haikyuu">
-Haikyuu!!</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Haikyuu/Chapter-265?id=376890">Chapter 265</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/9-13-2011/59545221--1-.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Shanimuni-Go">Shanimuni Go</a>
-                    <p>
-                        Ide Nobuhisa has always been a boy full of vitality and a young promise in the field of track running. However one day after a competition, he stumbled over the pretiest pair of legs he had ever seen! ...
-                    </p>
-                </div>'>
-<a href="/Manga/Shanimuni-Go">
-Shanimuni Go</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Shanimuni-Go/Vol-016-Ch-096?id=376889">Vol.016 Ch.096</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/4-13-2015/43590323baddece.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Kengan-Ashua">Kengan Ashua</a>
-                    <p>
-                        Since the Edo periods of Japan, gladiator arenas exist in certain areas. In these arenas, wealthy business owners and merchants hire gladiators to fight in unarmed combat where winner takes all. Toki Taouma, ...
-                    </p>
-                </div>'>
-<a href="/Manga/Kengan-Ashua">
-Kengan Ashua</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Kengan-Ashua/Vol-009-Ch-074?id=376887">Vol.009 Ch.074</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/5-13-2015/4562752608d8f.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Isekai-Tensei-Soudouki">Isekai Tensei Soudouki</a>
-                    <p>
-                        Balud Cornelius is the son of a noble of the Mauricia kingdom and inside him also dwell the souls of the niggardly warring states commander Oka Sadatoshi and animal ear otaku high schooler Oka Masaharu. ...
-                    </p>
-                </div>'>
-<a href="/Manga/Isekai-Tensei-Soudouki">
-Isekai Tensei Soudouki</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Isekai-Tensei-Soudouki/Ch-026?id=376886">Ch.026</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/9-18-2016/4351472c70d195.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Knights-Magic">Knights & Magic</a>
-                    <p>
-                        A mecha otaku is reincarnated into another world as Ernesti Echevalier (Eru). In this world, exist huge humanoid weapon known as Silhouette Knight. Dreaming of piloting those robots, Eru, with childhood ...
-                    </p>
-                </div>'>
-<a href="/Manga/Knights-Magic">
-Knights & Magic</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Knights-Magic/Ch-021--Let-s-Have-a-Mock-Battle?id=376885">Ch.021: Let's Have ...</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/2-15-2017/957431200--1-.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Bokutachi-wa-Benkyou-ga-Dekinai">Bokutachi wa Benkyou ga Dekinai</a>
-                    <p>
-                        Yuiga Nariyuki works hard every day to obtain a full-college scholarship by his High School to support his poor family. His headmaster promises that hell get it if he full-fills a small condition. He ...
-                    </p>
-                </div>'>
-<a href="/Manga/Bokutachi-wa-Benkyou-ga-Dekinai">
-Bokutachi wa Benkyou ga Dekinai</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
-</td>
-<td>
-<a href="/Manga/Bokutachi-wa-Benkyou-ga-Dekinai/Ch-025--The-beginning-of-the-struggles-for-the-genius-trying-to-become--X--?id=376884">Ch.025: The beginning ...</a>
-</td>
-</tr>
-<tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/5-12-2016/2344172977995dfb64.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Spirit-Fingers">Spirit Fingers</a>
-                    <p>
-                        ​An ordinary girl... joins an extraordinary drawing club?!A story of finding ones true colors
-
-                    </p>
-                </div>'>
-<a href="/Manga/Spirit-Fingers">
-Spirit Fingers</a>
-&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
-</td>
-<td>
-<a href="/Manga/Spirit-Fingers/Ch-054?id=376883">Ch.054</a>
-</td>
-</tr>
-<tr>
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/8-4-2016/6600492001.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/The-Promised-Neverland">The Promised Neverland</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/8-4-2016/6600492001.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/The-Promised-Neverland&quot;>The Promised Neverland</a>
                     <p>
                         Emma and her friends have a pretty good life at the orphanage they grew up in. Though the rules may be strict, the caretaker is kind. But why are the children forbidden from ever leaving...?(Source: VIZ ...
                     </p>
-                </div>'>
+                </div>">
 <a href="/Manga/The-Promised-Neverland">
 The Promised Neverland</a>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
 &nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
 </td>
 <td>
-<a href="/Manga/The-Promised-Neverland/Chapter-050?id=376882">Chapter 050</a>
+<a href="/Manga/The-Promised-Neverland/Chapter-052?id=379805">Chapter 052</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/8-28-2011/6267762vinland-saga-l0.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Vinland-Saga&quot;>Vinland Saga</a>
+                    <p>
+                        Set in Northern Europe at the start of the 11th century, the story is about a Viking.
+                    </p>
+                </div>">
+<a href="/Manga/Vinland-Saga">
+Vinland Saga</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Vinland-Saga/Chapter-142?id=379804">Chapter 142</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/10-24-2012/2235582i141701.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/I-Don-t-Want-This-Kind-of-Hero&quot;>I Dont Want This Kind of Hero</a>
+                    <p>
+                        A hero who fights countless mythical creatures. A story of SPOONs remarkable efficiency!
+                    </p>
+                </div>">
+<a href="/Manga/I-Don-t-Want-This-Kind-of-Hero">
+I Don't Want This Kind of Hero</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/I-Don-t-Want-This-Kind-of-Hero/Chapter-167-005?id=379803">Chapter 167.005</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/11-30-2012/3364272i144768.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Shokugeki-no-Soma&quot;>Shokugeki no Soma</a>
+                    <p>
+                        Yukihira Soumas dream is to become a full-time chef in his fathers restaurant and surpass his fathers culinary skill. But just as Yukihira graduates from middle schools his father, Yukihira Jouichirou, ...
+                    </p>
+                </div>">
+<a href="/Manga/Shokugeki-no-Soma">
+Shokugeki no Soma</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Shokugeki-no-Soma/228---The-Regiment-of-Hope?id=379802">228 - The Regiment ...</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/11-6-2014/766284269b638ceab36947ab20b7e28ed695638.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Watari-kun-no-xx-ga-Houkai-Sunzen&quot;>Watari-kun no xx ga Houkai Sunzen</a>
+                    <p>
+                        Ever since his parents died, Watari Naos life has revolved around his little sister. He forgoes club activities for the sake of spending time with her, leading many of his peers to label him a siscon. ...
+                    </p>
+                </div>">
+<a href="/Manga/Watari-kun-no-xx-ga-Houkai-Sunzen">
+Watari-kun no xx ga Houkai Sunzen</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Watari-kun-no-xx-ga-Houkai-Sunzen/Ch-028--Break-025?id=379801">Ch.028: Break 0 ...</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/9-15-2011/2988682i107362.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Moyashimon&quot;>Moyashimon</a>
+                    <p>
+                        Meet Sawaki Tadayasu, second son of yeast preparation suppliers, who is forced to go to an agricultural university and continue the family business. He has the unique ability to see microbes, and so he ...
+                    </p>
+                </div>">
+<a href="/Manga/Moyashimon">
+Moyashimon</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+</td>
+<td>
+<a href="/Manga/Moyashimon/Vol-007-Ch-083--Team-Oikawa?id=379800">Vol.007 Ch.083: ...</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/3-4-2016/8401732i232861.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Wo-Jia-Dashi-Xiong-Naozi-You-Keng&quot;>Wo Jia Dashi Xiong Naozi You Keng</a>
+                    <p>
+                        The adventures of the eldest apprentice of a sect who has a problem with his brain.
+                    </p>
+                </div>">
+<a href="/Manga/Wo-Jia-Dashi-Xiong-Naozi-You-Keng">
+Wo Jia Dashi Xiong Naozi You Keng</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Wo-Jia-Dashi-Xiong-Naozi-You-Keng/ch-268-001?id=379797">ch.268.001</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/2-20-2012/3519602ca10e82aafaa9094a6d882d8efc03a40.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Touhou-Ibarakasen-Wild-and-Horned-Hermit&quot;>Touhou Ibarakasen - Wild and Horned Hermit</a>
+                    <p>
+                        Continuing in the Touhou series, this one follows the footsteps of Silent Sinner in Blue, Inaba of the Moon &amp; Inaba of the Earth, and the Sangetsusei trilogy.&nbsp;This time, Marisa comes across a ...
+                    </p>
+                </div>">
+<a href="/Manga/Touhou-Ibarakasen-Wild-and-Horned-Hermit">
+Touhou Ibarakasen - Wild and Horned Hermit</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+</td>
+<td>
+<a href="/Manga/Touhou-Ibarakasen-Wild-and-Horned-Hermit/Vol-009-Ch-041--Cool-Air-From-Heaven?id=379795">Vol.009 Ch.041: ...</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/7-16-2017/77688821.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Boyfriend-Of-The-Dead&quot;>Boyfriend Of The Dead</a>
+                    <p>
+                        A girl struggles to survive in a zombie apocalypse and ends up finding herself a boyfriend! But there is a problem...he is undead!
+                    </p>
+                </div>">
+<a href="/Manga/Boyfriend-Of-The-Dead">
+Boyfriend Of The Dead</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+</td>
+<td>
+<a href="/Manga/Boyfriend-Of-The-Dead/ch-017?id=379794">ch.017</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/12-31-2016/7619672180--1-.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Killing-Stalking&quot;>Killing Stalking</a>
+                    <p>
+                        From Lezhin:Yoonbum, a scrawny quiet boy, has a crush on one of the most popular and handsome guys in school, Sangwoo. One day, with Yoonbums obsession towards Sangwoo reaching its peak, Yoonbum decides ...
+                    </p>
+                </div>">
+<a href="/Manga/Killing-Stalking">
+Killing Stalking</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Killing-Stalking/vol-000-ch-000?id=347377">vol.000 ch.000</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/6-30-2015/734802240c378.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Tomo-chan-wa-Onnanoko&quot;>Tomo-chan wa Onnanoko!</a>
+                    <p>
+                        Tomo Aizawa was able to successfully confess to her crush Junichirou Kubota. There is only one problem: He just sees her as his buddy.He thought that she was a boy until they went to middle school together, ...
+                    </p>
+                </div>">
+<a href="/Manga/Tomo-chan-wa-Onnanoko">
+Tomo-chan wa Onnanoko!</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Tomo-chan-wa-Onnanoko/Ch-616--When-She-Least-Wants-To-Be-Seen?id=379792">Ch.616: When She ...</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/2-11-2016/3148132pc_img.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Hooky&quot;>Hooky</a>
+                    <p>
+                        Dani and Dorian have missed the bus of the school of magic. Now, they must find someone who teach them how to be a great and good witches... Or maybe not.​
+                    </p>
+                </div>">
+<a href="/Manga/Hooky">
+Hooky</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Hooky/ch-116?id=379791">ch.116</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/3-28-2017/657287201.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Robot-x-Laserbeam&quot;>Robot x Laserbeam</a>
+                    <p>
+                        A high school golfing manga that centres on a boy nicknamed &quot;Robot&quot; who encounters golf for the first time.
+                    </p>
+                </div>">
+<a href="/Manga/Robot-x-Laserbeam">
+Robot x Laserbeam</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Robot-x-Laserbeam/022---counterattack?id=379760">022 - counterat ...</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/8-4-2012/620683210b9fdc9.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Cherry-Tomato&quot;>Cherry Tomato</a>
+                    <p>
+                        A story of three high school students, thats a little different.
+                    </p>
+                </div>">
+<a href="/Manga/Cherry-Tomato">
+Cherry Tomato</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+</td>
+<td>
+<a href="/Manga/Cherry-Tomato/Ch-010--This-is-all-the-camera-s-fault-?id=379789">Ch.010: This is ...</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/2-9-2013/5840512eabc7e86f11ac3baed755b04284349f7.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Joshi-Shougakusei-Hajimemashita&quot;>Joshi Shougakusei Hajimemashita</a>
+                    <p>
+                        A 30-year-old business man makes a wish to be a girl. A chanting object runs toward him, and the next thing he knows he has became a lolicon elementary school girl.
+                    </p>
+                </div>">
+<a href="/Manga/Joshi-Shougakusei-Hajimemashita">
+Joshi Shougakusei Hajimemashita</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Joshi-Shougakusei-Hajimemashita/Vol-021-Ch-021-Read-Online?id=234199">Vol.021 Ch.021 Read ...</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/2-1-2017/6233372Details_pc_cha.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Newman&quot;>Newman</a>
+                    <p>
+                        Newman and Gwen are professional monster hunters who work for the Creature Removal Department, but for these two, killing monsters is the easy part, its navigating their relationship that gets complicated. ...
+                    </p>
+                </div>">
+<a href="/Manga/Newman">
+Newman</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Newman/A-Note-from-the-Creator?id=345385">A Note from the ...</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/9-26-2011/199632i104216.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/The-God-of-High-School&quot;>The God of High School</a>
+                    <p>
+                        While an island half-disappearing from the face of the earth, a mysterious organization is sending out invitations for a tournament to every skilled fighter in the world. &ldquo;If you win you can have ...
+                    </p>
+                </div>">
+<a href="/Manga/The-God-of-High-School">
+The God of High School</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/The-God-of-High-School/Part-005-Afterwords?id=365254">Part 005 Afterw ...</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/5-23-2013/34301825dfeb140aa0ea1d37d7c401c7990f569.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Hello-Hellper&quot;>Hello Hellper</a>
+                    <p>
+                        The city is protected by the guard led by gwangnam when a mysterious death in a road crash occurs...A drunk lion...Everything &quot;as expected&quot; ....Watch this world unfold and stretch out in this action fantasy ...
+                    </p>
+                </div>">
+<a href="/Manga/Hello-Hellper">
+Hello Hellper</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Hello-Hellper/Ep--168---An-even-older-tale--003-?id=379783">Ep. 168 - An even ...</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/11-16-2014/8746272PLM_001_01.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Penguin-Loves-Mev&quot;>Penguin Loves Mev</a>
+                    <p>
+                        The English male Mev and the Korean female penguin who had met through an online messenger are enjoying their successful marriage in England for three years, after a lovely honeymoon in Korea. The story ...
+                    </p>
+                </div>">
+<a href="/Manga/Penguin-Loves-Mev">
+Penguin Loves Mev</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+</td>
+<td>
+<a href="/Manga/Penguin-Loves-Mev/Ep--334---A-Mouth-of-Truth?id=379782">Ep. 334 - A Mouth ...</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/12-3-2011/7157472i117456.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Machi-de-Uwasa-no-Tengu-no-Ko&quot;>Machi de Uwasa no Tengu no Ko</a>
+                    <p>
+                        Akihime is a seemingly normal girl attending junior high school, but she is actually the daughter of Ryokuhouzans tengu. She lives with her mother in the human world, living a normal human life. However, ...
+                    </p>
+                </div>">
+<a href="/Manga/Machi-de-Uwasa-no-Tengu-no-Ko">
+Machi de Uwasa no Tengu no Ko</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+</td>
+<td>
+<a href="/Manga/Machi-de-Uwasa-no-Tengu-no-Ko/Vol-003-Ch-018--A-Case-Begins?id=379781">Vol.003 Ch.018: ...</a>
+</td>
+</tr>
+<tr class="odd">
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/7-6-2016/9733582i233084.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/The-Sound-of-Your-Heart&quot;>The Sound of Your Heart</a>
+                    <p>
+                        While it may seem like merely a depiction of everyday life, The Sound of Your Heart is a comedy filled to the brim with wit, sarcasm and parody. This gives no regard for the probable or realistic- it is ...
+                    </p>
+                </div>">
+<a href="/Manga/The-Sound-of-Your-Heart">
+The Sound of Your Heart</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+</td>
+<td>
+<a href="/Manga/The-Sound-of-Your-Heart/Ep--320---Make-me-a-star?id=379780">Ep. 320 - Make me ...</a>
+</td>
+</tr>
+<tr>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/7-2-2016/5965582i240178.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Nano-List&quot;>Nano List</a>
+                    <p>
+                        &quot;One day, a birthday gift from my dead sister arrived...&quot; - LOL ScansA deadly android was delivered to me on my birthday! - LINE Webtoon
+
+                    </p>
+                </div>">
+<a href="/Manga/Nano-List">
+Nano List</a>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Latest update series" src="../../Content/images/newupdate.png"/>
+&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
+</td>
+<td>
+<a href="/Manga/Nano-List/Ep--078?id=379779">Ep. 078</a>
 </td>
 </tr>
 </table>
@@ -1289,17 +1355,17 @@ The Promised Neverland</a>
 </script>
 </div>
 </div>
- 
+
 <div class="pagination pagination-left">
 <ul class="pager" style="padding: 10px 11px 10px 0px">
-<li class="current">1</li><li><a href="/MangaList/LatestUpdate?page=2" page="2">2</a></li><li><a href="/MangaList/LatestUpdate?page=3" page="3">3</a></li><li><a href="/MangaList/LatestUpdate?page=2" page=2>&rsaquo; Next </a></li><li><a href="/MangaList/LatestUpdate?page=253" page="253">&raquo; Last </a></li>
+<li class="current">1</li><li><a href="/MangaList/LatestUpdate?page=2" page="2">2</a></li><li><a href="/MangaList/LatestUpdate?page=3" page="3">3</a></li><li><a href="/MangaList/LatestUpdate?page=2" page="2">&rsaquo; Next </a></li><li><a href="/MangaList/LatestUpdate?page=255" page="255">&raquo; Last </a></li>
 </ul>
 </div>
- 
+
 </div>
 </div>
 </div>
- 
+
 <div class="clear">
 &nbsp;</div>
 <div class="clear">

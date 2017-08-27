@@ -2,6 +2,8 @@
  * Created by rodriguesc on 03/03/2017.
  */
 
+import * as _ from 'lodash';
+
 import "__test__/common";
 import results from "./_results";
 
@@ -13,11 +15,13 @@ import {parseDoc} from "src/util";
 
 
 
+
+
 describe("KissManga offline", () => {
-  let mangas = "./test/sites/kissmanga/html/mangas.html";
-  let gintama = "./test/sites/kissmanga/html/Gintama.html";
-  let latest = "./test/sites/kissmanga/html/latest.html";
-  let chapter = "./test/sites/kissmanga/html/Lesson-042.html";
+  let mangas = "./__test__/sites/kissmanga/html/mangas.html";
+  let gintama = "./__test__/sites/kissmanga/html/Gintama.html";
+  let latest = "./__test__/sites/kissmanga/html/latest.html";
+  let chapter = "./__test__/sites/kissmanga/html/Lesson-042.html";
 
   let fpMangas: string;
   let fpGintama: string;
@@ -49,6 +53,10 @@ describe("KissManga offline", () => {
       let finalUrl = helper.resolveUrl(origName);
 
       finalUrl.should.be.eq(expected, `with name "${origName}"`);
+
+      // if (finalUrl !== expected) {
+      //   console.log(`"${origName}" : "${_.last(expected.split("/"))}", // ${expected}`);
+      // }
     }
   });
 

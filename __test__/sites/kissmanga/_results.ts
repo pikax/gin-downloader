@@ -4,7 +4,36 @@
 
 let manga = { image: "http://kissmanga.com/Uploads/Etc/8-30-2011/25280821722474734aaa.jpg",
   title: "Gintama",
-  synonyms: [ "กินทามะ", "銀魂", "银魂", "긴타마", "은혼", "Gin Tama", "Silver Soul" ],
+  synonyms: [
+    {
+      "language": "English",
+      "title": "กินทามะ",
+    },
+    {
+      "language": "English",
+      "title": "銀魂",
+    },
+    {
+      "language": "English",
+      "title": "银魂",
+    },
+    {
+      "language": "English",
+      "title": "긴타마",
+    },
+    {
+      "language": "English",
+      "title": "은혼",
+    },
+    {
+      "language": "English",
+      "title": "Gin Tama",
+    },
+    {
+      "language": "English",
+      "title": "Silver Soul",
+    }
+  ],
   authors: [ "Hideaki Sorachi" ],
   artists: [ "Hideaki Sorachi" ],
   genres: [ "Action", "Comedy", "Manga", "Sci-fi", "Shounen" ],

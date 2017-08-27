@@ -87,7 +87,7 @@ export interface Site {
 
   infoChapters(name: string): Promise<InfoChapter>;
 
-  images(name: string, chapter: string): Promise<ImageCollection>;
+  images(name: string, chapter: string| number): Promise<ImageCollection>;
 
 
   infoChaptersByUrl(url: string): Promise<InfoChapter>; // todo not sure, probably hide this behind symbol

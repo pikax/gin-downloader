@@ -5,7 +5,7 @@
 Search by series name
 </title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta property="fb:admins" content="683024937"/><meta property="fb:app_id" content="111670815619329"/>
 <script src="http://kissmanga.com/Scripts/jquery17.min.js" type="text/javascript"></script>
- 
+
 <link href="http://kissmanga.com/Content/css/tpl_style.css?v=2" rel="stylesheet" type="text/css"/>
 <link href="http://kissmanga.com/Content/css/upload-progress.css" rel="stylesheet" type="text/css">
 <link rel="shortcut icon" href="http://kissmanga.com/Content/images/favicon.ico" type="image/x-icon"/>
@@ -25,6 +25,25 @@ Search by series name
         })();
 
     </script>
+<script data-cfasync="false" type="text/javascript">
+    var freestar = freestar || {};
+    freestar.hitTime = Date.now();
+    freestar.queue = freestar.queue || [];
+    freestar.config = freestar.config || {};
+    freestar.debug = window.location.search.indexOf('fsdebug') === -1 ? false : true;
+
+    // Tag IDs set here, must match Tags served in the Body for proper setup
+    freestar.config.enabled_slots = [
+        "Kissmanga_728x90_320x50_ATF",
+        "Kissmanga_300x250_728x90_320x50_BTF",
+        "Kissmanga_160x600_Sidebar_Left",
+        "Kissmanga_160x600_Sidebar_Right_1",
+        "Kissmanga_160x600_Sidebar_Right_2"
+    ];
+
+    !function (a, b) { var c = b.getElementsByTagName("script")[0], d = b.createElement("script"), e = "https://a.pub.network/kissmanga"; e += freestar.debug ? "/qa/pubfig.min.js" : "/pubfig.min.js", d.async = !0, d.src = e, c.parentNode.insertBefore(d, c) } (window, document);
+
+</script>
 </head>
 <body>
 <div id="containerRoot">
@@ -40,14 +59,14 @@ Register</a>
 <div id="search" style="position: relative">
 <form id="formSearch" method="post">
 <p>
-<input size="40" id="keyword" name="keyword" value="" class="text" autocomplete="off"/>
+<input size="40" id="keyword" name="keyword" value class="text" autocomplete="off"/>
 <select id="selectSearch">
 <option value="Manga">Series Name</option>
 <option value="AuthorArtist">Author/Artist</option>
 </select>
 <input id="imgSearch" type="image" src="http://kissmanga.com/Content/images/search.png" class="button" onclick="return false;"/>
 </p>
-<div id="result_box" style="display: none; margin-top: -3px; max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+ <div id="result_box" style="display: none; margin-top: -3px; max-height: 300px; overflow-y: auto; overflow-x: hidden;">
 </div>
 <div style="float: left; width: 250px; text-align: left; margin-left: 2px">
 <div style="float: left; width: 90px">
@@ -55,10 +74,10 @@ Register</a>
                                 height: 21px;" allowtransparency="true"></iframe>
 </div>
 <div style="float: left; width: 85px">
- 
+
 <div class="g-plusone" data-size="medium" data-href="http://kissmanga.com">
 </div>
- 
+
 <script type="text/javascript">
                                 (function () {
                                     var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
@@ -148,7 +167,7 @@ Search</a>
 <h1>
 <a href="http://kissmanga.com" title="Read manga online - kissmanga.com" class="logo">Read online manga - kissmanga.com</a></h1>
 </div>
- 
+
 <div class="clear">
 </div>
 <div id="headnav">
@@ -190,7 +209,7 @@ Watch anime</a></li>
         $('#navcontainer a[href*="' + path + '"]').attr('id', 'currentTab');
 </script>
 </div>
- 
+
 <div id="container">
 <div id="leftside">
 <div class="bigBarContainer">
@@ -201,7 +220,31 @@ Search by series name
 <div class="arrow-general">
 &nbsp;</div>
 <div>
-<style>.tooltip{display:none;background:url('../../Content/images/black_big.png') no-repeat;height:180px;padding:25px 10px 0px 30px;width:450px;font-size:11px;color:#fff;}.alphabet{background:none repeat scroll 0 0 #161616;color:gray;text-align:center;font-size:14px;}.alphabet a{font-weight:bold;}</style>
+<style>
+    .tooltip
+    {
+        display: none;
+        background: url('../../Content/images/black_big.png') no-repeat;
+        height: 180px;
+        padding: 25px 10px 0px 30px;
+        width: 450px;
+        font-size: 11px;
+        color: #fff;
+    }
+
+    .alphabet
+    {
+        background: none repeat scroll 0 0 #161616; 
+        color:gray; 
+        text-align:center; 
+        font-size:14px; 
+    }
+
+    .alphabet a
+    {
+        font-weight:bold;
+    }
+</style>
 <script type="text/javascript" src="../../Scripts/jqueryTooltip.js"></script>
 <img style="vertical-align: middle" title="Latest update" src="../../Content/images/newupdate.png"/>
 Latest Update &nbsp;&nbsp;&nbsp;<img style="vertical-align: middle" title="Most Popular Manga" src="../../Content/images/hot.png"/>
@@ -239,14 +282,14 @@ Latest chapter
 <tr style="height: 10px">
 </tr>
 <tr class="odd">
-<td title='
-                <img width="120" height="165" src="http://kissmanga.com/Uploads/Etc/10-29-2011/3347542i106736.jpg" style="float: left; padding-right: 10px" />
-                <div style="float: left; width: 300px">
-                    <a class="bigChar" href="/Manga/Yamanko">Yamanko</a>
+<td title="
+                <img width=&quot;120&quot; height=&quot;165&quot; src=&quot;http://kissmanga.com/Uploads/Etc/10-29-2011/3347542i106736.jpg&quot; style=&quot;float: left; padding-right: 10px&quot; />
+                <div style=&quot;float: left; width: 300px&quot;>
+                    <a class=&quot;bigChar&quot; href=&quot;/Manga/Yamanko&quot;>Yamanko</a>
                     <p>
-                        Though it was a bit strange, three people ended up meeting. One, who looks younger than her age and able to see the supernatural. Another who is possessed by a "Yamanko" which refers to "Yama no ko", or ...
+                        Though it was a bit strange, three people ended up meeting. One, who looks younger than her age and able to see the supernatural. Another who is possessed by a &quot;Yamanko&quot; which refers to &quot;Yama no ko&quot;, or ...
                     </p>
-                </div>'>
+                </div>">
 <a href="/Manga/Yamanko">
 Yamanko</a>
 </td>
@@ -310,7 +353,7 @@ Manga</a><br/>
 <a href="/Genre/Manhua" title="Manhua are Chinese comics originally produced in China.">
 Manhua</a><br/>
 <a href="/Genre/Manhwa" title="Manhwa is the general Korean term for comics and print cartoons (common usage also includes animated cartoons).&nbsp;">
-Manhwa</a><br/>
+ Manhwa</a><br/>
 <a href="/Genre/Martial-Arts" title="As the name suggests, anything martial arts related. Any of several arts of combat or self-defense, such as aikido, karate, judo, or tae kwon do, kendo, fencing, and so on and so forth.">
 Martial Arts</a><br/>
 <a href="/Genre/Mature" title="Contains subject matter which may be too extreme for people under the age of 17. Titles in this category may contain intense violence, blood and gore, sexual content and/or strong language.">
@@ -345,6 +388,7 @@ Shoujo</a><br/>
 Shoujo Ai</a><br/>
 <a href="/Genre/Shounen" title="A work intended and primarily written for males.  These  works usually  involve fighting and/or violence.">
 Shounen</a><br/>
+
 <a href="/Genre/Shounen-Ai" title="Often synonymous with yaoi, this can be thought of as somewhat less  extreme. Boy's Love, so to speak.">
 Shounen Ai</a><br/>
 <a href="/Genre/Slice-of-Life" title="
@@ -385,7 +429,7 @@ Yuri</a><br/>
 </div>
 </div>
 </div>
- 
+
 <div class="clear">
 &nbsp;</div>
 <div class="clear">

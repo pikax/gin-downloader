@@ -2,6 +2,10 @@
  * Created by pikax on 11/06/2017.
  */
 
+
+// const gin = require("../dist/index");
+
+
 const cloudscraper = require("cloudscraper");
 const requestRetry = require("requestretry");
 
@@ -141,6 +145,9 @@ async function resolveRequests() {
 }
 
 async function resolveCFRequest(){
+
+
+
   for (let obj of byCFRequest) {
 
     for (let page of obj.pages) {

@@ -5,7 +5,10 @@ declare const _default: {
     manga: {
         image: string;
         title: string;
-        synonyms: string[];
+        synonyms: {
+            "language": string;
+            "title": string;
+        }[];
         authors: string[];
         artists: string[];
         genres: string[];

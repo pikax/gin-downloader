@@ -1,6 +1,15 @@
 /// <reference types="cheerio" />
 import { filter, MangaFilter } from "src/filter";
 import { gin } from "src/interface";
+declare global  {
+    interface String {
+        lastDigit(): number;
+        firstDigit(): number;
+        leftTrim(): string;
+        decodeEscapeSequence(): string;
+        getMatches(regex: RegExp, index?: number): string[];
+    }
+}
 export declare function promiseSetTimeout(ms: number): Promise<any>;
 export declare function promiseSetTimeoutWithPromise<T>(ms: number, p: Promise<T>): Promise<T>;
 export declare class Lazy<T> {
