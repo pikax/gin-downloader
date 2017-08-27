@@ -1,6 +1,6 @@
 {
   "name": "gin-downloader",
-  "version": "2.0.0alpha",
+  "version": "2.0.0-beta.0",
   "description": "Simple manga scrapper for famous online manga websites.",
   "keywords": [
     "manga",
