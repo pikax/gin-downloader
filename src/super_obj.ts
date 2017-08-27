@@ -37,7 +37,6 @@ export class SuperObject {
 
   private toSuperChapter(chapter: ChapterSource): SuperChapter {
     let c = new SuperChapter(this, chapter);
-
     return c;
   }
 

@@ -10,7 +10,14 @@ import {RequestStrategy, Options, CoreOptions, strategies} from "./request/index
 
 export interface GinPoolConfig {
   simultaneousRequests?: number;
+  maxQueueSize?: number; // after hitting this size the queue will wait until promise level go as much as safeQueueSize
+  safeQueueSize?: number; //
+
   requestInterval?: number;
+
+
+
+  //TODO add history max number
 
   match: RegExp;
 }
@@ -39,7 +46,7 @@ export interface GinConfig {
 /*TODO this shouldn't be a function, this should be a const only, but the default config is called by the strategies
 * that means when we load the strategies module, it needs to load this one first but this uses strategies.
 * */
-const DefaultConfig: () => GinConfig = () => ({
+const DefaultConfig: GinConfig = {
   maxRetries: 50,
   timeout: 10000,
   interval: 1000,
@@ -54,6 +61,8 @@ const DefaultConfig: () => GinConfig = () => ({
     // NOTE this should be always the last one!
     "*": {
       simultaneousRequests: 30,
+      maxQueueSize: 300,
+      safeQueueSize: 50,
       match: /.*/,
     }
   },
@@ -84,14 +93,14 @@ const DefaultConfig: () => GinConfig = () => ({
       "Accept-Encoding": "gzip,deflate",
     }
   }
-});
+};
 
 export class Config {
   private _use: GinConfig;
   private _config: GinConfig;
 
 
-  get defaultConfig() { return DefaultConfig(); }
+  get defaultConfig() { return DefaultConfig; }
 
   get config(): GinConfig { return this._config || (this._config = this.buildConfig()); }
 

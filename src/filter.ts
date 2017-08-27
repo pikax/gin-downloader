@@ -42,15 +42,20 @@ export interface Search {
   artist?: ArtistFilter | string;
   status?: FilterStatus | string;
   released?: ReleaseFilter | number;
-  genre?: GenreFilter;
+  genre?: GenreFilter | GenreCollection;
   rating?: RatingFilter;
   mature?: boolean;
 
   type?: Type;
 }
 
-export interface MangaFilter extends filter.FilterSupport {
+export interface MangaFilter {
   name?: string;
+
+  search?: Search;
+  sort?: {};
+
+  page?: number;
 }
 
 export type MangaSource = gin.MangaSource;

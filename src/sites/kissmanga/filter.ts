@@ -1,13 +1,14 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, MangaFilter, FilterStatus} from "../../declarations";
-import {config} from "./config";
 import {resolve} from "url";
-import {find} from "lodash";
-import {procFilter} from "../../common/helper";
 
-const Supported = [];
+import {FilterStatus, Genre} from "src/enum";
+import {MangaFilter} from "src/filter";
+import {procFilter} from "src/util";
+import {config} from "./config";
+
+const Supported: { [id: string]: Genre } = {};
 Supported[Genre.FourKoma] = Genre.FourKoma;
 Supported[Genre.Action] = Genre.Action;
 Supported[Genre.Adult] = Genre.Adult;
@@ -104,15 +105,14 @@ const ordered = [
 ];
 
 
-
-export const processFilter = (mangafilter: MangaFilter): {src: string, params: any} => {
+export const processFilter = (mangafilter: MangaFilter): { src: string, params: any } => {
   let filter = procFilter(mangafilter);
   let {search} = filter;
 
 
   let fauthor = null;
   let fstatus = null;
-  let fname = filter.name;
+  let fname = null;
   let genres: Genre[] = null;
   let outGenres: Genre[] = null;
 
@@ -140,11 +140,12 @@ export const processFilter = (mangafilter: MangaFilter): {src: string, params: a
   }
 
   const mangaName = `mangaName=${fname || ""}`;
-  const authorArtist =  `authorArtist=${(fauthor || "")}`;
+  const authorArtist = `authorArtist=${(fauthor || "")}`;
   const genreFilter = ordered.map(x => inOutGenre(x, genres, outGenres)).map(x => `genres=${x}`).join("&");
   const status = `status=${(fstatus || "")}`;
 
-  return {src: resolve(config.site, "/AdvanceSearch"),
+  return {
+    src: resolve(config.site, "/AdvanceSearch"),
     params: [mangaName, authorArtist, genreFilter, status].join("&")
   };
 };

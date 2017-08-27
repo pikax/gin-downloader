@@ -1,8 +1,9 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
-import {SiteConfig} from "../../declarations";
 import {resolve} from "url";
+import {gin} from "src/interface";
+import SiteConfig = gin.SiteConfig;
 
 const site = "http://kissmanga.com/";
 export const config: SiteConfig = {

@@ -5,6 +5,47 @@ import FilterSupport = filter.FilterSupport;
 import MangaXDoc = gin.MangaXDoc;
 
 
+declare global {
+
+  interface String {
+    lastDigit(): number;
+    firstDigit(): number;
+    leftTrim(): string;
+    decodeEscapeSequence(): string;
+    getMatches(regex: RegExp, index?: number): string[];
+  }
+}
+
+const regexLastDigit = /\d+(\.\d{1,3})?$/;
+const regexFirstDigit = /\d+(\.\d{1,3})?/;
+
+String.prototype.lastDigit = function(){
+  let match = this.match(regexLastDigit);
+  if (!match) { // can't be to smart if the last digit is 0
+    return null;
+  }
+  return +match[0];
+};
+
+String.prototype.firstDigit = function(){
+  let match = this.match(regexFirstDigit);
+  if (!match) { // can't be to smart if the first digit is 0
+    return null;
+  }
+  return +match[0];
+};
+
+String.prototype.leftTrim = function() {
+  return this.replace(/^\s+/, "");
+};
+
+String.prototype.decodeEscapeSequence = function() {
+  return this.replace(/\\x([0-9A-Fa-f]{2})/g, function() {
+    return String.fromCharCode(parseInt(arguments[1], 16));
+  });
+};
+
+
 export function promiseSetTimeout(ms: number): Promise<any> {
   return new Promise((resolve => setTimeout(resolve, ms)));
 }
@@ -46,7 +87,7 @@ export const sanitizeName = (name: string) => {
 
 
 export const procFilter = (condition: MangaFilter | string, def?: MangaFilter): FilterSupport => {
-  let search: filter.Search = (def && def.search) || {};
+  let search: filter.Search = (def && def.search) || {} as any;
 
 
   if (typeof condition === "string") {
@@ -57,7 +98,7 @@ export const procFilter = (condition: MangaFilter | string, def?: MangaFilter): 
   }
   else {
     let nc: NameFilterCondition = (condition && condition.name && {name: condition.name}) || undefined;
-    let ns: filter.Search = (condition && condition.search) || undefined;
+    let ns: filter.Search = (condition && condition.search) || undefined as any;
 
     search = {name: nc, ...search, ...ns};
 
