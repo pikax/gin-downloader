@@ -98,11 +98,11 @@ describe("Batoto offline", () => {
       .should.have.length.gte(results.chapter_count);
   });
 
-  it('other', async ()=>{
+  it("other", async () => {
     const html = await strategy.request("http://bato.to/comic/_/comics/mi-seijuku-r19038");
 
 
     let info = parser.info(html);
     console.log(info);
-  })
+  });
 });
