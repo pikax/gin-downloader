@@ -12,7 +12,7 @@ watch
 /test/**/*.d.ts
 /__test__/**/*.d.ts
 /build
-
+/scripts/
 
 !/test/sites/kissmanga/html/*.js
 /.rpt2_cache/
