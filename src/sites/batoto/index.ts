@@ -141,20 +141,8 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Log
       auth_key: authKey,
       ips_username: user,
       ips_password: pw,
-      // referer: "https://bato.to/forums",
       rememberMe: rememberMe ? 1 : 0,
     };
-    //
-    // const body = [
-    //   {h: "auth_key", v: authKey},
-    //   {h: "ips_username", v: user},
-    //   {h: "ips_password", v: pw},
-    //   // {h: "referer", v: "https://bato.to/forums"},
-    //   {h: "rememberMe", v: rememberMe ? 1 : 0},
-    // ].map(x => `${x.h}=${x.v}`).join("&");
-    // request.formData =  body;
-    // request.body = body.map(x => `${x.h}=${x.v}`).join("&");
-    request.proxy = "http://localhost:8888";
 
     request.headers = {
       "Content-Type" : "application/x-www-form-urlencoded";
