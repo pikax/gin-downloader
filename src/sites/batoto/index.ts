@@ -11,6 +11,7 @@ import {Helper} from "./names";
 import {Parser} from "./parser";
 import MangaSource = gin.MangaSource;
 import SiteConfig = gin.SiteConfig;
+import * as querystring from "querystring";
 
 export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements LoginSite {
   sitename = "batoto";
@@ -130,29 +131,40 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Log
   }
 
   async login(user: string, pw: string, rememberMe: boolean = true) {
-    let url = "http://bato.to/forums/index.php?app=core&module=global&section=login&do=process";
+    const url = "https://bato.to/forums/index.php?app=core&module=global&section=login&do=process";
 
-    let request = this.buildRequest(url);
-    let $ = await this.getDoc(request);
-    let authKey = $("#login > input[name='auth_key']").attr("value");
+    const request = this.buildRequest(url);
+    const $ = await this.getDoc(request);
+    const authKey = $("#login > input[name='auth_key']").attr("value");
 
-    let body = {
+    const body = {
+      auth_key: authKey,
       ips_username: user,
       ips_password: pw,
-      referer: "https://bato.to/forums",
+      // referer: "https://bato.to/forums",
       rememberMe: rememberMe ? 1 : 0,
-      auth_key: authKey,
+    };
+    //
+    // const body = [
+    //   {h: "auth_key", v: authKey},
+    //   {h: "ips_username", v: user},
+    //   {h: "ips_password", v: pw},
+    //   // {h: "referer", v: "https://bato.to/forums"},
+    //   {h: "rememberMe", v: rememberMe ? 1 : 0},
+    // ].map(x => `${x.h}=${x.v}`).join("&");
+    // request.formData =  body;
+    // request.body = body.map(x => `${x.h}=${x.v}`).join("&");
+    request.proxy = "http://localhost:8888";
+
+    request.headers = {
+      "Content-Type" : "application/x-www-form-urlencoded";
     };
 
-    request = {
-      ...request, formData: body,
-      // proxy: "http://127.0.0.1:8888"
-    };
 
-    let html = await this.postHtml(request);
+    const html = await this.postHtml(request, querystring.stringify(body));
 
 
-    return !!html.match(/<strong>You are now signed in<\/strong>/m);
+    return !!html.match(new RegExp(`Welcome, ${user}`, "g"));
   }
 }
 
