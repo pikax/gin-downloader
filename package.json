@@ -31,7 +31,6 @@
     "dist:rollup": "rollup -c",
     "dist:declaration": "copyfiles -u 1 ./build/**/*d.ts dist/types",
     "clean": "trash src/**/*.js* src/**/*.d.ts test/**/*.js* test/**/*.d.ts",
-    
     "watch": "rollup --watch --config"
   },
   "repository": "https://github.com/pikax/gin-downloader",
