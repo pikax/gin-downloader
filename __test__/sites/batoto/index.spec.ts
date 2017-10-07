@@ -181,7 +181,7 @@ describe("Batoto live", () => {
     chapters.should.have.length.gte(results.chapter_count);
   });
 
-  it("should get Gintama : chapter 635", async () => {
+  it("should get Gintama : chapter 653", async () => {
     if (_MOCK_) {
       nock(config.site)
         .get("/search_ajax?name=Gintama&name_cond=c&artist_name=&artist_name_cond=&genres=&genre_cond=genre_cond%3Dand&status=&type=&mature=y&rating_low=0&rating_high=5&p=1")
@@ -204,14 +204,14 @@ describe("Batoto live", () => {
 
 
     let name = "Gintama";
-    let chapter = 635;
+    let chapter = 653;
 
     let images = await manga.images(name, chapter);
     images.should.to.exist;
     images.should.have.length.gte(17);
 
     let img = await images[0];
-    (await img.value).src.should.contain("https://img.bato.to/comics/2017/05/");
+    (await img.value).src.should.contain("https://img.bato.to/comics/2017/10/");
   });
 
 

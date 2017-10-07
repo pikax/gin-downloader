@@ -2,9 +2,6 @@ import {OptionsWithUrl} from "request";
 import {ginConfig, GinPoolConfig} from "src/config";
 import {Lazy, promiseSetTimeout} from "src/util";
 import {GinUrlOptions, RequestStrategy} from "./index";
-import {Url} from "url";
-import * as moment from "moment";
-import _date = moment.unitOfTime._date;
 
 const Queue = require("promise-queue") as Queue;
 

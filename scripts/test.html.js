@@ -42,7 +42,7 @@ const byRequest = [
     pages : [
       {path:"batoto/html/mangas.html", uri:"https://bato.to/search_ajax?name=&&artist_name=&&genres=&genre_cond=and&status=&type=null&mature=y&rating_low=0&rating_high=5&p=1"},
       {path:"batoto/html/latest.html", uri:"https://bato.to/"},
-      {path:"batoto/html/ch001.html", uri:"http://bato.to/areader?id=e37a90922a3aa108&p=1" , referer: "http://bato.to/reader" },
+      {path:"batoto/html/ch001.html", uri:"http://bato.to/areader?id=f6b99d4eee4fb2f2_2&p=1" , referer: "http://bato.to/reader" },
       {path:"batoto/html/filter/byGenre.html", uri:" https://bato.to/search_ajax?name=&&artist_name=&&genres=i1;i2;i3;i8;i20;i33&genre_cond=and&status=&type=null&mature=y&rating_low=0&rating_high=5&p=1"},
       {path:"batoto/html/filter/outGenre.html", uri:"https://bato.to/search_ajax?name=gin&name_cond=s&artist_name=Sora&artist_name_cond=c&genres=e6&genre_cond=and&status=&type=null&mature=y&rating_low=0&rating_high=5&p=1"},
       {path:"batoto/html/filter/byAuthor.html", uri:"https://bato.to/search_ajax?name=&&artist_name=Sorachi&artist_name_cond=c&genres=&genre_cond=and&status=&type=null&mature=y&rating_low=0&rating_high=5&p=1"},

@@ -20,6 +20,14 @@ let manga = { image: "http://img.bato.to/forums/uploads/501378b77edcdef486ef2260
     {
       "language": "English",
       "title": "은혼"
+    },
+    {
+      "language": "English",
+      "title": "Silver Soul"
+    },
+    {
+      "language": "English",
+      "title": "گینتاما"
     }
   ],
   authors: [ "sorachi hideaki" ],
