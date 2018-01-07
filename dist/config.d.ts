@@ -1,7 +1,4 @@
 /// <reference types="request" />
-/**
- * Created by pikax on 16/07/2017.
- */
 import { RequestStrategy, CoreOptions, RequestRetryStrategy, RequestCloudFlareStrategy } from "./request/index";
 export interface GinPoolConfig {
     simultaneousRequests?: number;

@@ -1,3 +1,4 @@
+import {reqConfig} from "./config";
 import config, {IGinConfigFactory} from "./../config";
 import {GinUrlOptions, OptionsWithUrl, RequestStrategy} from "./interface";
 import {pick} from "lodash";
@@ -11,26 +12,26 @@ const DefaultOptions = {
   fullResponse: false, // To resolve the promise with the full response or just the body
 };
 
-let _config: IGinConfigFactory;
-const getConfig = async () => {
-  if (!_config) {
-    _config = await import("../config").then(x => x.ginConfig);
-  }
-  return _config.config;
-};
-
+// let _config: IGinConfigFactory;
+// const getConfig = async () => {
+//   if (!_config) {
+//     // _config = require("../config").ginConfig;
+//     _config = await import("../config").then(x => x.ginConfig);
+//   }
+//   return _config.config;
+// };
 
 
 export class RequestRetryStrategy implements RequestStrategy {
 
   async request(options: GinUrlOptions): Promise<any> {
-    const config = await getConfig();
+    const config = reqConfig;
     let opts: OptionsWithUrl = <any>{...DefaultOptions, ...config.request, ...pick(config, "maxRetries", "timeout", "interval")};
     if (typeof options === "string") {
       opts.url = options;
     }
     else {
-      opts = {...opts, ...options};
+      opts = {...opts, ...options} as OptionsWithUrl;
     }
 
 

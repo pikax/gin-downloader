@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "es6",
     "noImplicitAny": true,
     "preserveConstEnums": true,
     "target": "es5",

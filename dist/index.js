@@ -53,7 +53,7 @@ var __assign = Object.assign || function __assign(t) {
 function __awaiter(thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve$$1, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
         function step(result) { result.done ? resolve$$1(result.value) : new P(function (resolve$$1) { resolve$$1(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
@@ -178,121 +178,11 @@ var FilterStatus;
     FilterStatus["Cancelled"] = "Cancelled";
 })(FilterStatus || (FilterStatus = {}));
 
-/**
- * Created by pikax on 23/05/2017.
- */
-var cloudscraper = require("cloudscraper");
-// specific options for cloudscraper lib
-var DefaultOptions = {
-    // none
-    method: "GET"
-};
-var RequestCloudFlareStrategy = /** @class */ (function () {
-    function RequestCloudFlareStrategy() {
-    }
-    RequestCloudFlareStrategy.prototype.request = function (options) {
-        var opts = __assign({}, DefaultOptions, ginConfig.config.request);
-        if (typeof options === "string") {
-            opts.url = options;
-        }
-        else {
-            opts = __assign({}, opts, options);
-        }
-        return new Promise(function (res, rej) {
-            var callback = function (err, response, body) {
-                if (err) {
-                    return rej(err);
-                }
-                return res(body);
-            };
-            if (opts.method === "POST") {
-                cloudscraper.post(opts.url, opts.body, callback);
-            }
-            else {
-                cloudscraper.request(opts, callback);
-            }
-        });
-    };
-    return RequestCloudFlareStrategy;
-}());
-var strategy = new RequestCloudFlareStrategy();
-
-var requestRetry = require("requestretry");
-// specific options for requestretry lib
-var DefaultOptions$1 = {
-    retryStrategy: requestRetry.RetryStrategies.HTTPOrNetworkError,
-    fullResponse: false,
-};
-var RequestRetryStrategy = /** @class */ (function () {
-    function RequestRetryStrategy() {
-    }
-    RequestRetryStrategy.prototype.request = function (options) {
-        var opts = __assign({}, DefaultOptions$1, ginConfig.config.request, lodash.pick(ginConfig.config, "maxRetries", "timeout", "interval"));
-        if (typeof options === "string") {
-            opts.url = options;
-        }
-        else {
-            opts = __assign({}, opts, options);
-        }
-        //TODO find a better place for this
-        if (ginConfig.config.disableHttps) {
-            opts.url = opts.url.toString().replace("https", "http");
-        }
-        return requestRetry(opts);
-    };
-    return RequestRetryStrategy;
-}());
-var strategy$2 = new RequestRetryStrategy();
-
-/**
- * Created by pikax on 16/07/2017.
- */
-/*: {retry: RequestStrategy, cloudflare: RequestStrategy} */
-var strategies = {
-    retry: strategy$2,
-    cloudflare: strategy,
-};
-//
-// const s: {retry: RequestRetryStrategy, cloudflare: RequestCloudFlareStrategy} = {
-//   retry: requestRetryStrategy,
-//   cloudflare: requestCloudFareStrategy,
-// };
-//
-//
-// export const strategies = s;
-//
-
-/**
- * Created by pikax on 16/07/2017.
- */
-/*TODO this shouldn't be a function, this should be a const only, but the default config is called by the strategies
-* that means when we load the strategies module, it needs to load this one first but this uses strategies.
-* */
-var DefaultConfig = {
+var o = {
     maxRetries: 50,
     timeout: 10000,
     interval: 1000,
-    pooling: {
-        MangafoxSearch: {
-            requestInterval: 5000,
-            match: /mangafox\.me\/search\.php/
-        },
-        // NOTE this should be always the last one!
-        "*": {
-            simultaneousRequests: 30,
-            maxQueueSize: 300,
-            safeQueueSize: 50,
-            match: /.*/,
-        }
-    },
-    disableHttps: true,
-    sites: {
-        batoto: strategies.retry,
-        mangafox: strategies.retry,
-        mangapanda: strategies.retry,
-        mangahere: strategies.retry,
-        kissmanga: strategies.cloudflare,
-    },
+    disableHttps: false,
     request: {
         jar: true,
         gzip: true,
@@ -309,16 +199,127 @@ var DefaultConfig = {
         }
     }
 };
+var reqConfig = o;
+//todo fix types
+
+var cloudscraper = require("cloudscraper");
+// specific options for cloudscraper lib
+var DefaultOptions = {
+    // none
+    method: "GET"
+};
+// let _config: IGinConfigFactory;
+// const getConfig = async () => {
+//   if (!_config) {
+//     // _config = require("../config").ginConfig;
+//     _config = await import("../config").then(x => x.ginConfig);
+//   }
+//   return _config.config;
+// };
+var RequestCloudFlareStrategy = /** @class */ (function () {
+    function RequestCloudFlareStrategy() {
+    }
+    RequestCloudFlareStrategy.prototype.request = function (options) {
+        return __awaiter(this, void 0, void 0, function () {
+            var opts;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        opts = __assign({}, DefaultOptions, reqConfig.request);
+                        if (typeof options === "string") {
+                            opts.url = options;
+                        }
+                        else {
+                            opts = __assign({}, opts, options);
+                        }
+                        return [4 /*yield*/, new Promise(function (res, rej) {
+                                var callback = function (err, response, body) {
+                                    if (err) {
+                                        return rej(err);
+                                    }
+                                    return res(body);
+                                };
+                                if (opts.method === "POST") {
+                                    cloudscraper.post(opts.url, opts.body, callback);
+                                }
+                                else {
+                                    cloudscraper.request(opts, callback);
+                                }
+                            })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    return RequestCloudFlareStrategy;
+}());
+
+//
+// export const strategy = new RequestCloudFlareStrategy();
+// export default strategy;
+
+var requestRetry = require("requestretry");
+// specific options for requestretry lib
+var DefaultOptions$1 = {
+    retryStrategy: requestRetry.RetryStrategies.HTTPOrNetworkError,
+    fullResponse: false,
+};
+// let _config: IGinConfigFactory;
+// const getConfig = async () => {
+//   if (!_config) {
+//     // _config = require("../config").ginConfig;
+//     _config = await import("../config").then(x => x.ginConfig);
+//   }
+//   return _config.config;
+// };
+var RequestRetryStrategy = /** @class */ (function () {
+    function RequestRetryStrategy() {
+    }
+    RequestRetryStrategy.prototype.request = function (options) {
+        return __awaiter(this, void 0, void 0, function () {
+            var config, opts;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        config = reqConfig;
+                        opts = __assign({}, DefaultOptions$1, config.request, lodash.pick(config, "maxRetries", "timeout", "interval"));
+                        if (typeof options === "string") {
+                            opts.url = options;
+                        }
+                        else {
+                            opts = __assign({}, opts, options);
+                        }
+                        // TODO find a better place for this
+                        if (config.disableHttps) {
+                            opts.url = opts.url.toString().replace("https", "http");
+                        }
+                        return [4 /*yield*/, requestRetry(opts)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    return RequestRetryStrategy;
+}());
+
+//
+// export const strategy = new RequestRetryStrategy();
+// export default strategy;
+
 var Config = /** @class */ (function () {
     function Config() {
     }
     Object.defineProperty(Config.prototype, "defaultConfig", {
-        get: function () { return DefaultConfig; },
+        get: function () {
+            return DefaultConfig;
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Config.prototype, "config", {
-        get: function () { return this._config || (this._config = this.buildConfig()); },
+        get: function () {
+            return this._config || (this._config = this.buildConfig());
+        },
         enumerable: true,
         configurable: true
     });
@@ -351,6 +352,27 @@ var Config = /** @class */ (function () {
     return Config;
 }());
 var ginConfig = new Config();
+var retryStrategy = new RequestRetryStrategy();
+var cloudflareStrategy = new RequestCloudFlareStrategy();
+var DefaultConfig = __assign({ pooling: {
+        MangafoxSearch: {
+            requestInterval: 5000,
+            match: /mangafox\.me\/search\.php/
+        },
+        // NOTE this should be always the last one!
+        "*": {
+            simultaneousRequests: 30,
+            maxQueueSize: 300,
+            safeQueueSize: 50,
+            match: /.*/,
+        }
+    }, disableHttps: true, sites: {
+        batoto: retryStrategy,
+        mangafox: retryStrategy,
+        mangapanda: retryStrategy,
+        mangahere: retryStrategy,
+        kissmanga: cloudflareStrategy,
+    } }, reqConfig);
 
 var regexLastDigit = /\d+(\.\d{1,3})?$/;
 var regexFirstDigit = /\d+(\.\d{1,3})?/;
@@ -416,8 +438,11 @@ var procFilter = function (condition, def) {
         if (search) {
             var genre = search.genre, name_1 = search.name, author = search.author, artist = search.artist, released = search.released, rating = search.rating;
             if (Array.isArray(genre)) {
-                var defGenre = def && def.search && def.search.genre;
-                search.genre = __assign({}, defGenre, { inGenres: genre });
+                var inGenres = genre;
+                search.genre = {
+                    inGenres: inGenres,
+                    condition: GenreCondition.And,
+                };
             }
             if (typeof name_1 === "string") {
                 search.name = {
@@ -802,11 +827,11 @@ var IntervalPool = /** @class */ (function () {
 
 var debug = require("debug");
 var MangaSite = /** @class */ (function () {
-    function MangaSite(config$$1, parser, nameHelper) {
-        this.debug = debug("gin-downloader:" + config$$1.name);
-        this.verbose = debug("gin-downloader:" + config$$1.name + ":verbose");
-        this.error = debug("gin-downloader:" + config$$1.name + ":error");
-        this._config = config$$1;
+    function MangaSite(config, parser, nameHelper) {
+        this.debug = debug("gin-downloader:" + config.name);
+        this.verbose = debug("gin-downloader:" + config.name + ":verbose");
+        this.error = debug("gin-downloader:" + config.name + ":error");
+        this._config = config;
         this._nameHelper = nameHelper;
         this._parser = parser;
     }
@@ -1140,7 +1165,7 @@ var MangaSite = /** @class */ (function () {
  * Created by rodriguesc on 24/03/2017.
  */
 var site = "https://bato.to/";
-var config$1 = {
+var config = {
     name: "Batoto",
     site: site,
     mangas_url: url.resolve(site, "/search_ajax"),
@@ -1149,7 +1174,7 @@ var config$1 = {
 var debug$1 = require("debug")("gin-downloader:batoto");
 var verbose = require("debug")("gin-downloader:batoto:verbose");
 var error = require("debug")("gin-downloader:batoto:error");
-verbose("using %O", config$1);
+verbose("using %O", config);
 
 var Helper = /** @class */ (function () {
     function Helper() {
@@ -1170,12 +1195,52 @@ var Helper = /** @class */ (function () {
         return name;
     };
     Helper.prototype.resolveUrl = function (name) {
-        return config$1.site + "Manga/" + this.toName(name);
+        return config.site + "Manga/" + this.toName(name);
     };
     return Helper;
 }());
 var helper = new Helper();
 
+var Supported = {};
+Supported[Genre.Action] = Genre.Action;
+Supported[Genre.Adventure] = Genre.Adventure;
+Supported[Genre.Comedy] = Genre.Comedy;
+Supported[Genre.Mystery] = Genre.Mystery;
+Supported[Genre.Psychological] = Genre.Psychological;
+Supported[Genre.Romance] = Genre.Romance;
+Supported[Genre.SchoolLife] = Genre.SchoolLife;
+Supported[Genre.SciFi] = Genre.SciFi;
+Supported[Genre.Doujinshi] = Genre.Doujinshi;
+Supported[Genre.Drama] = Genre.Drama;
+Supported[Genre.Ecchi] = Genre.Ecchi;
+Supported[Genre.Fantasy] = Genre.Fantasy;
+Supported[Genre.GenderBender] = Genre.GenderBender;
+Supported[Genre.ShoujoAi] = Genre.ShoujoAi;
+Supported[Genre.Harem] = Genre.Harem;
+Supported[Genre.ShounenAi] = Genre.ShounenAi;
+Supported[Genre.Historical] = Genre.Historical;
+Supported[Genre.SliceOfLife] = Genre.SliceOfLife;
+Supported[Genre.Horror] = Genre.Horror;
+Supported[Genre.Smut] = Genre.Smut;
+Supported[Genre.Sports] = Genre.Sports;
+Supported[Genre.Supernatural] = Genre.Supernatural;
+Supported[Genre.MartialArts] = Genre.MartialArts;
+Supported[Genre.Tragedy] = Genre.Tragedy;
+Supported[Genre.Yaoi] = Genre.Yaoi;
+Supported[Genre.Mecha] = Genre.Mecha;
+Supported[Genre.Yuri] = Genre.Yuri;
+Supported[Genre.Seinen] = Genre.Seinen;
+Supported[Genre.Shounen] = Genre.Shounen;
+Supported[Genre.Josei] = Genre.Josei;
+Supported[Genre.Shoujo] = Genre.Shoujo;
+Supported[Genre.Webtoon] = Genre.Webtoon;
+Supported[Genre.Music] = Genre.Music;
+Supported[Genre.Oneshot] = Genre.Oneshot;
+Supported[Genre.AwardWinning] = Genre.AwardWinning;
+Supported[Genre.FourKoma] = Genre.FourKoma;
+Supported[Genre.Cooking] = Genre.Cooking;
+Supported[Genre.Medical] = Genre.Medical;
+Supported[Genre.NoChapters] = Genre.NoChapters;
 var ordered = [
     Genre.Action,
     Genre.Adventure,
@@ -1316,7 +1381,7 @@ var processFilter = function (mangafilter) {
     var rating_high = fratingTo || 5; // 0~5
     var mature = fmature || "y"; // n == false
     return {
-        src: config$1.mangas_url,
+        src: config.mangas_url,
         qs: {
             name: mangaName,
             name_cond: name_cond,
@@ -1547,7 +1612,7 @@ var Parser = /** @class */ (function () {
         return paths;
     };
     Parser.convertChapterReaderUrl = function (src) {
-        if (src.startsWith(url.resolve(config$1.site, "/areader"))) {
+        if (src.startsWith(url.resolve(config.site, "/areader"))) {
             return src;
         }
         var idNumber = src.split("#")[1];
@@ -1557,7 +1622,7 @@ var Parser = /** @class */ (function () {
             pg = +pgMatch[0].slice(1);
             idNumber = idNumber.replace(pgMatch[0], "");
         }
-        return url.resolve(config$1.site, "/areader?id=" + idNumber + "&p=" + pg);
+        return url.resolve(config.site, "/areader?id=" + idNumber + "&p=" + pg);
     };
     Parser.prototype.image = function (html) {
         var regex = /(?:id="comic_page".*)((http|https):\/\/img\.bato\.to\/comics\/[^"]*)/gm;
@@ -1594,19 +1659,18 @@ var Parser = /** @class */ (function () {
     };
     return Parser;
 }());
-var parser = new Parser();
 
 var Batoto = /** @class */ (function (_super) {
     __extends(Batoto, _super);
     function Batoto() {
-        var _this = _super.call(this, config$1, new Parser(), new Helper()) || this;
+        var _this = _super.call(this, config, new Parser(), new Helper()) || this;
         _this.sitename = "batoto";
         _this._urlCache = {}; // provide a cache for resolved urls
         return _this;
     }
     Batoto.prototype.resolveMangaUrl = function (name) {
         return __awaiter(this, void 0, void 0, function () {
-            var filter, filterResults, page, results, result, _i, results_1, obj, n;
+            var filter, filterResults, page, results, result, _i, results_1, obj;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1630,14 +1694,13 @@ var Batoto = /** @class */ (function (_super) {
                         // console.log(results);
                         for (_i = 0, results_1 = results; _i < results_1.length; _i++) {
                             obj = results_1[_i];
-                            n = obj.name.leftTrim();
-                            if (n === name) {
+                            if (obj.name === name) {
                                 result = obj.src;
                             }
-                            else if (n.startsWith(name) && n === name + " (" + lodash.capitalize(lodash.deburr(name.replace("ә", "a"))) + ")") {
+                            else if (obj.name.startsWith(name) && obj.name === name + " (" + lodash.capitalize(lodash.deburr(name.replace("ә", "a"))) + ")") {
                                 result = obj.src;
                             }
-                            else if (n.endsWith("(" + lodash.deburr(name.replace("ә", "a")) + ")")) {
+                            else if (obj.name.endsWith("(" + lodash.deburr(name.replace("ә", "a")) + ")")) {
                                 result = obj.src;
                             }
                             this._urlCache[obj.name] = obj.src; // add to cache
@@ -1894,6 +1957,6 @@ exports.SuperChapter = SuperChapter;
 exports.SuperObject = SuperObject;
 exports.ginConfig = ginConfig;
 exports.parseDoc = parseDoc;
-exports.strategies = strategies;
+exports.RequestCloudFlareStrategy = RequestCloudFlareStrategy;
+exports.RequestRetryStrategy = RequestRetryStrategy;
 exports.request = request;
-//# sourceMappingURL=index.js.map

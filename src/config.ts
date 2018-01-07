@@ -1,7 +1,5 @@
-/**
- * Created by pikax on 16/07/2017.
- */
 import {RequestStrategy, CoreOptions, GinUrlOptions, Options, OptionsWithUrl, RequestRetryStrategy, RequestCloudFlareStrategy} from "./request/index";
+import {reqConfig} from "./request/config";
 
 
 export interface GinPoolConfig {
@@ -99,10 +97,6 @@ export const retryStrategy = new RequestRetryStrategy();
 export const cloudflareStrategy = new RequestCloudFlareStrategy();
 
 const DefaultConfig: GinConfig = {
-  maxRetries: 50,
-  timeout: 10000,
-  interval: 1000,
-
   pooling: {
     MangafoxSearch: {
       requestInterval: 5000,
@@ -130,22 +124,8 @@ const DefaultConfig: GinConfig = {
     kissmanga: cloudflareStrategy,
   },
 
-  request: {
-    jar: true,
-    gzip: true,
-    followAllRedirects: true,
-    forever: true,
-    proxy: process.env.proxy,
-    headers: {
-      "Accept-Charset": "utf-8;q=0.7,*;q=0.3",
-      "Accept-Language": "en-US,en;q=0.8",
-      "Connection": "keep-alive",
-      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36",
-      "Accept-Encoding": "gzip,deflate",
-    }
-  }
-};
+  ...reqConfig,
+} as any;
 
 export default ginConfig;
 
