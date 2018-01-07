@@ -1,13 +1,10 @@
-/**
- * Created by pikax on 23/05/2017.
- */
-
 import {OptionsWithUrl} from "request";
+
 const cloudscraper = require("cloudscraper");
 
-import {RequestStrategy} from "./index";
-import config from "./../config";
+import {RequestStrategy} from "./interface";
 
+import {IGinConfigFactory} from "./../config";
 
 
 // specific options for cloudscraper lib
@@ -17,9 +14,20 @@ const DefaultOptions = {
 };
 
 
+let _config: IGinConfigFactory;
+const getConfig = async () => {
+  if (!_config) {
+    _config = await import("../config").then(x => x.ginConfig);
+  }
+  return _config.config;
+};
+
 export class RequestCloudFlareStrategy implements RequestStrategy {
-  request(options: string | OptionsWithUrl): Promise<any> {
-    let opts: OptionsWithUrl = <any>{...DefaultOptions, ...config.config.request};
+
+
+  async request(options: string | OptionsWithUrl): Promise<any> {
+    const config = await getConfig();
+    let opts: OptionsWithUrl = <any>{...DefaultOptions, ...config.request};
 
     if (typeof options === "string") {
       opts.url = options;
@@ -28,8 +36,8 @@ export class RequestCloudFlareStrategy implements RequestStrategy {
       opts = {...opts, ...options};
     }
 
-    return new Promise((res, rej) => {
-      let callback = (err: number, response: any, body: Buffer) => {
+    return await new Promise((res, rej) => {
+      const callback = (err: number, response: any, body: Buffer) => {
         if (err) {
           return rej(err);
         }
@@ -46,5 +54,6 @@ export class RequestCloudFlareStrategy implements RequestStrategy {
   }
 }
 
-export const strategy = new RequestCloudFlareStrategy();
-export default strategy;
+//
+// export const strategy = new RequestCloudFlareStrategy();
+// export default strategy;

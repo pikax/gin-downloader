@@ -16,5 +16,5 @@ module.exports =  {
 
   sourceMap:true,
   dest: pkg.main,
-  external: [ 'cheerio', 'lodash', 'debug', 'url', 'vm', 'util']
+  external: [ 'cheerio', 'lodash', 'debug', 'url', 'vm', 'util', 'querystring']
 };

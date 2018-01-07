@@ -5,9 +5,9 @@ import {Script} from "vm";
 import {resolve, parse} from "url";
 
 
-import {FilteredResults, MangaFilter} from "src/filter";
-import {gin, Site, ImageCollection, GinImage} from "src/interface";
-import {MangaSite} from "src/mangasite";
+import {FilteredResults, MangaFilter} from "./../../filter";
+import {gin, Site, ImageCollection, GinImage} from "./../../interface";
+import {MangaSite} from "./../../mangasite";
 import {config} from "./config";
 
 import {processFilter} from "./filter";
@@ -15,7 +15,7 @@ import {Helper} from "./names";
 import {Parser} from "./parser";
 import MangaSource = gin.MangaSource;
 import SiteConfig = gin.SiteConfig;
-import {Lazy} from "src/util";
+import {Lazy} from "./../../util";
 
 
 export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements Site {

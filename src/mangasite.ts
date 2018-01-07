@@ -1,13 +1,13 @@
 import {IDebugger} from "debug";
 
 import {find} from "lodash";
-import {ginConfig} from "src/config";
-import {FilteredResults, MangaFilter} from "src/filter";
+import {ginConfig} from "./config";
+import {FilteredResults, MangaFilter} from "./filter";
 
-import {Chapter, gin, GinImage, GinImagePromise, ImageCollection, Info, Site, InfoChapter} from "src/interface";
-import {RequestStrategy, OptionsWithUrl} from "src/request/index";
-import {request} from "src/request/pool";
-import {Lazy, parseDoc} from "src/util";
+import {Chapter, gin, GinImage, GinImagePromise, ImageCollection, Info, Site, InfoChapter} from "./interface";
+import {RequestStrategy, OptionsWithUrl} from "./request/index";
+import {request} from "./request/pool";
+import {Lazy, parseDoc} from "./util";
 import {parse} from "url";
 
 const debug = require("debug");

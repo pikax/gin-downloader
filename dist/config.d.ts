@@ -2,7 +2,7 @@
 /**
  * Created by pikax on 16/07/2017.
  */
-import { RequestStrategy, CoreOptions } from "./request/index";
+import { RequestStrategy, CoreOptions, RequestRetryStrategy, RequestCloudFlareStrategy } from "./request/index";
 export interface GinPoolConfig {
     simultaneousRequests?: number;
     maxQueueSize?: number;
@@ -23,7 +23,10 @@ export interface GinConfig {
     };
     request?: CoreOptions;
 }
-export declare class Config {
+export interface IGinConfigFactory {
+    config: GinConfig;
+}
+export declare class Config implements IGinConfigFactory {
     private _use;
     private _config;
     readonly defaultConfig: GinConfig;
@@ -33,4 +36,6 @@ export declare class Config {
     private buildConfig(conf?);
 }
 export declare const ginConfig: Config;
+export declare const retryStrategy: RequestRetryStrategy;
+export declare const cloudflareStrategy: RequestCloudFlareStrategy;
 export default ginConfig;

@@ -2,7 +2,7 @@
 /**
  * Created by pikax on 16/07/2017.
  */
-import { RequestStrategy, CoreOptions } from "./request/index";
+import { RequestStrategy, CoreOptions } from "src/request/index";
 export interface GinPoolConfig {
     simultaneousRequests?: number;
     maxQueueSize?: number;

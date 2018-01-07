@@ -1,6 +1,6 @@
-import {MangaFilter} from "src/filter";
-import {Lazy} from "src/util";
-import {Type} from "src/enum";
+import {MangaFilter} from "./filter";
+import {Lazy} from "./util";
+import {Type} from "./enum";
 
 export interface Source {
   src: string;

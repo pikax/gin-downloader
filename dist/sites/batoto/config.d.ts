@@ -1,4 +1,4 @@
-import { gin } from "src/interface";
+import { gin } from "./../../interface";
 import SiteConfig = gin.SiteConfig;
 export declare const config: SiteConfig;
 export default config;

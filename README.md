@@ -1,6 +1,8 @@
 # gin-downloader
 
-[![Join the chat at https://gitter.im/pikax/gin-downloader](https://badges.gitter.im/pikax/gin-downloader.svg)](https://gitter.im/pikax/gin-downloader?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+[![Discord](https://img.shields.io/badge/discord-chat-blue.svg)][discord]
+
 
 
 
@@ -71,6 +73,7 @@ forof(let lz of cimages){
 
 ## Disclaimer
 
-The developer of this application does not have any affiliation with the content providers available.
+The developer of this application does not have any affiliation with the content providers provide.
 
 
+[discord]: https://discord.gg/Wg9tGXZ

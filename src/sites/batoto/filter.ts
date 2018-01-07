@@ -1,6 +1,6 @@
-import {FilterCondition, FilterStatus, Genre, GenreCondition, Type} from "src/enum";
-import {filter, MangaFilter} from "src/filter";
-import {procFilter} from "src/util";
+import {FilterCondition, FilterStatus, Genre, GenreCondition, Type} from "./../../enum";
+import {filter, MangaFilter} from "./../../filter";
+import {procFilter} from "./../../util";
 import {isNullOrUndefined} from "util";
 import {config} from "./config";
 import {helper} from "./names";

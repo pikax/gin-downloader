@@ -1,4 +1,4 @@
-import {gin} from "src/interface";
+import {gin} from "./../../interface";
 import {config} from "./config";
 import NameHelper = gin.NameHelper;
 

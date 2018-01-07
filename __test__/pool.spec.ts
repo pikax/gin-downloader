@@ -1,5 +1,5 @@
 import "./common";
-import {GinUrlOptions, RequestStrategy} from "src/request";
+import {GinUrlOptions, RequestStrategy} from "src/request/interface";
 import {ConcurrentQueue, getPool, HistoryPool, IntervalPool, rebuildPool} from "src/request/pool";
 import * as ginPool from "src/request/pool";
 import {isCombinedNodeFlagSet} from "tslint";

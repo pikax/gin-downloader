@@ -1,6 +1,5 @@
-import { gin, InfoChapter, Site, ImageCollection, Chapter, GinImage } from "src/interface";
+import { gin, InfoChapter, Site, ImageCollection, Chapter } from "./interface";
 import ChapterSource = gin.ChapterSource;
-import { Lazy } from "src/util";
 export declare class SuperObject {
     readonly name: string;
     readonly site: Site;
@@ -20,5 +19,5 @@ export declare class SuperChapter {
     readonly source: Chapter;
     private _images;
     constructor(master: SuperObject, _source: ChapterSource);
-    fetch(): Promise<Lazy<Promise<GinImage>>[]>;
+    fetch(): Promise<ImageCollection>;
 }

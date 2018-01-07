@@ -9,7 +9,7 @@ export {ginConfig} from "./config";
 export {parseDoc} from "./util";
 
 
-export {strategies} from "./request/index";
+export {RequestCloudFlareStrategy, RequestRetryStrategy} from "./request/index";
 export {request} from "./request/pool";
 
 // export const gin = {

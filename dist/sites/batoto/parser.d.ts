@@ -1,5 +1,5 @@
-import { FilteredResults } from "src/filter";
-import { gin, Info } from "src/interface";
+import { FilteredResults } from "./../../filter";
+import { gin, Info } from "./../../interface";
 import ChapterSource = gin.ChapterSource;
 import MangaSource = gin.MangaSource;
 import MangaXDoc = gin.MangaXDoc;

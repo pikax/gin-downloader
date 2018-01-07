@@ -1,6 +1,6 @@
 /// <reference types="cheerio" />
-import { filter, MangaFilter } from "src/filter";
-import { gin } from "src/interface";
+import { filter, MangaFilter } from "./filter";
+import { gin } from "./interface";
 declare global  {
     interface String {
         lastDigit(): number;
@@ -25,5 +25,5 @@ export declare const sanitize: (children: CheerioElement[]) => CheerioElement[];
 export declare const sanitizeName: (name: string) => string;
 export declare const procFilter: (condition: string | MangaFilter, def?: MangaFilter) => filter.FilterSupport;
 export declare function getLocationByCharacters(str: string): void;
-export declare function containsChineseCharaters(x: string): void;
-export declare function containsJaponeseCharacters(x: string): boolean;
+export declare function containsChineseCharacters(x: string): void;
+export declare function containsJapaneseCharacters(x: string): boolean;

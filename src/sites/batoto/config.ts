@@ -3,7 +3,7 @@
  */
 
 import {resolve} from "url";
-import {gin} from "src/interface";
+import {gin} from "./../../interface";
 import SiteConfig = gin.SiteConfig;
 
 const site = "https://bato.to/";

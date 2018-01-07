@@ -1,8 +1,8 @@
 /// <reference types="request" />
 import { OptionsWithUrl } from "request";
-import { FilteredResults, MangaFilter } from "src/filter";
-import { gin, LoginSite } from "src/interface";
-import { MangaSite } from "src/mangasite";
+import { FilteredResults, MangaFilter } from "./../../filter";
+import { gin, LoginSite } from "./../../interface";
+import { MangaSite } from "./../../mangasite";
 import { Helper } from "./names";
 import { Parser } from "./parser";
 import MangaSource = gin.MangaSource;

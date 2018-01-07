@@ -1,4 +1,4 @@
-import { gin } from "src/interface";
+import { gin } from "./../../interface";
 import NameHelper = gin.NameHelper;
 export declare class Helper implements NameHelper {
     toName(name: string): string;

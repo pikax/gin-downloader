@@ -409,3 +409,5 @@ __pycache__/
 # tools/**
 # !tools/packages.config
 
+scripts/**/*
+~scripts/test.html.js

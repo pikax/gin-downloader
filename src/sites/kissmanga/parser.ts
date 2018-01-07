@@ -8,14 +8,14 @@ import {config, debug} from "./config";
 import {Script, createContext} from "vm";
 
 
-import {FilteredResults} from "src/filter";
-import {gin, Info, Synonym} from "src/interface";
-import {sanitize} from "src/util";
+import {FilteredResults} from "./../../filter";
+import {gin, Info, Synonym} from "./../../interface";
+import {sanitize} from "./../../util";
 import ChapterSource = gin.ChapterSource;
 import MangaSource = gin.MangaSource;
 import MangaXDoc = gin.MangaXDoc;
 import SiteParser = gin.SiteParser;
-import {Type} from "src/enum";
+import {Type} from "./../../enum";
 
 export class Parser implements SiteParser {
   get secretAlgorithm(): string {

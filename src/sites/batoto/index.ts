@@ -1,9 +1,9 @@
 import {capitalize, deburr} from "lodash";
 import {OptionsWithUrl} from "request";
-import {FilterCondition} from "src/enum";
-import {FilteredResults, MangaFilter} from "src/filter";
-import {gin, LoginSite, Site} from "src/interface";
-import {MangaSite} from "src/mangasite";
+import {FilterCondition} from "./../../enum";
+import {FilteredResults, MangaFilter} from "./../../filter";
+import {gin, LoginSite, Site} from "./../../interface";
+import {MangaSite} from "./../../mangasite";
 import {config} from "./config";
 
 import {processFilter} from "./filter";
@@ -50,6 +50,9 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Log
           result = obj.src;
         }
         else if (obj.name.startsWith(name) && obj.name === `${name} (${capitalize(deburr(name.replace("ә", "a")))})`) {
+          result = obj.src;
+        }
+        else if (obj.name.endsWith(`(${deburr(name.replace("ә", "a"))})`)) { // Ansatsu Kyoushitsu
           result = obj.src;
         }
         this._urlCache[obj.name] = obj.src; // add to cache
@@ -145,12 +148,9 @@ export class Batoto extends MangaSite<SiteConfig, Parser, Helper> implements Log
     };
 
     request.headers = {
-      "Content-Type" : "application/x-www-form-urlencoded";
+      "Content-Type": "application/x-www-form-urlencoded",
     };
-
-
     const html = await this.postHtml(request, querystring.stringify(body));
-
 
     return !!html.match(new RegExp(`Welcome, ${user}`, "g"));
   }

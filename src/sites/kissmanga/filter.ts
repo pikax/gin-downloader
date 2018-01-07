@@ -3,9 +3,9 @@
  */
 import {resolve} from "url";
 
-import {FilterStatus, Genre} from "src/enum";
-import {MangaFilter} from "src/filter";
-import {procFilter} from "src/util";
+import {FilterStatus, Genre} from "./../../enum";
+import {MangaFilter} from "./../../filter";
+import {procFilter} from "./../../util";
 import {config} from "./config";
 
 const Supported: { [id: string]: Genre } = {};

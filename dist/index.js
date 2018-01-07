@@ -6,6 +6,7 @@ var lodash = require('lodash');
 var cheerio = require('cheerio');
 var url = require('url');
 var util = require('util');
+var querystring = require('querystring');
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -186,7 +187,7 @@ var DefaultOptions = {
     // none
     method: "GET"
 };
-var RequestCloudFlareStrategy = (function () {
+var RequestCloudFlareStrategy = /** @class */ (function () {
     function RequestCloudFlareStrategy() {
     }
     RequestCloudFlareStrategy.prototype.request = function (options) {
@@ -222,7 +223,7 @@ var DefaultOptions$1 = {
     retryStrategy: requestRetry.RetryStrategies.HTTPOrNetworkError,
     fullResponse: false,
 };
-var RequestRetryStrategy = (function () {
+var RequestRetryStrategy = /** @class */ (function () {
     function RequestRetryStrategy() {
     }
     RequestRetryStrategy.prototype.request = function (options) {
@@ -308,7 +309,7 @@ var DefaultConfig = {
         }
     }
 };
-var Config = (function () {
+var Config = /** @class */ (function () {
     function Config() {
     }
     Object.defineProperty(Config.prototype, "defaultConfig", {
@@ -379,7 +380,7 @@ function promiseSetTimeout(ms) {
     return new Promise((function (resolve$$1) { return setTimeout(resolve$$1, ms); }));
 }
 
-var Lazy = (function () {
+var Lazy = /** @class */ (function () {
     function Lazy(_func) {
         this._func = _func;
     }
@@ -608,7 +609,7 @@ function buildPool() {
 //     return this._currId++;
 //   }
 // }
-var ConcurrentQueue = (function () {
+var ConcurrentQueue = /** @class */ (function () {
     function ConcurrentQueue(_config) {
         this._config = _config;
         this._currId = 0;
@@ -661,7 +662,7 @@ var ConcurrentQueue = (function () {
     };
     return ConcurrentQueue;
 }());
-var IntervalLazy = (function (_super) {
+var IntervalLazy = /** @class */ (function (_super) {
     __extends(IntervalLazy, _super);
     // appendNew(func : ()=>T){
     //   return new IntervalLazy(async ()=>{
@@ -744,7 +745,7 @@ var IntervalLazy = (function (_super) {
     };
     return IntervalLazy;
 }(Lazy));
-var IntervalPool = (function () {
+var IntervalPool = /** @class */ (function () {
     // history: HistoryPool[]; //TODO remove
     function IntervalPool(_config) {
         this._config = _config;
@@ -800,7 +801,7 @@ var IntervalPool = (function () {
 }());
 
 var debug = require("debug");
-var MangaSite = (function () {
+var MangaSite = /** @class */ (function () {
     function MangaSite(config$$1, parser, nameHelper) {
         this.debug = debug("gin-downloader:" + config$$1.name);
         this.verbose = debug("gin-downloader:" + config$$1.name + ":verbose");
@@ -1150,7 +1151,7 @@ var verbose = require("debug")("gin-downloader:batoto:verbose");
 var error = require("debug")("gin-downloader:batoto:error");
 verbose("using %O", config$1);
 
-var Helper = (function () {
+var Helper = /** @class */ (function () {
     function Helper() {
     }
     Helper.prototype.toName = function (name) {
@@ -1392,7 +1393,7 @@ function inOutGenre(genre, inGenre, outGenre) {
     return "";
 }
 
-var Parser = (function () {
+var Parser = /** @class */ (function () {
     function Parser() {
     }
     Parser.prototype.mangas = function ($) {
@@ -1595,7 +1596,7 @@ var Parser = (function () {
 }());
 var parser = new Parser();
 
-var Batoto = (function (_super) {
+var Batoto = /** @class */ (function (_super) {
     __extends(Batoto, _super);
     function Batoto() {
         var _this = _super.call(this, config$1, new Parser(), new Helper()) || this;
@@ -1605,7 +1606,7 @@ var Batoto = (function (_super) {
     }
     Batoto.prototype.resolveMangaUrl = function (name) {
         return __awaiter(this, void 0, void 0, function () {
-            var filter, filterResults, page, results, result, _i, results_1, obj;
+            var filter, filterResults, page, results, result, _i, results_1, obj, n;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1629,10 +1630,14 @@ var Batoto = (function (_super) {
                         // console.log(results);
                         for (_i = 0, results_1 = results; _i < results_1.length; _i++) {
                             obj = results_1[_i];
-                            if (obj.name === name) {
+                            n = obj.name.leftTrim();
+                            if (n === name) {
                                 result = obj.src;
                             }
-                            else if (obj.name.startsWith(name) && obj.name === name + " (" + lodash.capitalize(lodash.deburr(name.replace("ә", "a"))) + ")") {
+                            else if (n.startsWith(name) && n === name + " (" + lodash.capitalize(lodash.deburr(name.replace("ә", "a"))) + ")") {
+                                result = obj.src;
+                            }
+                            else if (n.endsWith("(" + lodash.deburr(name.replace("ә", "a")) + ")")) {
                                 result = obj.src;
                             }
                             this._urlCache[obj.name] = obj.src; // add to cache
@@ -1715,24 +1720,25 @@ var Batoto = (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url$$1 = "http://bato.to/forums/index.php?app=core&module=global&section=login&do=process";
+                        url$$1 = "https://bato.to/forums/index.php?app=core&module=global&section=login&do=process";
                         request = this.buildRequest(url$$1);
                         return [4 /*yield*/, this.getDoc(request)];
                     case 1:
                         $ = _a.sent();
                         authKey = $("#login > input[name='auth_key']").attr("value");
                         body = {
+                            auth_key: authKey,
                             ips_username: user,
                             ips_password: pw,
-                            referer: "https://bato.to/forums",
                             rememberMe: rememberMe ? 1 : 0,
-                            auth_key: authKey,
                         };
-                        request = __assign({}, request, { formData: body });
-                        return [4 /*yield*/, this.postHtml(request)];
+                        request.headers = {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        };
+                        return [4 /*yield*/, this.postHtml(request, querystring.stringify(body))];
                     case 2:
                         html = _a.sent();
-                        return [2 /*return*/, !!html.match(/<strong>You are now signed in<\/strong>/m)];
+                        return [2 /*return*/, !!html.match(new RegExp("Welcome, " + user, "g"))];
                 }
             });
         });
@@ -1741,7 +1747,7 @@ var Batoto = (function (_super) {
 }(MangaSite));
 var manga = new Batoto();
 
-var SuperObject = (function () {
+var SuperObject = /** @class */ (function () {
     function SuperObject(name, site, url$$1) {
         this.name = name;
         this.site = site;
@@ -1787,7 +1793,7 @@ var SuperObject = (function () {
     };
     return SuperObject;
 }());
-var SuperChapter = (function () {
+var SuperChapter = /** @class */ (function () {
     function SuperChapter(master, _source) {
         this.master = master;
         this._source = _source;

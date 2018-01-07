@@ -4,7 +4,7 @@
 
 
 import "./common";
-import {ginConfig, GinConfig} from "../src/config";
+import {ginConfig, GinConfig} from "src/config";
 
 
 

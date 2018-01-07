@@ -1,5 +1,5 @@
-import { GinPoolConfig } from "src/config";
-import { Lazy } from "src/util";
+import { GinPoolConfig } from "./../config";
+import { Lazy } from "./../util";
 import { GinUrlOptions, RequestStrategy } from "./index";
 export declare type GinPoolQueue = GinPoolConfig & {
     queue: QueuePool;

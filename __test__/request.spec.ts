@@ -2,7 +2,7 @@
  * Created by pikax on 22/07/2017.
  */
 
-import {strategies} from "./../src/request/index";
+import {cloudflareStrategy, retryStrategy} from "src/config";
 import "./common";
 
 
@@ -12,7 +12,7 @@ describe("request strategies", () => {
 
 
   describe("retry", () => {
-    let request = strategies.retry.request;
+    let request = retryStrategy.request;
 
     it("should get google.com by url", async () => {
       let http = await request("http://www.google.com");
@@ -21,7 +21,7 @@ describe("request strategies", () => {
     });
 
     it("should get google.com", async () => {
-      let http = await request({ url : "http://www.google.com"});
+      let http = await request({url: "http://www.google.com"});
 
       http.should.not.be.empty;
     });
@@ -29,10 +29,8 @@ describe("request strategies", () => {
   });
 
 
-
-
   describe("cloudFlare", () => {
-    let request = strategies.cloudflare.request;
+    let request = cloudflareStrategy.request;
 
     it("should get google.com by url", async () => {
       let http = await request("http://www.google.com");
@@ -41,25 +39,25 @@ describe("request strategies", () => {
     });
 
     it("should get google.com", async () => {
-      let http = await request({ url : "http://www.google.com"});
+      let http = await request({url: "http://www.google.com"});
 
       http.should.not.be.empty;
     });
 
-    it("should post to google.com", async()=>{
-      let http = await request({ url : "http://www.google.com", method: "POST"});
+    it("should post to google.com", async () => {
+      let http = await request({url: "http://www.google.com", method: "POST"});
 
       http.should.not.be.empty;
       http.should.contain("405"); // posting is not allowed on google.com page, 405 error is thrown
     });
 
-    it("should fail", async()=>{
+    it("should fail", async () => {
       try {
         let http = await request({url: "http://www.google.someWeird", timeout: 1});
 
         http.should.be.eq(null);
 
-      }catch (e){
+      } catch (e) {
         e.should.not.be.null;
       }
 

@@ -4,7 +4,7 @@
 
 
 import {FilterCondition, FilterStatus, Genre, GenreCondition, Type} from "./enum";
-import {gin} from "src/interface";
+import {gin} from "./interface";
 import MangaSource = gin.MangaSource;
 
 export type GenreCollection = Array<Genre>;

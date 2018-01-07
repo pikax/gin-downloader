@@ -1,5 +1,5 @@
-import config from "src/config";
-import {GinUrlOptions, OptionsWithUrl, RequestStrategy} from "./index";
+import config, {IGinConfigFactory} from "./../config";
+import {GinUrlOptions, OptionsWithUrl, RequestStrategy} from "./interface";
 import {pick} from "lodash";
 
 const requestRetry = require("requestretry");
@@ -11,9 +11,21 @@ const DefaultOptions = {
   fullResponse: false, // To resolve the promise with the full response or just the body
 };
 
+let _config: IGinConfigFactory;
+const getConfig = async () => {
+  if (!_config) {
+    _config = await import("../config").then(x => x.ginConfig);
+  }
+  return _config.config;
+};
+
+
+
 export class RequestRetryStrategy implements RequestStrategy {
-  request(options: GinUrlOptions): Promise<any> {
-    let opts: OptionsWithUrl = <any>{...DefaultOptions, ... config.config.request, ...pick(config.config, "maxRetries", "timeout", "interval")};
+
+  async request(options: GinUrlOptions): Promise<any> {
+    const config = await getConfig();
+    let opts: OptionsWithUrl = <any>{...DefaultOptions, ...config.request, ...pick(config, "maxRetries", "timeout", "interval")};
     if (typeof options === "string") {
       opts.url = options;
     }
@@ -22,15 +34,16 @@ export class RequestRetryStrategy implements RequestStrategy {
     }
 
 
-    //TODO find a better place for this
-    if (config.config.disableHttps) {
+    // TODO find a better place for this
+    if (config.disableHttps) {
       opts.url = opts.url.toString().replace("https", "http");
     }
 
-    return requestRetry(opts);
+    return await requestRetry(opts);
   }
 }
 
-export const strategy = new RequestRetryStrategy();
-export default strategy;
+//
+// export const strategy = new RequestRetryStrategy();
+// export default strategy;
 

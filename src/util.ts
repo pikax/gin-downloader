@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
-import {filter, MangaFilter, NameFilterCondition, Search} from "src/filter";
-import {gin} from "src/interface";
+import {filter, MangaFilter, NameFilterCondition, Search} from "./filter";
+import {gin} from "./interface";
 import FilterSupport = filter.FilterSupport;
 import MangaXDoc = gin.MangaXDoc;
 
@@ -9,9 +9,13 @@ declare global {
 
   interface String {
     lastDigit(): number;
+
     firstDigit(): number;
+
     leftTrim(): string;
+
     decodeEscapeSequence(): string;
+
     getMatches(regex: RegExp, index?: number): string[];
   }
 }
@@ -19,7 +23,7 @@ declare global {
 const regexLastDigit = /\d+(\.\d{1,3})?$/;
 const regexFirstDigit = /\d+(\.\d{1,3})?/;
 
-String.prototype.lastDigit = function(){
+String.prototype.lastDigit = function () {
   let match = this.match(regexLastDigit);
   if (!match) { // can't be to smart if the last digit is 0
     return null;
@@ -27,7 +31,7 @@ String.prototype.lastDigit = function(){
   return +match[0];
 };
 
-String.prototype.firstDigit = function(){
+String.prototype.firstDigit = function () {
   let match = this.match(regexFirstDigit);
   if (!match) { // can't be to smart if the first digit is 0
     return null;
@@ -35,12 +39,12 @@ String.prototype.firstDigit = function(){
   return +match[0];
 };
 
-String.prototype.leftTrim = function() {
+String.prototype.leftTrim = function () {
   return this.replace(/^\s+/, "");
 };
 
-String.prototype.decodeEscapeSequence = function() {
-  return this.replace(/\\x([0-9A-Fa-f]{2})/g, function() {
+String.prototype.decodeEscapeSequence = function () {
+  return this.replace(/\\x([0-9A-Fa-f]{2})/g, function () {
     return String.fromCharCode(parseInt(arguments[1], 16));
   });
 };
@@ -92,7 +96,7 @@ export const procFilter = (condition: MangaFilter | string, def?: MangaFilter): 
 
   if (typeof condition === "string") {
     search.name = {
-      name: condition
+      name: condition as string
     };
     return {search};
   }
@@ -112,29 +116,29 @@ export const procFilter = (condition: MangaFilter | string, def?: MangaFilter): 
 
       if (typeof name === "string") {
         search.name = {
-          name
+          name: name as string
         };
       }
       if (typeof author === "string") {
         search.author = {
-          name: author
+          name: author as string
         };
       }
       if (typeof artist === "string") {
         search.artist = {
-          name: artist
+          name: artist as string
         };
       }
 
       if (typeof released === "number") {
         search.released = {
-          value: released
+          value: released as number
         };
       }
 
       if (typeof rating === "number") {
         search.rating = {
-          from: rating
+          from: rating as number
         };
       }
     }
@@ -160,11 +164,11 @@ export function getLocationByCharacters(str: string) {
 }
 
 
-export function containsChineseCharaters(x: string): void {
+export function containsChineseCharacters(x: string): void {
 
 }
 
-export function containsJaponeseCharacters(x: string): boolean {
+export function containsJapaneseCharacters(x: string): boolean {
   return !!x.match(jpRegex);
 }
 

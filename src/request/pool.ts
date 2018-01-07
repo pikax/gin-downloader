@@ -1,6 +1,6 @@
 import {OptionsWithUrl} from "request";
-import {ginConfig, GinPoolConfig} from "src/config";
-import {Lazy, promiseSetTimeout} from "src/util";
+import {ginConfig, GinPoolConfig} from "./../config";
+import {Lazy, promiseSetTimeout} from "./../util";
 import {GinUrlOptions, RequestStrategy} from "./index";
 
 const Queue = require("promise-queue") as Queue;
@@ -79,7 +79,7 @@ function buildPool(): Array<GinPoolQueue> {
   const pools: Array<GinPoolQueue> = [];
 
   for (let p in pooling) {
-    const pool = pooling[p];
+    const pool: GinPoolConfig = pooling[p];
 
     let queue: QueuePool;
 
@@ -265,7 +265,7 @@ export class IntervalLazy<T extends Promise<any>> extends Lazy<T> {
 
 
   async append(lazy: Lazy<T>): Promise<IntervalLazy<T>> {
-    let pValue: T = null;
+    let pValue: Promise<T> = null;
 
     while (!this.resolved) {
       const w = (this.created.getMilliseconds() + this._requestInterval) - Date.now();

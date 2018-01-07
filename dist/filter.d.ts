@@ -2,7 +2,7 @@
  * Created by pikax on 08/07/2017.
  */
 import { FilterCondition, FilterStatus, Genre, GenreCondition, Type } from "./enum";
-import { gin } from "src/interface";
+import { gin } from "./interface";
 import MangaSource = gin.MangaSource;
 export declare type GenreCollection = Array<Genre>;
 export interface NameFilterCondition {

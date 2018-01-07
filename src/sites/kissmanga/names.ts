@@ -4,7 +4,9 @@
 import {resolve} from "url";
 
 import {config} from "./config";
-import {NameHelper} from "../../declarations";
+import {gin} from "./../../interface";
+
+import NameHelper = gin.NameHelper;
 
 
 const names: { [id: string]: string; } = {

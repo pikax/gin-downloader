@@ -7,13 +7,9 @@
     "sourceMap": true,
     "alwaysStrict": true,
     "declaration": true,
-
+    "allowSyntheticDefaultImports": true,
     "traceResolution": false,
 
-    "baseUrl": ".",
-    "paths": {
-      "*" : ["*"]
-    },
     "declarationDir": "dist",
     "moduleResolution": "node",
     "typeRoots" : ["./node_modules/@types"],

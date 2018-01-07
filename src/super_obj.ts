@@ -1,21 +1,21 @@
+import {gin, InfoChapter, Site, ImageCollection, Chapter, GinImage} from "./interface";
 
-
-import {gin, InfoChapter, Site, ImageCollection, Chapter, GinImage} from "src/interface";
 import ChapterSource = gin.ChapterSource;
-import {Lazy} from "src/util";
+import {Lazy} from "./util";
 
 
 export class SuperObject {
   get chapters(): SuperChapter[] {
     return this._chapters;
   }
+
   private _chapters: SuperChapter[];
 
   get info(): InfoChapter {
-    return {...this._info};
+    return {...this._info} as InfoChapter;
   }
-  private _info: InfoChapter;
 
+  private _info: InfoChapter;
 
 
   constructor(readonly name: string, readonly site: Site, readonly url?: string) {
@@ -41,7 +41,6 @@ export class SuperObject {
   }
 
 
-
 }
 
 
@@ -50,15 +49,16 @@ export class SuperChapter {
     return this._images;
   }
 
-  get source(): Chapter{
+  get source(): Chapter {
     return this._source;
   }
 
   private _images: ImageCollection;
+
   constructor(readonly master: SuperObject, private readonly _source: ChapterSource) {
   }
 
-  async fetch() {
+  async fetch(): Promise<ImageCollection> {
     return this._images || (this._images = await this.master.site.imagesByUrl(this._source.src));
   }
 

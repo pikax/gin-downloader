@@ -1,8 +1,8 @@
 import {last} from "lodash";
-import {Type} from "src/enum";
-import {FilteredResults} from "src/filter";
-import {gin, Info, Synonym} from "src/interface";
-import {sanitize} from "src/util";
+import {Type} from "./../../enum";
+import {FilteredResults} from "./../../filter";
+import {gin, Info, Synonym} from "./../../interface";
+import {sanitize} from "./../../util";
 import {resolve} from "url";
 
 import {config, error} from "./config";

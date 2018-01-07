@@ -1,4 +1,4 @@
-import { MangaFilter } from "src/filter";
+import { MangaFilter } from "./../../filter";
 export declare const processFilter: (mangafilter: MangaFilter) => {
     src: string;
     qs: any;

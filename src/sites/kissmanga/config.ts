@@ -2,7 +2,7 @@
  * Created by rodriguesc on 24/03/2017.
  */
 import {resolve} from "url";
-import {gin} from "src/interface";
+import {gin} from "./../../interface";
 import SiteConfig = gin.SiteConfig;
 
 const site = "http://kissmanga.com/";

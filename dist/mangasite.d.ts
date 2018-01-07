@@ -1,9 +1,9 @@
 /// <reference types="debug" />
 /// <reference types="request" />
 import { IDebugger } from "debug";
-import { FilteredResults, MangaFilter } from "src/filter";
-import { Chapter, gin, ImageCollection, Info, Site, InfoChapter } from "src/interface";
-import { RequestStrategy, OptionsWithUrl } from "src/request/index";
+import { FilteredResults, MangaFilter } from "./filter";
+import { Chapter, gin, ImageCollection, Info, Site, InfoChapter } from "./interface";
+import { RequestStrategy, OptionsWithUrl } from "./request/index";
 import MangaSource = gin.MangaSource;
 import MangaXDoc = gin.MangaXDoc;
 import NameHelper = gin.NameHelper;
