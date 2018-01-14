@@ -1,10 +1,5 @@
-/**
- * Created by pikax on 22/07/2017.
- */
-
-
 import "./common";
-import {ginConfig, GinConfig} from "src/config";
+import {ginConfig, GinConfig} from "../src/config";
 
 
 

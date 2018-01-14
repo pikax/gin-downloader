@@ -1,12 +1,15 @@
-import {_MOCK_} from "__test__/common";
-import {FilterCondition, FilterStatus, Genre, GenreCondition, Type} from "src/enum";
-import {MangaFilter} from "src/filter";
+import {FilterCondition, FilterStatus, Genre, GenreCondition, Type} from "../../../src/enum";
+import {MangaFilter} from "../../../src/filter";
 
 import {manga} from "src/sites/batoto";
 import {config} from "src/sites/batoto/config";
 import results from "./_results";
 import auth from "./auth";
 import nock = require("nock");
+
+
+// TODO change me
+const _MOCK_ = false;
 
 
 describe("Batoto live", () => {

@@ -13,10 +13,10 @@ import {parseDoc} from "src/util";
 
 
 describe("Batoto offline", () => {
-  let mangas = "./__test__/sites/batoto/html/mangas.html";
-  let gintama = "./__test__/sites/batoto/html/Gintama.html";
-  let latest = "./__test__/sites/batoto/html/latest.html";
-  let chapter = "./__test__/sites/batoto/html/ch001.html";
+  let mangas = "./__tests__/sites/batoto/html/mangas.html";
+  let gintama = "./__tests__/sites/batoto/html/Gintama.html";
+  let latest = "./__tests__/sites/batoto/html/latest.html";
+  let chapter = "./__tests__/sites/batoto/html/ch001.html";
 
   let fpMangas: string;
   let fpGintama: string;

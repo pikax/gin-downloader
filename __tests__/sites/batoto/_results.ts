@@ -1,7 +1,3 @@
-/**
- * Created by rodriguesc on 02/03/2017.
- */
-
 let manga = { image: "http://img.bato.to/forums/uploads/501378b77edcdef486ef2260d1ad0b0e.jpg",
   title: "Gintama",
   synonyms: [
