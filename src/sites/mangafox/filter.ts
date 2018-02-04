@@ -1,11 +1,14 @@
 /**
  * Created by rodriguesc on 30/03/2017.
  */
-import {Genre, FilterCondition, MangaFilter, FilterStatus, FilterMangaType} from "../../declarations";
+import {MangaFilter} from "./../../filter";
 import {config} from "./config";
 import {resolve} from "url";
 import {map} from "lodash";
-import {procFilter} from "../../common/helper";
+import {FilterCondition, FilterStatus, Genre, Type} from "./../../enum";
+import {procFilter} from "./../../util";
+
+
 
 const Supported: { [id: string]: Genre } = {};
 Supported[Genre.Action] = Genre.Action;
@@ -47,41 +50,41 @@ Supported[Genre.Yuri] = Genre.Yuri;
 
 
 const correctName: { [id: string]: string } = {};
-correctName[Genre.Adult] = Genre.Adult.toString();
-correctName[Genre.Action] = Genre.Action.toString();
-correctName[Genre.Adventure] = Genre.Adventure.toString();
-correctName[Genre.Comedy] = Genre.Comedy.toString();
-correctName[Genre.Doujinshi] = Genre.Doujinshi.toString();
-correctName[Genre.Drama] = Genre.Drama.toString();
-correctName[Genre.Ecchi] = Genre.Ecchi.toString();
-correctName[Genre.Fantasy] = Genre.Fantasy.toString();
+correctName[Genre.Adult] = Genre.Adult;
+correctName[Genre.Action] = Genre.Action;
+correctName[Genre.Adventure] = Genre.Adventure;
+correctName[Genre.Comedy] = Genre.Comedy;
+correctName[Genre.Doujinshi] = Genre.Doujinshi;
+correctName[Genre.Drama] = Genre.Drama;
+correctName[Genre.Ecchi] = Genre.Ecchi;
+correctName[Genre.Fantasy] = Genre.Fantasy;
 correctName[Genre.GenderBender] = "Gender Bender";
-correctName[Genre.Harem] = Genre.Harem.toString();
-correctName[Genre.Historical] = Genre.Historical.toString();
-correctName[Genre.Horror] = Genre.Horror.toString();
-correctName[Genre.Josei] = Genre.Josei.toString();
+correctName[Genre.Harem] = Genre.Harem;
+correctName[Genre.Historical] = Genre.Historical;
+correctName[Genre.Horror] = Genre.Horror;
+correctName[Genre.Josei] = Genre.Josei;
 correctName[Genre.MartialArts] = "Martial Arts";
-correctName[Genre.Mature] = Genre.Mature.toString();
-correctName[Genre.Mecha] = Genre.Mecha.toString();
-correctName[Genre.Mystery] = Genre.Mystery.toString();
+correctName[Genre.Mature] = Genre.Mature;
+correctName[Genre.Mecha] = Genre.Mecha;
+correctName[Genre.Mystery] = Genre.Mystery;
 correctName[Genre.Oneshot] = "One Shot";
-correctName[Genre.Psychological] = Genre.Psychological.toString();
-correctName[Genre.Romance] = Genre.Romance.toString();
-correctName[Genre.SchoolLife] = Genre.SchoolLife.toString();
+correctName[Genre.Psychological] = Genre.Psychological;
+correctName[Genre.Romance] = Genre.Romance;
+correctName[Genre.SchoolLife] = Genre.SchoolLife;
 correctName[Genre.SciFi] = "Sci-fi";
-correctName[Genre.Seinen] = Genre.Seinen.toString();
-correctName[Genre.Shoujo] = Genre.Shoujo.toString();
+correctName[Genre.Seinen] = Genre.Seinen;
+correctName[Genre.Shoujo] = Genre.Shoujo;
 correctName[Genre.ShoujoAi] = "Shoujo Ai";
-correctName[Genre.Shounen] = Genre.Shounen.toString();
+correctName[Genre.Shounen] = Genre.Shounen;
 correctName[Genre.ShounenAi] = "Shounen Ai";
 correctName[Genre.SliceOfLife] = "Slice of Life";
-correctName[Genre.Smut] = Genre.Smut.toString();
-correctName[Genre.Sports] = Genre.Sports.toString();
-correctName[Genre.Supernatural] = Genre.Supernatural.toString();
-correctName[Genre.Tragedy] = Genre.Tragedy.toString();
+correctName[Genre.Smut] = Genre.Smut;
+correctName[Genre.Sports] = Genre.Sports;
+correctName[Genre.Supernatural] = Genre.Supernatural;
+correctName[Genre.Tragedy] = Genre.Tragedy;
 correctName[Genre.Webtoon] = "Webtoons";
-correctName[Genre.Yaoi] = Genre.Yaoi.toString();
-correctName[Genre.Yuri] = Genre.Yuri.toString();
+correctName[Genre.Yaoi] = Genre.Yaoi;
+correctName[Genre.Yuri] = Genre.Yuri;
 
 
 
@@ -94,7 +97,7 @@ export const processFilter = (mangafilter: MangaFilter) : {src: string, params: 
 
   let filterType = null;
 
-  let filterName = filter.name;
+  let filterName = filter.search.name;
   let filterAuthor = null;
   let filterArtist = null;
   let filterReleased = null;
@@ -187,13 +190,13 @@ export const processFilter = (mangafilter: MangaFilter) : {src: string, params: 
 };
 
 
-function resolveType(type: FilterMangaType) {
+function resolveType(type: Type) {
   switch (type) {
-    case FilterMangaType.Manga:
+    case Type.Manga:
       return 1;
-    case FilterMangaType.Manhwa:
+    case Type.Manhwa:
       return 2;
-    case FilterMangaType.Manhua:
+    case Type.Manhua:
       return 3;
 
     default:

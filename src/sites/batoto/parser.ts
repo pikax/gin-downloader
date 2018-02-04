@@ -1,23 +1,20 @@
-/**
- * Created by rodriguesc on 19/04/2017.
- */
-import "../../declarations";
-import {
-  Chapter, FilteredResults, MangaFilter, MangaInfo, MangaSource, MangaXDoc,
-  SiteParser
-} from "../../declarations";
+import {last} from "lodash";
+import {Type} from "./../../enum";
+import {FilteredResults} from "./../../filter";
+import {gin, Info, Synonym} from "./../../interface";
+import {sanitize} from "./../../util";
 import {resolve} from "url";
 
 import {config, error} from "./config";
-import {uniq, takeWhile, last, slice} from "lodash";
-import {sanitize} from "../../common/helper";
+import ChapterSource = gin.ChapterSource;
+import MangaSource = gin.MangaSource;
+import MangaXDoc = gin.MangaXDoc;
+import SiteParser = gin.SiteParser;
 
 
 export class Parser implements SiteParser {
-
   mangas($: MangaXDoc): Promise<MangaSource[]> | MangaSource[] {
     const rows = $("tr[id^='comic_rowo']");
-    const location = $.location;
 
     let mangas: MangaSource[] = [];
     rows.each((i, e) => {
@@ -38,8 +35,8 @@ export class Parser implements SiteParser {
     return mangas;
   }
 
-  latest($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
-    let chapters: Chapter[] = [];
+  latest($: MangaXDoc): Promise<ChapterSource[]> | ChapterSource[] {
+    let chapters: ChapterSource[] = [];
     let $trs: CheerioElement[] = [];
 
     $("#content > div > div.category_block.block_wrap > table > tbody > tr").slice(1).each((i, el) => {
@@ -50,13 +47,11 @@ export class Parser implements SiteParser {
     for (let i = 0; i < $trs.length; ++i) {
       let header = $trs[i];
       let ha = last(sanitize(header.children)).children
-          .find(x => x && x.attribs && x.attribs.href && x.attribs.href.startsWith("http"));
+        .find(x => x && x.attribs && x.attribs.href && x.attribs.href.startsWith("http"));
 
       // let mangaUrl = ha.attribs.href;
       let mangaName = ha.lastChild.nodeValue;
       let row = header.attribs.class.slice(0, 4);
-
-
 
 
       let tr: CheerioElement;
@@ -86,7 +81,7 @@ export class Parser implements SiteParser {
 
         chapters[i] = {
           name: mangaName, // Parser.extractChapterName(cname),
-          chap_number : Parser.extractChapterNumber(cname),
+          chap_number: Parser.extractChapterNumber(cname).toString(),
           volume: Parser.extractVolumeNumber(cname),
 
           src: Parser.convertChapterReaderUrl(src),
@@ -102,7 +97,7 @@ export class Parser implements SiteParser {
     return chapters;
   }
 
-  info($: MangaXDoc): Promise<MangaInfo> | MangaInfo {
+  info($: MangaXDoc): Promise<Info> | Info {
 
     let $content = $("#content");
     let $ipsBox = $content.find("div.ipsBox");
@@ -117,24 +112,63 @@ export class Parser implements SiteParser {
     let artists = $tr.eq(5).children("a").map((i, e) => e.lastChild && e.lastChild.nodeValue).get().filter(x => x);
     let genres = $tr.eq(7).children("a").map((i, e) => e.lastChild.lastChild).filter((x, e) => !!e).map((i, e) => e.nodeValue.slice(1)).get();
     let synopsis = $tr.eq(13).text();
-    let type = $tr.eq(9).text().trim(); // TODO curate this result, Manga (Japanese)
+
+    let type = Parser.resolveMangaType($tr.eq(9).text().trim()); // TODO curate this result, Manga (Japanese)
+
     let status = $tr.eq(11).text().trim();
+
+    let mature = $content.find("div:nth-child(4) > div > div.ipsBox > div:nth-child(3)").length > 0;
 
     return {
       image,
       title,
-      synonyms,
+      synonyms: synonyms.map(Parser.resolveSynonyms),
       authors,
       artists,
       genres,
       synopsis,
       status,
       type,
+
+      mature,
     };
   }
 
-  chapters($: MangaXDoc): Promise<Chapter[]> | Chapter[] {
-    let chapters: Chapter[] = [];
+  private static resolveSynonyms(title: string): Synonym {
+    const reg = /\(\w+\)$/;
+    let language = "English";
+
+    const m = title.match(reg);
+    if (m) {
+      language = m[0].slice(1, -1);
+    }
+    return {title, language};
+  }
+
+  private static resolveMangaType(tp: string): Type {
+    switch (tp) {
+      case "Manga (Japanese)":
+        return Type.Manga;
+
+      case "Manhwa (Korean)":
+        return Type.Manhwa;
+
+      case "Manhua (Chinese)":
+        return Type.Manhwa;
+
+      case "Artbook":
+        return Type.Artbook;
+
+      case "Other":
+        return Type.Other;
+
+      default:
+        throw new Error(`Unknown manga type: ${tp}`);
+    }
+  }
+
+  chapters($: MangaXDoc): Promise<ChapterSource[]> | ChapterSource[] {
+    let chapters: ChapterSource[] = [];
 
 
     $(".chapter_row")
@@ -154,7 +188,7 @@ export class Parser implements SiteParser {
         const src = Parser.convertChapterReaderUrl(a.attribs.href);
 
         const name = Parser.extractChapterName(fullTitle);
-        const chap_number = Parser.extractChapterNumber(fullTitle);
+        const chap_number = Parser.extractChapterNumber(fullTitle).toString();
         const volume = Parser.extractVolumeNumber(fullTitle);
         const language = eLanguage.lastChild.attribs.title;
         const scanlator = eGroup.childNodes.find(x => x.name === "a").lastChild.nodeValue;
@@ -230,14 +264,17 @@ export class Parser implements SiteParser {
       total: (next.length && 99999) || +match || 1
     };
   }
+
   static extractChapterNumber(text: string): number {
     let match = text.match(/Ch\.\d+(\.\d{1,3})?/);
     return match && match[0] && +match[0].slice(3);
   }
+
   static extractVolumeNumber(text: string): string {
     let match = text.match(/Vol\.\d+/);
     return match && match[0] && match[0].slice(4);
   }
+
   static extractChapterName(text: string): string {
     let index = text.indexOf(":");
     return (index > 0 && text.slice(index + 2)) || text;

@@ -2,6 +2,10 @@
  * Created by pikax on 11/06/2017.
  */
 
+
+// const gin = require("../dist/index");
+
+
 const cloudscraper = require("cloudscraper");
 const requestRetry = require("requestretry");
 
@@ -22,7 +26,7 @@ const cloudscraperPromise =  (opts)=>{
     };
 
     if (opts.method === "POST") {
-      cloudscraper.post(opts.url, opts.body, callback);
+      cloudscraper.post(opts.url, opts.body, callback, null);
     }
     else {
       cloudscraper.request(opts, callback);
@@ -38,7 +42,7 @@ const byRequest = [
     pages : [
       {path:"batoto/html/mangas.html", uri:"https://bato.to/search_ajax?name=&&artist_name=&&genres=&genre_cond=and&status=&type=null&mature=y&rating_low=0&rating_high=5&p=1"},
       {path:"batoto/html/latest.html", uri:"https://bato.to/"},
-      {path:"batoto/html/ch001.html", uri:"http://bato.to/areader?id=e37a90922a3aa108&p=1" , referer: "http://bato.to/reader" },
+      {path:"batoto/html/ch001.html", uri:"http://bato.to/areader?id=f6b99d4eee4fb2f2_2&p=1" , referer: "http://bato.to/reader" },
       {path:"batoto/html/filter/byGenre.html", uri:" https://bato.to/search_ajax?name=&&artist_name=&&genres=i1;i2;i3;i8;i20;i33&genre_cond=and&status=&type=null&mature=y&rating_low=0&rating_high=5&p=1"},
       {path:"batoto/html/filter/outGenre.html", uri:"https://bato.to/search_ajax?name=gin&name_cond=s&artist_name=Sora&artist_name_cond=c&genres=e6&genre_cond=and&status=&type=null&mature=y&rating_low=0&rating_high=5&p=1"},
       {path:"batoto/html/filter/byAuthor.html", uri:"https://bato.to/search_ajax?name=&&artist_name=Sorachi&artist_name_cond=c&genres=&genre_cond=and&status=&type=null&mature=y&rating_low=0&rating_high=5&p=1"},
@@ -126,8 +130,8 @@ async function processPages(strategy, pages){
     let headers = page.referer && {referer:page.referer}
 
     await strategy({url:page.uri, gzip: true, headers,fullResponse:false} )
-      .then(x=> writeFile(path.resolve(__dirname, '../test/sites', page.path), x))
-      .then(x=>console.log("'%s' file saved",path.resolve(__dirname, '../test/sites', page.path)))
+      .then(x=> writeFile(path.resolve(__dirname, '../__test__/sites', page.path), x))
+      .then(x=>console.log("'%s' file saved",path.resolve(__dirname, '../__test__/sites', page.path)))
       .then(x=>delay(page.delay || 0))
 
 
@@ -141,6 +145,9 @@ async function resolveRequests() {
 }
 
 async function resolveCFRequest(){
+
+
+
   for (let obj of byCFRequest) {
 
     for (let page of obj.pages) {
@@ -149,8 +156,8 @@ async function resolveCFRequest(){
       let method = body ? 'POST' : 'GET';
 
       await cloudscraperPromise({url:page.uri, method: method, body,   gzip: true} )
-        .then(x=> writeFile(path.resolve(__dirname, '../test/sites', page.path), x))
-        .then(x=>console.log("'%s' file saved",path.resolve(__dirname, '../test/sites', page.path)))
+        .then(x=> writeFile(path.resolve(__dirname, '../__test__/sites', page.path), x))
+        .then(x=>console.log("'%s' file saved",path.resolve(__dirname, '../__test__/sites', page.path)))
       ;
     }
   }

@@ -1,37 +1,54 @@
 # gin-downloader
 
-[![Join the chat at https://gitter.im/pikax/gin-downloader](https://badges.gitter.im/pikax/gin-downloader.svg)](https://gitter.im/pikax/gin-downloader?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Build Status](https://travis-ci.org/pikax/gin-downloader.svg?branch=master)](https://travis-ci.org/pikax/gin-downloader)
-[![Coverage Status](https://coveralls.io/repos/github/pikax/gin-downloader/badge.svg?branch=master)](https://coveralls.io/github/pikax/gin-downloader?branch=master)
-[![dependencies Status](https://david-dm.org/pikax/gin-downloader/status.svg)](https://david-dm.org/pikax/gin-downloader)
-[![devDependencies Status](https://david-dm.org/pikax/gin-downloader/dev-status.svg)](https://david-dm.org/pikax/gin-downloader?type=dev)
-[![Known Vulnerabilities](https://snyk.io/test/npm/gin-downloader/badge.svg)](https://snyk.io/test/npm/gin-downloader)
+[![Build Status](https://travis-ci.org/pikax/gin-downloader.svg?branch=master)][travis]
+[![npm version](https://badge.fury.io/js/gin-downloader.svg)][package]
+[![Coverage Status](https://coveralls.io/repos/github/pikax/gin-downloader/badge.svg?branch=master)][coverage]
+[![dependencies Status](https://david-dm.org/pikax/gin-downloader/status.svg)][dependencies]
+[![devDependencies Status](https://david-dm.org/pikax/gin-downloader/dev-status.svg)][devDependencies]
+[![Known Vulnerabilities](https://snyk.io/test/npm/gin-downloader/badge.svg)][snyk]
+[![Discord](https://img.shields.io/badge/discord-chat-blue.svg)][discord]
 
 
-
+npm
 ``` bash
 npm install gin-downloader --save
 ``` 
 
 
-Promise based manga scrapper for node, which supports multiple sites.   
+yarn
+``` bash
+yarn add gin-downloader
+``` 
 
 
 
-### Supported websites
-- [x] MangaFox
-- [x] MangaPanda
+## **v1 is Currently deprecated, please use @beta version**
+
+
+I'm currently changing and only maintaining the v2 of *gin-downloader*.
+
+
+The focus on the v1 was to support as many manga sites as possible, but that caused a lot of websites to maintain with virtual no time for me to maintain it correctly.
+
+The focus on this v2 is to support a small number of websites and implement an easy to use API and improve from there.
+
+
+
+### Supported websites `not planing to support more than this`
+- [ ] MangaFox
+- [ ] MangaPanda
 - [x] MangaHere
-- [x] KissManga
-- [x] BatoTo
+- [ ] KissManga
+- [ ] BatoTo (`new`)
+
 
 
 ## Usage
 - **import**
 single site
 ```javascript
-import {mangafox} from 'gin-downloader';
+import {mangahere} from 'gin-downloader';
 ```
 
 or
@@ -42,16 +59,18 @@ import gin from 'gin-downloader'; // as default
 import * as gin from 'gin-downloader'; //typescript
 
 
-gin.mangafox.mangas(); //get mangas
+gin.mangahere.mangas(); //get mangas
 ```
+
+
 
 
 - **filter(filter: FilterSupport)** : returns {results:[{src:string,name:string}], page:number, total:number}
 ```javascript
-gin.mangapanda.filter({name:"gintama"})
+gin.mangahere.filter({name:"gintama"})
   .then(console.log);
 /* returns
-{ results: [ { name: 'Gintama', src: 'http://www.mangapanda.com/gintama' } ],
+{ results: [ { name: 'Gintama', src: '//www.mangahere.cc/manga/gintama' } ],
   page: 0,
   total: 0 }
 */
@@ -205,68 +224,54 @@ enum FilterMangaType {
 - **filter(filter: FilterSupport)** : returns [{name:string, src:string}]
 
 ```javascript
-import {mangafox} from 'gin-downloader';
+import {mangahere} from 'gin-downloader';
 
-mangafox.filter()
-	.then(console.log); // prints all mangas from mangafox 
+mangahere.filter()
+	.then(console.log); // prints all mangas from mangafox
 ```
 
 - **mangas()** : returns [{name:string, src:string}]
-*note*: not every site will return all the mangas. 
+*note*: not every site will return all the mangas.
 ```javascript
-import {mangafox} from 'gin-downloader';
+import {mangahere} from 'gin-downloader';
 
-mangafox.mangas()
-	.then(console.log); // prints all mangas from mangafox 
+mangahere.mangas()
+	.then(console.log); // prints all mangas from mangafox
 ```
 
 - **latest()** : returns [{number:number|string, src:string, volume?:string,name:string}]
 ```javascript
-mangafox.latest() // latest chapters added to mangafox
-    .then(console.log); 
+mangahere.latest() // latest chapters added to mangafox
+    .then(console.log);
 ```
 
 - **info(name)** : returns object with manga info {}
 ```javascript
-mangafox.info("Gintama")
+mangahere.info("Gintama")
     .then(console.log);
 ```
 
 - **chapters(name)** : returns [{number:number|string, name:string, src:string, volume?:string}]
 ```javascript
-mangafox.chapters("Gintama")
+mangahere.chapters("Gintama")
 	.then(console.log)
 ```
 
-- **infoChapters(name)** : returns {info: MangaInfo, chapters: Chapter[]} 
+- **infoChapters(name)** : returns {info: MangaInfo, chapters: Chapter[]}
 manga info and chapters with single call
 ```javascript
-mangafox.info("Gintama")
+mangahere.info("Gintama")
     .then(console.log);
 ```
 
 - **images(manga, chapter_number)** : return Promise<Promise<{value: {name:string,src:string}>[]>;
 ```javascript
-mangafox.images("Gintama", 1)
+mangahere.images("Gintama", 1)
       .then(x=>Promise.all(x.map(t=>t.value))) //resolve all promises
       .then(console.log)
 ```
 
-- **login(user, pw, remember?)**: return Promise<boolean>
-```javascript
-let user = ""; //username
-let pw = ""; //pw
 
-//simple version
-batoto.logIn(user, pw)
-  .then(x=>{
-    if(!x) 
-      throw new Error('invalid user or password')
-    return x;
-  })
-  .then(x=>batoto.chapters('Gintama'))
-  .then(console.log)
-```
 
 
 
@@ -274,6 +279,13 @@ batoto.logIn(user, pw)
 
 ## Disclaimer
 
-The developer of this application does not have any affiliation with the content providers available.
+The developer of this application does not have any affiliation with the content providers provide.
 
 
+[discord]: https://discord.gg/Wg9tGXZ
+[package]: https://www.npmjs.com/package/swgoh
+[travis]: https://travis-ci.org/pikax/gin-downloader
+[coverage]: https://coveralls.io/github/pikax/gin-downloader?branch=master
+[dependencies]: https://david-dm.org/pikax/gin-downloader
+[devDependencies]: https://david-dm.org/pikax/gin-downloader?type=dev
+[snyk]: https://snyk.io/test/npm/gin-downloader

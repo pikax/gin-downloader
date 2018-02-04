@@ -1,10 +1,12 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
-import {SiteConfig} from "../../declarations";
-import {resolve} from "url";
 
-const site = "http://bato.to/";
+import {resolve} from "url";
+import {gin} from "./../../interface";
+import SiteConfig = gin.SiteConfig;
+
+const site = "https://bato.to/";
 export const config: SiteConfig = {
     name : "Batoto",
     site : site,

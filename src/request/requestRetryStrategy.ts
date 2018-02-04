@@ -1,57 +1,50 @@
-import * as url from "url";
-/**
- * Created by pikax on 23/05/2017.
- */
-
+import {reqConfig} from "./config";
+import config, {IGinConfigFactory} from "./../config";
+import {GinUrlOptions, OptionsWithUrl, RequestStrategy} from "./interface";
+import {pick} from "lodash";
 
 const requestRetry = require("requestretry");
-import {RequestStrategy} from "./headers";
-import {OptionsWithUrl} from "request";
 
 
-const MaxRetries = 50;
-const Timeout = 10000;
-const Interval = 1000;
-
-
-
+// specific options for requestretry lib
 const DefaultOptions = {
-  method: "GET",
-
-  gzip: true,
-  timeout: Timeout,
-  followAllRedirects: true,
-  jar: true,
-
-  forever: true,
-  // proxy: config.proxy, // Note the fully-qualified path to Fiddler proxy. No "https" is required, even for https connections to outside.
-
-  // proxy: process.env.proxy, // 'http://127.0.0.1:8888',
-
-
-  // The below parameters are specific to request-retry
-  maxAttempts: MaxRetries,   // (default) try N times
-  retryDelay: Interval,  // (default) wait before trying again
   retryStrategy: requestRetry.RetryStrategies.HTTPOrNetworkError, // (default) retry on 5xx or network errors
   fullResponse: false, // To resolve the promise with the full response or just the body
 };
 
-export class RequestRetryStrategy implements RequestStrategy {
-  request(options: string | OptionsWithUrl): Promise<any> {
-    let opts: OptionsWithUrl = <any>{...DefaultOptions};
+// let _config: IGinConfigFactory;
+// const getConfig = async () => {
+//   if (!_config) {
+//     // _config = require("../config").ginConfig;
+//     _config = await import("../config").then(x => x.ginConfig);
+//   }
+//   return _config.config;
+// };
 
+
+export class RequestRetryStrategy implements RequestStrategy {
+
+  async request(options: GinUrlOptions): Promise<any> {
+    const config = reqConfig;
+    let opts: OptionsWithUrl = <any>{...DefaultOptions, ...config.request, ...pick(config, "maxRetries", "timeout", "interval")};
     if (typeof options === "string") {
       opts.url = options;
     }
     else {
-      opts = {...opts, ...options};
+      opts = {...opts, ...options} as OptionsWithUrl;
     }
 
-    return requestRetry(opts);
+
+    // TODO find a better place for this
+    if (config.disableHttps) {
+      opts.url = opts.url.toString().replace("https", "http");
+    }
+
+    return await requestRetry(opts);
   }
 }
 
-export const strategy = new RequestRetryStrategy();
-
-export default strategy;
+//
+// export const strategy = new RequestRetryStrategy();
+// export default strategy;
 

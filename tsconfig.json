@@ -1,25 +1,16 @@
 {
   "compilerOptions": {
-    "module": "es2015",
-    "noImplicitAny": true,
-    "preserveConstEnums": true,
+    "module": "commonjs",
     "target": "es5",
-    "sourceMap": true,
-    "alwaysStrict": true,
+    "sourceMap": false,
     "declaration": true,
-
     "moduleResolution": "node",
-    "typeRoots" : ["./node_modules/@types"],
-    "types": [ "node", "mocha", "chai" ],
-    "lib": ["ES6", "es2015","dom"]
+    "lib": ["es2015"]
   },
   "exclude": [
     "node_modules"
   ],
-  "include": [
-    "src/**/*.ts"
-  ],
   "files": [
-    "src/index.ts"
+    "index.ts"
   ]
 }

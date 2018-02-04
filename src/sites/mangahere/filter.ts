@@ -1,11 +1,10 @@
-/**
- * Created by rodriguesc on 30/03/2017.
- */
-import {Genre, FilterCondition, MangaFilter, FilterStatus, FilterMangaType} from "../../declarations";
-import {config} from "./config";
 import {resolve} from "url";
+
+import {config} from "./config";
 import {map} from "lodash";
-import {procFilter} from "../../common/helper";
+import {FilterCondition, FilterStatus, Genre, Type} from "../../enum";
+import {MangaFilter} from "../../filter";
+import {procFilter} from "../../util";
 
 const Supported: { [id: string]: Genre } = {};
 Supported[Genre.Action] = Genre.Action;
@@ -47,191 +46,181 @@ Supported[Genre.Yuri] = Genre.Yuri;
 
 
 const correctName: { [id: string]: string } = {};
-correctName[Genre.Adult] = Genre.Adult.toString();
-correctName[Genre.Action] = Genre.Action.toString();
-correctName[Genre.Adventure] = Genre.Adventure.toString();
-correctName[Genre.Comedy] = Genre.Comedy.toString();
-correctName[Genre.Doujinshi] = Genre.Doujinshi.toString();
-correctName[Genre.Drama] = Genre.Drama.toString();
-correctName[Genre.Ecchi] = Genre.Ecchi.toString();
-correctName[Genre.Fantasy] = Genre.Fantasy.toString();
+correctName[Genre.Adult] = Genre.Adult;
+correctName[Genre.Action] = Genre.Action;
+correctName[Genre.Adventure] = Genre.Adventure;
+correctName[Genre.Comedy] = Genre.Comedy;
+correctName[Genre.Doujinshi] = Genre.Doujinshi;
+correctName[Genre.Drama] = Genre.Drama;
+correctName[Genre.Ecchi] = Genre.Ecchi;
+correctName[Genre.Fantasy] = Genre.Fantasy;
 correctName[Genre.GenderBender] = "Gender Bender";
-correctName[Genre.Harem] = Genre.Harem.toString();
-correctName[Genre.Historical] = Genre.Historical.toString();
-correctName[Genre.Horror] = Genre.Horror.toString();
-correctName[Genre.Josei] = Genre.Josei.toString();
-correctName[Genre.Lolicon] = Genre.Lolicon.toString();
+correctName[Genre.Harem] = Genre.Harem;
+correctName[Genre.Historical] = Genre.Historical;
+correctName[Genre.Horror] = Genre.Horror;
+correctName[Genre.Josei] = Genre.Josei;
+correctName[Genre.Lolicon] = Genre.Lolicon;
 correctName[Genre.MartialArts] = "Martial Arts";
-correctName[Genre.Mature] = Genre.Mature.toString();
-correctName[Genre.Mecha] = Genre.Mecha.toString();
-correctName[Genre.Mystery] = Genre.Mystery.toString();
+correctName[Genre.Mature] = Genre.Mature;
+correctName[Genre.Mecha] = Genre.Mecha;
+correctName[Genre.Mystery] = Genre.Mystery;
 correctName[Genre.Oneshot] = "One Shot";
-correctName[Genre.Psychological] = Genre.Psychological.toString();
-correctName[Genre.Romance] = Genre.Romance.toString();
-correctName[Genre.SchoolLife] = Genre.SchoolLife.toString();
+correctName[Genre.Psychological] = Genre.Psychological;
+correctName[Genre.Romance] = Genre.Romance;
+correctName[Genre.SchoolLife] = Genre.SchoolLife;
 correctName[Genre.SciFi] = "Sci-fi";
-correctName[Genre.Seinen] = Genre.Seinen.toString();
-correctName[Genre.Shotacon] = Genre.Shotacon.toString();
-correctName[Genre.Shoujo] = Genre.Shoujo.toString();
+correctName[Genre.Seinen] = Genre.Seinen;
+correctName[Genre.Shotacon] = Genre.Shotacon;
+correctName[Genre.Shoujo] = Genre.Shoujo;
 correctName[Genre.ShoujoAi] = "Shoujo Ai";
-correctName[Genre.Shounen] = Genre.Shounen.toString();
+correctName[Genre.Shounen] = Genre.Shounen;
 correctName[Genre.ShounenAi] = "Shounen Ai";
 correctName[Genre.SliceOfLife] = "Slice of Life";
-correctName[Genre.Smut] = Genre.Smut.toString();
-correctName[Genre.Sports] = Genre.Sports.toString();
-correctName[Genre.Supernatural] = Genre.Supernatural.toString();
-correctName[Genre.Tragedy] = Genre.Tragedy.toString();
-correctName[Genre.Yaoi] = Genre.Yaoi.toString();
-correctName[Genre.Yuri] = Genre.Yuri.toString();
+correctName[Genre.Smut] = Genre.Smut;
+correctName[Genre.Sports] = Genre.Sports;
+correctName[Genre.Supernatural] = Genre.Supernatural;
+correctName[Genre.Tragedy] = Genre.Tragedy;
+correctName[Genre.Yaoi] = Genre.Yaoi;
+correctName[Genre.Yuri] = Genre.Yuri;
 
 
+export const processFilter = (mangafilter: MangaFilter): { src: string, params?: any } => {
+    let filter = procFilter(mangafilter);
+    let {search, page} = filter;
+
+    let filterType = null;
+
+    let filterName = filter.search.name && filter.search.name.name || filter.search.name;
+    let filterAuthor = null;
+    let filterArtist = null;
+    let filterReleased = null;
+    let status = null;
+
+    let methodName = "cw";
+    let methodAuthor = "cw";
+    let methodArtist = "cw";
+    let methodReleased = "eq";
+
+    let inGenres: Genre[] = [];
+    let outGenres: Genre[] = [];
 
 
-export const processFilter = (mangafilter: MangaFilter) : {src: string, params?: any} => {
-  let filter = procFilter(mangafilter);
-  let {search, page} = filter;
+    if (search) {
+        let {name, author, artist, rating, released, type, genre} = search;
 
-  let filterType = null;
+        filterType = resolveType(type) || filterType;
 
-  let filterName = filter.name;
-  let filterAuthor = null;
-  let filterArtist = null;
-  let filterReleased = null;
-  let status = null;
+        if (name) {
+            methodName = searchMethod(name.condition) || methodName;
+        }
 
-  let methodName = "cw";
-  let methodAuthor = "cw";
-  let methodArtist = "cw";
-  let methodReleased = "eq";
+        if (search.status) {
+            status = resolveStatus(search.status) || status;
+        }
 
-  let inGenres: Genre[] = [];
-  let outGenres: Genre[] = [];
+        if (author) {
+            filterAuthor = author.name || filterAuthor;
+            methodAuthor = searchMethod(author.condition) || methodAuthor;
+        }
 
+        if (artist) {
+            filterArtist = artist.name || filterArtist;
+            methodArtist = searchMethod(artist.condition) || methodArtist;
+        }
 
-
-  if (search) {
-    let { name, author, artist, rating, released, type, genre} = search;
-
-    filterType = resolveType(type) || filterType;
-
-    if (name) {
-      filterName = name.name || filterName;
-      methodName = searchMethod(name.condition) || methodName;
+        if (released) {
+            filterReleased = released.value || filterReleased;
+            methodReleased = searchMethod(released.condition) || methodReleased;
+        }
+        if (genre) {
+            inGenres = genre.inGenres;
+            outGenres = genre.outGenres;
+        }
     }
 
-    if (search.status) {
-      status = resolveStatus(search.status) || status;
-    }
-
-    if (author) {
-      filterAuthor = author.name || filterAuthor;
-      methodAuthor = searchMethod(author.condition) || methodAuthor;
-    }
-
-    if (artist) {
-      filterArtist = artist.name || filterArtist;
-      methodArtist = searchMethod(artist.condition) || methodArtist;
-    }
-
-    if (released) {
-      filterReleased = released.value || filterReleased;
-      methodReleased = searchMethod(released.condition) || methodReleased;
-    }
+    const type = `direction=${filterType || ""}`;
+    const nameMethod = `name_method=${methodName}`; // NOTE name search set to contains
+    const mangaName = `name=${filterName || ""}`;
+    const authorMethod = `author_method=${methodAuthor}`;
+    const author = `author=${filterAuthor || ""}`;
+    const artistMethod = `artist_method=${methodArtist}`;
+    const artist = `artist=${filterArtist || ""}`;
+    const genreFilter = map(Supported, x => `genres%5B${correctName[x].replace(/ /g, "+")}%5D=${inOutGenre(x, inGenres, outGenres)}`).join("&");
+    const releaseMethod = `released_method=${methodReleased}`;
+    const release = `released=${filterReleased || ""}`;
+    const completed = `is_completed=${status || ""}`;
 
 
+    let advopts = "advopts=1"; // NOTE not sure what is this
 
-    if (genre) {
-      inGenres = genre.inGenres;
-      outGenres = genre.outGenres;
+    if (page) {
+        advopts += `&page=${page}`;
     }
 
 
-  }
-
-  const type = `direction=${filterType || ""}`;
-  const nameMethod = `name_method=${methodName}`; // NOTE name search set to contains
-  const mangaName = `name=${filterName || ""}`;
-  const authorMethod = `author_method=${methodAuthor}`;
-  const author = `author=${filterAuthor || ""}`;
-  const artistMethod = `artist_method=${methodArtist}`;
-  const artist = `artist=${filterArtist || ""}`;
-  const genreFilter = map(Supported, x => `genres%5B${correctName[x].replace(/ /g, "+")}%5D=${inOutGenre(x, inGenres, outGenres)}`).join("&");
-  const releaseMethod = `released_method=${methodReleased}`;
-  const release = `released=${filterReleased || ""}`;
-  const completed = `is_completed=${resolveStatus(status) || ""}`;
-
-
-
-  let advopts = "advopts=1"; // NOTE not sure what is this
-
-  if (page) {
-    advopts += `&page=${page}`;
-  }
-
-
-
-  return {src: resolve(config.site, "/search.php?" + [nameMethod, mangaName,
-      type,
-      authorMethod, author,
-      artistMethod, artist,
-      genreFilter,
-      releaseMethod, release,
-      completed, advopts].join("&"))
-  };
+    return {
+        src: resolve(config.site, "/search.php?" + [nameMethod, mangaName,
+            type,
+            authorMethod, author,
+            artistMethod, artist,
+            genreFilter,
+            releaseMethod, release,
+            completed, advopts].join("&"))
+    };
 };
 
 
-function resolveType(type: FilterMangaType) {
-  switch (type) {
-    case FilterMangaType.Manga:
-      return "rl";
-    case FilterMangaType.Manhwa:
-      return "lr";
-    default:
-      return null;
-  }
+function resolveType(type: Type) {
+    switch (type) {
+        case Type.Manga:
+            return "rl";
+        case Type.Manhwa:
+            return "lr";
+        default:
+            return null;
+    }
 }
 
 function resolveStatus(status: FilterStatus) {
-  switch (status) {
-    case FilterStatus.Ongoing:
-      return 0;
-    case FilterStatus.Complete:
-      return 1;
-    default:
-      return null;
-  }
+    switch (status) {
+        case FilterStatus.Ongoing:
+            return 0;
+        case FilterStatus.Complete:
+            return 1;
+        default:
+            return null;
+    }
 }
 
 function searchMethod(condition: FilterCondition) {
-  switch (condition) {
-    case FilterCondition.Contains:
-      return "cw";
-    case FilterCondition.StartsWith:
-      return "bw";
-    case FilterCondition.EndsWith:
-      return "ew";
+    switch (condition) {
+        case FilterCondition.Contains:
+            return "cw";
+        case FilterCondition.StartsWith:
+            return "bw";
+        case FilterCondition.EndsWith:
+            return "ew";
 
-    case FilterCondition.Equal:
-      return "eq";
-    case FilterCondition.LessThan:
-      return "lt";
-    case FilterCondition.GreaterThan:
-      return "gt";
+        case FilterCondition.Equal:
+            return "eq";
+        case FilterCondition.LessThan:
+            return "lt";
+        case FilterCondition.GreaterThan:
+            return "gt";
 
-    default:
-      return "cw";
-  }
+        default:
+            return "cw";
+    }
 }
 
 function inOutGenre(genre: Genre, inGenre: Genre[], outGenre: Genre[]): number {
-  if (inGenre && inGenre.indexOf(genre) > -1) {
-    return 1;
-  }
-  if (outGenre && outGenre.indexOf(genre) > -1) {
-    return 2;
-  }
-  return 0;
+    if (inGenre && inGenre.indexOf(genre) > -1) {
+        return 1;
+    }
+    if (outGenre && outGenre.indexOf(genre) > -1) {
+        return 2;
+    }
+    return 0;
 }
 
 

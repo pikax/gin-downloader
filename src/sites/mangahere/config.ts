@@ -1,10 +1,11 @@
 /**
  * Created by rodriguesc on 03/03/2017.
  */
-import {SiteConfig} from "../../declarations";
 import {resolve} from "url";
+import {gin} from "../../interface";
+import SiteConfig = gin.SiteConfig;
 
-const site = "http://www.mangahere.co";
+const site = "http://www.mangahere.cc";
 export const config: SiteConfig = {
   name : "MangaHere",
   site : site,

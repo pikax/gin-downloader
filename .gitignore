@@ -5,11 +5,17 @@ watch
 /src/**/*.js
 /src/**/*.js.map
 /test/**/*.js
+/__test__/**/*.js
 /test/**/*.js.map
+/__test__/**/*.js.map
 /src/**/*.d.ts
 /test/**/*.d.ts
+/__test__/**/*.d.ts
 /build
-
+#/scripts/
+/scripts/test/
+/scripts/batoto/
+/scripts/test Old/
 
 !/test/sites/kissmanga/html/*.js
 /.rpt2_cache/
@@ -403,3 +409,5 @@ __pycache__/
 # tools/**
 # !tools/packages.config
 
+scripts/**/*
+~scripts/test.html.js

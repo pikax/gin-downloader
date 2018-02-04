@@ -1,35 +1,36 @@
-/**
- * Created by rodriguesc on 03/03/2017.
- */
-import {MangaSite} from "../../common/mangasite";
+import {MangaSite} from "../../mangasite";
 import {Parser} from "./parser";
-import {config} from "./config";
 import {Helper} from "./names";
-import {FilteredResults, MangaFilter, SiteConfig} from "../../declarations";
 import {processFilter} from "./filter";
-import {strategy} from "../../request/requestRetryStrategy";
+import {gin} from "../../interface";
+import {config} from "./config";
+
+import {FilteredResults, MangaFilter} from "../../filter";
+import SiteConfig = gin.SiteConfig;
 
 
 export class MangaHere extends MangaSite<SiteConfig, Parser, Helper> {
-  public constructor() {
-    super(config, new Parser(), new Helper(), strategy);
-  }
+
+    public constructor() {
+        super("MangaHere", config, new Parser(), new Helper());
+    }
 
 
-  async filter(filter?: MangaFilter): Promise<FilteredResults> {
-    this.debug("filter mangas with: %o", filter);
+    async filter(filter?: MangaFilter): Promise<FilteredResults> {
+        this.debug("filter mangas with: %o", filter);
 
-    let search = processFilter(filter);
+        let search = processFilter(filter);
 
-    let doc = await this.request.getDoc(search.src);
-    let mangas = await this.parser.filter(doc);
+        let doc = await this.getDoc(search.src);
+        let mangas = await this.parser.filter(doc);
 
-    this.debug(`mangas: ${mangas.results.length}`);
+        this.debug(`mangas: ${mangas.results.length}`);
 
-    return mangas;
-  }
+        return mangas;
+    }
+
 }
 
 
-export const manga = new MangaHere();
-export default manga;
+export const mangahere = new MangaHere();
+export default mangahere;

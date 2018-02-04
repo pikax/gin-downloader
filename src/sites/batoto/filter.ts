@@ -1,13 +1,11 @@
-/**
- * Created by rodriguesc on 30/03/2017.
- */
-import {Genre, FilterCondition, MangaFilter, FilterStatus, GenreCondition, FilterMangaType} from "../../declarations";
-import {config} from "./config";
+import {FilterCondition, FilterStatus, Genre, GenreCondition, Type} from "../../enum";
+import {filter, MangaFilter} from "../../filter";
+import {procFilter} from "../../util";
 import {isNullOrUndefined} from "util";
-import {procFilter} from "../../common/helper";
+import {config} from "./config";
 import {helper} from "./names";
 
-const Supported = [];
+const Supported: { [id: string]: Genre } = {};
 Supported[Genre.Action] = Genre.Action;
 Supported[Genre.Adventure] = Genre.Adventure;
 Supported[Genre.Comedy] = Genre.Comedy;
@@ -133,15 +131,15 @@ dic[Genre.Medical] = "42";
 dic[Genre.NoChapters] = "44";
 
 
-export const processFilter = (mangafilter: MangaFilter): {src: string, qs: any} => {
+export const processFilter = (mangafilter: MangaFilter): { src: string, qs: any } => {
   let filter = procFilter(mangafilter);
 
-  let {search} = filter;
+  let search = filter.search;
   let fauthor = null;
   let fstatus = null;
   let ftype = null;
-  let fname = filter.name;
-  let nameCondition = null;
+  let fname = "";
+  let nameCondition = "";
   let authorCondition = null;
   let genreCondition = null;
   let fmature = "y";
@@ -151,7 +149,6 @@ export const processFilter = (mangafilter: MangaFilter): {src: string, qs: any} 
   let outGenres: Genre[] = null;
 
   if (search) {
-
     let nameFilter = search.name;
     if (nameFilter) {
       fname = nameFilter.name;
@@ -191,24 +188,9 @@ export const processFilter = (mangafilter: MangaFilter): {src: string, qs: any} 
     }
   }
 
-  // const mangaName = `name=${fname || ""}`;
-  // const nameCond = nameCondition && `name_cond=${nameCondition}`;
-  // const authorArtist =  `artist_name=${(fauthor || "")}`;
-  // const authorCond = authorCondition && `artist_name_cond=${authorCondition}`;
-  //
-  // const genreFilter = "genres=" + ordered.map(x => inOutGenre(x, genres, outGenres)).filter(x => x !== "").join(";");
-  // const genreCon = ( genreCondition && `genre_cond=${genreCondition}` ) || "genre_cond=and"; // todo change me
-  // const status = `status=${(fstatus || "")}`;
-  // const type = `type=${ftype}`;
-  // const page = `p=${(filter.page || 1)}`;
-  //
-  // const rating_low = `rating_low=${fratingFrom || 0}`; // 0~5
-  // const rating_high = `rating_high=${fratingTo || 5}`; // 0~5
-  // const mature = `mature=${fmature || "y"}`; // n == false
-
   const mangaName = helper.toName(fname);
   const name_cond = nameCondition;
-  const artist_name =  fauthor;
+  const artist_name = fauthor;
   const artist_name_cond = authorCondition;
 
   const genreFilter = ordered.map(x => inOutGenre(x, genres, outGenres)).filter(x => x !== "").join(";");
@@ -221,52 +203,37 @@ export const processFilter = (mangafilter: MangaFilter): {src: string, qs: any} 
   const rating_high = fratingTo || 5; // 0~5
   const mature = fmature || "y"; // n == false
 
-  return {src: config.mangas_url,
-  qs: {
-    name: mangaName,
-    name_cond,
-    artist_name,
-    artist_name_cond,
-    genres: genreFilter,
-    genre_cond,
-    status,
-    type,
-    mature,
-    rating_low,
-    rating_high,
-    p
-  }};
-  //
-  // return {src: url.resolve(config.mangas_url, "?" + [
-  //   mangaName,
-  //   nameCond,
-  //   authorArtist,
-  //   authorCond,
-  //   genreFilter,
-  //   genreCon,
-  //   status,
-  //   type,
-  //   mature,
-  //   rating_low,
-  //   rating_high,
-  //   page].join("&"))
-  // };
+  return {
+    src: config.mangas_url,
+    qs: {
+      name: mangaName,
+      name_cond,
+      artist_name,
+      artist_name_cond,
+      genres: genreFilter,
+      genre_cond,
+      status,
+      type,
+      mature,
+      rating_low,
+      rating_high,
+      p
+    }
+  };
 };
 
 
-function  resolveType(type: FilterMangaType) {
-
+function resolveType(type: Type) {
   switch (type) {
-    case FilterMangaType.Manga:
+    case Type.Manga:
       return "jp";
-
-    case FilterMangaType.Manhwa:
+    case Type.Manhwa:
       return "kr";
-    case FilterMangaType.Manhua:
+    case Type.Manhua:
       return "cn";
-    case FilterMangaType.Artbook:
+    case Type.Artbook:
       return "ar";
-    case FilterMangaType.Other:
+    case Type.Other:
       return "ot";
     default:
       throw new Error("Unknown type");
@@ -296,7 +263,6 @@ function resolveGenreCondition(condition: GenreCondition) {
       return "and";
     case GenreCondition.Or:
       return "or";
-
     default:
       return "and";
   }

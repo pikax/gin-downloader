@@ -1,24 +1,30 @@
 /**
  * Created by david on 24/03/2017.
  */
-
-import {MangaSite} from "../../common/mangasite";
-import {Parser} from "./parser";
-import {config} from "./config";
-import {Helper} from "./names";
-import {FilteredResults, MangaFilter, ImageSource, MangaSource, Site, SiteConfig, LazyImage} from "../../declarations";
-import {find} from "lodash";
-import {parse, resolve} from "url";
 import {Script} from "vm";
-import {processFilter} from "./filter";
-import {strategy} from "../../request/requestCloudFareStrategy";
+import {resolve, parse} from "url";
 
+
+import {FilteredResults, MangaFilter} from "./../../filter";
+import {gin, Site, ImageCollection, GinImage} from "./../../interface";
+import {MangaSite} from "./../../mangasite";
+import {config} from "./config";
+
+import {processFilter} from "./filter";
+import {Helper} from "./names";
+import {Parser} from "./parser";
+import MangaSource = gin.MangaSource;
+import SiteConfig = gin.SiteConfig;
+import {Lazy} from "./../../util";
 
 
 export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements Site {
+  sitename: string = "kissmanga";
+
   public constructor() {
-    super(config, new Parser(), new Helper(), strategy);
+    super(config, new Parser(), new Helper());
   }
+
 
   private async getVM(secret: string): Promise<Script> {
     let vm = this.parser.VM;
@@ -26,8 +32,8 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
       return vm;
     }
 
-    let tkCa = this.request.getHtml(resolve(this.config.site, "/Scripts/ca.js"));
-    let tkLo = this.request.getHtml(resolve(this.config.site, "/Scripts/lo.js"));
+    let tkCa = this.getHtml(resolve(this.config.site, "/Scripts/ca.js"));
+    let tkLo = this.getHtml(resolve(this.config.site, "/Scripts/lo.js"));
     let tkLst = [tkCa
       , tkLo];
 
@@ -59,35 +65,22 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
   }
 
 
-  async images(name: string, chapNumber: number): Promise<Promise<LazyImage>[]> {
-    let chapters = await this.chapters(name);
+  async images(name: string, chapNumber: string): Promise<ImageCollection> {
+    const chapSrc = await this.resolveChapterSource(name, chapNumber);
 
+    const html = await this.getHtml(chapSrc);
+    const secret = this.parser.getSecret(html);
+    const vm = await this.getVM(secret);
 
-    let chapter = find(chapters, {chap_number: chapNumber});
-    if (!chapter) {
-      throw new Error("Chapter not found!");
-    }
+    const imgs = this.parser.imagesList(html, secret, vm);
 
-      let html = await this.getHtml(chapter.src);
-      let secret = this.parser.getSecret(html);
+    const srcs: GinImage[] = imgs.map(x => ({
+      name: parse(x).pathname.split("/").reverse()[0],
+      src: x
+    }));
 
-      let vm = await this.getVM(secret);
-
-      let imgs = this.parser.imagesList(html, secret, vm);
-
-      let srcs = imgs.map(x => {
-        return <ImageSource>{
-          name: parse(x).pathname.split("/").reverse()[0],
-          src: x
-        };
-      });
-      return srcs.map(x => Promise.resolve(new LazyImage(() => Promise.resolve(x)) ));
+    return srcs.map(x => new Lazy(() => Promise.resolve(x)));
   }
-
-  // protected buildMangasRequest(url: string): OptionsWithUrl{
-  //   let opts = this.buildRequest(url);
-  //
-  // }
 }
 
 export const manga: Site = new KissManga();

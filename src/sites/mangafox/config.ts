@@ -1,11 +1,11 @@
 /**
  * Created by rodriguesc on 24/03/2017.
  */
-import {SiteConfig} from "../../declarations";
+import {gin} from "./../../interface";
 import {resolve} from "url";
 
 const site = "http://mangafox.me";
-export const config: SiteConfig = {
+export const config: gin.SiteConfig = {
     name : "MangaFox",
     site : site,
     mangas_url : resolve(site, "/manga/"),
