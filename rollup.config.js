@@ -1,12 +1,8 @@
-/**
- * Created by pikax on 04/06/2017.
- */
-// var cleanUp = require('rollup-plugin-cleanup');
 const pkg = require('./package.json');
 import typescript from 'rollup-plugin-typescript2';
 
 module.exports = {
-  input: './src/index.ts',
+  input: 'index.ts',
 
   plugins: [
     typescript({clean: true}),
@@ -15,7 +11,7 @@ module.exports = {
 
   output: {
     file: pkg.main,
-    format: 'cjs'
+    format: 'cjs' //probably changing to es when node supports it
   },
   external: ['cheerio', 'lodash', 'debug', 'url', 'vm', 'util', 'querystring']
 };

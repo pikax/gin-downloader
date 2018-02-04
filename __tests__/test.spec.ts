@@ -1,21 +1,10 @@
-/**
- * Created by pikax on 08/07/2017.
- */
+import './__config__/init_mocks';
 
-import gin from "src/index";
+describe("random", ()=>{
 
-describe("get mangas", () => {
-
-  it("should", async () => {
-    await gin.batoto.login("", "");
-    const images = await gin.batoto.images("Gintama", "100");
-
-    console.log(images);
-    return images;
-
+  it('should', ()=>{
+    expect(1).toBe(1);
   });
 
+
 });
-
-
-import "./common";

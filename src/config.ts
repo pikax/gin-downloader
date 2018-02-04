@@ -117,7 +117,7 @@ const DefaultConfig: GinConfig = {
 
 
   sites: {
-    batoto: retryStrategy,
+    batoto: cloudflareStrategy,
     mangafox: retryStrategy,
     mangapanda: retryStrategy,
     mangahere: retryStrategy,

@@ -1,4 +1,4 @@
-import {resolve} from "path";
+import {resolve} from 'path';
 import * as fs from "fs";
 
 

@@ -1,18 +1,19 @@
 /**
  * Created by rodriguesc on 03/03/2017.
  */
-import {MangaSite} from "../../common/mangasite";
+import {MangaSite} from "../../mangasite";
 import {Parser} from "./parser";
-import {config} from "./config";
 import {Helper} from "./names";
-import {FilteredResults, MangaFilter, SiteConfig} from "../../declarations";
 import {processFilter} from "./filter";
-import {strategy} from "../../request/requestRetryStrategy";
+import {gin} from "../../interface";
+import SiteConfig = gin.SiteConfig;
+import {config} from "./config";
+import {FilteredResults, MangaFilter} from "../../filter";
 
 
 export class MangaHere extends MangaSite<SiteConfig, Parser, Helper> {
   public constructor() {
-    super(config, new Parser(), new Helper(), strategy);
+    super(config, new Parser(), new Helper());
   }
 
 
@@ -21,7 +22,7 @@ export class MangaHere extends MangaSite<SiteConfig, Parser, Helper> {
 
     let search = processFilter(filter);
 
-    let doc = await this.request.getDoc(search.src);
+    let doc = await this.getDoc(search.src);
     let mangas = await this.parser.filter(doc);
 
     this.debug(`mangas: ${mangas.results.length}`);

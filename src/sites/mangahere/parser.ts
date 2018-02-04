@@ -2,19 +2,20 @@
  * Created by rodriguesc on 03/03/2017.
  */
 
-import {
-  Chapter, FilteredResults, FilterStatus, LicencedError, MangaInfo, MangaSource, MangaXDoc,
-  SiteParser
-} from "../../declarations";
-
 import "../../declarations";
 
 import {resolve} from "url";
 import * as url from "url";
 
 import {config, error} from "./config";
-import {sanitize} from "../../common/helper";
-
+import {Chapter, gin, Info} from "../../interface";
+import SiteParser = gin.SiteParser;
+import MangaXDoc = gin.MangaXDoc;
+import MangaSource = gin.MangaSource;
+import {sanitize} from "../../util";
+import {FilterStatus} from "../../enum";
+import {FilteredResults} from "../../filter";
+import {LicencedError} from "../../old/common/declarations";
 
 
 export class Parser implements SiteParser {
@@ -66,7 +67,7 @@ export class Parser implements SiteParser {
     return chapters;
   }
 
-  info($: MangaXDoc): Promise<MangaInfo> | MangaInfo {
+  info($: MangaXDoc): Promise<Info> | Info {
 
     let image =  $("img.img").attr("src");
     let title = $("div.title > h3").text().slice(5, -7);
@@ -85,8 +86,8 @@ export class Parser implements SiteParser {
     let artists = li[5].children.filter(x => x.name === "a").map(x => x.lastChild.nodeValue);
 
     let status = li[6].children[0].next.nodeValue.trim() === "Ongoing"
-      ? FilterStatus.Ongoing.toString()
-      : FilterStatus.Complete.toString();
+      ? FilterStatus.Ongoing
+      : FilterStatus.Complete;
 
     let synopsis = li.reverse()[0].children.reverse().find(x => x.name == "p").children[0].nodeValue;
 
