@@ -35,7 +35,7 @@ The focus on this v2 is to support a small number of websites and implement an e
 
 
 
-### Supported websites `not planing to support more than this`
+### Supported websites
 - [ ] MangaFox
 - [ ] MangaPanda
 - [x] MangaHere
@@ -283,7 +283,7 @@ The developer of this application does not have any affiliation with the content
 
 
 [discord]: https://discord.gg/Wg9tGXZ
-[package]: https://www.npmjs.com/package/swgoh
+[package]: https://www.npmjs.com/package/gin-downloader
 [travis]: https://travis-ci.org/pikax/gin-downloader
 [coverage]: https://coveralls.io/github/pikax/gin-downloader?branch=master
 [dependencies]: https://david-dm.org/pikax/gin-downloader
