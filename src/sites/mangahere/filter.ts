@@ -90,7 +90,7 @@ export const processFilter = (mangafilter: MangaFilter): { src: string, params?:
 
     let filterType = null;
 
-    let filterName = filter.search.name;
+    let filterName = filter.search.name && filter.search.name.name || filter.search.name;
     let filterAuthor = null;
     let filterArtist = null;
     let filterReleased = null;
@@ -111,7 +111,6 @@ export const processFilter = (mangafilter: MangaFilter): { src: string, params?:
         filterType = resolveType(type) || filterType;
 
         if (name) {
-            filterName = name.name || filterName;
             methodName = searchMethod(name.condition) || methodName;
         }
 
@@ -133,14 +132,10 @@ export const processFilter = (mangafilter: MangaFilter): { src: string, params?:
             filterReleased = released.value || filterReleased;
             methodReleased = searchMethod(released.condition) || methodReleased;
         }
-
-
         if (genre) {
             inGenres = genre.inGenres;
             outGenres = genre.outGenres;
         }
-
-
     }
 
     const type = `direction=${filterType || ""}`;

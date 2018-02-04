@@ -32,5 +32,5 @@ export class MangaHere extends MangaSite<SiteConfig, Parser, Helper> {
 }
 
 
-export const manga = new MangaHere();
-export default manga;
+export const mangahere = new MangaHere();
+export default mangahere;

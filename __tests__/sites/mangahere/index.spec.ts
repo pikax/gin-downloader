@@ -1,6 +1,6 @@
 import '../../__config__/init_mocks';
 
-import {manga} from "./../../../src/sites/mangahere/index";
+import manga from "./../../../src/sites/mangahere/index";
 import results from './_results';
 import {MangaFilter} from "../../../src/filter";
 import {FilterCondition, FilterStatus, Genre, Type} from "../../../src/enum";

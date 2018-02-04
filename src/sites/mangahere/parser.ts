@@ -3,9 +3,9 @@ import * as url from "url";
 
 
 import {config, error} from "./config";
-import {gin, Info} from "../../interface";
+import {gin, Info, Synonym} from "../../interface";
 import {sanitize} from "../../util";
-import {FilterStatus} from "../../enum";
+import {FilterStatus, Type} from "../../enum";
 import {FilteredResults} from "../../filter";
 
 import SiteParser = gin.SiteParser;
@@ -76,7 +76,11 @@ export class Parser implements SiteParser {
             li[i] = el;
         });
 
-        let synonyms = li[2].lastChild.nodeValue.split("; ");
+        //todo fix synonyms
+        let synonyms: Synonym[] = li[2].lastChild.nodeValue.split("; ").map(title=>({
+            title:title,
+            language: 'en'
+        }));
         let genres = li[3].lastChild.nodeValue.split(", ");
 
 
