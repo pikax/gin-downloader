@@ -3,13 +3,11 @@
 
 [![Build Status](https://travis-ci.org/pikax/gin-downloader.svg?branch=master)][travis]
 [![npm version](https://badge.fury.io/js/gin-downloader.svg)][package]
-[![Coverage Status](https://coveralls.io/repos/github/pikax/gin-downloader/badge.svg?branch=master)][coveralls]
+[![Coverage Status](https://coveralls.io/repos/github/pikax/gin-downloader/badge.svg?branch=master)][coverage]
 [![dependencies Status](https://david-dm.org/pikax/gin-downloader/status.svg)][dependencies]
 [![devDependencies Status](https://david-dm.org/pikax/gin-downloader/dev-status.svg)][devDependencies]
 [![Known Vulnerabilities](https://snyk.io/test/npm/gin-downloader/badge.svg)][snyk]
 [![Discord](https://img.shields.io/badge/discord-chat-blue.svg)][discord]
-
-
 
 
 npm
