@@ -21,11 +21,13 @@
     "build:ts": "trash build && tsc --outDir build",
     "oldlint": "tslint -c tslint.json --project tsconfig.json --force",
     "lint": "tslint {src,test}/**/*.ts --format stylish",
-    "nyc": "nyc --check-coverage mocha __test__/**/*.spec.ts __test__/**/**/*.spec.ts --recursive",
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} yarn run nyc",
-    "test:Mock": "cross-env _MOCK_SITES_=YES TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} yarn run nyc",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "test:watch": "mocha -w --reporter min",
+
+    "test": "jest",
+    "test:watch": "cross-env mock=1 jest --watch",
+    "test:Mock": "cross-env mock=1 jest",
+    "coverage": "jest --coverage",
+
+
     "dist": "rollup -c",
     "dist:build": "yarn build && yarn dist:rollup",
     "dist:rollup": "rollup -c",
@@ -57,34 +59,34 @@
   "dependencies": {
     "@types/cheerio": "^0.22.7",
     "@types/debug": "^0.0.30",
-    "@types/lodash": "^4.14.93",
+    "@types/lodash": "^4.14.100",
     "@types/qs": "^6.5.1",
-    "@types/request": "^2.0.12",
+    "@types/request": "^2.47.0",
     "cheerio": "^1.0.0-rc.2",
     "cloudscraper": "^1.4.1",
     "debug": "^3.1.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "no-case": "^2.3.2",
-    "promise-queue": "^2.2.3",
+    "promise-queue": "^2.2.5",
     "qs": "^6.5.1",
     "request": "^2.83.0",
     "requestretry": "^1.13.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.0",
-    "@types/node": "^9.3.0",
-    "@types/jest": "^22.0.1",
+    "@types/node": "^9.4.0",
+    "@types/jest": "^22.1.1",
     "coveralls": "^3.0.0",
     "fs-extra": "^5.0.0",
     "jest": "^22.1.4",
-    "rollup": "^0.54.1",
-    "rollup-plugin-typescript2": "^0.10.0",
-    "ts-jest": "^22.0.1",
+    "rollup": "^0.55.3",
+    "rollup-plugin-typescript2": "^0.11.0",
+    "ts-jest": "^22.0.3",
     "ts-node": "^4.1.0",
     "tsconfig-paths": "^3.1.1",
     "tslint": "^5.9.1",
-    "typescript": "^2.6.2"
+    "typescript": "^2.7.1"
   },
   "optionalDependencies": {
     "cross-env": "^5.1.3"
