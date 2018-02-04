@@ -1,6 +1,5 @@
 import {IDebugger} from "debug";
 
-import {find} from "lodash";
 import {ginConfig} from "./config";
 import {FilteredResults, MangaFilter} from "./filter";
 
@@ -20,8 +19,6 @@ import SiteParser = gin.SiteParser;
 import ChapterSource = gin.ChapterSource;
 
 export abstract class MangaSite<C extends SiteConfig, P extends SiteParser, N extends NameHelper> implements Site {
-  abstract sitename: string;
-
   private _parser: P;
   protected verbose: IDebugger;
   protected debug: IDebugger;
@@ -41,7 +38,7 @@ export abstract class MangaSite<C extends SiteConfig, P extends SiteParser, N ex
     return this._nameHelper;
   }
 
-  protected constructor(config: C, parser: P, nameHelper: N) {
+  protected constructor(private sitename: string, config: C, parser: P, nameHelper: N) {
     this.debug = debug(`gin-downloader:${config.name}`);
     this.verbose = debug(`gin-downloader:${config.name}:verbose`);
     this.error = debug(`gin-downloader:${config.name}:error`);

@@ -1,404 +1,340 @@
-/**
- * Created by rodriguesc on 06/03/2017.
- */
+import '../../__config__/init_mocks';
 
 import {manga} from "./../../../src/sites/mangahere/index";
-
+import results from './_results';
+import {MangaFilter} from "../../../src/filter";
+import {FilterCondition, FilterStatus, Genre, Type} from "../../../src/enum";
 
 
 describe("MangaHere live", () => {
 
-  it("should get all mangas", async () => {
+    it("should get all mangas", async () => {
 
-    let mangas = await await manga.mangas();
-    expect(mangas).toHaveLength(30);
-  });
+        const mangas = await manga.mangas();
 
-  /*
-  it("should get latest chaps", async () => {
-    if (_MOCK_) {
-      nock(config.site)
-        .get("/latest/")
-        .replyWithFile(200, __dirname + "/html/latest.html");
-    }
+        expect(mangas).toBeDefined();
 
-    let latest = await manga.latest();
-    latest.should.to.have.length.gte(98);
-  });
+        expect(mangas.length).toBeGreaterThanOrEqual(19000);
+    });
 
-  it("should get info", async () => {
-    if (_MOCK_) {
-      nock(config.site)
-        .get("/manga/gintama/")
-        .replyWithFile(200, __dirname + "/html/Gintama.html");
-    }
+    it("should get latest chaps", async () => {
+        let latest = await manga.latest();
 
-    let name = "Gintama";
-    let info = await manga.info(name);
-    info.should.exist;
+        expect(latest).toBeDefined();
+        expect(latest.length).toBeGreaterThanOrEqual(98)
+    });
 
-    info.title.should.be.eq(results.manga.title);
-    info.synopsis.should.contain(results.manga.synopsis);
-    info.status.should.be.eq(results.manga.status);
+    it("should get info", async () => {
+        let name = "Gintama";
+        let info = await manga.info(name);
+        expect(info).toBeDefined();
 
-    info.synonyms.should.be.deep.eq(results.manga.synonyms);
-    info.authors.should.be.deep.eq(results.manga.authors);
-    info.artists.should.be.deep.eq(results.manga.artists);
-    info.genres.should.be.deep.eq(results.manga.genres);
-  });
-
-  it("should resolve name to name", async () => {
-    if (_MOCK_) {
-      nock(config.site)
-        .get("/mangalist/")
-        .replyWithFile(200, __dirname + "/html/mangas.html")
-      ;
-    }
-
-    let mangas = await manga.mangas();
-
-    for (let obj of mangas){
-      let expected = obj.src;
-      let origName = obj.name;
-      let finalUrl = manga.resolveMangaUrl(origName);
-
-      finalUrl.should.be.eq(expected, `with name "${origName}"`);
-    }
-  });
+        expect(info.title).toBe(results.manga.title);
+        expect(info.synopsis).toContain(results.manga.synopsis);
+        expect(info.status).toBe(results.manga.status);
 
 
-  it("should not find manga by name", async () => {
-    if (_MOCK_) {
-      nock(config.site)
-        .get("/Manga/my-stupid-name")
-        .reply(404);
-    }
+        expect(info.synonyms).toEqual(results.manga.synonyms);
+        expect(info.authors).toEqual(results.manga.authors);
+        expect(info.artists).toEqual(results.manga.artists);
+        expect(info.genres).toEqual(results.manga.genres);
+    });
 
-    let name = "my stupid name";
-    let chapter = 1;
+    it("should resolve name to name", async () => {
 
-    try {
-      let images = await manga.images(name, chapter);
+        let mangas = await manga.mangas();
 
-      images.should.be.null;
+        for (let obj of mangas) {
+            let expected = obj.src;
+            let origName = obj.name;
+            let finalUrl = manga.resolveMangaUrl(origName);
 
-    }catch (e){
-      e.should.be.Throw;
-    }
-  });
-
-
-
-  it("should not find get chapters", async () => {
-    if (_MOCK_) {
-      nock(config.site)
-        .get("/manga/Gintamass")
-        .reply(404);
-    }
-
-    let name = "Gintamass";
-
-    try {
-      let chapters = await manga.chapters(name);
-
-      chapters.should.be.null;
-
-    }catch (e){
-      e.should.be.Throw;
-    }
-  });
-
-  it("should not find chapter", async () => {
-    // chapters
-    if (_MOCK_) {
-      nock(config.site)
-        .get("/manga/gintama/")
-        .replyWithFile(200, __dirname + "/html/Gintama.html");
-    }
-    let name = "Gintama";
-    let chapter = -354564;
-
-    try {
-      let images = await manga.images(name, chapter);
-
-      images.should.be.null;
-
-    }catch (e){
-      e.should.be.Throw;
-    }
-  });
-
-  it("should not find images chapter ", async () => {
-    // chapters
-    if (_MOCK_) {
-      nock(config.site)
-        .get("/manga/gintama/")
-        .replyWithFile(200, __dirname + "/html/Gintama.html");
-    }
-
-    let name = "Gintama";
-    let chapter = -5151;
-
-    try {
-      let images = await manga.images(name, chapter);
-
-      images.should.be.null;
-
-    }catch (e){
-      e.should.be.Throw;
-    }
-  });
-
-
-  it("should get chapters", async () => {
-    if (_MOCK_) {
-      nock(config.site)
-        .get("/manga/gintama/")
-        .replyWithFile(200, __dirname + "/html/Gintama.html");
-    }
-    let name = "Gintama";
-
-    let chapters = await manga.chapters(name);
-    chapters.should.have.length.gte(results.chapter_count);
-  });
-
-  it("should get Gintama : chapter 41", async () => {
-    if (_MOCK_) {
-      nock(config.site)
-        .get("/manga/gintama/")
-        .replyWithFile(200, __dirname + "/html/Gintama.html");
-
-
-      nock(config.site)
-        .get(/manga\/gintama\/c041/)
-        .replyWithFile(200, __dirname + "/html/c041.html")
-        .persist();
-    }
-
-    let name = "Gintama";
-    let chapter = 41;
-
-    let images = await manga.images(name, chapter);
-    images.should.to.exist;
-    images.should.have.length.gte(17);
-
-    let img = await images[0];
-    img.src.should.contain("mhcdn.net/store/manga/551/041.0/compressed/M7_Gintama_ch041_00.jpg");
-  });
-
-  describe("filter", () => {
-
-    beforeEach(function(done){
-        if (!_MOCK_){
-          setTimeout(done, 6000); // mangahere only allow to search per 5 seconds
-        }
-        else {
-          done();
+            expect(finalUrl).toContain(expected)
         }
     });
 
-    it("should filter by name", async () => {
-      if (_MOCK_) {
-        // filter by Name
-        nock(config.site)
-          .get("/search.php?name_method=cw&name=Gintama&direction=&author_method=cw&author=&artist_method=cw&artist=&genres%5BAction%5D=0&genres%5BAdult%5D=0&genres%5BAdventure%5D=0&genres%5BComedy%5D=0&genres%5BDoujinshi%5D=0&genres%5BDrama%5D=0&genres%5BEcchi%5D=0&genres%5BFantasy%5D=0&genres%5BGender+Bender%5D=0&genres%5BHarem%5D=0&genres%5BHistorical%5D=0&genres%5BHorror%5D=0&genres%5BJosei%5D=0&genres%5BLolicon%5D=0&genres%5BMartial+Arts%5D=0&genres%5BMature%5D=0&genres%5BMecha%5D=0&genres%5BMystery%5D=0&genres%5BOne+Shot%5D=0&genres%5BPsychological%5D=0&genres%5BRomance%5D=0&genres%5BSchool+Life%5D=0&genres%5BSci-fi%5D=0&genres%5BSeinen%5D=0&genres%5BShotacon%5D=0&genres%5BShoujo%5D=0&genres%5BShoujo+Ai%5D=0&genres%5BShounen%5D=0&genres%5BShounen+Ai%5D=0&genres%5BSlice+of+Life%5D=0&genres%5BSmut%5D=0&genres%5BSports%5D=0&genres%5BSupernatural%5D=0&genres%5BTragedy%5D=0&genres%5BYaoi%5D=0&genres%5BYuri%5D=0&released_method=eq&released=&is_completed=&advopts=1")
-          .replyWithFile(200, __dirname + "/html/filter/byName.html");
-      }
 
-      let filter: MangaFilter = {
-        name: "Gintama"
-      };
+    it("should not find manga by name", async () => {
+        expect.assertions(1);
+        let name = "my stupid name";
+        let chapter = 1;
 
-      let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(14);
-      mangas.results.should.deep.include({
-        name: "Gintama",
-        src : "http://www.mangahere.co/manga/gintama/"
-      });
-    });
-
-
-    it("should filter by name endWith", async () => {
-      if (_MOCK_) {
-        // filter by Name
-        nock(config.site)
-          .get("/search.php?name_method=ew&name=Gintama&direction=&author_method=cw&author=&artist_method=cw&artist=&genres%5BAction%5D=0&genres%5BAdult%5D=0&genres%5BAdventure%5D=0&genres%5BComedy%5D=0&genres%5BDoujinshi%5D=0&genres%5BDrama%5D=0&genres%5BEcchi%5D=0&genres%5BFantasy%5D=0&genres%5BGender+Bender%5D=0&genres%5BHarem%5D=0&genres%5BHistorical%5D=0&genres%5BHorror%5D=0&genres%5BJosei%5D=0&genres%5BLolicon%5D=0&genres%5BMartial+Arts%5D=0&genres%5BMature%5D=0&genres%5BMecha%5D=0&genres%5BMystery%5D=0&genres%5BOne+Shot%5D=0&genres%5BPsychological%5D=0&genres%5BRomance%5D=0&genres%5BSchool+Life%5D=0&genres%5BSci-fi%5D=0&genres%5BSeinen%5D=0&genres%5BShotacon%5D=0&genres%5BShoujo%5D=0&genres%5BShoujo+Ai%5D=0&genres%5BShounen%5D=0&genres%5BShounen+Ai%5D=0&genres%5BSlice+of+Life%5D=0&genres%5BSmut%5D=0&genres%5BSports%5D=0&genres%5BSupernatural%5D=0&genres%5BTragedy%5D=0&genres%5BYaoi%5D=0&genres%5BYuri%5D=0&released_method=eq&released=&is_completed=&advopts=1")
-          .replyWithFile(200, __dirname + "/html/filter/byName.html");
-      }
-
-      let filter: MangaFilter = {
-        search: {
-          name : {
-            name: "Gintama",
-            condition : FilterCondition.EndsWith
-          }
+        try {
+            await manga.images(name, chapter);
+        } catch (e) {
+            expect(e.message).toContain("Chapter not found");
         }
-      };
-
-      let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(1);
-      mangas.results.should.deep.include({
-        name: "Gintama",
-        src : "http://www.mangahere.co/manga/gintama/"
-      });
     });
 
-    it("should filter by name startsWith", async () => {
-      if (_MOCK_) {
-        // filter by Name
-        nock(config.site)
-          .get("/search.php?name_method=bw&name=Gintama&direction=&author_method=cw&author=&artist_method=cw&artist=&genres%5BAction%5D=0&genres%5BAdult%5D=0&genres%5BAdventure%5D=0&genres%5BComedy%5D=0&genres%5BDoujinshi%5D=0&genres%5BDrama%5D=0&genres%5BEcchi%5D=0&genres%5BFantasy%5D=0&genres%5BGender+Bender%5D=0&genres%5BHarem%5D=0&genres%5BHistorical%5D=0&genres%5BHorror%5D=0&genres%5BJosei%5D=0&genres%5BLolicon%5D=0&genres%5BMartial+Arts%5D=0&genres%5BMature%5D=0&genres%5BMecha%5D=0&genres%5BMystery%5D=0&genres%5BOne+Shot%5D=0&genres%5BPsychological%5D=0&genres%5BRomance%5D=0&genres%5BSchool+Life%5D=0&genres%5BSci-fi%5D=0&genres%5BSeinen%5D=0&genres%5BShotacon%5D=0&genres%5BShoujo%5D=0&genres%5BShoujo+Ai%5D=0&genres%5BShounen%5D=0&genres%5BShounen+Ai%5D=0&genres%5BSlice+of+Life%5D=0&genres%5BSmut%5D=0&genres%5BSports%5D=0&genres%5BSupernatural%5D=0&genres%5BTragedy%5D=0&genres%5BYaoi%5D=0&genres%5BYuri%5D=0&released_method=eq&released=&is_completed=&advopts=1")
-          .replyWithFile(200, __dirname + "/html/filter/byName.html");
-      }
 
-      let filter: MangaFilter = {
-        search: {
-          name : {
-            name: "Gintama",
-            condition : FilterCondition.StartsWith
-          }
+    it("should not find get chapters", async () => {
+        expect.assertions(1);
+
+        let name = "Gintamass132334";
+
+        try {
+            await manga.chapters(name);
+
+
+        } catch (e) {
+            expect(e.message).toContain("Chapter not found");
         }
-      };
-
-      let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(14);
-      mangas.results.should.deep.include({
-        name: "Gintama",
-        src : "http://www.mangahere.co/manga/gintama/"
-      });
     });
 
-    it("should filter by in genre", async () => {
-      if (_MOCK_) {
-        // filter by Name
-        nock(config.site)
-          .get("/search.php?name_method=cw&name=&direction=&author_method=cw&author=&artist_method=cw&artist=&genres%5BAction%5D=1&genres%5BAdult%5D=0&genres%5BAdventure%5D=1&genres%5BComedy%5D=1&genres%5BDoujinshi%5D=0&genres%5BDrama%5D=1&genres%5BEcchi%5D=0&genres%5BFantasy%5D=0&genres%5BGender+Bender%5D=0&genres%5BHarem%5D=0&genres%5BHistorical%5D=1&genres%5BHorror%5D=0&genres%5BJosei%5D=0&genres%5BLolicon%5D=0&genres%5BMartial+Arts%5D=0&genres%5BMature%5D=0&genres%5BMecha%5D=0&genres%5BMystery%5D=0&genres%5BOne+Shot%5D=0&genres%5BPsychological%5D=0&genres%5BRomance%5D=0&genres%5BSchool+Life%5D=0&genres%5BSci-fi%5D=1&genres%5BSeinen%5D=0&genres%5BShotacon%5D=0&genres%5BShoujo%5D=0&genres%5BShoujo+Ai%5D=0&genres%5BShounen%5D=1&genres%5BShounen+Ai%5D=0&genres%5BSlice+of+Life%5D=0&genres%5BSmut%5D=0&genres%5BSports%5D=0&genres%5BSupernatural%5D=1&genres%5BTragedy%5D=0&genres%5BYaoi%5D=0&genres%5BYuri%5D=0&released_method=eq&released=&is_completed=&advopts=1")
-          .replyWithFile(200, __dirname + "/html/filter/byGenre.html");
-      }
+    it("should not find chapter", async () => {
+        expect.assertions(1);
+        let name = "Gintama";
+        let chapter = -354564;
 
-      let filter: MangaFilter = {
-        search: {
-          genre: {
-            inGenres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Drama, Genre.Historical, Genre.SciFi, Genre.Shounen, Genre.Supernatural]
-          }
+        try {
+            await manga.images(name, chapter);
+        } catch (e) {
+            expect(e.message).toContain("Chapter not found");
         }
-      };
-
-      let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(1);
-      mangas.results.should.deep.include({
-        name: "Gintama",
-        src : "http://www.mangahere.co/manga/gintama/"
-      });
     });
 
-    it("should filter by out genre", async () => {
-      if (_MOCK_) {
-        // filter by Name
-        nock(config.site)
-          .get("/search.php?name_method=bw&name=gin&direction=&author_method=cw&author=Sora&artist_method=cw&artist=&genres%5BAction%5D=0&genres%5BAdult%5D=0&genres%5BAdventure%5D=0&genres%5BComedy%5D=0&genres%5BDoujinshi%5D=0&genres%5BDrama%5D=0&genres%5BEcchi%5D=0&genres%5BFantasy%5D=0&genres%5BGender+Bender%5D=0&genres%5BHarem%5D=0&genres%5BHistorical%5D=0&genres%5BHorror%5D=0&genres%5BJosei%5D=0&genres%5BLolicon%5D=0&genres%5BMartial+Arts%5D=0&genres%5BMature%5D=0&genres%5BMecha%5D=0&genres%5BMystery%5D=0&genres%5BOne+Shot%5D=0&genres%5BPsychological%5D=0&genres%5BRomance%5D=2&genres%5BSchool+Life%5D=0&genres%5BSci-fi%5D=0&genres%5BSeinen%5D=0&genres%5BShotacon%5D=0&genres%5BShoujo%5D=0&genres%5BShoujo+Ai%5D=0&genres%5BShounen%5D=0&genres%5BShounen+Ai%5D=0&genres%5BSlice+of+Life%5D=0&genres%5BSmut%5D=0&genres%5BSports%5D=0&genres%5BSupernatural%5D=0&genres%5BTragedy%5D=0&genres%5BYaoi%5D=0&genres%5BYuri%5D=0&released_method=eq&released=&is_completed=&advopts=1")
-          .replyWithFile(200, __dirname + "/html/filter/outGenre.html");
-      }
+    it("should not find images chapter", async () => {
+        expect.assertions(1);
 
-      let filter: MangaFilter = {
+        let name = "Gintama";
+        let chapter = -5151;
 
-        search: {
-          name: {
-            name: "gin",
-            condition: FilterCondition.StartsWith
-          },
-          author: {
-            name: "Sora",
-          },
-          genre: {
-            outGenres: [Genre.Romance],
-          }
+        try {
+            let images = await manga.images(name, chapter);
+
+        } catch (e) {
+            expect(e.message).toContain("Chapter not found");
         }
-
-      };
-
-      let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(1);
-      mangas.results.should.deep.include({
-        name: "Gintama",
-        src : "http://www.mangahere.co/manga/gintama/"
-      });
     });
 
-    it("should filter by Author", async () => {
-      if (_MOCK_) {
-        // filter by Name
-        nock(config.site)
-          .get("/search.php?name_method=cw&name=&direction=&author_method=cw&author=Sorachi&artist_method=cw&artist=&genres%5BAction%5D=0&genres%5BAdult%5D=0&genres%5BAdventure%5D=0&genres%5BComedy%5D=0&genres%5BDoujinshi%5D=0&genres%5BDrama%5D=0&genres%5BEcchi%5D=0&genres%5BFantasy%5D=0&genres%5BGender+Bender%5D=0&genres%5BHarem%5D=0&genres%5BHistorical%5D=0&genres%5BHorror%5D=0&genres%5BJosei%5D=0&genres%5BLolicon%5D=0&genres%5BMartial+Arts%5D=0&genres%5BMature%5D=0&genres%5BMecha%5D=0&genres%5BMystery%5D=0&genres%5BOne+Shot%5D=0&genres%5BPsychological%5D=0&genres%5BRomance%5D=0&genres%5BSchool+Life%5D=0&genres%5BSci-fi%5D=0&genres%5BSeinen%5D=0&genres%5BShotacon%5D=0&genres%5BShoujo%5D=0&genres%5BShoujo+Ai%5D=0&genres%5BShounen%5D=0&genres%5BShounen+Ai%5D=0&genres%5BSlice+of+Life%5D=0&genres%5BSmut%5D=0&genres%5BSports%5D=0&genres%5BSupernatural%5D=0&genres%5BTragedy%5D=0&genres%5BYaoi%5D=0&genres%5BYuri%5D=0&released_method=eq&released=&is_completed=&advopts=1")
-          .replyWithFile(200, __dirname + "/html/filter/byAuthor.html");
-      }
 
-      let filter: MangaFilter = {
-        search: {
-          author: {
-            name: "Sorachi",
-          }
-        }
-      };
+    it("should get chapters", async () => {
+        let name = "Gintama";
 
-      let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(1);
-      mangas.results.should.length.lte(10);
-      mangas.results.should.deep.include({
-        name: "Gintama",
-        src : "http://www.mangahere.co/manga/gintama/"
-      });
+        let chapters = await manga.chapters(name);
+
+        expect(chapters).toBeDefined();
+        expect(chapters.length).toBeGreaterThanOrEqual(results.chapter_count);
     });
 
-    it("should filter by Status", async () => {
-      if (_MOCK_) {
-        // filter by Name
-        nock(config.site)
-          .get("/search.php?name_method=cw&name=kenichi&direction=&author_method=cw&author=&artist_method=cw&artist=&genres%5BAction%5D=0&genres%5BAdult%5D=0&genres%5BAdventure%5D=0&genres%5BComedy%5D=0&genres%5BDoujinshi%5D=0&genres%5BDrama%5D=0&genres%5BEcchi%5D=0&genres%5BFantasy%5D=0&genres%5BGender+Bender%5D=0&genres%5BHarem%5D=0&genres%5BHistorical%5D=0&genres%5BHorror%5D=0&genres%5BJosei%5D=0&genres%5BLolicon%5D=0&genres%5BMartial+Arts%5D=0&genres%5BMature%5D=0&genres%5BMecha%5D=0&genres%5BMystery%5D=0&genres%5BOne+Shot%5D=0&genres%5BPsychological%5D=0&genres%5BRomance%5D=0&genres%5BSchool+Life%5D=0&genres%5BSci-fi%5D=0&genres%5BSeinen%5D=0&genres%5BShotacon%5D=0&genres%5BShoujo%5D=0&genres%5BShoujo+Ai%5D=0&genres%5BShounen%5D=0&genres%5BShounen+Ai%5D=0&genres%5BSlice+of+Life%5D=0&genres%5BSmut%5D=0&genres%5BSports%5D=0&genres%5BSupernatural%5D=0&genres%5BTragedy%5D=0&genres%5BYaoi%5D=0&genres%5BYuri%5D=0&released_method=eq&released=&is_completed=&advopts=1")
-          .replyWithFile(200, __dirname + "/html/filter/byCompleted.html");
-      }
+    it("should get Gintama : chapter 41", async () => {
+        let name = "Gintama";
+        let chapter = 41;
 
+        let images = await manga.images(name, chapter);
+        expect(images).toBeDefined();
 
-      let filter: MangaFilter = {
-        search: {
-          status: FilterStatus.Complete,
-          name: {
-            name: "kenichi"
-          }
-        }
-      };
-
-      let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(1);
-      mangas.results.should.deep.include({
-        name: "Historys Strongest Disciple Kenichi",
-        src : "http://www.mangahere.co/manga/historys_strongest_disciple_kenichi/"
-      });
+        expect(images.length).toBeGreaterThanOrEqual(17)
+        let img = await images[0].value;
+        expect(img.src).toContain("store/manga/551/041.0/compressed/M7_Gintama_ch041_00.jpg");
     });
 
-    it("should filter by Type", async () => {
-      if (_MOCK_) {
-        // filter by Name
-        nock(config.site)
-          .get("/search.php?name_method=cw&name=10&direction=lr&author_method=cw&author=&artist_method=cw&artist=&genres%5BAction%5D=0&genres%5BAdult%5D=0&genres%5BAdventure%5D=0&genres%5BComedy%5D=0&genres%5BDoujinshi%5D=0&genres%5BDrama%5D=0&genres%5BEcchi%5D=0&genres%5BFantasy%5D=0&genres%5BGender+Bender%5D=0&genres%5BHarem%5D=0&genres%5BHistorical%5D=0&genres%5BHorror%5D=0&genres%5BJosei%5D=0&genres%5BLolicon%5D=0&genres%5BMartial+Arts%5D=0&genres%5BMature%5D=0&genres%5BMecha%5D=0&genres%5BMystery%5D=0&genres%5BOne+Shot%5D=0&genres%5BPsychological%5D=0&genres%5BRomance%5D=0&genres%5BSchool+Life%5D=0&genres%5BSci-fi%5D=0&genres%5BSeinen%5D=0&genres%5BShotacon%5D=0&genres%5BShoujo%5D=0&genres%5BShoujo+Ai%5D=0&genres%5BShounen%5D=0&genres%5BShounen+Ai%5D=0&genres%5BSlice+of+Life%5D=0&genres%5BSmut%5D=0&genres%5BSports%5D=0&genres%5BSupernatural%5D=0&genres%5BTragedy%5D=0&genres%5BYaoi%5D=0&genres%5BYuri%5D=0&released_method=eq&released=&is_completed=&advopts=1")
-          .replyWithFile(200, __dirname + "/html/filter/byType.html");
-      }
+    describe("filter", () => {
+        beforeEach(function (done) {
+            if (!process.env.mock) {
+                setTimeout(done, 6000); // mangahere only allow to search per 5 seconds
+            }
+            else {
+                done();
+            }
+        });
 
-      let filter: MangaFilter = {
-        search: {
-          name: {
-            name: "10"
-          },
-          type: FilterMangaType.Manhwa
-        }
-      };
+        it("should filter by name", async () => {
+            let filter: MangaFilter = {
+                name: "Gintama"
+            };
 
-      let mangas = await manga.filter(filter);
-      mangas.results.should.length.gte(1);
-      mangas.results.should.deep.include({
-        name: "100 Ways to Kill A Seal",
-        src : "http://www.mangahere.co/manga/100_ways_to_kill_a_seal/"
-      });
+            let mangas = await manga.filter(filter);
+            expect(mangas).toBeDefined();
+
+            expect(mangas.results.length).toBeGreaterThanOrEqual(14);
+
+
+            const obj = {
+                name: "Gintama",
+                src: "//www.mangahere.cc/manga/gintama/"
+            };
+            const gintama = mangas.results.filter(x => x.name === obj.name);
+            expect(gintama).toMatchObject([obj])
+
+
+        });
+
+        it("should filter by name endWith", async () => {
+
+
+            let filter: MangaFilter = {
+                search: {
+                    name: {
+                        name: "Gintama",
+                        condition: FilterCondition.EndsWith
+                    }
+                }
+            };
+
+            let mangas = await manga.filter(filter);
+            expect(mangas).toBeDefined();
+            expect(mangas.results.length).toBeGreaterThanOrEqual(1);
+
+
+            const obj = {
+                name: "Gintama",
+                src: "//www.mangahere.cc/manga/gintama/"
+            };
+            const gintama = mangas.results.filter(x => x.name === obj.name);
+            expect(gintama).toMatchObject([obj])
+        });
+
+        it("should filter by name startsWith", async () => {
+            let filter: MangaFilter = {
+                search: {
+                    name: {
+                        name: "Gintama",
+                        condition: FilterCondition.StartsWith
+                    }
+                }
+            };
+
+            let mangas = await manga.filter(filter);
+
+            expect(mangas).toBeDefined();
+            expect(mangas.results.length).toBeGreaterThanOrEqual(14);
+
+
+            const obj = {
+                name: "Gintama",
+                src: "//www.mangahere.cc/manga/gintama/"
+            };
+            const gintama = mangas.results.filter(x => x.name === obj.name);
+            expect(gintama).toMatchObject([obj])
+        });
+
+        it("should filter by in genre", async () => {
+
+            let filter: MangaFilter = {
+                search: {
+                    genre: {
+                        inGenres: [Genre.Action, Genre.Adventure, Genre.Comedy, Genre.Drama, Genre.Historical, Genre.SciFi, Genre.Shounen, Genre.Supernatural]
+                    }
+                }
+            };
+
+            let mangas = await manga.filter(filter);
+
+            expect(mangas).toBeDefined();
+            expect(mangas.results.length).toBeGreaterThanOrEqual(1);
+
+
+            const obj = {
+                name: "Gintama",
+                src: "//www.mangahere.cc/manga/gintama/"
+            };
+            const gintama = mangas.results.filter(x => x.name === obj.name);
+            expect(gintama).toMatchObject([obj])
+        });
+
+        it("should filter by out genre", async () => {
+
+            let filter: MangaFilter = {
+
+                search: {
+                    name: {
+                        name: "gin",
+                        condition: FilterCondition.StartsWith
+                    },
+                    author: {
+                        name: "Sora",
+                    },
+                    genre: {
+                        outGenres: [Genre.Romance],
+                    }
+                }
+
+            };
+            let mangas = await manga.filter(filter);
+
+            expect(mangas).toBeDefined();
+            expect(mangas.results.length).toBeGreaterThanOrEqual(1);
+
+
+            const obj = {
+                name: "Gintama",
+                src: "//www.mangahere.cc/manga/gintama/"
+            };
+            const gintama = mangas.results.filter(x => x.name === obj.name);
+            expect(gintama).toMatchObject([obj])
+        });
+
+        it("should filter by Author", async () => {
+
+            let filter: MangaFilter = {
+                search: {
+                    author: {
+                        name: "Sorachi",
+                    }
+                }
+            };
+
+            let mangas = await manga.filter(filter);
+
+            expect(mangas).toBeDefined();
+            expect(mangas.results.length).toBeGreaterThanOrEqual(1);
+            expect(mangas.results.length).toBeLessThanOrEqual(10);
+
+            const obj = {
+                name: "Gintama",
+                src: "//www.mangahere.cc/manga/gintama/"
+            };
+            const gintama = mangas.results.filter(x => x.name === obj.name);
+            expect(gintama).toMatchObject([obj])
+        });
+
+        it("should filter by Status", async () => {
+            let filter: MangaFilter = {
+                search: {
+                    status: FilterStatus.Complete,
+                    name: {
+                        name: "kenichi"
+                    }
+                }
+            };
+
+            let mangas = await manga.filter(filter);
+
+            expect(mangas).toBeDefined();
+            expect(mangas.results.length).toBeGreaterThanOrEqual(1);
+
+            const obj = {
+                name: "Historys Strongest Disciple Kenichi",
+                src: "//www.mangahere.cc/manga/historys_strongest_disciple_kenichi/"
+            };
+            const gintama = mangas.results.filter(x => x.name === obj.name);
+            expect(gintama).toMatchObject([obj])
+        });
+
+        it("should filter by Type", async () => {
+
+            let filter: MangaFilter = {
+                search: {
+                    name: {
+                        name: "10"
+                    },
+                    type: Type.Manhwa
+                }
+            };
+
+            let mangas = await manga.filter(filter);
+
+            expect(mangas).toBeDefined();
+            expect(mangas.results.length).toBeGreaterThanOrEqual(1);
+
+            const obj = {
+                name: "100 Ways to Kill A Seal",
+                src: "//www.mangahere.cc/manga/100_ways_to_kill_a_seal/"
+            };
+            const gintama = mangas.results.filter(x => x.name === obj.name);
+            expect(gintama).toMatchObject([obj])
+
+        });
     });
-  });*/
 });

@@ -3,8 +3,9 @@
  */
 
 import {config} from "./config";
-import {NameHelper} from "../../declarations";
 import {resolve} from "url";
+import {gin} from "../../interface";
+import NameHelper = gin.NameHelper;
 
 const noCase = require("no-case");
 

@@ -120,7 +120,7 @@ const DefaultConfig: GinConfig = {
     batoto: cloudflareStrategy,
     mangafox: retryStrategy,
     mangapanda: retryStrategy,
-    mangahere: retryStrategy,
+    MangaHere: retryStrategy,
     kissmanga: cloudflareStrategy,
   },
 
