@@ -2,15 +2,19 @@
 // import {manga as mangahere} from "./sites/mangahere/index";
 // import {manga as mangapanda} from "./sites/mangapanda/index";
 // import {manga as kissmanga} from "./sites/kissmanga/index";
-export {manga as batoto} from "./sites/batoto/index";
-
-export {SuperChapter, SuperObject} from "./super_obj";
-export {ginConfig} from "./config";
-export {parseDoc} from "./util";
+// export {manga as batoto} from "./sites/batoto/index";
 
 
-export {RequestCloudFlareStrategy, RequestRetryStrategy} from "./request/index";
-export {request} from "./request/pool";
+export {mangahere} from "./sites/mangahere";
+
+
+// export {SuperChapter, SuperObject} from "./super_obj";
+// export {ginConfig} from "./config";
+// export {parseDoc} from "./util";
+
+//
+// export {RequestCloudFlareStrategy, RequestRetryStrategy} from "./request/index";
+// export {request} from "./request/pool";
 
 // export const gin = {
 //   // mangafox,

@@ -1,1 +1,1 @@
-export { mangahere } from './src/sites/mangahere';
+export { mangahere } from "./sites/mangahere";

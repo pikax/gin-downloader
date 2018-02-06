@@ -7,6 +7,12 @@ out/
 .*/
 scripts/
 
+testOld
+
+__tests__
+__tests__2
+
+
 
 
 ### Node template
