@@ -60,6 +60,15 @@ export declare enum Type {
     Artbook = "Artbook",
     Other = "Other",
 }
+export declare enum GenreCondition {
+    And = 0,
+    Or = 1,
+}
+export declare enum FilterStatus {
+    Ongoing = "Ongoing",
+    Complete = "Complete",
+    Cancelled = "Cancelled",
+}
 export declare enum FilterCondition {
     Equal = 0,
     Contains = 1,
@@ -70,13 +79,4 @@ export declare enum FilterCondition {
     Greater = 6,
     LessThan = 7,
     GreaterThan = 8,
-}
-export declare enum GenreCondition {
-    And = 0,
-    Or = 1,
-}
-export declare enum FilterStatus {
-    Ongoing = "Ongoing",
-    Complete = "Complete",
-    Cancelled = "Cancelled",
 }

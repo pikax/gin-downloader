@@ -1,6 +1,7 @@
 import {MangaFilter} from "./filter";
 import {Lazy} from "./util";
 import {Type} from "./enum";
+import {URL} from "url";
 
 export interface Source {
   src: string;
@@ -158,5 +159,12 @@ export namespace gin {
 
     resolveUrl(name: string): string;
   }
+
+
+    export enum SITES {
+        MANGAHERE = "MangaHere",
+    }
 }
+
+
 

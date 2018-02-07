@@ -64,18 +64,6 @@ export enum Type {
 }
 
 
-export enum FilterCondition {
-  Equal,
-  Contains,
-  NotContains,
-  StartsWith,
-  EndsWith,
-  Less,
-  Greater,
-  LessThan,
-  GreaterThan,
-}
-
 export enum GenreCondition {
   And = 0,
   Or = 1,
@@ -85,4 +73,18 @@ export enum FilterStatus {
   Ongoing = "Ongoing",
   Complete = "Complete",
   Cancelled = "Cancelled"
+}
+
+
+
+export enum FilterCondition {
+    Equal,
+    Contains,
+    NotContains,
+    StartsWith,
+    EndsWith,
+    Less,
+    Greater,
+    LessThan,
+    GreaterThan,
 }

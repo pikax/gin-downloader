@@ -7,12 +7,13 @@ import {config} from "./config";
 
 import {FilteredResults, MangaFilter} from "../../filter";
 import SiteConfig = gin.SiteConfig;
+import SITES = gin.SITES;
 
 
 export class MangaHere extends MangaSite<SiteConfig, Parser, Helper> {
 
     public constructor() {
-        super("MangaHere", config, new Parser(), new Helper());
+        super(SITES.MANGAHERE, config, new Parser(), new Helper());
     }
 
 

@@ -5,7 +5,12 @@
 // export {manga as batoto} from "./sites/batoto/index";
 
 
+export * from "./interface";
+
 export {mangahere} from "./sites/mangahere";
+
+
+export * from "./enum";
 
 
 // export {SuperChapter, SuperObject} from "./super_obj";

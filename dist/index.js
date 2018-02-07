@@ -6,6 +6,13 @@ var lodash = require('lodash');
 var cheerio = require('cheerio');
 var url = require('url');
 
+(function (gin) {
+    var SITES;
+    (function (SITES) {
+        SITES["MANGAHERE"] = "MangaHere";
+    })(SITES = gin.SITES || (gin.SITES = {}));
+})(exports.gin || (exports.gin = {}));
+
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -281,7 +288,6 @@ var DefaultConfig = __assign({ pooling: {
         kissmanga: cloudflareStrategy,
     } }, reqConfig);
 
-var Genre;
 (function (Genre) {
     Genre["Action"] = "Action";
     Genre["Adult"] = "Adult";
@@ -335,8 +341,8 @@ var Genre;
     Genre["Yaoi"] = "Yaoi";
     Genre["Yuri"] = "Yuri";
     Genre["NoChapters"] = "[no chapters]";
-})(Genre || (Genre = {}));
-var Type;
+})(exports.Genre || (exports.Genre = {}));
+
 (function (Type) {
     Type["Manga"] = "Manga";
     Type["Manhwa"] = "Manhwa";
@@ -344,8 +350,19 @@ var Type;
     Type["Comic"] = "Comic";
     Type["Artbook"] = "Artbook";
     Type["Other"] = "Other";
-})(Type || (Type = {}));
-var FilterCondition;
+})(exports.Type || (exports.Type = {}));
+
+(function (GenreCondition) {
+    GenreCondition[GenreCondition["And"] = 0] = "And";
+    GenreCondition[GenreCondition["Or"] = 1] = "Or";
+})(exports.GenreCondition || (exports.GenreCondition = {}));
+
+(function (FilterStatus) {
+    FilterStatus["Ongoing"] = "Ongoing";
+    FilterStatus["Complete"] = "Complete";
+    FilterStatus["Cancelled"] = "Cancelled";
+})(exports.FilterStatus || (exports.FilterStatus = {}));
+
 (function (FilterCondition) {
     FilterCondition[FilterCondition["Equal"] = 0] = "Equal";
     FilterCondition[FilterCondition["Contains"] = 1] = "Contains";
@@ -356,18 +373,7 @@ var FilterCondition;
     FilterCondition[FilterCondition["Greater"] = 6] = "Greater";
     FilterCondition[FilterCondition["LessThan"] = 7] = "LessThan";
     FilterCondition[FilterCondition["GreaterThan"] = 8] = "GreaterThan";
-})(FilterCondition || (FilterCondition = {}));
-var GenreCondition;
-(function (GenreCondition) {
-    GenreCondition[GenreCondition["And"] = 0] = "And";
-    GenreCondition[GenreCondition["Or"] = 1] = "Or";
-})(GenreCondition || (GenreCondition = {}));
-var FilterStatus;
-(function (FilterStatus) {
-    FilterStatus["Ongoing"] = "Ongoing";
-    FilterStatus["Complete"] = "Complete";
-    FilterStatus["Cancelled"] = "Cancelled";
-})(FilterStatus || (FilterStatus = {}));
+})(exports.FilterCondition || (exports.FilterCondition = {}));
 
 var regexLastDigit = /\d+(\.\d{1,3})?$/;
 var regexFirstDigit = /\d+(\.\d{1,3})?/;
@@ -436,7 +442,7 @@ var procFilter = function (condition, def) {
                 var inGenres = genre;
                 search.genre = {
                     inGenres: inGenres,
-                    condition: GenreCondition.And,
+                    condition: exports.GenreCondition.And,
                 };
             }
             if (typeof name === "string") {
@@ -1227,8 +1233,8 @@ var Parser = /** @class */ (function () {
         var authors = li[4].children.filter(function (x) { return x.name === "a"; }).map(function (x) { return x.lastChild.nodeValue; });
         var artists = li[5].children.filter(function (x) { return x.name === "a"; }).map(function (x) { return x.lastChild.nodeValue; });
         var status = li[6].children[0].next.nodeValue.trim() === "Ongoing"
-            ? FilterStatus.Ongoing
-            : FilterStatus.Complete;
+            ? exports.FilterStatus.Ongoing
+            : exports.FilterStatus.Complete;
         var synopsis = li.reverse()[0].children.reverse().find(function (x) { return x.name == "p"; }).children[0].nodeValue;
         var licensed = false;
         if ($("#main > article > div > div.manga_detail > div.detail_list > div > strong").length > 0) {
@@ -1347,79 +1353,79 @@ var Helper = /** @class */ (function () {
 }());
 
 var Supported = {};
-Supported[Genre.Action] = Genre.Action;
-Supported[Genre.Adult] = Genre.Adult;
-Supported[Genre.Adventure] = Genre.Adventure;
-Supported[Genre.Comedy] = Genre.Comedy;
-Supported[Genre.Doujinshi] = Genre.Doujinshi;
-Supported[Genre.Drama] = Genre.Drama;
-Supported[Genre.Ecchi] = Genre.Ecchi;
-Supported[Genre.Fantasy] = Genre.Fantasy;
-Supported[Genre.GenderBender] = Genre.GenderBender;
-Supported[Genre.Harem] = Genre.Harem;
-Supported[Genre.Historical] = Genre.Historical;
-Supported[Genre.Horror] = Genre.Horror;
-Supported[Genre.Josei] = Genre.Josei;
-Supported[Genre.Lolicon] = Genre.Lolicon;
-Supported[Genre.MartialArts] = Genre.MartialArts;
-Supported[Genre.Mature] = Genre.Mature;
-Supported[Genre.Mecha] = Genre.Mecha;
-Supported[Genre.Mystery] = Genre.Mystery;
-Supported[Genre.Oneshot] = Genre.Oneshot;
-Supported[Genre.Psychological] = Genre.Psychological;
-Supported[Genre.Romance] = Genre.Romance;
-Supported[Genre.SchoolLife] = Genre.SchoolLife;
-Supported[Genre.SciFi] = Genre.SciFi;
-Supported[Genre.Seinen] = Genre.Seinen;
-Supported[Genre.Shotacon] = Genre.Shotacon;
-Supported[Genre.Shoujo] = Genre.Shoujo;
-Supported[Genre.ShoujoAi] = Genre.ShoujoAi;
-Supported[Genre.Shounen] = Genre.Shounen;
-Supported[Genre.ShounenAi] = Genre.ShounenAi;
-Supported[Genre.SliceOfLife] = Genre.SliceOfLife;
-Supported[Genre.Smut] = Genre.Smut;
-Supported[Genre.Sports] = Genre.Sports;
-Supported[Genre.Supernatural] = Genre.Supernatural;
-Supported[Genre.Tragedy] = Genre.Tragedy;
-Supported[Genre.Yaoi] = Genre.Yaoi;
-Supported[Genre.Yuri] = Genre.Yuri;
+Supported[exports.Genre.Action] = exports.Genre.Action;
+Supported[exports.Genre.Adult] = exports.Genre.Adult;
+Supported[exports.Genre.Adventure] = exports.Genre.Adventure;
+Supported[exports.Genre.Comedy] = exports.Genre.Comedy;
+Supported[exports.Genre.Doujinshi] = exports.Genre.Doujinshi;
+Supported[exports.Genre.Drama] = exports.Genre.Drama;
+Supported[exports.Genre.Ecchi] = exports.Genre.Ecchi;
+Supported[exports.Genre.Fantasy] = exports.Genre.Fantasy;
+Supported[exports.Genre.GenderBender] = exports.Genre.GenderBender;
+Supported[exports.Genre.Harem] = exports.Genre.Harem;
+Supported[exports.Genre.Historical] = exports.Genre.Historical;
+Supported[exports.Genre.Horror] = exports.Genre.Horror;
+Supported[exports.Genre.Josei] = exports.Genre.Josei;
+Supported[exports.Genre.Lolicon] = exports.Genre.Lolicon;
+Supported[exports.Genre.MartialArts] = exports.Genre.MartialArts;
+Supported[exports.Genre.Mature] = exports.Genre.Mature;
+Supported[exports.Genre.Mecha] = exports.Genre.Mecha;
+Supported[exports.Genre.Mystery] = exports.Genre.Mystery;
+Supported[exports.Genre.Oneshot] = exports.Genre.Oneshot;
+Supported[exports.Genre.Psychological] = exports.Genre.Psychological;
+Supported[exports.Genre.Romance] = exports.Genre.Romance;
+Supported[exports.Genre.SchoolLife] = exports.Genre.SchoolLife;
+Supported[exports.Genre.SciFi] = exports.Genre.SciFi;
+Supported[exports.Genre.Seinen] = exports.Genre.Seinen;
+Supported[exports.Genre.Shotacon] = exports.Genre.Shotacon;
+Supported[exports.Genre.Shoujo] = exports.Genre.Shoujo;
+Supported[exports.Genre.ShoujoAi] = exports.Genre.ShoujoAi;
+Supported[exports.Genre.Shounen] = exports.Genre.Shounen;
+Supported[exports.Genre.ShounenAi] = exports.Genre.ShounenAi;
+Supported[exports.Genre.SliceOfLife] = exports.Genre.SliceOfLife;
+Supported[exports.Genre.Smut] = exports.Genre.Smut;
+Supported[exports.Genre.Sports] = exports.Genre.Sports;
+Supported[exports.Genre.Supernatural] = exports.Genre.Supernatural;
+Supported[exports.Genre.Tragedy] = exports.Genre.Tragedy;
+Supported[exports.Genre.Yaoi] = exports.Genre.Yaoi;
+Supported[exports.Genre.Yuri] = exports.Genre.Yuri;
 var correctName = {};
-correctName[Genre.Adult] = Genre.Adult;
-correctName[Genre.Action] = Genre.Action;
-correctName[Genre.Adventure] = Genre.Adventure;
-correctName[Genre.Comedy] = Genre.Comedy;
-correctName[Genre.Doujinshi] = Genre.Doujinshi;
-correctName[Genre.Drama] = Genre.Drama;
-correctName[Genre.Ecchi] = Genre.Ecchi;
-correctName[Genre.Fantasy] = Genre.Fantasy;
-correctName[Genre.GenderBender] = "Gender Bender";
-correctName[Genre.Harem] = Genre.Harem;
-correctName[Genre.Historical] = Genre.Historical;
-correctName[Genre.Horror] = Genre.Horror;
-correctName[Genre.Josei] = Genre.Josei;
-correctName[Genre.Lolicon] = Genre.Lolicon;
-correctName[Genre.MartialArts] = "Martial Arts";
-correctName[Genre.Mature] = Genre.Mature;
-correctName[Genre.Mecha] = Genre.Mecha;
-correctName[Genre.Mystery] = Genre.Mystery;
-correctName[Genre.Oneshot] = "One Shot";
-correctName[Genre.Psychological] = Genre.Psychological;
-correctName[Genre.Romance] = Genre.Romance;
-correctName[Genre.SchoolLife] = Genre.SchoolLife;
-correctName[Genre.SciFi] = "Sci-fi";
-correctName[Genre.Seinen] = Genre.Seinen;
-correctName[Genre.Shotacon] = Genre.Shotacon;
-correctName[Genre.Shoujo] = Genre.Shoujo;
-correctName[Genre.ShoujoAi] = "Shoujo Ai";
-correctName[Genre.Shounen] = Genre.Shounen;
-correctName[Genre.ShounenAi] = "Shounen Ai";
-correctName[Genre.SliceOfLife] = "Slice of Life";
-correctName[Genre.Smut] = Genre.Smut;
-correctName[Genre.Sports] = Genre.Sports;
-correctName[Genre.Supernatural] = Genre.Supernatural;
-correctName[Genre.Tragedy] = Genre.Tragedy;
-correctName[Genre.Yaoi] = Genre.Yaoi;
-correctName[Genre.Yuri] = Genre.Yuri;
+correctName[exports.Genre.Adult] = exports.Genre.Adult;
+correctName[exports.Genre.Action] = exports.Genre.Action;
+correctName[exports.Genre.Adventure] = exports.Genre.Adventure;
+correctName[exports.Genre.Comedy] = exports.Genre.Comedy;
+correctName[exports.Genre.Doujinshi] = exports.Genre.Doujinshi;
+correctName[exports.Genre.Drama] = exports.Genre.Drama;
+correctName[exports.Genre.Ecchi] = exports.Genre.Ecchi;
+correctName[exports.Genre.Fantasy] = exports.Genre.Fantasy;
+correctName[exports.Genre.GenderBender] = "Gender Bender";
+correctName[exports.Genre.Harem] = exports.Genre.Harem;
+correctName[exports.Genre.Historical] = exports.Genre.Historical;
+correctName[exports.Genre.Horror] = exports.Genre.Horror;
+correctName[exports.Genre.Josei] = exports.Genre.Josei;
+correctName[exports.Genre.Lolicon] = exports.Genre.Lolicon;
+correctName[exports.Genre.MartialArts] = "Martial Arts";
+correctName[exports.Genre.Mature] = exports.Genre.Mature;
+correctName[exports.Genre.Mecha] = exports.Genre.Mecha;
+correctName[exports.Genre.Mystery] = exports.Genre.Mystery;
+correctName[exports.Genre.Oneshot] = "One Shot";
+correctName[exports.Genre.Psychological] = exports.Genre.Psychological;
+correctName[exports.Genre.Romance] = exports.Genre.Romance;
+correctName[exports.Genre.SchoolLife] = exports.Genre.SchoolLife;
+correctName[exports.Genre.SciFi] = "Sci-fi";
+correctName[exports.Genre.Seinen] = exports.Genre.Seinen;
+correctName[exports.Genre.Shotacon] = exports.Genre.Shotacon;
+correctName[exports.Genre.Shoujo] = exports.Genre.Shoujo;
+correctName[exports.Genre.ShoujoAi] = "Shoujo Ai";
+correctName[exports.Genre.Shounen] = exports.Genre.Shounen;
+correctName[exports.Genre.ShounenAi] = "Shounen Ai";
+correctName[exports.Genre.SliceOfLife] = "Slice of Life";
+correctName[exports.Genre.Smut] = exports.Genre.Smut;
+correctName[exports.Genre.Sports] = exports.Genre.Sports;
+correctName[exports.Genre.Supernatural] = exports.Genre.Supernatural;
+correctName[exports.Genre.Tragedy] = exports.Genre.Tragedy;
+correctName[exports.Genre.Yaoi] = exports.Genre.Yaoi;
+correctName[exports.Genre.Yuri] = exports.Genre.Yuri;
 var processFilter = function (mangafilter) {
     var filter = procFilter(mangafilter);
     var search = filter.search, page = filter.page;
@@ -1488,9 +1494,9 @@ var processFilter = function (mangafilter) {
 };
 function resolveType(type) {
     switch (type) {
-        case Type.Manga:
+        case exports.Type.Manga:
             return "rl";
-        case Type.Manhwa:
+        case exports.Type.Manhwa:
             return "lr";
         default:
             return null;
@@ -1498,9 +1504,9 @@ function resolveType(type) {
 }
 function resolveStatus(status) {
     switch (status) {
-        case FilterStatus.Ongoing:
+        case exports.FilterStatus.Ongoing:
             return 0;
-        case FilterStatus.Complete:
+        case exports.FilterStatus.Complete:
             return 1;
         default:
             return null;
@@ -1508,17 +1514,17 @@ function resolveStatus(status) {
 }
 function searchMethod(condition) {
     switch (condition) {
-        case FilterCondition.Contains:
+        case exports.FilterCondition.Contains:
             return "cw";
-        case FilterCondition.StartsWith:
+        case exports.FilterCondition.StartsWith:
             return "bw";
-        case FilterCondition.EndsWith:
+        case exports.FilterCondition.EndsWith:
             return "ew";
-        case FilterCondition.Equal:
+        case exports.FilterCondition.Equal:
             return "eq";
-        case FilterCondition.LessThan:
+        case exports.FilterCondition.LessThan:
             return "lt";
-        case FilterCondition.GreaterThan:
+        case exports.FilterCondition.GreaterThan:
             return "gt";
         default:
             return "cw";
@@ -1534,10 +1540,11 @@ function inOutGenre(genre, inGenre, outGenre) {
     return 0;
 }
 
+var SITES = exports.gin.SITES;
 var MangaHere = /** @class */ (function (_super) {
     __extends(MangaHere, _super);
     function MangaHere() {
-        return _super.call(this, "MangaHere", config, new Parser(), new Helper()) || this;
+        return _super.call(this, SITES.MANGAHERE, config, new Parser(), new Helper()) || this;
     }
     MangaHere.prototype.filter = function (filter) {
         return __awaiter(this, void 0, void 0, function () {
