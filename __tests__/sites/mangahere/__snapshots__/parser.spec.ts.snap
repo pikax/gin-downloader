@@ -81269,6 +81269,13 @@ Array [
 ]
 `;
 
+exports[`mangahere parser offline should get one page when search 'gintama' 1`] = `
+Object {
+  "page": 1,
+  "total": 1,
+}
+`;
+
 exports[`mangahere parser offline should get the first page when search 'gin' 1`] = `
 Object {
   "page": 1,
@@ -81280,6 +81287,13 @@ exports[`mangahere parser offline should get the last page when search 'gin' 1`]
 Object {
   "page": 6,
   "total": 6,
+}
+`;
+
+exports[`mangahere parser offline should get the search without query 1`] = `
+Object {
+  "page": 1,
+  "total": 140,
 }
 `;
 
@@ -85452,6 +85466,52 @@ Object {
                             To add to his troubles, oppressive aliens have moved in to invade.
                             Gintoki lives with Kagura and Shinpachi, taking on odd jobs to make the world a better place... and to pay their rent. ",
   "title": "Gintama",
+}
+`;
+
+exports[`mangahere parser offline should parse Psyren info 1`] = `
+Object {
+  "artists": Array [
+    "Iwashiro Toshiaki",
+  ],
+  "authors": Array [
+    "Iwashiro Toshiaki",
+  ],
+  "genres": Array [
+    "Action",
+    "Adventure",
+    "Drama",
+    "Romance",
+    "School Life",
+    "Sci-fi",
+    "Shounen",
+    "Supernatural",
+  ],
+  "image": "https://mangatown.secure.footprint.net/store/manga/1276/cover.jpg?token=2d5e3aa5de774d6f1653468202f17f6ffcc8c9ee&ttl=1523815200&v=1435916860",
+  "licensed": false,
+  "status": "Complete",
+  "synonyms": Array [
+    Object {
+      "language": "",
+      "title": "サイレン",
+    },
+    Object {
+      "language": "",
+      "title": "ＰＳＹЯＥＮ",
+    },
+    Object {
+      "language": "",
+      "title": "PSYREN-サイレン-",
+    },
+    Object {
+      "language": "",
+      "title": "سايرين",
+    },
+  ],
+  "synopsis": "PSYЯEN follows the adventures of Ageha Yoshina, a high school student who is chosen by Nemesis Q as a participant in the Psyren games.
+                            The games take place in a world known initially as Psyren, which is revealed to be the real world a decade in the future.
+                            Ageha and his friends attempt to alter the future and save the world from becoming Psyren. ",
+  "title": "Psyren",
 }
 `;
 

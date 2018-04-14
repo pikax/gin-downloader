@@ -2,20 +2,19 @@ import * as url from "url";
 import {LicencedError, ImageNotFoundError} from "../../util/error";
 
 import {lastDigit} from "../../util/string";
-import {IMangaParser, MangaRequestResult} from "../interface";
+import {IGenreSite, IMangaConfig, IMangaParser, MangaRequestResult} from "../interface";
 import {FilteredResults, MangaSource} from "../../filter";
 import {Chapter, MangaInfo, Synonym} from "../../interface";
 import {sanitizeChildren} from "../../util/cheerio";
 import {FilterStatus} from "../../enum";
 
 
-import {config} from "../mangahereOld/config";
 import {ILogger} from "../../util/logger";
 
 
 export class MangahereParser implements IMangaParser {
 
-    constructor(private _logger: ILogger) {
+    constructor(private _logger: ILogger, private _config: IMangaConfig, private _genreSite: IGenreSite) {
     }
 
 
@@ -108,7 +107,7 @@ export class MangahereParser implements IMangaParser {
         const li: CheerioElement[] = $(".detail_topText > li").toArray();
 
         const synonyms: Synonym[] = li[2].lastChild.nodeValue.split("; ").map(resolveSynonym);
-        const genres = li[3].lastChild.nodeValue.split(", ");
+        const genres = li[3].lastChild.nodeValue.split(", ").map(x => this._genreSite.fromSiteGenre(x));
 
         const authors = li[4].children.filter(x => x.name === "a").map(x => x.lastChild.nodeValue);
         const artists = li[5].children.filter(x => x.name === "a").map(x => x.lastChild.nodeValue);
@@ -171,7 +170,7 @@ export class MangahereParser implements IMangaParser {
             const result = {
                 chap_number,
                 name,
-                src: url.resolve(config.site, href),
+                src: url.resolve(this._config.site, href),
                 dateAdded: date
             };
 
@@ -193,7 +192,7 @@ export class MangahereParser implements IMangaParser {
             this._logger.debug("Is licensed %s", licensed);
             this._logger.verbose("Is licensed %s", licensed);
 
-            throw new LicencedError(config.name, licensed);
+            throw new LicencedError(this._config.name, licensed);
         }
         const elements = $("body > section.readpage_top > div.go_page.clearfix > span > select > option").toArray();
 
@@ -231,7 +230,7 @@ export class MangahereParser implements IMangaParser {
         if (!match) {
             this._logger.debug("Image not found, please check if the url is correct and if it works on your browser.");
             this._logger.verbose("Image not found, please check if the url is correct and if it works on your browser.");
-            throw new ImageNotFoundError(config.name, uri, "ADB0");
+            throw new ImageNotFoundError(this._config.name, uri, "ADB0");
         }
 
         const result = match[1];

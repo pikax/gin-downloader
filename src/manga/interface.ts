@@ -5,6 +5,7 @@ import {CheerioStatic} from "cheerio";
 import * as cheerio from "cheerio";
 
 import * as url from "url";
+import {Genre} from "../enum";
 
 
 export interface IMangaLogin {
@@ -149,9 +150,17 @@ export interface IMangaConfig {
 
 export enum MangaSite {
     MangaHere = "mangahere",
-
 }
 
+
+export interface IGenreSite {
+    toSiteGenre(genre: Genre): string;
+    fromSiteGenre(genre: string): Genre;
+
+    isSupported(genre: Genre): boolean;
+
+    supported(): Genre[];
+}
 
 
 
