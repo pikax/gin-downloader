@@ -8,7 +8,7 @@ import results from "./_results";
 
 import {parser} from "../../../src/sites/mangahere/parser";
 import {helper} from "../../../src/sites/mangahere/names";
-import {parseDoc} from "../../../src/common/helper";
+import {parseDoc} from "../../../src/old v2/common/helper";
 import {readFileSync} from "fs";
 
 describe("MangaHere offline", () => {

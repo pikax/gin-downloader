@@ -142,7 +142,7 @@ describe("MangaFox live", function () {
                 case 0:
                     if (common_1._MOCK_) {
                         nock(config_1.config.site)
-                            .get("/Manga/my-stupid-name")
+                            .get("/IManga/my-stupid-name")
                             .reply(404);
                     }
                     name = "my stupid name";
@@ -170,7 +170,7 @@ describe("MangaFox live", function () {
                 case 0:
                     if (common_1._MOCK_) {
                         nock(config_1.config.site)
-                            .get("/Manga/Gintamass")
+                            .get("/IManga/Gintamass")
                             .reply(404);
                     }
                     name = "Gintamass";

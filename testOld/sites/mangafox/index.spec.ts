@@ -86,7 +86,7 @@ describe("MangaFox live", () => {
   it("should not find manga by name", async () => {
     if (_MOCK_) {
       nock(config.site)
-        .get("/Manga/my-stupid-name")
+        .get("/IManga/my-stupid-name")
         .reply(404);
     }
 
@@ -108,7 +108,7 @@ describe("MangaFox live", () => {
   it("should not find get chapters", async () => {
     if (_MOCK_) {
       nock(config.site)
-        .get("/Manga/Gintamass")
+        .get("/IManga/Gintamass")
         .reply(404);
     }
 

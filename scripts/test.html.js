@@ -105,8 +105,8 @@ const byCFRequest = [
     pages : [
       {path:"kissmanga/html/mangas.html", uri: "http://kissmanga.com/AdvanceSearch", args: "mangaName=&authorArtist=&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status="},
       {path:"kissmanga/html/latest.html", uri: "http://kissmanga.com/MangaList/LatestUpdate"},
-      {path:"kissmanga/html/Gintama.html", uri: "http://kissmanga.com/Manga/Gintama"},
-      {path:"kissmanga/html/Lesson-042.html", uri: "http://kissmanga.com/Manga/Gintama/Lesson-042?id=288316"},
+      {path:"kissmanga/html/Gintama.html", uri: "http://kissmanga.com/IManga/Gintama"},
+      {path:"kissmanga/html/Lesson-042.html", uri: "http://kissmanga.com/IManga/Gintama/Lesson-042?id=288316"},
       {path:"kissmanga/html/ca.js", uri: "http://kissmanga.com/Scripts/ca.js"},
       {path:"kissmanga/html/lo.js", uri: "http://kissmanga.com/Scripts/lo.js"},
       {path:"kissmanga/html/filter/byName.html", uri: "http://kissmanga.com/AdvanceSearch", args: "mangaName=Gintama&authorArtist=&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&genres=0&status="},

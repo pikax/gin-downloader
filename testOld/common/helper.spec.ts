@@ -7,7 +7,7 @@ import "./../common";
 
 
 import {GinRequest} from "../../src/request";
-import {parseDoc} from "../../src/common/helper";
+import {parseDoc} from "../../src/old v2/common/helper";
 import {strategy} from "../../src/request/requestRetryStrategy";
 import {strategy as cfStrategy} from "../../src/request/requestCloudFareStrategy";
 import {_MOCK_} from "../common";

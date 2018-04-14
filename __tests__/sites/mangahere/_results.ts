@@ -1,23 +1,19 @@
-/**
- * Created by rodriguesc on 02/03/2017.
- */
-
 let manga = {
     image: "mhcdn.net/store/manga/551/cover.jpg",
     title: "Gintama",
     synonyms: [
-        {title: "กินทามะ", language: 'en'},
-        {title: "銀魂", language: 'en'},
-        {title: "银魂", language: 'en'},
-        {title: "긴타마", language: 'en'},
-        {title: "은혼", language: 'en'},
-        {title: "Gin Tama", language: 'en'},
-        {title: "Silver Soul", language: 'en'},
-        {title: "غينتاما - الروح الفضيه", language: 'en'},
-        {title: "Сребърна душа (Bulgarian)", language: 'en'},
-        {title: "Gümüş Ruh (Turkish)", language: 'en'},
-        {title: "Jiwa Perak", language: 'en'},
-        {title: "Серебряная душа (Russian)", language: 'en'}],
+        {title: "กินทามะ", language: "en"},
+        {title: "銀魂", language: "en"},
+        {title: "银魂", language: "en"},
+        {title: "긴타마", language: "en"},
+        {title: "은혼", language: "en"},
+        {title: "Gin Tama", language: "en"},
+        {title: "Silver Soul", language: "en"},
+        {title: "غينتاما - الروح الفضيه", language: "en"},
+        {title: "Сребърна душа (Bulgarian)", language: "en"},
+        {title: "Gümüş Ruh (Turkish)", language: "en"},
+        {title: "Jiwa Perak", language: "en"},
+        {title: "Серебряная душа (Russian)", language: "en"}],
     authors: ["Sorachi Hideaki"],
     artists: ["Sorachi Hideaki"],
     genres:

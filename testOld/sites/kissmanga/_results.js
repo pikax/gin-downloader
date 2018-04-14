@@ -37,7 +37,7 @@ var manga = { image: "http://kissmanga.com/Uploads/Etc/8-30-2011/252808217224747
     ],
     authors: ["Hideaki Sorachi"],
     artists: ["Hideaki Sorachi"],
-    genres: ["Action", "Comedy", "Manga", "Sci-fi", "Shounen"],
+    genres: ["Action", "Comedy", "IManga", "Sci-fi", "Shounen"],
     synopsis: "The samurai didn\'t stand a chance. First, the aliens invaded Japan. Next, they took all the jobs. And then they confiscated everyone\'s swords. So what does a hotheaded former samurai like Sakata \"Gin\" Gintoki do to make ends meet? Take any odd job that comes his way, even if it means losing his dignity. ",
     status: "Ongoing",
     views: "7,108,578" };

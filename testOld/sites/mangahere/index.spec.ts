@@ -84,7 +84,7 @@ describe("MangaHere live", () => {
   it("should not find manga by name", async () => {
     if (_MOCK_) {
       nock(config.site)
-        .get("/Manga/my-stupid-name")
+        .get("/IManga/my-stupid-name")
         .reply(404);
     }
 

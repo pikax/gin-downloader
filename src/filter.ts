@@ -1,6 +1,4 @@
-import { FilterStatus, Genre, GenreCondition, Type} from "./enum";
-import {gin} from "./interface";
-import MangaSource = gin.MangaSource;
+import {FilterCondition, FilterStatus, Genre, GenreCondition, Type} from "./enum";
 
 export type GenreCollection = Array<Genre>;
 
@@ -32,13 +30,13 @@ export type ArtistFilter = NameFilter;
 export type ReleaseFilter = ValueFilter;
 
 export interface Search {
-    name?: NameFilter;
+    name?: NameFilter | string;
     author?: AuthorFilter | string;
     artist?: ArtistFilter | string;
     status?: FilterStatus | string;
     released?: ReleaseFilter | number;
     genre?: GenreFilter | GenreCollection;
-    rating?: RatingFilter;
+    rating?: RatingFilter| number;
     mature?: boolean;
 
     type?: Type;
@@ -53,7 +51,7 @@ export interface MangaFilter {
     page?: number;
 }
 
-export type MangaSource = gin.MangaSource;
+export type MangaSource = MangaSource;
 
 export interface FilteredResults {
     results: MangaSource[];

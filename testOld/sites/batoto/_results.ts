@@ -18,7 +18,7 @@ let manga = { image: "http://img.bato.to/forums/uploads/501378b77edcdef486ef2260
     ],
   synopsis: "The story focuses on an eccentric samurai, Gintoki Sakata, his (partial) apprentice Shinpachi Shimura, and a teenage alien girl who's from one of the strongest races in existence: Kagura. All three are \"free-lancers\" search for work in order to pay the monthly rent, which usually goes unpaid anyway. The story takes place in the Edo Period, but instead of the Europeans invading in the late 1860s they are invaded by aliens, which they call Amanto.",
   status: "Ongoing",
-  type: "Manga (Japanese)" };
+  type: "IManga (Japanese)" };
 
 
 

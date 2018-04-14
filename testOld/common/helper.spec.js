@@ -41,7 +41,7 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./../common");
 var request_1 = require("../../src/request");
-var helper_1 = require("../../src/common/helper");
+var helper_1 = require("../../src/old v2/common/helper");
 var requestRetryStrategy_1 = require("../../src/request/requestRetryStrategy");
 var requestCloudFareStrategy_1 = require("../../src/request/requestCloudFareStrategy");
 var common_1 = require("../common");

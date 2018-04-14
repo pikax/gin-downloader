@@ -3,7 +3,7 @@
  */
 
 
-import {MangaSite} from "../../src/common/mangasite";
+import {MangaSite} from "../../src/old v2/common/mangasite";
 import {Site, SiteConfig} from "../../src/declarations";
 
 import {Parser} from "./SiteParser";

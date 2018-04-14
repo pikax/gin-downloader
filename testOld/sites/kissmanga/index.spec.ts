@@ -50,7 +50,7 @@ describe("KissManga live", () => {
     // info
     if (_MOCK_) {
       nock(config.site)
-        .get("/Manga/Gintama")
+        .get("/IManga/Gintama")
         .replyWithFile(200, __dirname + "/html/Gintama.html");
     }
 
@@ -101,7 +101,7 @@ describe("KissManga live", () => {
     // not find my stupid name
     if (_MOCK_) {
       nock(config.site)
-        .get("/Manga/my-stupid-name")
+        .get("/IManga/my-stupid-name")
         .reply(404);
     }
 
@@ -124,7 +124,7 @@ describe("KissManga live", () => {
     // not find Gintamass
     if (_MOCK_) {
       nock(config.site)
-        .get("/Manga/Gintamass")
+        .get("/IManga/Gintamass")
         .reply(404);
     }
 
@@ -144,7 +144,7 @@ describe("KissManga live", () => {
     // chapters
     if (_MOCK_) {
       nock(config.site)
-        .get("/Manga/Gintama")
+        .get("/IManga/Gintama")
         .replyWithFile(200, __dirname + "/html/Gintama.html");
     }
     let name = "Gintama";
@@ -165,7 +165,7 @@ describe("KissManga live", () => {
     // chapters
     if (_MOCK_) {
       nock(config.site)
-        .get("/Manga/Gintama")
+        .get("/IManga/Gintama")
         .replyWithFile(200, __dirname + "/html/Gintama.html");
     }
 
@@ -187,7 +187,7 @@ describe("KissManga live", () => {
     // chapters
     if (_MOCK_) {
       nock(config.site)
-        .get("/Manga/Gintama")
+        .get("/IManga/Gintama")
         .replyWithFile(200, __dirname + "/html/Gintama.html");
     }
 
@@ -203,11 +203,11 @@ describe("KissManga live", () => {
     /*start*/
     if (_MOCK_) {
       nock(config.site)
-        .get("/Manga/Gintama")
+        .get("/IManga/Gintama")
         .replyWithFile(200, __dirname + "/html/Gintama.html");
 
       nock(config.site)
-        .get("/Manga/Gintama/Lesson-042?id=288316")
+        .get("/IManga/Gintama/Lesson-042?id=288316")
         .replyWithFile(200, __dirname + "/html/Lesson-042.html");
       nock(config.site)
         .get("/Scripts/ca.js")
@@ -246,7 +246,7 @@ describe("KissManga live", () => {
       mangas.results.should.length(1);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://kissmanga.com/Manga/Gintama",
+        src : "http://kissmanga.com/IManga/Gintama",
         status : "Open"
       });
     });
@@ -269,7 +269,7 @@ describe("KissManga live", () => {
       mangas.results.should.length.gte(50);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://kissmanga.com/Manga/Gintama",
+        src : "http://kissmanga.com/IManga/Gintama",
         status : "Open"
       });
     });
@@ -293,7 +293,7 @@ describe("KissManga live", () => {
       mangas.results.should.length.gte(50);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://kissmanga.com/Manga/Gintama",
+        src : "http://kissmanga.com/IManga/Gintama",
         status : "Open"
       });
     });
@@ -319,7 +319,7 @@ describe("KissManga live", () => {
       mangas.results.should.length.lte(10);
       mangas.results.should.deep.include({
         name: "Gintama",
-        src : "http://kissmanga.com/Manga/Gintama",
+        src : "http://kissmanga.com/IManga/Gintama",
         status : "Open"
       });
     });
@@ -344,7 +344,7 @@ describe("KissManga live", () => {
       mangas.results.should.length.gte(1);
       mangas.results.should.deep.include({
         name: "History's Strongest Disciple Kenichi",
-        src : "http://kissmanga.com/Manga/History-s-Strongest-Disciple-Kenichi",
+        src : "http://kissmanga.com/IManga/History-s-Strongest-Disciple-Kenichi",
         status : "Open"
       });
     });

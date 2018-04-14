@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`filter util should sanitize filter: string 1`] = `
+Object {
+  "search": Object {
+    "name": Object {
+      "name": "gintama",
+    },
+  },
+}
+`;
+
+exports[`filter util should sanitize filter: user search  1`] = `
+Object {
+  "search": Object {
+    "artist": Object {
+      "name": "Sorachi Hideaki",
+    },
+    "author": Object {
+      "name": "Sorachi Hideaki",
+    },
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [
+        "Shounen",
+        "Action",
+      ],
+    },
+    "mature": true,
+    "name": Object {
+      "name": "gintama",
+    },
+    "rating": Object {
+      "from": 1,
+    },
+    "released": Object {
+      "value": 2000,
+    },
+    "status": "Ongoing",
+    "type": "Manga",
+  },
+}
+`;
