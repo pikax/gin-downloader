@@ -39,7 +39,11 @@ describe("filter util", () => {
     it("should sanitize filter: full", () => {
         const dirtyFilter: MangaFilter = {
             search: {
-                genre: {inGenres: [Genre.Shounen, Genre.Action], outGenres: [Genre.Comic], condition: GenreCondition.Or},
+                genre: {
+                    inGenres: [Genre.Shounen, Genre.Action],
+                    outGenres: [Genre.Comic],
+                    condition: GenreCondition.Or
+                },
                 artist: {name: "Sorachi Hideaki", condition: FilterCondition.Contains},
                 author: {name: "Sorachi Hideaki", condition: FilterCondition.Contains},
                 mature: true,
@@ -82,55 +86,153 @@ describe("filter util", () => {
             });
 
             it("by outGenre", () => {
-                expect(1).toBeFalsy();
+                const condition: any = {
+                    search: {
+                        genre: {
+                            outGenres: false
+                        }
+                    }
+                };
+                const fn = () => sanitizeFilter(condition);
+
+                expect(fn).not.toThrow();
+                expect(fn()).toMatchSnapshot();
             });
 
         });
 
         it("by Artist", () => {
-            expect(1).toBeFalsy();
+            const condition: any = {
+                search: {
+                    artist: true
+                }
+            };
+            const fn = () => sanitizeFilter(condition);
+
+            expect(fn).not.toThrow();
+            expect(fn()).toMatchSnapshot();
         });
 
         it("by Author", () => {
-            expect(1).toBeFalsy();
+            const condition: any = {
+                search: {
+                    author: true
+                }
+            };
+            const fn = () => sanitizeFilter(condition);
+
+            expect(fn).not.toThrow();
+            expect(fn()).toMatchSnapshot();
         });
 
         it("by Mature", () => {
-            expect(1).toBeFalsy();
+            const condition: any = {
+                search: {
+                    mature: {value: true}
+                }
+            };
+            const fn = () => sanitizeFilter(condition);
+
+            expect(fn).not.toThrow();
+            expect(fn()).toMatchSnapshot();
         });
 
         describe("Name", () => {
             it("by Name", () => {
-                expect(1).toBeFalsy();
+                const condition: any = {
+                    search: {
+                        name: {name: {test: "ttt"}}
+                    }
+                };
+                const fn = () => sanitizeFilter(condition);
+
+                expect(fn).not.toThrow();
+                expect(fn()).toMatchSnapshot();
             });
 
             it("by Name condition", () => {
-                expect(1).toBeFalsy();
+                const condition: any = {
+                    search: {
+                        name: {condition: {test: "ttt"}}
+                    }
+                };
+                const fn = () => sanitizeFilter(condition);
+
+                expect(fn).not.toThrow();
+                expect(fn()).toMatchSnapshot();
             });
         });
 
 
         describe("Rating", () => {
             it("by Rating", () => {
-                expect(1).toBeFalsy();
+                const condition: any = {
+                    search: {
+                        rating: "NaN"
+                    }
+                };
+                const fn = () => sanitizeFilter(condition);
+
+                expect(fn).not.toThrow();
+                expect(fn()).toMatchSnapshot();
             });
             it("by Rating from", () => {
-                expect(1).toBeFalsy();
+                const condition: any = {
+                    search: {
+                        rating: {from: "NaN", to: 5}
+                    }
+                };
+                const fn = () => sanitizeFilter(condition);
+
+                expect(fn).not.toThrow();
+                expect(fn()).toMatchSnapshot();
             });
             it("by Rating to", () => {
-                expect(1).toBeFalsy();
+                const condition: any = {
+                    search: {
+                        rating: {from: 4, to: "NaN"}
+                    }
+                };
+                const fn = () => sanitizeFilter(condition);
+
+                expect(fn).not.toThrow();
+                expect(fn()).toMatchSnapshot();
             });
         });
 
 
         it("by Released", () => {
-            expect(1).toBeFalsy();
+            const condition: any = {
+                search: {
+                    released: "BackIn2000"
+                }
+            };
+            const fn = () => sanitizeFilter(condition);
+
+            expect(fn).not.toThrow();
+            expect(fn()).toMatchSnapshot();
         });
         it("by Status", () => {
-            expect(1).toBeFalsy();
+            const condition: any = {
+                search: {
+                    status: "NotCancelled2"
+                }
+            };
+            const fn = () => sanitizeFilter(condition);
+
+            expect(fn).not.toThrow();
+            expect(fn()).toMatchSnapshot();
         });
         it("by type", () => {
-            expect(1).toBeFalsy();
+            const condition: any = {
+                search: {
+                    type: "InvalidType"
+                }
+            };
+            const fn = () => sanitizeFilter(condition);
+
+            expect(fn).not.toThrow();
+            expect(fn()).toMatchSnapshot();
         });
 
     });

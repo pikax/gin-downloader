@@ -160,7 +160,7 @@ const sanitizeName = (name: string | NameFilter): NameFilterCondition => {
         condition: FilterCondition.Contains
     };
 
-    if (name) {
+    if (typeof name === "string" || typeof  name === "object") {
         if (typeof name === "string") {
             result.name = name;
         } else {
@@ -183,20 +183,22 @@ const sanitizeRating = (rating: number | RatingFilter): RatingFilter => {
         if (typeof rating === "number") {
             result.from = rating;
         } else {
-            if (!!rating.from || !rating.to) {
-                const from = +rating.from;
-                const to = +rating.to;
+            if (typeof rating === "string" || typeof  rating === "object") {
+                if (!!rating.from || !rating.to) {
+                    const from = +rating.from;
+                    const to = +rating.to;
 
-                if (!isNaN(from)) {
-                    result.from = from;
-                }
-                if (!isNaN(to)) {
-                    result.to = to;
-                }
-            } else {
-                const n = +rating; // in case rating is a string convert to number
-                if (!isNaN(n)) {
-                    result.from = n;
+                    if (!isNaN(from)) {
+                        result.from = from;
+                    }
+                    if (!isNaN(to)) {
+                        result.to = to;
+                    }
+                } else {
+                    const n = +rating; // in case rating is a string convert to number
+                    if (!isNaN(n)) {
+                        result.from = n;
+                    }
                 }
             }
         }
@@ -208,24 +210,28 @@ const sanitizeRating = (rating: number | RatingFilter): RatingFilter => {
 
 const sanitizeReleased = (released: number | ReleaseFilter): ReleaseFilter => {
     const result: ReleaseFilter = {
-        value: undefined,
+        value: null,
         condition: FilterCondition.Equal
     };
 
-
     if (released) {
-        if (typeof released === "number") {
-            result.value = released;
-        } else {
-            if (released.value) {
-                const value = +released.value;
-
-                if (!isNaN(value)) {
-                    result.value = value;
-                }
+        if (typeof released === "number" || typeof released === "string") {
+            const value = +released;
+            if (!isNaN(value)) {
+                result.value = value;
             }
-            if (released.condition && FilterCondition[released.condition]) {
-                result.condition = released.condition;
+        } else {
+            if (typeof  released === "object") {
+                if (released.value) {
+                    const value = +released.value;
+
+                    if (!isNaN(value)) {
+                        result.value = value;
+                    }
+                }
+                if (released.condition && FilterCondition[released.condition]) {
+                    result.condition = released.condition;
+                }
             }
         }
     }

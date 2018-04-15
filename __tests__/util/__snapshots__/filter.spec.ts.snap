@@ -14,7 +14,221 @@ Object {
       "inGenres": Array [],
       "outGenres": Array [],
     },
-    "name": undefined,
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs Genre by outGenre 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs Name by Name 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs Name by Name condition 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs Rating by Rating 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+    "rating": Object {},
+  },
+}
+`;
+
+exports[`filter util invalid inputs Rating by Rating from 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+    "rating": Object {
+      "to": 5,
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs Rating by Rating to 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+    "rating": Object {
+      "from": 4,
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs by Artist 1`] = `
+Object {
+  "search": Object {
+    "artist": Object {
+      "condition": 1,
+      "name": "",
+    },
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs by Author 1`] = `
+Object {
+  "search": Object {
+    "author": Object {
+      "condition": 1,
+      "name": "",
+    },
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs by Mature 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs by Released 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+    "released": Object {
+      "condition": 0,
+      "value": null,
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs by Status 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
+  },
+}
+`;
+
+exports[`filter util invalid inputs by type 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": Object {
+      "condition": 1,
+      "name": "",
+    },
   },
 }
 `;
@@ -58,6 +272,7 @@ Object {
       "from": 1,
     },
     "released": Object {
+      "condition": 0,
       "value": 2000,
     },
     "status": "Ongoing",
