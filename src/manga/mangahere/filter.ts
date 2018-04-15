@@ -20,7 +20,7 @@ export class MangaHereFilter implements IFilterSource {
         let filterAuthor = null;
         let filterArtist = null;
         let filterReleased = null;
-        let status = null;
+        let status = "";
 
         let methodName = "cw";
         let methodAuthor = "cw";
@@ -41,7 +41,7 @@ export class MangaHereFilter implements IFilterSource {
             }
 
             if (search.status) {
-                status = resolveStatus(search.status) || status;
+                status = resolveStatus(search.status);
             }
 
             if (author) {
@@ -56,7 +56,7 @@ export class MangaHereFilter implements IFilterSource {
 
             if (released) {
                 filterReleased = released.value || filterReleased;
-                methodReleased = searchMethod(released.condition) || methodReleased;
+                methodReleased = yearSearchMethod(released.condition) || methodReleased;
             }
             if (genre) {
                 inGenres = genre.inGenres;
@@ -73,8 +73,8 @@ export class MangaHereFilter implements IFilterSource {
         const artist = `artist=${filterArtist || ""}`;
         const genreFilter = this._genreSite.supported().map(x => `genres%5B${this._genreSite.toSiteGenre(x).replace(/ /g, "+")}%5D=${inOutGenre(x, inGenres, outGenres)}`).join("&");
         const releaseMethod = `released_method=${methodReleased}`;
-        const release = `released=${filterReleased || ""}`;
-        const completed = `is_completed=${status || ""}`;
+        const release = `released=${filterReleased || ''}`;
+        const completed = `is_completed=${status}`;
 
         let advopts = "advopts=1"; // NOTE not sure what is this
 
@@ -83,8 +83,9 @@ export class MangaHereFilter implements IFilterSource {
         }
 
         return {
-            src: "/search.php?" + [nameMethod, mangaName,
-                type,
+            src: "/search.php?" + [type, nameMethod,
+                mangaName,
+
                 authorMethod, author,
                 artistMethod, artist,
                 genreFilter,
@@ -110,28 +111,64 @@ function resolveType(type: Type) {
 function resolveStatus(status: FilterStatus) {
     switch (status) {
         case FilterStatus.Ongoing:
-            return 0;
+            return "0";
         case FilterStatus.Complete:
-            return 1;
+            return "1";
         default:
-            return null;
+            return "";
     }
 }
 
-function searchMethod(condition: FilterCondition) {
+function nameSearchMethod(condition: FilterCondition) {
     switch (condition) {
-        case FilterCondition.Contains:
-            return "cw";
         case FilterCondition.StartsWith:
             return "bw";
         case FilterCondition.EndsWith:
             return "ew";
-        case FilterCondition.Equal:
-            return "eq";
+        case FilterCondition.Contains:
+        default:
+            return "cw";
+    }
+}
+
+
+function yearSearchMethod(condition: FilterCondition) {
+    switch (condition) {
         case FilterCondition.LessThan:
             return "lt";
         case FilterCondition.GreaterThan:
             return "gt";
+        case FilterCondition.Equal:
+        default:
+            return "eq";
+    }
+
+}
+
+function searchMethod(condition: FilterCondition) {
+    // switch (condition) {
+    //     case FilterCondition.Contains:
+    //         return "cw";
+    //     case FilterCondition.StartsWith:
+    //         return "bw";
+    //     case FilterCondition.EndsWith:
+    //         return "ew";
+    //     case FilterCondition.Equal:
+    //         return "eq";
+    //     case FilterCondition.LessThan:
+    //         return "lt";
+    //     case FilterCondition.GreaterThan:
+    //         return "gt";
+    //     default:
+    //         return "cw";
+    // }
+
+    switch (condition) {
+        case FilterCondition.StartsWith:
+            return "bw";
+        case FilterCondition.EndsWith:
+            return "ew";
+        case FilterCondition.Contains:
         default:
             return "cw";
     }
