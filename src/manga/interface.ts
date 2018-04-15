@@ -1,5 +1,5 @@
 import {Chapter, ChapterCollection, ILazy, IManga, IReadOnlyManga, MangaCollection, MangaInfo} from "../interface";
-import {filter, FilteredResults, MangaSource} from "../filter";
+import {filter, FilteredResults, MangaFilter, MangaSource} from "../filter";
 import FilterSupport = filter.FilterSupport;
 import {CheerioStatic} from "cheerio";
 import * as cheerio from "cheerio";
@@ -144,9 +144,18 @@ export interface IMangaConfig {
 
     readonly mangasUrl: string;
     readonly latestUrl: string;
-
 }
 
+
+// resolves the url and params a website
+export interface IFilterSource {
+    process(filter: FilterSupport): IFilterSourceResult;
+}
+
+export interface IFilterSourceResult {
+    src: string;
+    params?: any;
+}
 
 export enum MangaSite {
     MangaHere = "mangahere",
@@ -155,6 +164,7 @@ export enum MangaSite {
 
 export interface IGenreSite {
     toSiteGenre(genre: Genre): string;
+
     fromSiteGenre(genre: string): Genre;
 
     isSupported(genre: Genre): boolean;

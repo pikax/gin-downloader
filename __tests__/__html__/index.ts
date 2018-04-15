@@ -1,16 +1,7 @@
 import {resolve} from "path";
 import {readFileSync, exists, existsSync} from "fs";
 
-
-export function getFile(site: string, filename: string) {
-    const fp = resolve(__dirname, site, filename);
-
-    return readFileSync(fp);
-}
-
-
 export class OfflineFileProvider {
-
     private _dirPath: string;
 
     constructor(public readonly sitename: string) {
@@ -27,5 +18,4 @@ export class OfflineFileProvider {
 
         return readFileSync(fp).toString();
     }
-
 }

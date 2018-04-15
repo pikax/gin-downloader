@@ -1,9 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`filter util invalid inputs Genre by Genre 1`] = `
+Object {
+  "search": Object {},
+}
+`;
+
+exports[`filter util invalid inputs Genre by inGenre 1`] = `
+Object {
+  "search": Object {
+    "genre": Object {
+      "condition": 0,
+      "inGenres": Array [],
+      "outGenres": Array [],
+    },
+    "name": undefined,
+  },
+}
+`;
+
 exports[`filter util should sanitize filter: string 1`] = `
 Object {
   "search": Object {
     "name": Object {
+      "condition": 1,
       "name": "gintama",
     },
   },
@@ -14,9 +34,11 @@ exports[`filter util should sanitize filter: user search  1`] = `
 Object {
   "search": Object {
     "artist": Object {
+      "condition": 1,
       "name": "Sorachi Hideaki",
     },
     "author": Object {
+      "condition": 1,
       "name": "Sorachi Hideaki",
     },
     "genre": Object {
@@ -25,9 +47,11 @@ Object {
         "Shounen",
         "Action",
       ],
+      "outGenres": Array [],
     },
     "mature": true,
     "name": Object {
+      "condition": 1,
       "name": "gintama",
     },
     "rating": Object {
