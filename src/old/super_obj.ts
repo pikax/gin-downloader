@@ -1,7 +1,7 @@
-import {gin, InfoChapter, Site, ImageCollection, IChapter, GinImage} from "./interface";
+import {gin, InfoChapter, Site, ImageCollection, IChapter, GinImage} from "../interface";
 
 import ChapterSource = gin.ChapterSource;
-import {Lazy} from "./util";
+import {Lazy} from "../util";
 
 
 export class SuperObject {
