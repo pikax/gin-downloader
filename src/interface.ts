@@ -1,21 +1,12 @@
-import {MangaFilter} from "./filter";
 import {FilterStatus, Type} from "./enum";
-import {OptionsWithUrl, Options, Response, OptionsWithUri} from "request";
+import {Response, OptionsWithUri} from "request";
 import {
     IFilterSource,
     IGenreSite,
     IMangaConfig,
-    IMangaFilter,
     IMangaParser,
-    IMangaRequest,
     IMangaVisitor
 } from "./manga/interface";
-import {MangaHereConfig} from "./manga/mangahere/config";
-import {mangahereLogger} from "./manga/mangahere/logger";
-import {MangaHereVisitor} from "./manga/mangahere/visitor";
-import {MangahereParser} from "./manga/mangahere/parser";
-import {MangaHereFilter} from "./manga/mangahere/filter";
-import {MangaHereGenre} from "./manga/mangahere/genre";
 import {ILogger} from "./util/logger";
 import {IMangaRequestFactory} from "../build/manga/interface";
 import {Partial} from "rollup-plugin-typescript2/dist/partial";
@@ -165,7 +156,7 @@ export interface IChapterFactory {
 
 export interface IMangaObject {
 
-    info(): Promise<Info>;
+    info(): Promise<MangaInfo>;
 
     chapters(): Promise<IChapter[]>;
 
@@ -215,16 +206,48 @@ export interface IMangaRequestFactoryDependency {
 }
 
 
+export interface IChapterResolverDependency {
+    chapterResolver: IChapterResolver;
+}
+
+
+export interface IInfoResolverDependency {
+    infoResolver: IMangaInfoResolver;
+}
+
+export interface IImageResolverDependency {
+    imageResolver: IImageResolver;
+}
+
+
 export interface IMangaDependencies extends IMangaConfigDependency, IMangaLoggerDependency, IMangaGenreDependency, IMangaFilterDependency, IMangaParserDependency, IMangaVisitorDependency, IMangaRequestFactoryDependency {
 
 }
 
 export type RequestFactoryMangaDependencies = Partial<IMangaDependencies> & IMangaRequestFactoryDependency;
 
+
+export interface IMangaResolvers extends IInfoResolverDependency, IChapterResolverDependency, IImageResolverDependency {
+
+}
+
+export interface IMangaResolversFactory {
+    build(di: IMangaDependencies): IMangaResolvers;
+}
+
+
+export interface IMangaResolversFactoryDependency {
+    resolverFactory: IMangaResolversFactory;
+}
+
 export interface IMangaBuilder {
     build(di: RequestFactoryMangaDependencies): IMangaDependencies;
 }
 
+
+export interface IMangaBuilderDependency {
+    diBuilder: IMangaBuilder;
+}
 
 export type GinImagePromise = ILazy<Promise<GinImage>>;
 export type ChapterCollection = IChapter[];

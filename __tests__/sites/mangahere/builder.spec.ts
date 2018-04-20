@@ -1,9 +1,7 @@
 import {MangaHereBuilder} from "../../../src/manga/mangahere/builder";
-import {
-    RetryRequestFactory
-} from "../../../src/manga/interface";
 import {RequestRetryStrategy} from "../../../src/strategies/retry_strategy";
 import {RequestFactoryMangaDependencies} from "../../../src/interface";
+import {RetryRequestFactory} from "../../../src/factories/retryRequest";
 
 describe("MangaHere builder", function () {
     const requestFactory = new RetryRequestFactory(new RequestRetryStrategy());

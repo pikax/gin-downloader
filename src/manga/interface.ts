@@ -1,25 +1,15 @@
-///<reference path="../interface.ts"/>
 import {
     IChapter,
-    ChapterCollection,
-    ILazy,
-    IManga,
-    IReadOnlyManga,
     MangaCollection,
     MangaInfo,
-    IMangaExtended, IChapterExtended, IRequestStrategy, ImageCollection, ChapterSource, IMangaObject, Info
-} from "../interface";
-import {filter, FilteredResults, MangaFilter, MangaSource} from "../filter";
+    ChapterSource} from "../interface";
+import {filter, FilteredResults, MangaSource} from "../filter";
 import FilterSupport = filter.FilterSupport;
 import {CheerioStatic} from "cheerio";
 import * as cheerio from "cheerio";
 
-import co from "co";
-import * as url from "url";
 import {Genre} from "../enum";
 import {OptionsWithUri} from "request";
-import {ImageSource} from "../old v2/declarations";
-import {arrayify} from "tslint/lib/utils";
 
 
 export interface IMangaLogin {
@@ -143,283 +133,193 @@ export interface IGenreSite {
 }
 
 
-export class RetryRequestFactory implements IMangaRequestFactory {
 
-    constructor(private _requestStrategy: IRequestStrategy) {
-
-    }
-
-    request(options: OptionsWithUri): Promise<IMangaRequest> {
-        return this._requestStrategy.request(options)
-            .then(response => new MangaRequestResult(options.uri.toString(), response.body.toString()));
-    }
-
-}
-
-
-export class ConcurrentQueueRequestFactory implements IMangaRequestFactory {
-    constructor(private _requestStrategy: IRequestStrategy, private _queue: { add: (f) => any }) {
-
-    }
-
-    request(options: OptionsWithUri): Promise<IMangaRequest> {
-        return this._queue.add(() => this._requestStrategy.request(options)
-            .then(response => new MangaRequestResult(options.uri.toString(), response.body.toString())));
-    }
-
-
-}
-
-export class SuperMangaSite {
-
-    constructor(private _config: IMangaConfig, private _requestFactory: IMangaRequestFactory, private _parser: IMangaParser, private _visitor: IMangaVisitor) {
-
-    }
-
-    mangas(): Promise<IMangaExtended[]> {
-        return null;
-    }
-
-    async latest(): Promise<IChapterExtended> {
-        // const self = this;
-
-        // return co(function* () {
-        //
-        //     for (const c of self._visitor.latest()) {
-        //         yield *
-        //     }
-        //
-        // });
-
-
-        const it = await this.latestProc(this._config.latestUrl);
-
-        it.map(x => new SuperMangaChapter())
-
-
-    }
-
-    async latestProc(src: string) {
-        const result = await this._requestFactory.request({
-            uri: src
-        });
-
-        return [...this._parser.latest(result)];
-    }
-
-    /*
-        async* latest(): Promise<Iterable<IChapterExtended>> {
-            const latestUrl = this._config.latestUrl;
-
-            const result = await this._requestFactory.request({
-                uri: latestUrl
-            });
-
-
-            for (const c of this._parser.latest(result)) {
-
-                // yield new
-            }
-
-
-        }*/
-
-
-    async allImagesResolver(chapterSrc: string): Promise<ILazy<Promise<ImageSource>>[]> {
-        let href = url.resolve(this._config.site, chapterSrc).toString();
-        let result = await this._requestFactory.request({uri: href});
-
-        const paths = this._parser.imagesPaths(result);
-        paths.next(); // skip first, because we requested that already
-
-        let src = this._parser.image(result);
-
-        const promises = [
-            new Lazy<Promise<ImageSource>>(() => Promise.resolve({
-                name: url.parse(src).pathname.split("/").reverse()[0],
-                src
-            }))
-        ];
-
-
-        const promiseRequest = async (s): Promise<ImageSource> => {
-            const h = url.resolve(href, s).toString();
-            const result = await this._requestFactory.request({uri: h})
-            const src = this._parser.image(result);
-
-            return {
-                name: url.parse(src).pathname.split("/").reverse()[0],
-                src
-            };
-        };
-
-
-        for (const it of paths) {
-            promises.push(new Lazy<Promise<ImageSource>>(() => promiseRequest(it.src)));
-        }
-
-
-        return promises;
-    }
-
-
-    * allImagesResolver2(chapterSrc: string) {
-        const it = this._imagesResolver(chapterSrc);
-
-        it.next(); // first request
-
-        yield* it;
-    }
-
-    _request(href) {
-        return this._requestFactory.request({uri: href});
-    }
-
-
-    * _imagesResolver(chapterSrc: string) {
-        let href = url.resolve(this._config.site, chapterSrc).toString();
-        let result = yield this._requestFactory.request({uri: href});
-
-        const paths = this._parser.imagesPaths(result);
-        paths.next(); // skip first, because we requested that already
-
-        let src = this._parser.image(result);
-
-
-        yield new Lazy<Promise<ImageSource>>(() => Promise.resolve({
-            name: url.parse(src).pathname.split("/").reverse()[0],
-            src
-        }))
-
-
-        const promiseRequest = async (s): Promise<ImageSource> => {
-            const h = url.resolve(href, s).toString();
-            const result = await this._requestFactory.request({uri: h})
-            const src = this._parser.image(result);
-
-            return {
-                name: url.parse(src).pathname.split("/").reverse()[0],
-                src
-            };
-        };
-
-
-        for (const it of paths) {
-            yield new Lazy<Promise<ImageSource>>(() => promiseRequest(it.src));
-        }
-
-    }
-
-
-    //
-    // async* imagesResolver2(chapterSrc: string): Iterable<ImageSource> {
-    //     let href = url.resolve(this._config.site, chapterSrc).toString();
-    //
-    //     let result = await this._requestFactory.request({uri: href});
-    //
-    //     const paths = this._parser.imagesPaths(result);
-    //     paths.next(); // skip first, because we requested that already
-    //
-    //
-    //     let src = this._parser.image(result);
-    //
-    //     yield {
-    //         name: url.parse(src).pathname.split("/").reverse()[0],
-    //         src
-    //     };
-    //
-    //
-    //     for (const p of paths) {
-    //         const h = url.resolve(href, p.src).toString();
-    //         result = await this._requestFactory.request({uri: h})
-    //         src = this._parser.image(result);
-    //
-    //         yield {
-    //             name: url.parse(src).pathname.split("/").reverse()[0],
-    //             src
-    //         };
-    //     }
-    //
-    // }
-
-}
-
-class SuperMangaObject implements IMangaObject, IReadOnlyManga {
-
-    get name() {
-        return this._manga.name;
-    }
-
-    get status() {
-        return this._manga.status;
-    }
-
-    get mature() {
-        return this._manga.mature;
-    }
-
-    get image() {
-        return this._manga.image;
-    }
-
-
-    constructor(private _manga: IManga, private _parser: IMangaParser, private _config: IMangaConfig) {
-
-    }
-
-    chapters(): Promise<IChapter> {
-        return undefined;
-    }
-
-    images(chapter): Promise<ImageCollection> {
-        return undefined;
-    }
-
-    info(): Promise<Info> {
-        return undefined;
-    }
-
-
-}
-
-
-class SuperMangaChapter implements IChapterExtended {
-    chap_number: string;
-    dateAdded: string;
-    language: string;
-    licensed: boolean;
-    name: string;
-    scanlator: string;
-    volume: string;
-
-
-    constructor(private site: SuperMangaSite) {
-
-    }
-
-
-    // readonly images: Promise<ImageCollection>;
-    readonly manga: Promise<IMangaExtended>;
-
-
-    get images(): Promise<ImageCollection> {
-        return null;
-        // return _images.value;
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//
+// export class SuperMangaSite {
+//
+//     constructor(private _config: IMangaConfig, private _requestFactory: IMangaRequestFactory, private _parser: IMangaParser, private _visitor: IMangaVisitor) {
+//
+//     }
+//
+//     mangas(): Promise<IMangaExtended[]> {
+//         return null;
+//     }
+//
+//     async latest(): Promise<IChapterExtended> {
+//         // const self = this;
+//
+//         // return co(function* () {
+//         //
+//         //     for (const c of self._visitor.latest()) {
+//         //         yield *
+//         //     }
+//         //
+//         // });
+//
+//
+//         const it = await this.latestProc(this._config.latestUrl);
+//
+//         it.map(x => new SuperMangaChapter())
+//
+//
+//     }
+//
+//     async latestProc(src: string) {
+//         const result = await this._requestFactory.request({
+//             uri: src
+//         });
+//
+//         return [...this._parser.latest(result)];
+//     }
+//
+//     /*
+//         async* latest(): Promise<Iterable<IChapterExtended>> {
+//             const latestUrl = this._config.latestUrl;
+//
+//             const result = await this._requestFactory.request({
+//                 uri: latestUrl
+//             });
+//
+//
+//             for (const c of this._parser.latest(result)) {
+//
+//                 // yield new
+//             }
+//
+//
+//         }*/
+//
+//
+//     async allImagesResolver(chapterSrc: string): Promise<ILazy<Promise<ImageSource>>[]> {
+//         let href = url.resolve(this._config.site, chapterSrc).toString();
+//         let result = await this._requestFactory.request({uri: href});
+//
+//         const paths = this._parser.imagesPaths(result);
+//         paths.next(); // skip first, because we requested that already
+//
+//         let src = this._parser.image(result);
+//
+//         const promises = [
+//             new Lazy<Promise<ImageSource>>(() => Promise.resolve({
+//                 name: url.parse(src).pathname.split("/").reverse()[0],
+//                 src
+//             }))
+//         ];
+//
+//
+//         const promiseRequest = async (s): Promise<ImageSource> => {
+//             const h = url.resolve(href, s).toString();
+//             const result = await this._requestFactory.request({uri: h})
+//             const src = this._parser.image(result);
+//
+//             return {
+//                 name: url.parse(src).pathname.split("/").reverse()[0],
+//                 src
+//             };
+//         };
+//
+//
+//         for (const it of paths) {
+//             promises.push(new Lazy<Promise<ImageSource>>(() => promiseRequest(it.src)));
+//         }
+//
+//
+//         return promises;
+//     }
+//
+//
+//     * allImagesResolver2(chapterSrc: string) {
+//         const it = this._imagesResolver(chapterSrc);
+//
+//         it.next(); // first request
+//
+//         yield* it;
+//     }
+//
+//     _request(href) {
+//         return this._requestFactory.request({uri: href});
+//     }
+//
+//
+//     * _imagesResolver(chapterSrc: string) {
+//         let href = url.resolve(this._config.site, chapterSrc).toString();
+//         let result = yield this._requestFactory.request({uri: href});
+//
+//         const paths = this._parser.imagesPaths(result);
+//         paths.next(); // skip first, because we requested that already
+//
+//         let src = this._parser.image(result);
+//
+//
+//         yield new Lazy<Promise<ImageSource>>(() => Promise.resolve({
+//             name: url.parse(src).pathname.split("/").reverse()[0],
+//             src
+//         }))
+//
+//
+//         const promiseRequest = async (s): Promise<ImageSource> => {
+//             const h = url.resolve(href, s).toString();
+//             const result = await this._requestFactory.request({uri: h})
+//             const src = this._parser.image(result);
+//
+//             return {
+//                 name: url.parse(src).pathname.split("/").reverse()[0],
+//                 src
+//             };
+//         };
+//
+//
+//         for (const it of paths) {
+//             yield new Lazy<Promise<ImageSource>>(() => promiseRequest(it.src));
+//         }
+//
+//     }
+//
+//
+//     //
+//     // async* imagesResolver2(chapterSrc: string): Iterable<ImageSource> {
+//     //     let href = url.resolve(this._config.site, chapterSrc).toString();
+//     //
+//     //     let result = await this._requestFactory.request({uri: href});
+//     //
+//     //     const paths = this._parser.imagesPaths(result);
+//     //     paths.next(); // skip first, because we requested that already
+//     //
+//     //
+//     //     let src = this._parser.image(result);
+//     //
+//     //     yield {
+//     //         name: url.parse(src).pathname.split("/").reverse()[0],
+//     //         src
+//     //     };
+//     //
+//     //
+//     //     for (const p of paths) {
+//     //         const h = url.resolve(href, p.src).toString();
+//     //         result = await this._requestFactory.request({uri: h})
+//     //         src = this._parser.image(result);
+//     //
+//     //         yield {
+//     //             name: url.parse(src).pathname.split("/").reverse()[0],
+//     //             src
+//     //         };
+//     //     }
+//     //
+//     // }
+//
+// }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
