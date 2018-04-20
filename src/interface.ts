@@ -149,6 +149,12 @@ export interface IMangaFactory {
     create(src: string, manga: IManga);
 }
 
+
+export interface IMangaBuildFactoryDependency {
+
+}
+
+
 export interface IChapterFactory {
     create();
 }

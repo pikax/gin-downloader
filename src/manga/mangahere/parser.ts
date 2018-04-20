@@ -48,7 +48,7 @@ export class MangahereParser implements IMangaParser {
             this._logger.verbose("processing element: %j", item);
             const result = {
                 name: item.lastChild.nodeValue,
-                src: item.attribs["href"],
+                src: url.resolve(this._config.site, item.attribs["href"]),
             };
 
             this._logger.debug("processed with: %o", result);
@@ -75,7 +75,7 @@ export class MangahereParser implements IMangaParser {
             const divChildren = sanitizeChildren(item.children);
             const aManga = divChildren[0].children.find(x => x.name === "a");
 
-            const mangaSrc = aManga.attribs.href;
+            const mangaSrc = url.resolve(this._config.site, aManga.attribs.href);
             const mangaName = aManga.lastChild.nodeValue;
 
             const date = divChildren[0].children.find(x => x.name === "span").lastChild.nodeValue;
@@ -90,7 +90,7 @@ export class MangahereParser implements IMangaParser {
 
                 const a = dt.children.find(x => x.name === "a");
 
-                const src = a.attribs.href;
+                const src = url.resolve(this._config.site, a.attribs.href);
                 const title = a.lastChild.nodeValue;
 
                 const chapNumber = lastDigit(title);

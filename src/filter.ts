@@ -1,4 +1,5 @@
 import {FilterCondition, FilterStatus, Genre, GenreCondition, Type} from "./enum";
+import {IManga, Source} from "./interface";
 
 export type GenreCollection = Array<Genre>;
 
@@ -51,7 +52,7 @@ export interface MangaFilter {
     page?: number;
 }
 
-export type MangaSource = MangaSource;
+export type MangaSource = IManga & Source;
 
 export interface FilteredResults {
     results: MangaSource[];

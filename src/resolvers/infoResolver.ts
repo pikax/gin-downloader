@@ -24,7 +24,7 @@ export class InfoResolver implements IMangaInfoResolver {
 
     async info(src): Promise<MangaInfo> {
         return this._requestFactory.request({uri: src})
-            .then(this._parser.info);
+            .then(x => this._parser.info(x));
     }
 
 }
