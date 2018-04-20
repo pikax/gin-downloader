@@ -1,4 +1,4 @@
-import {gin, InfoChapter, Site, ImageCollection, Chapter, GinImage} from "./interface";
+import {gin, InfoChapter, Site, ImageCollection, IChapter, GinImage} from "./interface";
 
 import ChapterSource = gin.ChapterSource;
 import {Lazy} from "./util";
@@ -49,7 +49,7 @@ export class SuperChapter {
     return this._images;
   }
 
-  get source(): Chapter {
+  get source(): IChapter {
     return this._source;
   }
 

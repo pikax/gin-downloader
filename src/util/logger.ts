@@ -3,7 +3,7 @@ import {MangaSite} from "../manga/interface";
 const project = "gin-downloader";
 
 export interface ILog {
-    (format: string, ...argments);
+    (format: string, ...arguments);
 }
 
 

@@ -3,10 +3,13 @@ import {MangaHereGenre} from "../../../src/manga/mangahere/genre";
 import {filter} from "../../../src/filter";
 import FilterSupport = filter.FilterSupport;
 import {FilterCondition, FilterStatus, Genre, Type} from "../../../src/enum";
+import {MangaHereBuilder} from "../../../src/manga/mangahere/builder";
 
 
 describe("mangahere filter", () => {
-    const filter = new MangaHereFilter(new MangaHereGenre());
+
+    const di = {genre: new MangaHereGenre()};
+    const filter = new MangaHereFilter(di);
 
 
     describe("should get the correct result", () => {

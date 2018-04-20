@@ -3,12 +3,17 @@ import {filter, MangaFilter} from "../../filter";
 import {FilterCondition, FilterStatus, Genre, Type} from "../../enum";
 import FilterSupport = filter.FilterSupport;
 import {config} from "../mangahereOld/config";
+import {IMangaGenreDependency} from "../../interface";
 
 
+type di = IMangaGenreDependency;
+
+// TODO add logger and log
 export class MangaHereFilter implements IFilterSource {
+    private _genreSite: IGenreSite
 
-    constructor(private _genreSite: IGenreSite) {
-
+    constructor(dependencies: di) {
+        this._genreSite = dependencies.genre;
     }
 
     process(filter: FilterSupport): IFilterSourceResult {

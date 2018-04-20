@@ -211,7 +211,7 @@ export class MangaSite<C extends SiteConfig, P extends SiteParser, N extends Nam
     this.verbose(`filtered chapters %o`, chap);
 
     if (!chap) {
-      throw new Error("Chapter not found");
+      throw new Error("IChapter not found");
     }
     return chap.src;
   }

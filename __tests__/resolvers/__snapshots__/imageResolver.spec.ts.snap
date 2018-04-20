@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Info resolver Should resolve and parse info 1`] = `
+Array [
+  Object {
+    "name": "1",
+    "src": "http://test.test/1/1",
+  },
+  Object {
+    "name": "2",
+    "src": "http://test.test/1/2",
+  },
+  Object {
+    "name": "3",
+    "src": "http://test.test/1/3",
+  },
+  Object {
+    "name": "4",
+    "src": "http://test.test/1/4",
+  },
+  Object {
+    "name": "5",
+    "src": "http://test.test/1/5",
+  },
+]
+`;

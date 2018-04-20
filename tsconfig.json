@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "es2017",
     "sourceMap": false,
+    "downlevelIteration": true,
     "declaration": true,
     "moduleResolution": "node",
-    "lib": ["es2015"]
+    "lib": ["es2015", "es7", "esnext", "esnext.asynciterable"]
   },
   "exclude": [
     "node_modules"

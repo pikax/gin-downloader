@@ -22,7 +22,7 @@ LicencedError.prototype = Object.create(Error.prototype, {
 if (Object.setPrototypeOf) {
     Object.setPrototypeOf(LicencedError, Error);
 } else {
-    LicencedError.__proto__ = Error;
+    // LicencedError.__proto__ = Error;
 }
 
 /* /LicencedError */
@@ -54,9 +54,11 @@ ImageNotFoundError.prototype = Object.create(Error.prototype, {
 if (Object.setPrototypeOf) {
     Object.setPrototypeOf(ImageNotFoundError, Error);
 } else {
-    ImageNotFoundError.__proto__ = Error;
+    // ImageNotFoundError.__proto__ = Error;
 }
 
 /* /LicencedError */
+
+
 
 

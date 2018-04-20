@@ -1,0 +1,527 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MangaHere visitor should get latest url 1`] = `
+Object {
+  "done": false,
+  "value": Object {
+    "href": "http://www.mangahere.cc/latest/",
+    "page": 1,
+    "total": 100,
+  },
+}
+`;
+
+exports[`MangaHere visitor should iterate through all mangas 1`] = `
+Array [
+  Object {
+    "href": "http://www.mangahere.cc/mangalist/",
+    "page": 1,
+    "total": 1,
+  },
+]
+`;
+
+exports[`MangaHere visitor should iterate through lastest pages 1`] = `
+Array [
+  Object {
+    "href": "http://www.mangahere.cc/latest/",
+    "page": 1,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/2",
+    "page": 2,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/3",
+    "page": 3,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/4",
+    "page": 4,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/5",
+    "page": 5,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/6",
+    "page": 6,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/7",
+    "page": 7,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/8",
+    "page": 8,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/9",
+    "page": 9,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/10",
+    "page": 10,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/11",
+    "page": 11,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/12",
+    "page": 12,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/13",
+    "page": 13,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/14",
+    "page": 14,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/15",
+    "page": 15,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/16",
+    "page": 16,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/17",
+    "page": 17,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/18",
+    "page": 18,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/19",
+    "page": 19,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/20",
+    "page": 20,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/21",
+    "page": 21,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/22",
+    "page": 22,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/23",
+    "page": 23,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/24",
+    "page": 24,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/25",
+    "page": 25,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/26",
+    "page": 26,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/27",
+    "page": 27,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/28",
+    "page": 28,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/29",
+    "page": 29,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/30",
+    "page": 30,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/31",
+    "page": 31,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/32",
+    "page": 32,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/33",
+    "page": 33,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/34",
+    "page": 34,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/35",
+    "page": 35,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/36",
+    "page": 36,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/37",
+    "page": 37,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/38",
+    "page": 38,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/39",
+    "page": 39,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/40",
+    "page": 40,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/41",
+    "page": 41,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/42",
+    "page": 42,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/43",
+    "page": 43,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/44",
+    "page": 44,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/45",
+    "page": 45,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/46",
+    "page": 46,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/47",
+    "page": 47,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/48",
+    "page": 48,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/49",
+    "page": 49,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/50",
+    "page": 50,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/51",
+    "page": 51,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/52",
+    "page": 52,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/53",
+    "page": 53,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/54",
+    "page": 54,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/55",
+    "page": 55,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/56",
+    "page": 56,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/57",
+    "page": 57,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/58",
+    "page": 58,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/59",
+    "page": 59,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/60",
+    "page": 60,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/61",
+    "page": 61,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/62",
+    "page": 62,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/63",
+    "page": 63,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/64",
+    "page": 64,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/65",
+    "page": 65,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/66",
+    "page": 66,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/67",
+    "page": 67,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/68",
+    "page": 68,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/69",
+    "page": 69,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/70",
+    "page": 70,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/71",
+    "page": 71,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/72",
+    "page": 72,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/73",
+    "page": 73,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/74",
+    "page": 74,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/75",
+    "page": 75,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/76",
+    "page": 76,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/77",
+    "page": 77,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/78",
+    "page": 78,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/79",
+    "page": 79,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/80",
+    "page": 80,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/81",
+    "page": 81,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/82",
+    "page": 82,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/83",
+    "page": 83,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/84",
+    "page": 84,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/85",
+    "page": 85,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/86",
+    "page": 86,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/87",
+    "page": 87,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/88",
+    "page": 88,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/89",
+    "page": 89,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/90",
+    "page": 90,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/91",
+    "page": 91,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/92",
+    "page": 92,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/93",
+    "page": 93,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/94",
+    "page": 94,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/95",
+    "page": 95,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/96",
+    "page": 96,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/97",
+    "page": 97,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/98",
+    "page": 98,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/99",
+    "page": 99,
+    "total": 100,
+  },
+  Object {
+    "href": "http://www.mangahere.cc/latest/100",
+    "page": 100,
+    "total": 100,
+  },
+]
+`;

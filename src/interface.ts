@@ -1,6 +1,24 @@
 import {MangaFilter} from "./filter";
 import {FilterStatus, Type} from "./enum";
-
+import {OptionsWithUrl, Options, Response, OptionsWithUri} from "request";
+import {
+    IFilterSource,
+    IGenreSite,
+    IMangaConfig,
+    IMangaFilter,
+    IMangaParser,
+    IMangaRequest,
+    IMangaVisitor
+} from "./manga/interface";
+import {MangaHereConfig} from "./manga/mangahere/config";
+import {mangahereLogger} from "./manga/mangahere/logger";
+import {MangaHereVisitor} from "./manga/mangahere/visitor";
+import {MangahereParser} from "./manga/mangahere/parser";
+import {MangaHereFilter} from "./manga/mangahere/filter";
+import {MangaHereGenre} from "./manga/mangahere/genre";
+import {ILogger} from "./util/logger";
+import {IMangaRequestFactory} from "../build/manga/interface";
+import {Partial} from "rollup-plugin-typescript2/dist/partial";
 
 
 export interface Source {
@@ -24,8 +42,12 @@ export interface IManga {
     mature?: boolean;
     image?: string;
 
-    info: ILazy<Promise<MangaInfo>>;
-    chapters: ILazy<Promise<ChapterCollection>>;
+}
+
+
+export interface IMangaExtended extends IReadOnlyManga {
+    readonly info: Promise<MangaInfo>;
+    readonly chapters: Promise<IChapterExtended[]>;
 }
 
 export interface IReadOnlyManga extends Readonly<IManga> {
@@ -33,9 +55,7 @@ export interface IReadOnlyManga extends Readonly<IManga> {
 }
 
 
-
-
-export interface Chapter {
+export interface IChapter {
     chap_number?: string;
     volume?: string;
     name?: string;
@@ -45,6 +65,13 @@ export interface Chapter {
     dateAdded?: string;
 
     licensed?: boolean;
+}
+
+export interface IChapterExtended extends IChapter {
+
+    readonly images: Promise<ImageCollection>;
+
+    readonly manga: Promise<IMangaExtended>;
 }
 
 export interface Synonym {
@@ -93,8 +120,6 @@ export interface ILazy<T> {
 }
 
 
-
-
 export interface MangaInfo {
     image: string;
     title: string;
@@ -119,9 +144,93 @@ export interface MangaInfo {
     licensed?: boolean;
 }
 
+
+export interface IRequestStrategy {
+    request(options: OptionsWithUri): Promise<Response>;
+}
+
+
+export interface IImageFactory {
+    create();
+}
+
+export interface IMangaFactory {
+    create(src: string, manga: IManga);
+}
+
+export interface IChapterFactory {
+    create();
+}
+
+
+export interface IMangaObject {
+
+    info(): Promise<Info>;
+
+    chapters(): Promise<IChapter[]>;
+
+    images(chapter): Promise<ImageCollection>;
+}
+
+
+export interface IChapterResolver {
+    chapters(src): Promise<ChapterSource[]>;
+}
+
+export interface IImageResolver {
+    images(src): Promise<ImageCollection>;
+}
+
+export interface IMangaInfoResolver {
+    info(src): Promise<MangaInfo>;
+}
+
+
+export interface IMangaConfigDependency {
+    config: IMangaConfig;
+}
+
+export interface IMangaLoggerDependency {
+    logger: ILogger;
+}
+
+export interface IMangaGenreDependency {
+    genre: IGenreSite;
+}
+
+export interface IMangaFilterDependency {
+    filter: IFilterSource;
+}
+
+export interface IMangaParserDependency {
+    parser: IMangaParser;
+}
+
+export interface IMangaVisitorDependency {
+    visitor: IMangaVisitor;
+}
+
+export interface IMangaRequestFactoryDependency {
+    requestFactory: IMangaRequestFactory;
+}
+
+
+export interface IMangaDependencies extends IMangaConfigDependency, IMangaLoggerDependency, IMangaGenreDependency, IMangaFilterDependency, IMangaParserDependency, IMangaVisitorDependency, IMangaRequestFactoryDependency {
+
+}
+
+export type RequestFactoryMangaDependencies = Partial<IMangaDependencies> & IMangaRequestFactoryDependency;
+
+export interface IMangaBuilder {
+    build(di: RequestFactoryMangaDependencies): IMangaDependencies;
+}
+
+
 export type GinImagePromise = ILazy<Promise<GinImage>>;
-export type ChapterCollection = Chapter[];
+export type ChapterCollection = IChapter[];
 export type MangaCollection = IManga[];
 export type ImageCollection = GinImagePromise[];
 export type InfoChapter = Info & { chapters: ChapterCollection };
 
+
+export type ChapterSource = IChapter & { src: string };

@@ -9,8 +9,13 @@ import {MangaHereGenre} from "../../../src/manga/mangahere/genre";
 
 describe("mangahere parser", () => {
 
-    // TODO MOCK logger
-    const parser = new MangahereParser(loggerFactory(MangaSite.MangaHere), new MangaHereConfig(), new MangaHereGenre());
+    // TODO MOCK DI
+    const di = {
+        logger: loggerFactory(MangaSite.MangaHere),
+        config: new MangaHereConfig(),
+        genre: new MangaHereGenre(),
+    };
+    const parser = new MangahereParser(di);
 
     describe("offline", () => {
         const provider = new OfflineFileProvider("mangahere");

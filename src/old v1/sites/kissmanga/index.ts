@@ -65,7 +65,7 @@ export class KissManga extends MangaSite<SiteConfig, Parser, Helper> implements 
 
     let chapter = find(chapters, {chap_number: chapNumber});
     if (!chapter) {
-      throw new Error("Chapter not found!");
+      throw new Error("IChapter not found!");
     }
 
       let html = await this.getHtml(chapter.src);

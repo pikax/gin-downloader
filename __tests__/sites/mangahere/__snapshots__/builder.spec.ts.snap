@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MangaHere builder should fail if no requestFactory 1`] = `"Please provide request factory"`;

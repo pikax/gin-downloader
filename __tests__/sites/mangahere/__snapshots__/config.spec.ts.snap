@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MangaHere config should have correct values 1`] = `MangaHereConfig {}`;
+
+exports[`MangaHere config should have correct values 2`] = `
+Object {
+  "latestUrl": "http://www.mangahere.cc/latest/",
+  "mangasUrl": "http://www.mangahere.cc/mangalist/",
+  "name": "MangaHere",
+  "site": "http://www.mangahere.cc",
+}
+`;

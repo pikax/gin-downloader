@@ -2,9 +2,16 @@ import * as url from "url";
 import {LicencedError, ImageNotFoundError} from "../../util/error";
 
 import {lastDigit} from "../../util/string";
-import {IGenreSite, IMangaConfig, IMangaParser, MangaRequestResult} from "../interface";
-import {FilteredResults, MangaSource} from "../../filter";
-import {Chapter, MangaInfo, Synonym} from "../../interface";
+import {IGenreSite, IMangaConfig, IMangaParser, IMangaRequest} from "../interface";
+import {MangaSource} from "../../filter";
+import {
+    ChapterSource,
+    IChapter,
+    IMangaConfigDependency, IMangaGenreDependency,
+    IMangaLoggerDependency,
+    MangaInfo,
+    Synonym
+} from "../../interface";
 import {sanitizeChildren} from "../../util/cheerio";
 import {FilterStatus} from "../../enum";
 
@@ -12,13 +19,21 @@ import {FilterStatus} from "../../enum";
 import {ILogger} from "../../util/logger";
 
 
-export class MangahereParser implements IMangaParser {
+type di = IMangaLoggerDependency & IMangaConfigDependency & IMangaGenreDependency;
 
-    constructor(private _logger: ILogger, private _config: IMangaConfig, private _genreSite: IGenreSite) {
+export class MangahereParser implements IMangaParser {
+    private _logger: ILogger;
+    private _config: IMangaConfig;
+    private _genreSite: IGenreSite;
+
+    constructor(dependencies: di) {
+        this._logger = dependencies.logger;
+        this._config = dependencies.config;
+        this._genreSite = dependencies.genre;
     }
 
 
-    * mangas(mangaRequest: MangaRequestResult): Iterable<MangaSource> {
+    * mangas(mangaRequest: IMangaRequest): Iterable<MangaSource> {
         const {$, uri, html} = mangaRequest;
 
         this._logger.debug("parsing mangas:\n\turl:%s", uri);
@@ -43,7 +58,7 @@ export class MangahereParser implements IMangaParser {
         }
     }
 
-    * latest(mangaRequest: MangaRequestResult): Iterable<Chapter & { src: string }> {
+    * latest(mangaRequest: IMangaRequest): Iterable<IChapter & { src: string, mangaSrc: string }> {
         const {$, uri, html} = mangaRequest;
 
         this._logger.debug("parsing latest:\n\turl:%s", uri);
@@ -60,6 +75,7 @@ export class MangahereParser implements IMangaParser {
             const divChildren = sanitizeChildren(item.children);
             const aManga = divChildren[0].children.find(x => x.name === "a");
 
+            const mangaSrc = aManga.attribs.href;
             const mangaName = aManga.lastChild.nodeValue;
 
             const date = divChildren[0].children.find(x => x.name === "span").lastChild.nodeValue;
@@ -83,7 +99,8 @@ export class MangahereParser implements IMangaParser {
                     name: mangaName,
                     src: src,
                     chap_number: chapNumber.toString(),
-                    dateAdded: date
+                    dateAdded: date,
+                    mangaSrc,
                 };
 
                 this._logger.debug("processed [%s] with: %o", mangaName, result);
@@ -95,7 +112,7 @@ export class MangahereParser implements IMangaParser {
     }
 
 
-    info(mangaRequest: MangaRequestResult): MangaInfo {
+    info(mangaRequest: IMangaRequest): MangaInfo {
         const {$, uri, html} = mangaRequest;
 
         this._logger.debug("parsing manga:\n\turl:%s", uri);
@@ -140,7 +157,7 @@ export class MangahereParser implements IMangaParser {
     }
 
 
-    * chapters(mangaRequest: MangaRequestResult): Iterable<Chapter & { src: string }> {
+    * chapters(mangaRequest: IMangaRequest): Iterable<ChapterSource> {
         const {$, uri, html} = mangaRequest;
 
         this._logger.debug("parsing chapter:\n\turl:%s", uri);
@@ -181,7 +198,7 @@ export class MangahereParser implements IMangaParser {
     }
 
 
-    * imagesPaths(mangaRequest: MangaRequestResult): Iterable<{ name: string; src: string }> {
+    * imagesPaths(mangaRequest: IMangaRequest): Iterable<{ name: string; src: string }> {
         const {$, uri, html} = mangaRequest;
 
         this._logger.debug("parsing images paths:\n\turl:%s", uri);
@@ -221,8 +238,8 @@ export class MangahereParser implements IMangaParser {
         }
     }
 
-    image(mangaRequest: MangaRequestResult) {
-        const {$, uri, html} = mangaRequest;
+    image(mangaRequest: IMangaRequest) {
+        const {uri, html} = mangaRequest;
         this._logger.debug("parsing image:\n\turl:%s", uri);
         this._logger.verbose("parsing image:\n\turl:%s\n\thtml:\n%s", uri, html);
 
@@ -241,7 +258,7 @@ export class MangahereParser implements IMangaParser {
     }
 
 
-    filterPage(mangaRequest: MangaRequestResult): { page: number; total: number } {
+    filterPage(mangaRequest: IMangaRequest): { page: number; total: number } {
         const {$, uri, html} = mangaRequest;
 
         this._logger.debug("get filter current page:\n\turl:%s", uri);

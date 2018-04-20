@@ -257,7 +257,7 @@ mangahere.chapters("Gintama")
 	.then(console.log)
 ```
 
-- **infoChapters(name)** : returns {info: MangaInfo, chapters: Chapter[]}
+- **infoChapters(name)** : returns {info: MangaInfo, chapters: IChapter[]}
 manga info and chapters with single call
 ```javascript
 mangahere.info("Gintama")
