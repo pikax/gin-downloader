@@ -18,9 +18,9 @@ export class MangaHereBuilder implements IMangaBuilder {
         const logger    = di.logger     || mangahereLogger;
         const genre     = di.genre      || new MangaHereGenre();
         const config    = di.config     || new MangaHereConfig();
-        const filter    = di.filter     || new MangaHereFilter(genre);
-        const parser    = di.parser     || new MangahereParser(logger, config, genre);
-        const visitor   = di.visitor    || new MangaHereVisitor(requestFactory, config);
+        const filter    = di.filter     || new MangaHereFilter({genre});
+        const parser    = di.parser     || new MangahereParser({logger, config, genre});
+        const visitor   = di.visitor    || new MangaHereVisitor({config});
 
         return {
             requestFactory,
