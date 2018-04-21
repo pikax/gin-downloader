@@ -1,6 +1,6 @@
 import {MangaRequestResult, MangaSite} from "../../../src/manga/interface";
 
-import {OfflineFileProvider} from "../../__html__";
+import {OfflineFileProvider} from "../../__mocks__/offlineFileProvider";
 import {MangahereParser} from "../../../src/manga/mangahere/parser";
 import {loggerFactory} from "../../../src/util/logger";
 import {MangaHereConfig} from "../../../src/manga/mangahere/config";

@@ -1,5 +1,5 @@
 import {MangaHereVisitor} from "../../../src/manga/mangahere/visitor";
-import {OfflineFileProvider} from "../../__html__";
+import {OfflineFileProvider} from "../../__mocks__/offlineFileProvider";
 import {MangaHereConfig} from "../../../src/manga/mangahere/config";
 
 

@@ -1,7 +1,7 @@
 import {MangaHereGenre} from "../../../src/manga/mangahere/genre";
 import {Genre} from "../../../src/enum";
 import {MangaRequestResult} from "../../../src/manga/interface";
-import {OfflineFileProvider} from "../../__html__";
+import {OfflineFileProvider} from "../../__mocks__/offlineFileProvider";
 
 
 describe("mangahere genre", () => {

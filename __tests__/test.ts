@@ -1,15 +1,32 @@
 import {MangaHere} from "../src/manga/mangahere";
-import {RetryRequestFactory} from "../src/factories/retryRequest";
-import {RequestRetryStrategy} from "../src/strategies/retry_strategy";
 import {DefaultResolverFactory} from "../src/factories/resolvers";
+import {MockFileRequestFactory} from "./__mocks__/requestProvider";
+
+
+const mockFileRequest = new MockFileRequestFactory();
+
+const mockRequest = (options => {
+    return Promise.resolve(mockFileRequest.request(options));
+});
 
 
 describe("beta test", () => {
+
+
+    const mockedRequestFactory: any = jest.fn().mockImplementation(() => ({
+        request: mockRequest
+    }));
+
+    beforeAll(() => {
+        // mockedRequestFactory.mockClear();
+    });
+
+
     // TODO mock with local html files
-    const requestFactory = new RetryRequestFactory(new RequestRetryStrategy());
+    // const requestFactory = new RetryRequestFactory(new RequestRetryStrategy());
     const resolverFactory = new DefaultResolverFactory();
 
-    const mangaHere = new MangaHere({requestFactory, resolverFactory});
+    const mangaHere = new MangaHere({requestFactory: mockedRequestFactory(), resolverFactory});
 
 
     /*
@@ -23,6 +40,8 @@ describe("beta test", () => {
     it("should get all mangas", async () => {
         const mangas = await mangaHere.mangas();
 
+
+        // NOTE we slice because otherwise Jest will take minutes to snapshot testing, dont know why
         expect(mangas).toMatchSnapshot();
     });
 
@@ -31,7 +50,7 @@ describe("beta test", () => {
         const mangas = await mangaHere.superMangas();
 
 
-        const m = mangas[0];
+        const m = mangas.find(x => x.name === "Gintama");
 
 
         const manga = {
@@ -54,5 +73,5 @@ describe("beta test", () => {
 
 
     });
-})
+});
 

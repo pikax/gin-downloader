@@ -1,11 +1,14 @@
 import {resolve} from "path";
-import {readFileSync, exists, existsSync} from "fs";
+import {existsSync, readFileSync} from "fs";
+
+
+const htmlDir = resolve(__dirname, "../__html__");
 
 export class OfflineFileProvider {
     private _dirPath: string;
 
     constructor(public readonly sitename: string) {
-        this._dirPath = resolve(__dirname, sitename);
+        this._dirPath = resolve(htmlDir, sitename);
 
         if (!existsSync(this._dirPath)) {
             throw  new Error(`${sitename} doesn't exist`);
