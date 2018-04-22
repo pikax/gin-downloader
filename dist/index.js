@@ -1599,7 +1599,7 @@ var GinBuilder = /** @class */ (function () {
         if (dependencies === void 0) { dependencies = {}; }
         this._requestStrategy = new RequestRetryStrategy();
         this._resolverFactory = new DefaultResolverFactory();
-        this._requestFactory = new ConcurrentQueueRequestFactory(this._requestStrategy, new Queue(20));
+        this._requestFactory = new ConcurrentQueueRequestFactory(this._requestStrategy, new Queue(3));
         this._mangaHereBuilder = new MangaHereBuilder();
     }
     Object.defineProperty(GinBuilder.prototype, "mangahere", {
