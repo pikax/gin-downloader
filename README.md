@@ -38,12 +38,9 @@ This is not the final revision, I'm open to recomendations on how the API should
 
 
 
-
 ## **v1 is Currently deprecated, please use @beta version**
 
-
 I'm currently changing and only maintaining the v2 of *gin-downloader*.
-
 
 The focus on the v1 was to support as many manga sites as possible, but that caused a lot of websites to maintain with virtual no time for me to maintain it correctly.
 
@@ -56,7 +53,7 @@ The focus on this v2 is to support a small number of websites and implement an e
 - [ ] MangaFox
 - [ ] MangaPanda
 - [ ] KissManga
-- [ ] BatoTo (`new`)
+- [ ] BatoTo
 
 
 
@@ -64,7 +61,7 @@ The focus on this v2 is to support a small number of websites and implement an e
 - **import**
 single site
 ```javascript
-import {mangahere} from 'gin-downloader';
+import ginDownloader from 'gin-downloader';
 ```
 
 or
@@ -237,60 +234,142 @@ enum FilterMangaType {
 
 
 
-- **filter(filter: FilterSupport)** : returns [{name:string, src:string}]
+- **filter(filter: FilterSupport | string)** : returns [{name:string, src:string}]
 
 ```javascript
-import {mangahere} from 'gin-downloader';
+import ginDownloader from 'gin-downloader';
 
-mangahere.filter()
-	.then(console.log); // prints all mangas from mangafox
+ginDownloader.mangahere.filter()
+	.then(console.log); // prints all mangas from mangahere
 ```
 
-- **mangas()** : returns [{name:string, src:string}]
+- **mangas()** : returns MangaObject[]
 *note*: not every site will return all the mangas.
 ```javascript
-import {mangahere} from 'gin-downloader';
+import ginDownloader from 'gin-downloader';
 
-mangahere.mangas()
-	.then(console.log); // prints all mangas from mangafox
+ginDownloader.mangahere.mangas()
+	.then(console.log); // prints all mangas from mangahere
 ```
 
 - **latest()** : returns [{number:number|string, src:string, volume?:string,name:string}]
 ```javascript
-mangahere.latest() // latest chapters added to mangafox
+mangahere.latest() // latest chapters added to mangahere
     .then(console.log);
 ```
 
-- **info(name)** : returns object with manga info {}
-```javascript
-mangahere.info("Gintama")
-    .then(console.log);
+
+
+
+
+# Examples
+
+
+### Get `Gintama` info
+
+We can use the powerful filter functionallity to search for it, the search functionality uses the website search to present the results.
+
+
+
+``` javascript
+const ginDownloader = require("gin-downloader").default;
+const FilterCondition = require("../dist/index").FilterCondition;
+
+
+const name= "gintama"
+
+
+// let promise=  ginDownloader.mangahere.filter(name);
+// or
+const filter = {
+    search: {
+        name: {
+            name: name,
+            condition: FilterCondition.EndsWith // we use EndsWith to get only one manga
+        }
+    }
+};
+let promise = ginDownloader.mangahere.filter(filter);
+
+
+
+
+
+promise
+    .then(x=>x.results[0]) // get the first
+    .then(x=>x.info()) // request info
+
+    .then(console.log)
+
 ```
 
-- **chapters(name)** : returns [{number:number|string, name:string, src:string, volume?:string}]
-```javascript
-mangahere.chapters("Gintama")
-	.then(console.log)
+returns:
+``` json
+{ image: 'https://mangatown.secure.footprint.net/store/manga/551/cover.jpg?token=c54f3882d8459038b67c190a204ede7e774ba696&ttl=1524484800&v=1523778541',
+  title: 'Gintama',
+  synonyms:
+   [ { title: 'กินทามะ', language: '' },
+     { title: '銀魂', language: '' },
+     { title: '银魂', language: '' },
+     { title: '긴타마', language: '' },
+     { title: '은혼', language: '' },
+     { title: 'Gin Tama', language: '' },
+     { title: 'Silver Soul', language: '' },
+     { title: 'غينتاما - الروح الفضيه', language: '' },
+     { title: 'Сребърна душа', language: 'Bulgarian' },
+     { title: 'Gümüş Ruh', language: 'Turkish' },
+     { title: 'Jiwa Perak', language: '' },
+     { title: 'Серебряная душа', language: 'Russian' } ],
+  authors: [ 'Sorachi Hideaki' ],
+  artists: [ 'Sorachi Hideaki' ],
+  genres:
+   [ 'Action',
+     'Adventure',
+     'Comedy',
+     'Drama',
+     'Historical',
+     'Sci-fi',
+     'Shounen',
+     'Supernatural' ],
+  synopsis: 'Sakata Gintoki is a samurai living in an era when samurai are no longer needed.\nTo add to his troubles, oppressive aliens have moved in to invade.\nGintoki lives with Kagura and Shinpachi, taking on odd jobs to make the world a better place... and to pay their rent. ',
+  status: 'Ongoing',
+  licensed: false }
 ```
 
-- **infoChapters(name)** : returns {info: MangaInfo, chapters: IChapter[]}
-manga info and chapters with single call
-```javascript
-mangahere.info("Gintama")
-    .then(console.log);
+
+
+### Get `Gintama` chapters
+
+
+``` javascript
+const ginDownloader = require("gin-downloader").default;
+
+const name= "gintama"
+
+
+
+ginDownloader.mangahere.filter("gintama")
+    .then(x => x.results[0])
+    .then(x=>x.chapters())
+    .then(console.log)
+
 ```
 
-- **images(manga, chapter_number)** : return Promise<Promise<{value: {name:string,src:string}>[]>;
-```javascript
-mangahere.images("Gintama", 1)
-      .then(x=>Promise.all(x.map(t=>t.value))) //resolve all promises
-      .then(console.log)
+
+### get `Gintama` chapter 1 images
+`images(1)` return a Promise of a list of Lazy promises, the goal is only resolve image when requesting.
+
+This is probably the method that will taking the longest
+
+``` javascript
+
+ginDownloader.mangahere.filter("gintama")
+    .then(x => x.results[0])
+    .then(x => x.images(1))
+    .then(x => Promise.all(x.map(i => i.value)))
+    .then(console.log)
+
 ```
-
-
-
-
-
 
 
 ## Disclaimer
