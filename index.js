@@ -1,5 +1,6 @@
-// export * from './dist/index'
-import * as ginDownloader from './dist/index';
+const ginDownloader = require('./dist/index');
 
-export ginDownloader;
-export default ginDownloader.gindownloader;
+module.exports = {
+    ...ginDownloader,
+    default: ginDownloader.gindownloader
+}

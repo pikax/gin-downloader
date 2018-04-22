@@ -1,9 +1,10 @@
 import {MockFileRequestFactory} from "./__mocks__/requestProvider";
 
-const gin = require("../src/index");
+const gin = require("../index");
+import ginDownloader from "../index";
+
 
 const requestRetry: any = require("requestretry");
-
 const fileRequest = new MockFileRequestFactory();
 
 jest.mock("requestretry");
@@ -13,18 +14,16 @@ requestRetry.mockImplementation((opts) => fileRequest.request(opts).then(x => ({
 
 describe("Test public API", () => {
 
-    it("should export 'gin'", () => {
-        expect(gin).toHaveProperty("gin");
+    it("should export 'ginDownloader'", () => {
+        expect(gin).toHaveProperty("gindownloader");
     });
 
     it("should have mangahere", () => {
-        expect(gin.gin.mangahere).toBeDefined();
+        expect(ginDownloader.mangahere).toBeDefined();
     });
 
 
     describe("mangahere", () => {
-        const ginDownloader = gin.gin;
-
         beforeEach(() => {
             requestRetry.mockClear();
 
@@ -52,7 +51,7 @@ describe("Test public API", () => {
         it("Should filter", async () => {
             const filter = "gintama";
 
-            const filterResults = await ginDownloader.mangahere.filter(filter)
+            const filterResults = await ginDownloader.mangahere.filter(filter);
             const mangas = filterResults.results.map(m => m.manga());
 
 
