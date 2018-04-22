@@ -12,8 +12,14 @@ export declare class MangaObject implements IMangaObject, IReadOnlyManga {
     readonly status: string;
     readonly mature: boolean;
     readonly image: string;
+    manga(): {
+        name: string;
+        status?: string;
+        mature?: boolean;
+        image?: string;
+    };
     constructor(dependencies: MangaObjectDependencies, _src: string, _manga: IManga);
     chapters(): Promise<IChapter[]>;
-    images(chapter: IChapter): Promise<ImageCollection>;
+    images(chapter: IChapter | string | number): Promise<ImageCollection>;
     info(): Promise<MangaInfo>;
 }

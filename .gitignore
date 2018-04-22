@@ -16,6 +16,8 @@ watch
 /scripts/test/
 /scripts/batoto/
 /scripts/test Old/
+/localScripts/
+
 
 !/test/sites/kissmanga/html/*.js
 /.rpt2_cache/

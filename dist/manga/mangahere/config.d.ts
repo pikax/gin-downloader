@@ -4,5 +4,4 @@ export declare class MangaHereConfig implements IMangaConfig {
     readonly site: string;
     readonly mangasUrl: string;
     readonly latestUrl: string;
-    readonly filterUrl: string;
 }

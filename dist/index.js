@@ -136,22 +136,22 @@ class MangaHereFilter {
             let { name, author, artist, released, type, genre } = search;
             filterType = resolveType(type) || filterType;
             if (name) {
-                methodName = searchMethod(name.condition) || methodName;
+                methodName = searchMethod(name.condition);
             }
             if (search.status) {
                 status = resolveStatus(search.status);
             }
             if (author) {
-                filterAuthor = author.name || filterAuthor;
-                methodAuthor = searchMethod(author.condition) || methodAuthor;
+                filterAuthor = author.name;
+                methodAuthor = searchMethod(author.condition);
             }
             if (artist) {
-                filterArtist = artist.name || filterArtist;
-                methodArtist = searchMethod(artist.condition) || methodArtist;
+                filterArtist = artist.name;
+                methodArtist = searchMethod(artist.condition);
             }
             if (released) {
-                filterReleased = released.value || filterReleased;
-                methodReleased = yearSearchMethod(released.condition) || methodReleased;
+                filterReleased = released.value;
+                methodReleased = yearSearchMethod(released.condition);
             }
             if (genre) {
                 inGenres = genre.inGenres;
@@ -606,9 +606,6 @@ class MangaHereConfig {
     get latestUrl() {
         return url.resolve(this.site, "/latest/");
     }
-    get filterUrl() {
-        return url.resolve(this.site, "/search.php");
-    }
 }
 
 /* LicencedError */
@@ -700,7 +697,7 @@ String.prototype.decodeEscapeSequence = function () {
 };
 String.prototype.getMatches = function (regex, index) {
     index || (index = 1); // default to the first capturing group
-    let matches = [];
+    const matches = [];
     let match;
     while (match = regex.exec(this)) {
         matches.push(match[index]);
@@ -968,13 +965,33 @@ class MangaObject {
     get image() {
         return this._manga.image;
     }
+    manga() {
+        return Object.assign({}, this._manga);
+    }
     async chapters() {
         const chapters = await this._chapterResolver.chapters(this._src);
         this._chapters = chapters;
-        return chapters.map(x => (Object.assign({}, x, { src: undefined })));
+        return chapters.map(x => ({
+            chap_number: x.chap_number,
+            volume: x.volume,
+            name: x.name,
+            language: x.language,
+            scanlator: x.scanlator,
+            dateAdded: x.dateAdded,
+            licensed: x.licensed
+        }));
     }
     async images(chapter) {
-        const { chap_number } = chapter;
+        const chap_number = typeof chapter === "string"
+            ? chapter
+            : typeof chapter === "number"
+                ? chapter.toString()
+                : !!chapter.chap_number
+                    ? chapter.chap_number
+                    : undefined;
+        if (!chap_number) {
+            throw new Error("Invalid chapter provider");
+        }
         // resolve chapters if not resolved yet
         if (!this._chapters) {
             await this.chapters();

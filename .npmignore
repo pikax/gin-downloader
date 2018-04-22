@@ -6,11 +6,15 @@ build/
 out/
 .*/
 scripts/
+localScripts/
+
 
 testOld
 
 __tests__
 __tests__2
+
+
 
 node_modules
 
