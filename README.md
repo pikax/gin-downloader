@@ -304,7 +304,7 @@ promise
 ```
 
 returns:
-``` json
+```
 { image: 'https://mangatown.secure.footprint.net/store/manga/551/cover.jpg?token=c54f3882d8459038b67c190a204ede7e774ba696&ttl=1524484800&v=1523778541',
   title: 'Gintama',
   synonyms:
