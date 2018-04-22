@@ -13,8 +13,8 @@
     "mangapanda",
     "mangahere"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "homepage": "https://github.com/pikax/gin-downloader#readme",
   "scripts": {
     "build": "yarn run build:ts",
