@@ -1,16 +1,9 @@
-import {FilterStatus, Type} from "./enum";
+import {FilterStatus, Genre, Type} from "./enum";
 import {Response, OptionsWithUri} from "request";
-import {
-    IFilterSource,
-    IGenreSite,
-    IMangaConfig,
-    IMangaParser,
-    IMangaVisitor
-} from "./manga/interface";
 import {ILogger} from "./util/logger";
-import {IMangaRequestFactory} from "../build/manga/interface";
 import {Partial} from "rollup-plugin-typescript2/dist/partial";
-import {string} from "./old/old v2/declarations";
+import {filter, FilteredResults, MangaSource} from "./filter";
+import FilterSupport = filter.FilterSupport;
 
 
 export interface Source {
@@ -166,6 +159,7 @@ export interface IChapterFactory {
 
 
 export interface IMangaObject {
+    manga(): IManga;
 
     info(): Promise<MangaInfo>;
 
@@ -259,6 +253,104 @@ export interface IMangaBuilder {
 export interface IMangaBuilderDependency {
     diBuilder: IMangaBuilder;
 }
+
+
+export interface IMangaParser {
+    mangas(mangaRequest: IMangaRequest): IterableIterator<MangaSource>;
+
+    // latest chapters
+    latest(mangaRequest: IMangaRequest): IterableIterator<IChapter & { src: string }>;
+
+    // info manga
+    info(mangaRequest: IMangaRequest): MangaInfo;
+
+    // chapters
+    chapters(mangaRequest: IMangaRequest): IterableIterator<ChapterSource>;
+
+
+    // image urls
+    imagesPaths(mangaRequest: IMangaRequest): IterableIterator<{ name: string; src: string }>;
+
+    // single image
+    image(mangaRequest: IMangaRequest): string;
+
+
+    // returns the current filter page
+    filterPage(mangaRequest: IMangaRequest): { page: number; total: number };
+}
+
+
+export interface IMangaConfig {
+    readonly name: string;
+    readonly site: string;
+
+    readonly mangasUrl: string;
+    readonly latestUrl: string;
+}
+
+
+// resolves the url and params a website
+export interface IFilterSource {
+    process(filter: FilterSupport): IFilterSourceResult;
+}
+
+
+export interface IFilterSourceResult {
+    src: string;
+    params?: any;
+}
+
+
+export interface IGenreSite {
+    toSiteGenre(genre: Genre): string;
+
+    fromSiteGenre(genre: string): Genre;
+
+    isSupported(genre: Genre): boolean;
+
+    supported(): Genre[];
+}
+
+export interface IMangaLogin {
+    login(user: string, password: string): Promise<boolean>;
+}
+
+
+export interface IMangaSite {
+    mangas(): Promise<MangaCollection>;
+
+    // info(): Promise<MangaInfo>;
+    // chapters(): Promise<ChapterCollection>;
+}
+
+
+export interface IMangaFilter {
+    filter(filter: FilterSupport): Promise<FilteredResults>;
+}
+
+
+export interface IMangaLatest {
+    latest(): Promise<MangaCollection>;
+}
+
+export interface IMangaVisitor {
+    latest(): IterableIterator<{ href: string, page: number; total: number }>;
+
+    mangas(): IterableIterator<{ href: string, page: number; total: number }>;
+}
+
+export interface IMangaRequest {
+    readonly uri: string;
+
+    readonly html: string;
+
+    readonly $: CheerioStatic;
+}
+
+export interface IMangaRequestFactory {
+    request(options: OptionsWithUri): Promise<IMangaRequest>;
+}
+
 
 export type GinImagePromise = ILazy<Promise<GinImage>>;
 export type ChapterCollection = IChapter[];

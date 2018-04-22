@@ -1,11 +1,12 @@
 import * as url from "url";
 import {MangaHereBuilder} from "./builder";
-import {IFilterSource, IGenreSite, IMangaConfig, IMangaParser, IMangaRequestFactory, IMangaVisitor} from "../interface";
 import {ILogger} from "../../util/logger";
 import {
     IChapter,
     IManga, IMangaDependencies,
     IMangaRequestFactoryDependency, IMangaResolvers,
+    IFilterSource, IGenreSite, IMangaConfig, IMangaParser,
+    IMangaRequestFactory, IMangaVisitor,
     IMangaResolversFactoryDependency
 } from "../../interface";
 import {FilteredResults, MangaFilter, MangaSource} from "../../filter";

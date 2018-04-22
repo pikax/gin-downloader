@@ -1,4 +1,4 @@
-import {IGenreSite} from "../interface";
+import {IGenreSite} from "../../interface";
 import {Genre} from "../../enum";
 
 

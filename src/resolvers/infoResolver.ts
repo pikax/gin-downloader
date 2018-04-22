@@ -3,10 +3,10 @@ import {
     IMangaInfoResolver,
     IMangaParserDependency,
     IMangaRequestFactoryDependency,
+    IMangaConfig, IMangaParser, IMangaRequestFactory,
     Info,
     MangaInfo
 } from "../interface";
-import {IMangaConfig, IMangaParser, IMangaRequestFactory} from "../manga/interface";
 
 
 export type InfoResolverDependencies = IMangaParserDependency & IMangaConfigDependency & IMangaRequestFactoryDependency;

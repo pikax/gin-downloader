@@ -1,8 +1,7 @@
-import {IFilterSource, IFilterSourceResult, IGenreSite} from "../interface";
 import {filter, MangaFilter} from "../../filter";
 import {FilterCondition, FilterStatus, Genre, Type} from "../../enum";
 import FilterSupport = filter.FilterSupport;
-import {IMangaGenreDependency} from "../../interface";
+import {IMangaGenreDependency, IFilterSource, IFilterSourceResult, IGenreSite} from "../../interface";
 
 
 export type MangaHereFilterDependencies = IMangaGenreDependency;

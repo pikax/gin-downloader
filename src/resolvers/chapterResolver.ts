@@ -1,5 +1,5 @@
 import {ChapterSource, IChapterResolver, IMangaParserDependency, IMangaRequestFactoryDependency} from "../interface";
-import {IMangaParser, IMangaRequestFactory} from "../manga/interface";
+import {IMangaParser, IMangaRequestFactory} from "../interface";
 
 
 

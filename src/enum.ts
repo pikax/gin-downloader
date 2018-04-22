@@ -87,3 +87,10 @@ export enum FilterCondition {
     LessThan,
     GreaterThan,
 }
+
+
+export enum MangaSite {
+    MangaHere = "mangahere",
+}
+
+

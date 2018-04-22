@@ -1,4 +1,4 @@
-import {IMangaConfig} from "../interface";
+import {IMangaConfig} from "../../interface";
 import {resolve} from "url";
 
 

@@ -1,7 +1,5 @@
 import {resolve} from "url";
-
-import {IMangaConfig, IMangaRequestFactory, IMangaVisitor} from "../interface";
-import {IMangaConfigDependency, IMangaRequestFactoryDependency} from "../../interface";
+import {IMangaConfigDependency, IMangaConfig, IMangaVisitor} from "../../interface";
 
 
 export type MangaHereVisitorDependencies = IMangaConfigDependency;

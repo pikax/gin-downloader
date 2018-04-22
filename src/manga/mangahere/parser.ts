@@ -2,12 +2,12 @@ import * as url from "url";
 import {LicencedError, ImageNotFoundError} from "../../util/error";
 
 import {lastDigit} from "../../util/string";
-import {IGenreSite, IMangaConfig, IMangaParser, IMangaRequest} from "../interface";
 import {MangaSource} from "../../filter";
 import {
     ChapterSource,
     IChapter,
     IMangaConfigDependency, IMangaGenreDependency,
+    IGenreSite, IMangaConfig, IMangaParser, IMangaRequest,
     IMangaLoggerDependency,
     MangaInfo,
     Synonym

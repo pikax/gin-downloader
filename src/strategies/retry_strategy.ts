@@ -1,6 +1,5 @@
-import {IRequestStrategy} from "../interface";
+import {IRequestStrategy, IMangaRequest} from "../interface";
 import {Options, OptionsWithUri, Response} from "request";
-import {IMangaRequest} from "../manga/interface";
 
 const requestRetry: any = require("requestretry");
 
@@ -13,7 +12,7 @@ const DefaultOptions = {
 
 
 const maxAttempts = 20,
-      retryDelay = 300;
+    retryDelay = 300;
 
 
 // retries if the request fails

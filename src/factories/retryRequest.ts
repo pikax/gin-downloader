@@ -1,6 +1,7 @@
 import {IRequestStrategy} from "../interface";
-import {IMangaRequest, IMangaRequestFactory, MangaRequestResult} from "../manga/interface";
+import {IMangaRequest, IMangaRequestFactory} from "../interface";
 import {OptionsWithUri} from "request";
+import {MangaRequestResult} from "../util/mangaRequestResult";
 
 export class RetryRequestFactory implements IMangaRequestFactory {
 

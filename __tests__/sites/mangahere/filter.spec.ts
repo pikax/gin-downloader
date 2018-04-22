@@ -1,8 +1,8 @@
 import {MangaHereFilter} from "../../../src/manga/mangahere/filter";
 import {MangaHereGenre} from "../../../src/manga/mangahere/genre";
-import {filter} from "../../../src/filter";
+import {filter} from "../../../src";
 import FilterSupport = filter.FilterSupport;
-import {FilterCondition, FilterStatus, Genre, Type} from "../../../src/enum";
+import {FilterCondition, FilterStatus, Genre, Type} from "../../../src";
 import {MangaHereBuilder} from "../../../src/manga/mangahere/builder";
 
 

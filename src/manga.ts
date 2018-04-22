@@ -36,8 +36,7 @@ export class MangaObject implements IMangaObject, IReadOnlyManga {
         return this._manga.image;
     }
 
-
-    manga() {
+    manga(): IManga {
         return {...this._manga};
     }
 
@@ -97,4 +96,5 @@ export class MangaObject implements IMangaObject, IReadOnlyManga {
     info(): Promise<MangaInfo> {
         return this._info || (this._info = this._infoResolver.info(this._src));
     }
+
 }

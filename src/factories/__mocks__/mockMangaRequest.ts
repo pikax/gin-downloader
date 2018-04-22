@@ -1,5 +1,6 @@
-import {IMangaRequest, IMangaRequestFactory, MangaRequestResult} from "../../manga/interface";
 import {OptionsWithUri} from "request";
+import {IMangaRequest, IMangaRequestFactory} from "../../interface";
+import {MangaRequestResult} from "../../util/mangaRequestResult";
 
 
 export interface IMatchFileProvider {
@@ -21,5 +22,4 @@ export class MockMangaRequestFactory implements IMangaRequestFactory {
         const result = new MangaRequestResult(uri, html);
         return result;
     }
-
 }

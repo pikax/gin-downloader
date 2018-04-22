@@ -29,7 +29,7 @@ describe("MangaHere", () => {
     it("Should filter", async () => {
         const filter = "gintama";
 
-        const filterResults = await mangahere.filter(filter)
+        const filterResults = await mangahere.filter(filter);
         const mangas = filterResults.results.map(m => m.manga());
 
 

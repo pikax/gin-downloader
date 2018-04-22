@@ -1,6 +1,6 @@
 import {MangaHereBuilder} from "../../../src/manga/mangahere/builder";
 import {RequestRetryStrategy} from "../../../src/strategies/retry_strategy";
-import {RequestFactoryMangaDependencies} from "../../../src/interface";
+import {RequestFactoryMangaDependencies} from "../../../src";
 import {RetryRequestFactory} from "../../../src/factories/retryRequest";
 
 describe("MangaHere builder", function () {
