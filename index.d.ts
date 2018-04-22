@@ -1,6 +1,4 @@
-export * from "./interface";
-import { GinBuilder } from "./builder";
-export { GinBuilder } from "./builder";
-export * from "./enum";
-export * from "./filter";
-export declare const gindownloader: GinBuilder;
+export * from './dist/index';
+import * as ginDownloader from './dist/index';
+
+export default ginDownloader.gindownloader;
