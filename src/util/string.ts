@@ -26,7 +26,6 @@ export const lastDigit = (s: string) => {
     return +match[0];
 };
 
-
 export const firstDigit = (s: string) => {
     const match = s.match(regexFirstDigit);
     if (!match) { // can't be to smart if the last digit is 0
@@ -39,6 +38,8 @@ export const firstDigit = (s: string) => {
 export const leftTrim = (s: string) => {
     return s.replace(/^\s+/, "");
 };
+
+
 
 String.prototype.lastDigit = function () {
     return lastDigit(this);
@@ -61,12 +62,11 @@ String.prototype.decodeEscapeSequence = function () {
 
 String.prototype.getMatches = function (regex: RegExp, index?: number) {
     index || (index = 1); // default to the first capturing group
-    let matches = [];
+    const matches = [];
     let match;
     while (match = regex.exec(this)) {
         matches.push(match[index]);
     }
     return matches;
 };
-
 

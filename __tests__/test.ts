@@ -22,8 +22,6 @@ describe("beta test", () => {
     });
 
 
-    // TODO mock with local html files
-    // const requestFactory = new RetryRequestFactory(new RequestRetryStrategy());
     const resolverFactory = new DefaultResolverFactory();
 
     const mangaHere = new MangaHere({requestFactory: mockedRequestFactory(), resolverFactory});
@@ -38,8 +36,7 @@ describe("beta test", () => {
 */
 
     it("should get all mangas", async () => {
-        const mangas = await mangaHere.mangas();
-
+        const mangas = (await mangaHere.mangas()).map(x => x.manga());
 
         // NOTE we slice because otherwise Jest will take minutes to snapshot testing, dont know why
         expect(mangas).toMatchSnapshot();
@@ -47,8 +44,7 @@ describe("beta test", () => {
 
 
     it("should get super mangas", async () => {
-        const mangas = await mangaHere.superMangas();
-
+        const mangas = await mangaHere.mangas();
 
         const m = mangas.find(x => x.name === "Gintama");
 

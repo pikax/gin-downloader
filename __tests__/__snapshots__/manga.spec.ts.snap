@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Manga Object should throw error if chapter not found 1`] = `"Chapter not found"`;
+
+exports[`Manga Object should throw error if invalid param on chapter 1`] = `"Invalid chapter provider"`;

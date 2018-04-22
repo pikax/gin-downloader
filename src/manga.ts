@@ -37,6 +37,10 @@ export class MangaObject implements IMangaObject, IReadOnlyManga {
     }
 
 
+    manga() {
+        return {...this._manga};
+    }
+
     constructor(dependencies: MangaObjectDependencies, private _src: string, private _manga: IManga) {
         this._chapterResolver = dependencies.chapterResolver;
         this._infoResolver = dependencies.infoResolver;
@@ -47,11 +51,32 @@ export class MangaObject implements IMangaObject, IReadOnlyManga {
         const chapters = await this._chapterResolver.chapters(this._src);
         this._chapters = chapters;
 
-        return chapters.map(x => ({...x, src: undefined}));
+        return chapters.map(x => ({
+            chap_number: x.chap_number,
+            volume: x.volume,
+            name: x.name,
+
+            language: x.language,
+            scanlator: x.scanlator,
+            dateAdded: x.dateAdded,
+
+            licensed: x.licensed
+        }));
     }
 
-    async images(chapter: IChapter): Promise<ImageCollection> {
-        const {chap_number} = chapter;
+    async images(chapter: IChapter | string | number): Promise<ImageCollection> {
+        const chap_number = typeof chapter === "string"
+            ? chapter
+            : typeof chapter === "number"
+                ? chapter.toString()
+                : !!chapter.chap_number
+                    ? chapter.chap_number
+                    : undefined;
+
+        if (!chap_number) {
+            throw new Error("Invalid chapter provider");
+        }
+
 
         // resolve chapters if not resolved yet
         if (!this._chapters) {
