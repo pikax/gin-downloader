@@ -5,15 +5,16 @@ import {
     ChapterSource} from "../interface";
 import {filter, FilteredResults, MangaSource} from "../filter";
 import FilterSupport = filter.FilterSupport;
-import {CheerioStatic} from "cheerio";
 import * as cheerio from "cheerio";
 
 import {Genre} from "../enum";
 import {OptionsWithUri} from "request";
 
 
+
+
 export interface IMangaLogin {
-    login(user: string, password: string): Promise;
+    login(user: string, password: string): Promise<boolean>;
 }
 
 
@@ -45,7 +46,7 @@ export interface IMangaRequest {
 
     readonly html: string;
 
-    readonly $: CheerioStatic;
+    readonly $: cheerio;
 }
 
 export interface IMangaRequestFactory {
@@ -54,7 +55,7 @@ export interface IMangaRequestFactory {
 
 
 export class MangaRequestResult implements IMangaRequest {
-    private _$: CheerioStatic;
+    private _$: cheerio;
 
     get uri() {
         return this._uri;

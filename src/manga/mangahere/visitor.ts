@@ -4,13 +4,13 @@ import {IMangaConfig, IMangaRequestFactory, IMangaVisitor} from "../interface";
 import {IMangaConfigDependency, IMangaRequestFactoryDependency} from "../../interface";
 
 
-type di = IMangaConfigDependency;
+export type MangaHereVisitorDependencies = IMangaConfigDependency;
 
 export class MangaHereVisitor implements IMangaVisitor {
 
     private _config: IMangaConfig;
 
-    constructor(dependencies: di) {
+    constructor(dependencies: MangaHereVisitorDependencies) {
         this._config = dependencies.config;
     }
 

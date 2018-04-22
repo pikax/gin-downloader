@@ -2,17 +2,16 @@ import {IFilterSource, IFilterSourceResult, IGenreSite} from "../interface";
 import {filter, MangaFilter} from "../../filter";
 import {FilterCondition, FilterStatus, Genre, Type} from "../../enum";
 import FilterSupport = filter.FilterSupport;
-import {config} from "../mangahereOld/config";
 import {IMangaGenreDependency} from "../../interface";
 
 
-type di = IMangaGenreDependency;
+export type MangaHereFilterDependencies = IMangaGenreDependency;
 
 // TODO add logger and log
 export class MangaHereFilter implements IFilterSource {
-    private _genreSite: IGenreSite
+    private _genreSite: IGenreSite;
 
-    constructor(dependencies: di) {
+    constructor(dependencies: MangaHereFilterDependencies) {
         this._genreSite = dependencies.genre;
     }
 
@@ -78,7 +77,7 @@ export class MangaHereFilter implements IFilterSource {
         const artist = `artist=${filterArtist || ""}`;
         const genreFilter = this._genreSite.supported().map(x => `genres%5B${this._genreSite.toSiteGenre(x).replace(/ /g, "+")}%5D=${inOutGenre(x, inGenres, outGenres)}`).join("&");
         const releaseMethod = `released_method=${methodReleased}`;
-        const release = `released=${filterReleased || ''}`;
+        const release = `released=${filterReleased || ""}`;
         const completed = `is_completed=${status}`;
 
         let advopts = "advopts=1"; // NOTE not sure what is this

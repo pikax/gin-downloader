@@ -72,6 +72,14 @@ describe("beta test", () => {
         expect(chapters).toMatchSnapshot();
 
 
+        const chapter = chapters.find(x => x.chap_number === "1");
+        const images = await m.images(chapter);
+
+        expect(images.length).toBe(58);
+
+        const i = await images[0].value;
+        expect(i.src).toMatch("https://mangatown.secure.footprint.net/store/manga/551/001.0/compressed/Gintama_v01_ch01_p01.jpg");
+        expect(i.name).toBe("Gintama_v01_ch01_p01.jpg");
     });
 });
 

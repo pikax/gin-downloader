@@ -1,88 +1,240 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`mangahere parser offline should get image from gintama chapter 1`] = `"https://mangatown.secure.footprint.net/store/manga/551/418.0/compressed/i001.jpg?token=e5546cd145dce89e0694ed75bec5868d67ca9021&ttl=1523804400"`;
+exports[`mangahere parser offline should get image from gintama chapter 1`] = `"https://mangatown.secure.footprint.net/store/manga/551/001.0/compressed/Gintama_v01_ch01_p01.jpg?token=2387d21c52dd70defe3496b5a11c63e3dfb9f757&ttl=1524466800"`;
 
 exports[`mangahere parser offline should get image paths for gintama chapter 1`] = `
 Array [
   Object {
     "name": "1",
-    "src": "//www.mangahere.cc/manga/gintama/c418/",
+    "src": "//www.mangahere.cc/manga/gintama/c001/",
   },
   Object {
     "name": "2",
-    "src": "//www.mangahere.cc/manga/gintama/c418/2.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/2.html",
   },
   Object {
     "name": "3",
-    "src": "//www.mangahere.cc/manga/gintama/c418/3.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/3.html",
   },
   Object {
     "name": "4",
-    "src": "//www.mangahere.cc/manga/gintama/c418/4.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/4.html",
   },
   Object {
     "name": "5",
-    "src": "//www.mangahere.cc/manga/gintama/c418/5.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/5.html",
   },
   Object {
     "name": "6",
-    "src": "//www.mangahere.cc/manga/gintama/c418/6.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/6.html",
   },
   Object {
     "name": "7",
-    "src": "//www.mangahere.cc/manga/gintama/c418/7.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/7.html",
   },
   Object {
     "name": "8",
-    "src": "//www.mangahere.cc/manga/gintama/c418/8.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/8.html",
   },
   Object {
     "name": "9",
-    "src": "//www.mangahere.cc/manga/gintama/c418/9.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/9.html",
   },
   Object {
     "name": "10",
-    "src": "//www.mangahere.cc/manga/gintama/c418/10.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/10.html",
   },
   Object {
     "name": "11",
-    "src": "//www.mangahere.cc/manga/gintama/c418/11.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/11.html",
   },
   Object {
     "name": "12",
-    "src": "//www.mangahere.cc/manga/gintama/c418/12.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/12.html",
   },
   Object {
     "name": "13",
-    "src": "//www.mangahere.cc/manga/gintama/c418/13.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/13.html",
   },
   Object {
     "name": "14",
-    "src": "//www.mangahere.cc/manga/gintama/c418/14.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/14.html",
   },
   Object {
     "name": "15",
-    "src": "//www.mangahere.cc/manga/gintama/c418/15.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/15.html",
   },
   Object {
     "name": "16",
-    "src": "//www.mangahere.cc/manga/gintama/c418/16.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/16.html",
   },
   Object {
     "name": "17",
-    "src": "//www.mangahere.cc/manga/gintama/c418/17.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/17.html",
   },
   Object {
     "name": "18",
-    "src": "//www.mangahere.cc/manga/gintama/c418/18.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/18.html",
   },
   Object {
     "name": "19",
-    "src": "//www.mangahere.cc/manga/gintama/c418/19.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/19.html",
   },
   Object {
     "name": "20",
-    "src": "//www.mangahere.cc/manga/gintama/c418/20.html",
+    "src": "//www.mangahere.cc/manga/gintama/c001/20.html",
+  },
+  Object {
+    "name": "21",
+    "src": "//www.mangahere.cc/manga/gintama/c001/21.html",
+  },
+  Object {
+    "name": "22",
+    "src": "//www.mangahere.cc/manga/gintama/c001/22.html",
+  },
+  Object {
+    "name": "23",
+    "src": "//www.mangahere.cc/manga/gintama/c001/23.html",
+  },
+  Object {
+    "name": "24",
+    "src": "//www.mangahere.cc/manga/gintama/c001/24.html",
+  },
+  Object {
+    "name": "25",
+    "src": "//www.mangahere.cc/manga/gintama/c001/25.html",
+  },
+  Object {
+    "name": "26",
+    "src": "//www.mangahere.cc/manga/gintama/c001/26.html",
+  },
+  Object {
+    "name": "27",
+    "src": "//www.mangahere.cc/manga/gintama/c001/27.html",
+  },
+  Object {
+    "name": "28",
+    "src": "//www.mangahere.cc/manga/gintama/c001/28.html",
+  },
+  Object {
+    "name": "29",
+    "src": "//www.mangahere.cc/manga/gintama/c001/29.html",
+  },
+  Object {
+    "name": "30",
+    "src": "//www.mangahere.cc/manga/gintama/c001/30.html",
+  },
+  Object {
+    "name": "31",
+    "src": "//www.mangahere.cc/manga/gintama/c001/31.html",
+  },
+  Object {
+    "name": "32",
+    "src": "//www.mangahere.cc/manga/gintama/c001/32.html",
+  },
+  Object {
+    "name": "33",
+    "src": "//www.mangahere.cc/manga/gintama/c001/33.html",
+  },
+  Object {
+    "name": "34",
+    "src": "//www.mangahere.cc/manga/gintama/c001/34.html",
+  },
+  Object {
+    "name": "35",
+    "src": "//www.mangahere.cc/manga/gintama/c001/35.html",
+  },
+  Object {
+    "name": "36",
+    "src": "//www.mangahere.cc/manga/gintama/c001/36.html",
+  },
+  Object {
+    "name": "37",
+    "src": "//www.mangahere.cc/manga/gintama/c001/37.html",
+  },
+  Object {
+    "name": "38",
+    "src": "//www.mangahere.cc/manga/gintama/c001/38.html",
+  },
+  Object {
+    "name": "39",
+    "src": "//www.mangahere.cc/manga/gintama/c001/39.html",
+  },
+  Object {
+    "name": "40",
+    "src": "//www.mangahere.cc/manga/gintama/c001/40.html",
+  },
+  Object {
+    "name": "41",
+    "src": "//www.mangahere.cc/manga/gintama/c001/41.html",
+  },
+  Object {
+    "name": "42",
+    "src": "//www.mangahere.cc/manga/gintama/c001/42.html",
+  },
+  Object {
+    "name": "43",
+    "src": "//www.mangahere.cc/manga/gintama/c001/43.html",
+  },
+  Object {
+    "name": "44",
+    "src": "//www.mangahere.cc/manga/gintama/c001/44.html",
+  },
+  Object {
+    "name": "45",
+    "src": "//www.mangahere.cc/manga/gintama/c001/45.html",
+  },
+  Object {
+    "name": "46",
+    "src": "//www.mangahere.cc/manga/gintama/c001/46.html",
+  },
+  Object {
+    "name": "47",
+    "src": "//www.mangahere.cc/manga/gintama/c001/47.html",
+  },
+  Object {
+    "name": "48",
+    "src": "//www.mangahere.cc/manga/gintama/c001/48.html",
+  },
+  Object {
+    "name": "49",
+    "src": "//www.mangahere.cc/manga/gintama/c001/49.html",
+  },
+  Object {
+    "name": "50",
+    "src": "//www.mangahere.cc/manga/gintama/c001/50.html",
+  },
+  Object {
+    "name": "51",
+    "src": "//www.mangahere.cc/manga/gintama/c001/51.html",
+  },
+  Object {
+    "name": "52",
+    "src": "//www.mangahere.cc/manga/gintama/c001/52.html",
+  },
+  Object {
+    "name": "53",
+    "src": "//www.mangahere.cc/manga/gintama/c001/53.html",
+  },
+  Object {
+    "name": "54",
+    "src": "//www.mangahere.cc/manga/gintama/c001/54.html",
+  },
+  Object {
+    "name": "55",
+    "src": "//www.mangahere.cc/manga/gintama/c001/55.html",
+  },
+  Object {
+    "name": "56",
+    "src": "//www.mangahere.cc/manga/gintama/c001/56.html",
+  },
+  Object {
+    "name": "57",
+    "src": "//www.mangahere.cc/manga/gintama/c001/57.html",
+  },
+  Object {
+    "name": "58",
+    "src": "//www.mangahere.cc/manga/gintama/c001/58.html",
   },
 ]
 `;

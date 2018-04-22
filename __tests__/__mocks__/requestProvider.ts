@@ -2,7 +2,9 @@ import {MockMangaRequestFactory} from "../../src/factories/__mocks__/mockMangaRe
 import {FileMatches} from "../__html__/matches";
 import {MockFileProvider} from "./fileProvider";
 import {IMangaRequestFactory} from "../../src/manga/interface";
+import {IRequestStrategy} from "../../src/interface";
 
+// TODO this can be deleted, just on using jest to mock
 export class MockFileRequestFactory implements IMangaRequestFactory {
     private _requestFactory: MockMangaRequestFactory;
 
@@ -16,3 +18,5 @@ export class MockFileRequestFactory implements IMangaRequestFactory {
         return this._requestFactory.request(options);
     }
 }
+
+

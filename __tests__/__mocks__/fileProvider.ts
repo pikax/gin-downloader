@@ -26,7 +26,7 @@ export class MockFileProvider implements IMatchFileProvider {
                 if (err) {
                     return rej(err);
                 }
-                res(data);
+                res(data.toString());
             }));
         });
     }

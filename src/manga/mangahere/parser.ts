@@ -19,14 +19,14 @@ import {FilterStatus} from "../../enum";
 import {ILogger} from "../../util/logger";
 
 
-type di = IMangaLoggerDependency & IMangaConfigDependency & IMangaGenreDependency;
+export type MangaHereParserDependencies = IMangaLoggerDependency & IMangaConfigDependency & IMangaGenreDependency;
 
 export class MangahereParser implements IMangaParser {
     private _logger: ILogger;
     private _config: IMangaConfig;
     private _genreSite: IGenreSite;
 
-    constructor(dependencies: di) {
+    constructor(dependencies: MangaHereParserDependencies) {
         this._logger = dependencies.logger;
         this._config = dependencies.config;
         this._genreSite = dependencies.genre;

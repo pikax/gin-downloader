@@ -2,6 +2,7 @@ import {MangaHereBuilder} from "./builder";
 import {IFilterSource, IGenreSite, IMangaConfig, IMangaParser, IMangaRequestFactory, IMangaVisitor} from "../interface";
 import {ILogger} from "../../util/logger";
 import {
+    IChapter,
     IManga, IMangaDependencies,
     IMangaRequestFactoryDependency, IMangaResolvers,
     IMangaResolversFactoryDependency
@@ -12,7 +13,7 @@ import {MangaObject} from "../../manga";
 const builder = new MangaHereBuilder();
 
 
-type di = IMangaRequestFactoryDependency & IMangaResolversFactoryDependency;
+export type MangaHereDependencies = IMangaRequestFactoryDependency & IMangaResolversFactoryDependency;
 
 export class MangaHere {
     private _requestFactory: IMangaRequestFactory;
@@ -27,9 +28,8 @@ export class MangaHere {
     private _resolvers: IMangaResolvers;
 
 
-    constructor(dependencies: di) {
+    constructor(dependencies: MangaHereDependencies) {
         const di = builder.build(dependencies);
-
         this._requestFactory = dependencies.requestFactory;
         this._logger = di.logger;
         this._genre = di.genre;
@@ -68,7 +68,7 @@ export class MangaHere {
     }
 
 
-    async latest() {
+    async latest(): Promise<IChapter[]> {
         const pages = Array.from(this._visitor.latest()).slice(0, 5); // limit to 5 pages tops
 
         const pMangas = pages.map(x => this._requestFactory.request({uri: x.href}))
