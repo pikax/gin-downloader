@@ -50,7 +50,10 @@
       "**/__tests__/*.(ts|tsx|js)",
       "**/__tests__/**/*.spec.(ts|tsx|js)"
     ],
-    "coverageDirectory": "coverage"
+    "coverageDirectory": "coverage",
+    "coveragePathIgnorePatterns": [
+      "dist/"
+    ]
   },
   "dependencies": {
     "@types/cheerio": "^0.22.1",
