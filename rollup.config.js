@@ -10,7 +10,7 @@ module.exports = {
   ],
 
   output: {
-    file: pkg.main,
+    file: "dist/index.js",
     format: 'cjs' //probably changing to es when node supports it
   },
   external: ['cheerio', 'lodash', 'debug', 'url', 'vm', 'util', 'querystring']
