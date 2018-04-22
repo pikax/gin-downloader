@@ -1381,17 +1381,7 @@ class GinBuilder {
     }
 }
 
-//
-// const Queue = require("promise-queue");
-//
-//
-// const requestStrategy = new RequestRetryStrategy();
-// const resolverFactory = new DefaultResolverFactory();
-// const requestFactory = new ConcurrentQueueRequestFactory(requestStrategy, new Queue(20));
-//
-//
-// export const mangahere = new MangaHere({requestFactory, resolverFactory});
-const gin = new GinBuilder();
+const gindownloader = new GinBuilder();
 
-exports.gin = gin;
+exports.gindownloader = gindownloader;
 exports.GinBuilder = GinBuilder;
