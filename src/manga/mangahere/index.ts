@@ -1,3 +1,4 @@
+import * as url from "url";
 import {MangaHereBuilder} from "./builder";
 import {IFilterSource, IGenreSite, IMangaConfig, IMangaParser, IMangaRequestFactory, IMangaVisitor} from "../interface";
 import {ILogger} from "../../util/logger";
@@ -7,8 +8,10 @@ import {
     IMangaRequestFactoryDependency, IMangaResolvers,
     IMangaResolversFactoryDependency
 } from "../../interface";
-import {MangaSource} from "../../filter";
+import {FilteredResults, MangaFilter, MangaSource} from "../../filter";
 import {MangaObject} from "../../manga";
+import {sanitizeFilter} from "../../util/filter";
+
 
 const builder = new MangaHereBuilder();
 
@@ -57,14 +60,9 @@ export class MangaHere {
         return mangas.reduce((c, v) => {
             c.push(...v);
             return c;
-        }, []);
-    }
-
-
-    async superMangas(): Promise<MangaObject[]> {
-        const mangas = await this.mangas();
-
-        return mangas.map(this.buildManga);
+        }, [])
+            .map(this.buildManga)
+            ;
     }
 
 
@@ -82,6 +80,25 @@ export class MangaHere {
             c.push(...v);
             return c;
         }, []);
+    }
+
+
+    async filter(filter?: MangaFilter | string): Promise<FilteredResults> {
+        const f = sanitizeFilter(filter);
+        const processed = this._filter.process(f);
+
+        const uri = url.resolve(this._config.mangasUrl, processed.src)
+
+        const response = await this._requestFactory.request({uri, qs: processed.params});
+
+        const mangas = Array.from(this._parser.mangas(response)).map(this.buildManga);
+        const filterResult = this._parser.filterPage(response);
+
+
+        return {
+            ...filterResult,
+            results: mangas,
+        } as any;
     }
 
 

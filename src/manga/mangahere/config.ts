@@ -18,4 +18,8 @@ export class MangaHereConfig implements IMangaConfig {
     get latestUrl() {
         return resolve(this.site, "/latest/");
     }
+
+    get filterUrl() {
+        return resolve(this.site, "/search.php");
+    }
 }

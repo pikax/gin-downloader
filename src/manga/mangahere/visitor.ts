@@ -14,7 +14,7 @@ export class MangaHereVisitor implements IMangaVisitor {
         this._config = dependencies.config;
     }
 
-    * latest(): Iterable<{ href: string, page: number; total: number }> {
+    * latest(): IterableIterator<{ href: string, page: number; total: number }> {
         const total = 100;
         const latest = this._config.latestUrl;
 
@@ -33,13 +33,12 @@ export class MangaHereVisitor implements IMangaVisitor {
         }
     }
 
-    * mangas(): Iterable<{ href: string; page: number; total: number }> {
+    * mangas(): IterableIterator<{ href: string; page: number; total: number }> {
         yield {
             href: this._config.mangasUrl,
             page: 1,
             total: 1
         };
     }
-
 
 }

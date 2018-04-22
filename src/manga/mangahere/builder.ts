@@ -3,7 +3,7 @@ import {MangaHereGenre} from "./genre";
 import {mangahereLogger} from "./logger";
 import {MangaHereVisitor} from "./visitor";
 import {MangaHereConfig} from "./config";
-import {MangahereParser} from "./parser";
+import {MangaHereParser} from "./parser";
 import {IMangaBuilder, IMangaDependencies, RequestFactoryMangaDependencies} from "../../interface";
 
 
@@ -15,12 +15,12 @@ export class MangaHereBuilder implements IMangaBuilder {
             throw new Error("Please provide request factory");
         }
 
-        const logger    = di.logger     || mangahereLogger;
-        const genre     = di.genre      || new MangaHereGenre();
-        const config    = di.config     || new MangaHereConfig();
-        const filter    = di.filter     || new MangaHereFilter({genre});
-        const parser    = di.parser     || new MangahereParser({logger, config, genre});
-        const visitor   = di.visitor    || new MangaHereVisitor({config});
+        const logger = di.logger || mangahereLogger;
+        const genre = di.genre || new MangaHereGenre();
+        const config = di.config || new MangaHereConfig();
+        const filter = di.filter || new MangaHereFilter({genre});
+        const parser = di.parser || new MangaHereParser({logger, config, genre});
+        const visitor = di.visitor || new MangaHereVisitor({config});
 
         return {
             requestFactory,
@@ -30,7 +30,7 @@ export class MangaHereBuilder implements IMangaBuilder {
             filter,
             parser,
             visitor
-        };
+        } ;
     }
 }
 

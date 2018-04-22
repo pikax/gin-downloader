@@ -1,7 +1,7 @@
 import {MangaRequestResult, MangaSite} from "../../../src/manga/interface";
 
 import {OfflineFileProvider} from "../../__mocks__/offlineFileProvider";
-import {MangahereParser} from "../../../src/manga/mangahere/parser";
+import {MangaHereParser} from "../../../src/manga/mangahere/parser";
 import {loggerFactory} from "../../../src/util/logger";
 import {MangaHereConfig} from "../../../src/manga/mangahere/config";
 import {MangaHereGenre} from "../../../src/manga/mangahere/genre";
@@ -15,7 +15,7 @@ describe("mangahere parser", () => {
         config: new MangaHereConfig(),
         genre: new MangaHereGenre(),
     };
-    const parser = new MangahereParser(di);
+    const parser = new MangaHereParser(di);
 
     describe("offline", () => {
         const provider = new OfflineFileProvider("mangahere");

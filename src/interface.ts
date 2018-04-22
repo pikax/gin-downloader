@@ -10,6 +10,7 @@ import {
 import {ILogger} from "./util/logger";
 import {IMangaRequestFactory} from "../build/manga/interface";
 import {Partial} from "rollup-plugin-typescript2/dist/partial";
+import {string} from "./old/old v2/declarations";
 
 
 export interface Source {
@@ -135,6 +136,10 @@ export interface MangaInfo {
     licensed?: boolean;
 }
 
+export interface ImageSource {
+    src: string;
+    name: string;
+}
 
 export interface IRequestStrategy {
     request(options: OptionsWithUri): Promise<Response>;

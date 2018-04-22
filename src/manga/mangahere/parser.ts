@@ -21,7 +21,7 @@ import {ILogger} from "../../util/logger";
 
 export type MangaHereParserDependencies = IMangaLoggerDependency & IMangaConfigDependency & IMangaGenreDependency;
 
-export class MangahereParser implements IMangaParser {
+export class MangaHereParser implements IMangaParser {
     private _logger: ILogger;
     private _config: IMangaConfig;
     private _genreSite: IGenreSite;
@@ -33,7 +33,7 @@ export class MangahereParser implements IMangaParser {
     }
 
 
-    * mangas(mangaRequest: IMangaRequest): Iterable<MangaSource> {
+    * mangas(mangaRequest: IMangaRequest): IterableIterator<MangaSource> {
         const {$, uri, html} = mangaRequest;
 
         this._logger.debug("parsing mangas:\n\turl:%s", uri);
@@ -58,7 +58,7 @@ export class MangahereParser implements IMangaParser {
         }
     }
 
-    * latest(mangaRequest: IMangaRequest): Iterable<IChapter & { src: string, mangaSrc: string }> {
+    * latest(mangaRequest: IMangaRequest): IterableIterator<IChapter & { src: string, mangaSrc: string }> {
         const {$, uri, html} = mangaRequest;
 
         this._logger.debug("parsing latest:\n\turl:%s", uri);
@@ -157,7 +157,7 @@ export class MangahereParser implements IMangaParser {
     }
 
 
-    * chapters(mangaRequest: IMangaRequest): Iterable<ChapterSource> {
+    * chapters(mangaRequest: IMangaRequest): IterableIterator<ChapterSource> {
         const {$, uri, html} = mangaRequest;
 
         this._logger.debug("parsing chapter:\n\turl:%s", uri);
@@ -198,7 +198,7 @@ export class MangahereParser implements IMangaParser {
     }
 
 
-    * imagesPaths(mangaRequest: IMangaRequest): Iterable<{ name: string; src: string }> {
+    * imagesPaths(mangaRequest: IMangaRequest): IterableIterator<{ name: string; src: string }> {
         const {$, uri, html} = mangaRequest;
 
         this._logger.debug("parsing images paths:\n\turl:%s", uri);
@@ -209,7 +209,7 @@ export class MangahereParser implements IMangaParser {
             this._logger.debug("Is licensed %s", licensed);
             this._logger.verbose("Is licensed %s", licensed);
 
-            throw new LicencedError(this._config.name, licensed);
+            throw LicencedError(this._config.name, licensed);
         }
         const elements = $("body > section.readpage_top > div.go_page.clearfix > span > select > option").toArray();
 
@@ -247,7 +247,7 @@ export class MangahereParser implements IMangaParser {
         if (!match) {
             this._logger.debug("Image not found, please check if the url is correct and if it works on your browser.");
             this._logger.verbose("Image not found, please check if the url is correct and if it works on your browser.");
-            throw new ImageNotFoundError(this._config.name, uri, "ADB0");
+            throw ImageNotFoundError(this._config.name, uri, "ADB0");
         }
 
         const result = match[1];

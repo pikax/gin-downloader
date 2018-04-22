@@ -12,7 +12,6 @@ import FilterSupport = filter.FilterSupport;
 import {FilterCondition, FilterStatus, Genre, GenreCondition, Type} from "../enum";
 
 import sanitizedSearch = filter.Search;
-import cond = require("lodash/fp/cond");
 
 export const sanitizeFilter = (condition: MangaFilter | string): FilterSupport => {
         const search: sanitizedSearch = {};
@@ -122,7 +121,7 @@ export const sanitizeGenre = (genre: GenreFilter | GenreCollection | any): Genre
                     // add only valid gin genres
                     result.inGenres.push(...g.inGenres.filter(isValidGenre));
                 } else {
-                    const s = g.inGenres.toString();
+                    const s = (g.inGenres as any).toString();
                     if (isValidGenre(s)) {
                         result.inGenres.push(s as Genre);
                     }
@@ -134,7 +133,7 @@ export const sanitizeGenre = (genre: GenreFilter | GenreCollection | any): Genre
                     // add only valid gin genres
                     result.outGenres.push(...g.outGenres.filter(isValidGenre));
                 } else {
-                    const s = g.outGenres.toString();
+                    const s = (g.outGenres as any).toString();
                     if (isValidGenre(s)) {
                         result.outGenres.push(s as Genre);
                     }

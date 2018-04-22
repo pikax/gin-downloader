@@ -9,7 +9,7 @@ import {
 } from "./interface";
 
 
-type di = IImageResolverDependency & IChapterResolverDependency & IInfoResolverDependency;
+export type MangaObjectDependencies = IImageResolverDependency & IChapterResolverDependency & IInfoResolverDependency;
 
 export class MangaObject implements IMangaObject, IReadOnlyManga {
     private _chapters: ChapterSource[];
@@ -37,7 +37,7 @@ export class MangaObject implements IMangaObject, IReadOnlyManga {
     }
 
 
-    constructor(dependencies: di, private _src: string, private _manga: IManga) {
+    constructor(dependencies: MangaObjectDependencies, private _src: string, private _manga: IManga) {
         this._chapterResolver = dependencies.chapterResolver;
         this._infoResolver = dependencies.infoResolver;
         this._imageResolver = dependencies.imageResolver;

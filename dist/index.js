@@ -2,16 +2,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var lodash = require('lodash');
 var cheerio = require('cheerio');
 var url = require('url');
-
-(function (gin) {
-    var SITES;
-    (function (SITES) {
-        SITES["MANGAHERE"] = "MangaHere";
-    })(SITES = gin.SITES || (gin.SITES = {}));
-})(exports.gin || (exports.gin = {}));
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -27,266 +19,16 @@ MERCHANTABLITY OR NON-INFRINGEMENT.
 See the Apache Version 2.0 License for specific language governing permissions
 and limitations under the License.
 ***************************************************************************** */
-/* global Reflect, Promise */
 
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var __assign = Object.assign || function __assign(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-    }
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
     return t;
-};
-
-
-
-
-
-
-
-
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
 }
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-var o = {
-    maxRetries: 50,
-    timeout: 10000,
-    interval: 1000,
-    disableHttps: false,
-    request: {
-        jar: true,
-        gzip: true,
-        followAllRedirects: true,
-        forever: true,
-        proxy: process.env.proxy,
-        headers: {
-            "Accept-Charset": "utf-8;q=0.7,*;q=0.3",
-            "Accept-Language": "en-US,en;q=0.8",
-            "Connection": "keep-alive",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36",
-            "Accept-Encoding": "gzip,deflate",
-        }
-    }
-};
-var reqConfig = o;
-//todo fix types
-
-var cloudscraper = require("cloudscraper");
-// specific options for cloudscraper lib
-var DefaultOptions = {
-    // none
-    method: "GET"
-};
-// let _config: IGinConfigFactory;
-// const getConfig = async () => {
-//   if (!_config) {
-//     // _config = require("../config").ginConfig;
-//     _config = await import("../config").then(x => x.ginConfig);
-//   }
-//   return _config.config;
-// };
-var RequestCloudFlareStrategy = /** @class */ (function () {
-    function RequestCloudFlareStrategy() {
-    }
-    RequestCloudFlareStrategy.prototype.request = function (options) {
-        return __awaiter(this, void 0, void 0, function () {
-            var opts;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        opts = __assign({}, DefaultOptions, reqConfig.request);
-                        if (typeof options === "string") {
-                            opts.url = options;
-                        }
-                        else {
-                            opts = __assign({}, opts, options);
-                        }
-                        return [4 /*yield*/, new Promise(function (res, rej) {
-                                var callback = function (err, response, body) {
-                                    if (err) {
-                                        return rej(err);
-                                    }
-                                    return res(body);
-                                };
-                                if (opts.method === "POST") {
-                                    cloudscraper.post(opts.url, opts.body, callback);
-                                }
-                                else {
-                                    cloudscraper.request(opts, callback);
-                                }
-                            })];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    return RequestCloudFlareStrategy;
-}());
-
-//
-// export const strategy = new RequestCloudFlareStrategy();
-// export default strategy;
-
-var requestRetry = require("requestretry");
-// specific options for requestretry lib
-var DefaultOptions$1 = {
-    retryStrategy: requestRetry.RetryStrategies.HTTPOrNetworkError,
-    fullResponse: false,
-};
-// let _config: IGinConfigFactory;
-// const getConfig = async () => {
-//   if (!_config) {
-//     // _config = require("../config").ginConfig;
-//     _config = await import("../config").then(x => x.ginConfig);
-//   }
-//   return _config.config;
-// };
-var RequestRetryStrategy = /** @class */ (function () {
-    function RequestRetryStrategy() {
-    }
-    RequestRetryStrategy.prototype.request = function (options) {
-        return __awaiter(this, void 0, void 0, function () {
-            var config, opts;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        config = reqConfig;
-                        opts = __assign({}, DefaultOptions$1, config.request, lodash.pick(config, "maxRetries", "timeout", "interval"));
-                        if (typeof options === "string") {
-                            opts.url = options;
-                        }
-                        else {
-                            opts = __assign({}, opts, options);
-                        }
-                        // TODO find a better place for this
-                        if (config.disableHttps) {
-                            opts.url = opts.url.toString().replace("https", "http");
-                        }
-                        return [4 /*yield*/, requestRetry(opts)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    return RequestRetryStrategy;
-}());
-
-//
-// export const strategy = new RequestRetryStrategy();
-// export default strategy;
-
-var Config = /** @class */ (function () {
-    function Config() {
-    }
-    Object.defineProperty(Config.prototype, "defaultConfig", {
-        get: function () {
-            return DefaultConfig;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Config.prototype, "config", {
-        get: function () {
-            return this._config || (this._config = this.buildConfig());
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Config.prototype, "use", {
-        get: function () {
-            return this._use;
-        },
-        set: function (use) {
-            this._use = use;
-            this._config = this.buildConfig(use);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Config.prototype.reset = function () {
-        this._config = this.defaultConfig;
-        this._use = null;
-    };
-    Config.prototype.buildConfig = function (conf) {
-        if (conf === void 0) { conf = {}; }
-        var c = __assign({}, this.defaultConfig, conf);
-        if (conf.request) {
-            c.request = __assign({}, this.defaultConfig.request, conf.request);
-        }
-        if (conf.sites) {
-            c.sites = __assign({}, this.defaultConfig.sites, conf.sites);
-        }
-        return c;
-    };
-    return Config;
-}());
-var ginConfig = new Config();
-var retryStrategy = new RequestRetryStrategy();
-var cloudflareStrategy = new RequestCloudFlareStrategy();
-var DefaultConfig = __assign({ pooling: {
-        MangafoxSearch: {
-            requestInterval: 5000,
-            match: /mangafox\.me\/search\.php/
-        },
-        // NOTE this should be always the last one!
-        "*": {
-            simultaneousRequests: 30,
-            maxQueueSize: 300,
-            safeQueueSize: 50,
-            match: /.*/,
-        }
-    }, disableHttps: true, sites: {
-        batoto: cloudflareStrategy,
-        mangafox: retryStrategy,
-        mangapanda: retryStrategy,
-        MangaHere: retryStrategy,
-        kissmanga: cloudflareStrategy,
-    } }, reqConfig);
 
 (function (Genre) {
     Genre["Action"] = "Action";
@@ -342,7 +84,6 @@ var DefaultConfig = __assign({ pooling: {
     Genre["Yuri"] = "Yuri";
     Genre["NoChapters"] = "[no chapters]";
 })(exports.Genre || (exports.Genre = {}));
-
 (function (Type) {
     Type["Manga"] = "Manga";
     Type["Manhwa"] = "Manhwa";
@@ -351,18 +92,15 @@ var DefaultConfig = __assign({ pooling: {
     Type["Artbook"] = "Artbook";
     Type["Other"] = "Other";
 })(exports.Type || (exports.Type = {}));
-
 (function (GenreCondition) {
     GenreCondition[GenreCondition["And"] = 0] = "And";
     GenreCondition[GenreCondition["Or"] = 1] = "Or";
 })(exports.GenreCondition || (exports.GenreCondition = {}));
-
 (function (FilterStatus) {
     FilterStatus["Ongoing"] = "Ongoing";
     FilterStatus["Complete"] = "Complete";
     FilterStatus["Cancelled"] = "Cancelled";
 })(exports.FilterStatus || (exports.FilterStatus = {}));
-
 (function (FilterCondition) {
     FilterCondition[FilterCondition["Equal"] = 0] = "Equal";
     FilterCondition[FilterCondition["Contains"] = 1] = "Contains";
@@ -375,1123 +113,77 @@ var DefaultConfig = __assign({ pooling: {
     FilterCondition[FilterCondition["GreaterThan"] = 8] = "GreaterThan";
 })(exports.FilterCondition || (exports.FilterCondition = {}));
 
-var regexLastDigit = /\d+(\.\d{1,3})?$/;
-var regexFirstDigit = /\d+(\.\d{1,3})?/;
-String.prototype.lastDigit = function () {
-    var match = this.match(regexLastDigit);
-    if (!match) {
-        return null;
+// TODO add logger and log
+class MangaHereFilter {
+    constructor(dependencies) {
+        this._genreSite = dependencies.genre;
     }
-    return +match[0];
-};
-String.prototype.firstDigit = function () {
-    var match = this.match(regexFirstDigit);
-    if (!match) {
-        return null;
-    }
-    return +match[0];
-};
-String.prototype.leftTrim = function () {
-    return this.replace(/^\s+/, "");
-};
-String.prototype.decodeEscapeSequence = function () {
-    return this.replace(/\\x([0-9A-Fa-f]{2})/g, function () {
-        return String.fromCharCode(parseInt(arguments[1], 16));
-    });
-};
-function promiseSetTimeout(ms) {
-    return new Promise((function (resolve) { return setTimeout(resolve, ms); }));
-}
-
-var Lazy = /** @class */ (function () {
-    function Lazy(_func) {
-        this._func = _func;
-    }
-    Object.defineProperty(Lazy.prototype, "value", {
-        get: function () {
-            return this._value || (this._value = this._func());
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return Lazy;
-}());
-var parseDoc = function (source, params) {
-    if (params === void 0) { params = undefined; }
-    var doc = cheerio.load(source);
-    doc.location = params && params.location;
-    return doc;
-};
-var sanitize = function (children) { return children.filter(function (x) { return x.type !== "text"; }); };
-
-var procFilter = function (condition, def) {
-    var search = (def && def.search) || {};
-    if (typeof condition === "string") {
-        search.name = {
-            name: condition
-        };
-        return { search: search };
-    }
-    else {
-        var nc = (condition && condition.name && { name: condition.name }) || undefined;
-        var ns = (condition && condition.search) || undefined;
-        search = __assign({ name: nc }, search, ns);
+    process(filter) {
+        const { search, page } = filter;
+        let filterType = null;
+        let filterName = filter.search.name && filter.search.name.name || filter.search.name;
+        let filterAuthor = null;
+        let filterArtist = null;
+        let filterReleased = null;
+        let status = "";
+        let methodName = "cw";
+        let methodAuthor = "cw";
+        let methodArtist = "cw";
+        let methodReleased = "eq";
+        let inGenres = [];
+        let outGenres = [];
         if (search) {
-            var genre = search.genre, name = search.name, author = search.author, artist = search.artist, released = search.released, rating = search.rating;
-            if (Array.isArray(genre)) {
-                var inGenres = genre;
-                search.genre = {
-                    inGenres: inGenres,
-                    condition: exports.GenreCondition.And,
-                };
+            let { name, author, artist, released, type, genre } = search;
+            filterType = resolveType(type) || filterType;
+            if (name) {
+                methodName = searchMethod(name.condition) || methodName;
             }
-            if (typeof name === "string") {
-                search.name = {
-                    name: name
-                };
+            if (search.status) {
+                status = resolveStatus(search.status);
             }
-            if (typeof author === "string") {
-                search.author = {
-                    name: author
-                };
+            if (author) {
+                filterAuthor = author.name || filterAuthor;
+                methodAuthor = searchMethod(author.condition) || methodAuthor;
             }
-            if (typeof artist === "string") {
-                search.artist = {
-                    name: artist
-                };
+            if (artist) {
+                filterArtist = artist.name || filterArtist;
+                methodArtist = searchMethod(artist.condition) || methodArtist;
             }
-            if (typeof released === "number") {
-                search.released = {
-                    value: released
-                };
+            if (released) {
+                filterReleased = released.value || filterReleased;
+                methodReleased = yearSearchMethod(released.condition) || methodReleased;
             }
-            if (typeof rating === "number") {
-                search.rating = {
-                    from: rating
-                };
+            if (genre) {
+                inGenres = genre.inGenres;
+                outGenres = genre.outGenres;
             }
         }
-    }
-    //
-    // if (filter.name) {
-    //   filter.name = sanitizeName(filter.name);
-    // }
-    // if (filter.search && filter.search.name) {
-    //   const name = filter.search.name;
-    //
-    //   if (typeof name !== "string") {
-    //     name.name = sanitizeName(name.name);
-    //   }
-    // }
-    return __assign({}, condition, { search: search });
-};
-/*NOTE not sure*/
-
-
-
-
-/*ending*/
-
-var Queue = require("promise-queue");
-var TICK = 33;
-var pools;
-function request(uri, strategy) {
-    var pool;
-    if (!ginConfig.config.pooling || !(pool = getPool(uri))) {
-        return strategy.request(uri);
-    }
-    return pool.queue.queue(uri, strategy);
-}
-function getPool(uri) {
-    pools = pools || buildPool();
-    var url$$1 = isOptionsWithUrl(uri)
-        ? uri.url.toString()
-        : uri;
-    return pools.find(function (x) { return !!url$$1.match(x.match); });
-}
-function isOptionsWithUrl(uri) {
-    return uri.url !== undefined;
-}
-
-function buildPool() {
-    var pooling = ginConfig.config.pooling;
-    var pools = [];
-    for (var p in pooling) {
-        var pool = pooling[p];
-        var queue = void 0;
-        if (pool.requestInterval) {
-            queue = new IntervalPool(pool);
-        }
-        else {
-            if (pool.simultaneousRequests) {
-                queue = new ConcurrentQueue(pool);
-            }
-            else {
-                throw new Error("unknown pool type");
-            }
-        }
-        pools.push(__assign({}, pool, { queue: queue }));
-    }
-    return pools;
-}
-//
-// export class IntervalPool implements QueuePool {
-//   private _currId: number = 0;
-//
-//   private _active: ActivePool;
-//   // private _history: {[id: string]: HistoryPool} = {};
-//   private _history = new Map<number, HistoryPool>();
-//
-//   get history(): HistoryPool[] {
-//     return Array.from(this._history.values());
-//   } // copy list
-//
-//
-//   get isActive(): boolean {
-//     return !!this._active;
-//   }
-//
-//
-//   private set active(value: ActivePool) {
-//     // const h = this._history[this._active.id];
-//     // h.resolved = true;
-//     this._active = value;
-//   }
-//
-//
-//   constructor(private _config: GinPoolConfig) {
-//   }
-//
-//
-//   queue(uri: GinUrlOptions, strategy: RequestStrategy): Promise<any> {
-//     let id = this.getNextId();
-//     const last = this._history.get(id - 1);
-//     const history: HistoryPool = {
-//       id,
-//       uri,
-//       isActive: true,
-//       created: new Date(),
-//     };
-//     this._history.set(id, history);
-//
-//     let lazy = new Lazy(async () => {
-//       try {
-//         history.started = new Date();
-//         return await strategy.request(uri);
-//       }
-//       finally {
-//         history.resolved = new Date();
-//       }
-//     });
-//
-//     if (last) {
-//       lazy = history.item = this.waitForLast(last, lazy);
-//     }
-//
-//     return this.execItem(id, lazy);
-//   }
-//
-//   private async execItem(id: number, lazy: Lazy<Promise<any>>) {
-//     const h = this._history.get(id);
-//
-//     try {
-//       this.active = {
-//         id,
-//         uri: h.uri,
-//         isActive: true,
-//       };
-//       h.item = lazy;
-//       return await lazy.value.catch(x => {
-//         throw h.error = x;
-//       });
-//     }
-//     finally {
-//       h.failed = true;
-//       h.isActive = false;
-//       this.active = null;
-//     }
-//   }
-//
-//   private waitForLast(last: HistoryPool, lazy: Lazy<Promise<any>>): Lazy<Promise<any>> {
-//     const {requestInterval} = this._config;
-//     return new Lazy(async () => {
-//       while (last.isActive) {
-//         await last.item.value // just wait until the last finish or fails, if it fails we should ignore the exception
-//           .catch((e) => e);
-//       }
-//       const dt = last.resolved;
-//       const passedTime = Date.now() - dt.getTime();
-//
-//       const missing = requestInterval - passedTime;
-//
-//       if (missing > 0) {
-//         await promiseSetTimeout(missing);
-//       }
-//       return await lazy.value;
-//     });
-//   }
-//
-//   private getNextId() {
-//     return this._currId++;
-//   }
-// }
-var ConcurrentQueue = /** @class */ (function () {
-    function ConcurrentQueue(_config) {
-        this._config = _config;
-        this._currId = 0;
-        this._history = new Map();
-        this._queue = new Queue(_config.simultaneousRequests);
-    }
-    Object.defineProperty(ConcurrentQueue.prototype, "history", {
-        get: function () {
-            return Array.from(this._history.values());
-        } // copy list
-        ,
-        enumerable: true,
-        configurable: true
-    });
-    ConcurrentQueue.prototype.queue = function (uri, strategy) {
-        return __awaiter(this, void 0, void 0, function () {
-            var lazy;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!(this._queue.getQueueLength() > this._config.maxQueueSize)) return [3 /*break*/, 3];
-                        _a.label = 1;
-                    case 1:
-                        if (!(this._queue.getQueueLength() < this._config.safeQueueSize)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, promiseSetTimeout(TICK)];
-                    case 2:
-                        _a.sent();
-                        return [3 /*break*/, 1];
-                    case 3:
-                        lazy = new Lazy(function () { return strategy.request(uri); });
-                        return [2 /*return*/, this._queue.add(function () { return lazy.value; })];
-                }
-            });
-        });
-    };
-    // async exec(lazy: Lazy<Promise<any>>, history: HistoryPool) {
-    //   try {
-    //     history.item = lazy;
-    //     return await lazy.value.catch(x => {
-    //       throw history.error = x;
-    //     });
-    //   }
-    //   finally {
-    //     history.failed = true;
-    //     history.isActive = false;
-    //   }
-    // }
-    ConcurrentQueue.prototype.getNextId = function () {
-        return this._currId++;
-    };
-    return ConcurrentQueue;
-}());
-var IntervalLazy = /** @class */ (function (_super) {
-    __extends(IntervalLazy, _super);
-    // appendNew(func : ()=>T){
-    //   return new IntervalLazy(async ()=>{
-    //
-    //     while(thi)
-    //     if(!this.started){
-    //
-    //     }
-    //
-    //
-    //
-    //
-    //
-    //   });
-    // }
-    function IntervalLazy(_func, _requestInterval) {
-        var _this = _super.call(this, function () {
-            _this.started = new Date();
-            try {
-                var result = _func();
-                if (result instanceof Promise) {
-                    result.then(function (x) {
-                        _this.resolved = new Date();
-                        return x;
-                    }).catch(function (x) {
-                        _this.resolved = new Date();
-                        _this.error = x;
-                        _this.failed = true;
-                    });
-                }
-                else {
-                    _this.resolved = new Date();
-                }
-                return result;
-            }
-            catch (e) {
-                _this.resolved = new Date();
-                _this.error = e;
-                _this.failed = true;
-            }
-        }) || this;
-        _this._requestInterval = _requestInterval;
-        _this.created = new Date();
-        return _this;
-    }
-    IntervalLazy.prototype.append = function (lazy) {
-        return __awaiter(this, void 0, void 0, function () {
-            var pValue, w_1, w;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        pValue = null;
-                        _a.label = 1;
-                    case 1:
-                        if (!!this.resolved) return [3 /*break*/, 6];
-                        w_1 = (this.created.getMilliseconds() + this._requestInterval) - Date.now();
-                        if (!(w_1 > 0)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, promiseSetTimeout(w_1)];
-                    case 2:
-                        _a.sent();
-                        return [3 /*break*/, 5];
-                    case 3:
-                        pValue = this.value;
-                        return [4 /*yield*/, pValue];
-                    case 4:
-                        _a.sent();
-                        _a.label = 5;
-                    case 5: return [3 /*break*/, 1];
-                    case 6:
-                        w = (this.resolved.getMilliseconds() + this._requestInterval) - Date.now();
-                        if (!(w > 0)) return [3 /*break*/, 8];
-                        return [4 /*yield*/, promiseSetTimeout(w)];
-                    case 7:
-                        _a.sent();
-                        _a.label = 8;
-                    case 8: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return IntervalLazy;
-}(Lazy));
-var IntervalPool = /** @class */ (function () {
-    // history: HistoryPool[]; //TODO remove
-    function IntervalPool(_config) {
-        this._config = _config;
-    }
-    IntervalPool.prototype.queue = function (uri, strategy) {
-        return __awaiter(this, void 0, void 0, function () {
-            var prev, current, w, p, e_1, w2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        prev = this.currentLazy;
-                        current = new IntervalLazy(function () { return strategy.request(uri); }, this._config.requestInterval);
-                        this.currentLazy = current;
-                        if (!prev) return [3 /*break*/, 10];
-                        w = (prev.created.getTime() + this._config.requestInterval) - Date.now();
-                        if (!(w > 0)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, promiseSetTimeout(w)];
-                    case 1:
-                        _a.sent();
-                        _a.label = 2;
-                    case 2:
-                        if (!!prev.started) return [3 /*break*/, 4];
-                        return [4 /*yield*/, promiseSetTimeout(TICK)];
-                    case 3:
-                        _a.sent();
-                        return [3 /*break*/, 2];
-                    case 4:
-                        p = prev.value;
-                        _a.label = 5;
-                    case 5:
-                        _a.trys.push([5, 7, , 8]);
-                        return [4 /*yield*/, p];
-                    case 6:
-                        _a.sent();
-                        return [3 /*break*/, 8];
-                    case 7:
-                        e_1 = _a.sent();
-                        return [3 /*break*/, 8];
-                    case 8:
-                        w2 = (prev.resolved.getTime() + this._config.requestInterval) - Date.now();
-                        if (!(w2 > 0)) return [3 /*break*/, 10];
-                        return [4 /*yield*/, promiseSetTimeout(w2)];
-                    case 9:
-                        _a.sent();
-                        _a.label = 10;
-                    case 10: return [4 /*yield*/, current.value];
-                    case 11: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    return IntervalPool;
-}());
-
-var debug = require("debug");
-var MangaSite = /** @class */ (function () {
-    function MangaSite(sitename, config, parser, nameHelper) {
-        this.sitename = sitename;
-        this.debug = debug("gin-downloader:" + config.name);
-        this.verbose = debug("gin-downloader:" + config.name + ":verbose");
-        this.error = debug("gin-downloader:" + config.name + ":error");
-        this._config = config;
-        this._nameHelper = nameHelper;
-        this._parser = parser;
-    }
-    Object.defineProperty(MangaSite.prototype, "parser", {
-        get: function () {
-            return this._parser;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MangaSite.prototype, "config", {
-        get: function () {
-            return this._config;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MangaSite.prototype, "nameHelper", {
-        get: function () {
-            return this._nameHelper;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MangaSite.prototype.mangas = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var opts, mangas;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.debug("getting mangas");
-                        opts = this.buildMangasRequest(this.config.mangas_url);
-                        return [4 /*yield*/, this.getDoc(opts)
-                                .then(this.parser.mangas)];
-                    case 1:
-                        mangas = _a.sent();
-                        this.debug("mangas: " + mangas.length);
-                        return [2 /*return*/, mangas];
-                }
-            });
-        });
-    };
-    MangaSite.prototype.filter = function (filter) {
-        throw new Error("Method not implemented.");
-    };
-    MangaSite.prototype.latest = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var opts, mangas;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.debug("getting latest");
-                        opts = this.buildLatestRequest(this.config.latest_url);
-                        return [4 /*yield*/, this.getDoc(opts).then(this.parser.latest)];
-                    case 1:
-                        mangas = _a.sent();
-                        this.verbose("got " + mangas.length + " chapters");
-                        return [2 /*return*/, mangas];
-                }
-            });
-        });
-    };
-    MangaSite.prototype.info = function (name) {
-        return __awaiter(this, void 0, void 0, function () {
-            var src, opts, info, e_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!name) {
-                            throw new Error("Please provide a name");
-                        }
-                        this.debug("getting info for " + name);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, this.resolveMangaUrl(name)];
-                    case 2:
-                        src = _a.sent();
-                        opts = this.buildInfoRequest(src);
-                        return [4 /*yield*/, this.getDoc(opts).then(this.parser.info)];
-                    case 3:
-                        info = _a.sent();
-                        this.verbose("info:%o", info);
-                        this.debug("got info for " + name);
-                        return [2 /*return*/, info];
-                    case 4:
-                        e_1 = _a.sent();
-                        this.error("%o", e_1);
-                        throw new Error(name + " not found!");
-                    case 5: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MangaSite.prototype.chapters = function (name) {
-        return __awaiter(this, void 0, void 0, function () {
-            var src, opts, chapters, e_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!name) {
-                            throw new Error("Please provide a name");
-                        }
-                        this.debug("getting chapters for " + name);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, this.resolveMangaUrl(name)];
-                    case 2:
-                        src = _a.sent();
-                        opts = this.buildInfoRequest(src);
-                        return [4 /*yield*/, this.getDoc(opts).then(this.parser.chapters)];
-                    case 3:
-                        chapters = _a.sent();
-                        this.verbose("chapters:%o", chapters);
-                        this.debug("got chapters for " + name);
-                        return [2 /*return*/, chapters];
-                    case 4:
-                        e_2 = _a.sent();
-                        this.error("%o", e_2);
-                        throw new Error(name + " not found!");
-                    case 5: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MangaSite.prototype.infoChapters = function (name) {
-        return __awaiter(this, void 0, void 0, function () {
-            var src, opts, doc, info, chapters, e_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!name) {
-                            throw new Error("Please provide a name");
-                        }
-                        this.debug("getting info & chapters for " + name);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 6, , 7]);
-                        return [4 /*yield*/, this.resolveMangaUrl(name)];
-                    case 2:
-                        src = _a.sent();
-                        opts = this.buildInfoRequest(src);
-                        return [4 /*yield*/, this.getDoc(opts)];
-                    case 3:
-                        doc = _a.sent();
-                        return [4 /*yield*/, this.parser.info(doc)];
-                    case 4:
-                        info = _a.sent();
-                        return [4 /*yield*/, this.parser.chapters(doc)];
-                    case 5:
-                        chapters = _a.sent();
-                        this.verbose("info:%o\nchapters:%o", chapters);
-                        this.debug("got info & chapters for " + name);
-                        return [2 /*return*/, __assign({}, info, { chapters: chapters })];
-                    case 6:
-                        e_3 = _a.sent();
-                        this.error("%o", e_3);
-                        throw new Error(name + " not found!");
-                    case 7: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MangaSite.prototype.infoChaptersByUrl = function (src) {
-        return __awaiter(this, void 0, void 0, function () {
-            var opts, doc, info, chapters, e_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.debug("getting info & chapters for " + src);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 5, , 6]);
-                        opts = this.buildInfoRequest(src);
-                        return [4 /*yield*/, this.getDoc(opts)];
-                    case 2:
-                        doc = _a.sent();
-                        return [4 /*yield*/, this.parser.info(doc)];
-                    case 3:
-                        info = _a.sent();
-                        return [4 /*yield*/, this.parser.chapters(doc)];
-                    case 4:
-                        chapters = _a.sent();
-                        this.verbose("info:%o\nchapters:%o", chapters);
-                        this.debug("got info & chapters for " + src);
-                        return [2 /*return*/, __assign({}, info, { chapters: chapters })];
-                    case 5:
-                        e_4 = _a.sent();
-                        this.error("%o", e_4);
-                        throw new Error(src + " not found!");
-                    case 6: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MangaSite.prototype.images = function (name, chapter) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            var chap, opts, paths;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!name) {
-                            throw new Error("Please provide a name");
-                        }
-                        if (!chapter) {
-                            throw new Error("Please provide a chapter");
-                        }
-                        this.debug("getting images for %s : %s", name, chapter);
-                        return [4 /*yield*/, this.resolveChapterSource(name, chapter)];
-                    case 1:
-                        chap = _a.sent();
-                        opts = this.buildChapterRequest(chap);
-                        return [4 /*yield*/, this.getDoc(opts).then(this.parser.imagesPaths)];
-                    case 2:
-                        paths = _a.sent();
-                        return [2 /*return*/, paths.map(function (x) { return _this.processImagePath(_this.buildImagePathsRequest(x)); })];
-                }
-            });
-        });
-    };
-    MangaSite.prototype.imagesByUrl = function (url$$1) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            var opts, paths;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        opts = this.buildChapterRequest(url$$1);
-                        return [4 /*yield*/, this.getDoc(opts).then(this.parser.imagesPaths)];
-                    case 1:
-                        paths = _a.sent();
-                        return [2 /*return*/, paths.map(function (x) { return _this.processImagePath(_this.buildImagePathsRequest(x)); })];
-                }
-            });
-        });
-    };
-    MangaSite.prototype.resolveMangaUrl = function (name) {
-        return this.nameHelper.resolveUrl(name);
-    };
-    MangaSite.prototype.buildRequest = function (url$$1) {
-        // todo add authentication headers
-        return { url: url$$1 };
-    };
-    MangaSite.prototype.buildMangasRequest = function (url$$1) {
-        return this.buildRequest(url$$1);
-    };
-    MangaSite.prototype.buildLatestRequest = function (url$$1) {
-        return this.buildRequest(url$$1);
-    };
-    MangaSite.prototype.buildInfoRequest = function (url$$1) {
-        return this.buildRequest(url$$1);
-    };
-    MangaSite.prototype.buildChapterRequest = function (url$$1) {
-        return this.buildRequest(url$$1);
-    };
-    MangaSite.prototype.buildImagePathsRequest = function (url$$1) {
-        return this.buildChapterRequest(url$$1);
-    };
-    MangaSite.prototype.getStrategy = function () {
-        var strategy = ginConfig.config.sites[this.sitename];
-        if (!strategy) {
-            throw new Error("strategy not found for " + this.sitename);
-        }
-        return strategy;
-    };
-    MangaSite.prototype.getHtml = function (url$$1) {
-        var strategy = this.getStrategy();
-        return request(url$$1, strategy)
-            .then(function (x) { return x.toString(); });
-    };
-    MangaSite.prototype.getDoc = function (url$$1) {
-        return this.getHtml(url$$1).then(function (x) { return parseDoc(x, { location: url$$1.url || url$$1 }); });
-    };
-    MangaSite.prototype.postHtml = function (url$$1, params) {
-        var o = url$$1;
-        if (typeof url$$1 === "string") {
-            o = { url: url$$1 };
-        }
-        var strategy = this.getStrategy();
-        return request(__assign({}, o, { method: "POST", body: params }), strategy)
-            .then(function (x) { return x.toString(); });
-    };
-    MangaSite.prototype.postDoc = function (url$$1, params) {
-        return this.postHtml(url$$1, params)
-            .then(function (x) { return parseDoc(x, { location: url$$1.url || url$$1 }); });
-    };
-    MangaSite.prototype.resolveChapterSource = function (name, chapter) {
-        return __awaiter(this, void 0, void 0, function () {
-            var chapters, c, _i, chapters_1, chap;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.chapters(name)];
-                    case 1:
-                        chapters = _a.sent();
-                        c = chapter.toString();
-                        for (_i = 0, chapters_1 = chapters; _i < chapters_1.length; _i++) {
-                            chap = chapters_1[_i];
-                            if (chap.chap_number === c) {
-                                this.verbose("filtered chapters %o", chap);
-                                return [2 /*return*/, chap.src];
-                            }
-                        }
-                        throw new Error("Chapter not found");
-                }
-            });
-        });
-    };
-    MangaSite.prototype.processImagePath = function (opts) {
-        var _this = this;
-        return new Lazy(function () { return __awaiter(_this, void 0, void 0, function () {
-            var image;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getHtml(opts).then(this.parser.image)];
-                    case 1:
-                        image = _a.sent();
-                        return [2 /*return*/, {
-                                name: url.parse(image).pathname.split("/").reverse()[0],
-                                src: image
-                            }];
-                }
-            });
-        }); });
-    };
-    return MangaSite;
-}());
-
-/**
- * Created by rodriguesc on 03/03/2017.
- */
-var site = "http://www.mangahere.cc";
-var config = {
-    name: "MangaHere",
-    site: site,
-    mangas_url: url.resolve(site, "/mangalist/"),
-    latest_url: url.resolve(site, "/latest/")
-};
-var debug$1 = require("debug")("gin-downloader:mangahere");
-var verbose = require("debug")("gin-downloader:mangahere:verbose");
-var error = require("debug")("gin-downloader:mangahere:error");
-verbose("using %O", config);
-
-var Parser = /** @class */ (function () {
-    function Parser() {
-    }
-    Parser.prototype.mangas = function ($) {
-        var mangas = [];
-        $(".manga_info").each(function (i, el) {
-            mangas[i] = {
-                name: el.lastChild.nodeValue,
-                src: el.attribs["href"],
-            };
-        });
-        return mangas;
-    };
-    Parser.prototype.latest = function ($) {
-        var chapters = [];
-        $(".manga_updates > dl").each(function (i, el) {
-            var divChildren = sanitize(el.children);
-            var aManga = divChildren[0].children.find(function (x) { return x.name === "a"; });
-            // console.log(aManga)
-            // let mangaUrl = aManga.attribs.href;
-            var mangaName = aManga.lastChild.nodeValue;
-            var date = divChildren[0].children.find(function (x) { return x.name === "span"; }).lastChild.nodeValue;
-            var dts = sanitize(divChildren.slice(1));
-            for (var _i = 0, dts_1 = dts; _i < dts_1.length; _i++) {
-                var dt = dts_1[_i];
-                var a = dt.children.find(function (x) { return x.name === "a"; });
-                var src = a.attribs.href;
-                var title = a.lastChild.nodeValue;
-                var chapNumber = title.lastDigit();
-                chapters.push({
-                    name: mangaName,
-                    src: src,
-                    chap_number: chapNumber.toString(),
-                    dateAdded: date
-                });
-            }
-        });
-        return chapters;
-    };
-    Parser.prototype.info = function ($) {
-        var image = $("img.img").attr("src");
-        var title = $("div.title > h3").text().slice(5, -7);
-        var li = [];
-        $(".detail_topText > li").each(function (i, el) {
-            li[i] = el;
-        });
-        //todo fix synonyms
-        var synonyms = li[2].lastChild.nodeValue.split("; ").map(function (title) { return ({
-            title: title,
-            language: 'en'
-        }); });
-        var genres = li[3].lastChild.nodeValue.split(", ");
-        var authors = li[4].children.filter(function (x) { return x.name === "a"; }).map(function (x) { return x.lastChild.nodeValue; });
-        var artists = li[5].children.filter(function (x) { return x.name === "a"; }).map(function (x) { return x.lastChild.nodeValue; });
-        var status = li[6].children[0].next.nodeValue.trim() === "Ongoing"
-            ? exports.FilterStatus.Ongoing
-            : exports.FilterStatus.Complete;
-        var synopsis = li.reverse()[0].children.reverse().find(function (x) { return x.name == "p"; }).children[0].nodeValue;
-        var licensed = false;
-        if ($("#main > article > div > div.manga_detail > div.detail_list > div > strong").length > 0) {
-            licensed = true;
+        const type = `direction=${filterType || ""}`;
+        const nameMethod = `name_method=${methodName}`; // NOTE name search set to contains
+        const mangaName = `name=${filterName || ""}`;
+        const authorMethod = `author_method=${methodAuthor}`;
+        const author = `author=${filterAuthor || ""}`;
+        const artistMethod = `artist_method=${methodArtist}`;
+        const artist = `artist=${filterArtist || ""}`;
+        const genreFilter = this._genreSite.supported().map(x => `genres%5B${this._genreSite.toSiteGenre(x).replace(/ /g, "+")}%5D=${inOutGenre(x, inGenres, outGenres)}`).join("&");
+        const releaseMethod = `released_method=${methodReleased}`;
+        const release = `released=${filterReleased || ""}`;
+        const completed = `is_completed=${status}`;
+        let advopts = "advopts=1"; // NOTE not sure what is this
+        if (page) {
+            advopts += `&page=${page}`;
         }
         return {
-            image: image,
-            title: title,
-            synonyms: synonyms,
-            authors: authors,
-            artists: artists,
-            genres: genres,
-            synopsis: synopsis,
-            status: status,
-            licensed: licensed
+            src: "/search.php?" + [type, nameMethod,
+                mangaName,
+                authorMethod, author,
+                artistMethod, artist,
+                genreFilter,
+                releaseMethod, release,
+                completed, advopts].join("&")
         };
-    };
-    Parser.prototype.chapters = function ($) {
-        var chapters = [];
-        var licensed = false;
-        if ($("#main > article > div > div.manga_detail > div.detail_list > div > strong").length > 0) {
-            licensed = true;
-        }
-        $("span.left > a").each(function (i, el) {
-            var span = el.parent;
-            var li = span.parent;
-            var date = sanitize(li.children).reverse()[0].lastChild.nodeValue;
-            var a = el;
-            chapters.push(__assign({}, Parser.parseChapter(a, span, date), { licensed: licensed }));
-        });
-        return chapters;
-    };
-    Parser.parseChapter = function (a, span, date) {
-        var aText = a.lastChild.nodeValue.trim();
-        var name = (span && span.lastChild.nodeValue) || aText;
-        var href = a.attribs.href;
-        return {
-            chap_number: aText.lastDigit().toString(),
-            name: name,
-            src: url.resolve(config.site, href),
-            dateAdded: date
-        };
-    };
-    Parser.prototype.imagesPaths = function ($) {
-        var paths = [];
-        var licensed = $("body > section > div.mangaread_error > div.mt10.color_ff00.mb10.center").text();
-        if (licensed && licensed.indexOf("It's not available in MangaHere.") >= 0) {
-            // throw new LicencedError(licensed);
-            throw new Error("Not licenced"); //TODO change to a better error
-        }
-        $("body > section.readpage_top > div.go_page.clearfix > span > select > option").each(function (i, el) {
-            paths[i] = url.resolve($.location, "" + el.attribs.value);
-        });
-        return paths;
-    };
-    Parser.prototype.image = function (html) {
-        var __imgID__ = /src=".*\?token[^"]*".*id=/gmi;
-        var __img__ = /src=".*\?token[^"]*/gmi;
-        var m = html.match(__imgID__);
-        if (!m || m.length === 0) {
-            error("first image regex failed using\nhtml:%s", html);
-            throw new Error("Image not found");
-        }
-        m = m[0].match(__img__);
-        if (!m || m.length === 0) {
-            error("second image regex failed using\nhtml:%s", html);
-            throw new Error("Image not found");
-        }
-        return m[0].slice(5);
-    };
-    Parser.prototype.filter = function ($) {
-        var mangas = [];
-        $("a.manga_info").each(function (i, el) {
-            mangas[i] = {
-                name: el.lastChild.nodeValue,
-                src: el.attribs.href
-            };
-        });
-        var page = 1;
-        var query = url.parse($.location).query;
-        if (query) {
-            var m = query.toString().match(/page=(\d+)/g);
-            if (m) {
-                page = +m[1];
-            }
-        }
-        var lastPageElement = $("div.next-page > a").slice(-2, -1);
-        var lastPage = 1;
-        if (lastPageElement && lastPageElement[0]) {
-            lastPage = +lastPageElement.text();
-        }
-        return {
-            results: mangas,
-            page: page,
-            total: lastPage
-        };
-    };
-    return Parser;
-}());
-
-/**
- * Created by david on 19/03/2017.
- */
-var noCase = require("no-case");
-var Helper = /** @class */ (function () {
-    function Helper() {
     }
-    Helper.prototype.toName = function (name) {
-        var n = name.replace(/[^\x00-\x7F]/g, "_");
-        return noCase(n.toLowerCase(), null, "_");
-    };
-    Helper.prototype.resolveUrl = function (name) {
-        return url.resolve(config.site + "/manga/", this.toName(name) + "/");
-    };
-    return Helper;
-}());
-
-var Supported = {};
-Supported[exports.Genre.Action] = exports.Genre.Action;
-Supported[exports.Genre.Adult] = exports.Genre.Adult;
-Supported[exports.Genre.Adventure] = exports.Genre.Adventure;
-Supported[exports.Genre.Comedy] = exports.Genre.Comedy;
-Supported[exports.Genre.Doujinshi] = exports.Genre.Doujinshi;
-Supported[exports.Genre.Drama] = exports.Genre.Drama;
-Supported[exports.Genre.Ecchi] = exports.Genre.Ecchi;
-Supported[exports.Genre.Fantasy] = exports.Genre.Fantasy;
-Supported[exports.Genre.GenderBender] = exports.Genre.GenderBender;
-Supported[exports.Genre.Harem] = exports.Genre.Harem;
-Supported[exports.Genre.Historical] = exports.Genre.Historical;
-Supported[exports.Genre.Horror] = exports.Genre.Horror;
-Supported[exports.Genre.Josei] = exports.Genre.Josei;
-Supported[exports.Genre.Lolicon] = exports.Genre.Lolicon;
-Supported[exports.Genre.MartialArts] = exports.Genre.MartialArts;
-Supported[exports.Genre.Mature] = exports.Genre.Mature;
-Supported[exports.Genre.Mecha] = exports.Genre.Mecha;
-Supported[exports.Genre.Mystery] = exports.Genre.Mystery;
-Supported[exports.Genre.Oneshot] = exports.Genre.Oneshot;
-Supported[exports.Genre.Psychological] = exports.Genre.Psychological;
-Supported[exports.Genre.Romance] = exports.Genre.Romance;
-Supported[exports.Genre.SchoolLife] = exports.Genre.SchoolLife;
-Supported[exports.Genre.SciFi] = exports.Genre.SciFi;
-Supported[exports.Genre.Seinen] = exports.Genre.Seinen;
-Supported[exports.Genre.Shotacon] = exports.Genre.Shotacon;
-Supported[exports.Genre.Shoujo] = exports.Genre.Shoujo;
-Supported[exports.Genre.ShoujoAi] = exports.Genre.ShoujoAi;
-Supported[exports.Genre.Shounen] = exports.Genre.Shounen;
-Supported[exports.Genre.ShounenAi] = exports.Genre.ShounenAi;
-Supported[exports.Genre.SliceOfLife] = exports.Genre.SliceOfLife;
-Supported[exports.Genre.Smut] = exports.Genre.Smut;
-Supported[exports.Genre.Sports] = exports.Genre.Sports;
-Supported[exports.Genre.Supernatural] = exports.Genre.Supernatural;
-Supported[exports.Genre.Tragedy] = exports.Genre.Tragedy;
-Supported[exports.Genre.Yaoi] = exports.Genre.Yaoi;
-Supported[exports.Genre.Yuri] = exports.Genre.Yuri;
-var correctName = {};
-correctName[exports.Genre.Adult] = exports.Genre.Adult;
-correctName[exports.Genre.Action] = exports.Genre.Action;
-correctName[exports.Genre.Adventure] = exports.Genre.Adventure;
-correctName[exports.Genre.Comedy] = exports.Genre.Comedy;
-correctName[exports.Genre.Doujinshi] = exports.Genre.Doujinshi;
-correctName[exports.Genre.Drama] = exports.Genre.Drama;
-correctName[exports.Genre.Ecchi] = exports.Genre.Ecchi;
-correctName[exports.Genre.Fantasy] = exports.Genre.Fantasy;
-correctName[exports.Genre.GenderBender] = "Gender Bender";
-correctName[exports.Genre.Harem] = exports.Genre.Harem;
-correctName[exports.Genre.Historical] = exports.Genre.Historical;
-correctName[exports.Genre.Horror] = exports.Genre.Horror;
-correctName[exports.Genre.Josei] = exports.Genre.Josei;
-correctName[exports.Genre.Lolicon] = exports.Genre.Lolicon;
-correctName[exports.Genre.MartialArts] = "Martial Arts";
-correctName[exports.Genre.Mature] = exports.Genre.Mature;
-correctName[exports.Genre.Mecha] = exports.Genre.Mecha;
-correctName[exports.Genre.Mystery] = exports.Genre.Mystery;
-correctName[exports.Genre.Oneshot] = "One Shot";
-correctName[exports.Genre.Psychological] = exports.Genre.Psychological;
-correctName[exports.Genre.Romance] = exports.Genre.Romance;
-correctName[exports.Genre.SchoolLife] = exports.Genre.SchoolLife;
-correctName[exports.Genre.SciFi] = "Sci-fi";
-correctName[exports.Genre.Seinen] = exports.Genre.Seinen;
-correctName[exports.Genre.Shotacon] = exports.Genre.Shotacon;
-correctName[exports.Genre.Shoujo] = exports.Genre.Shoujo;
-correctName[exports.Genre.ShoujoAi] = "Shoujo Ai";
-correctName[exports.Genre.Shounen] = exports.Genre.Shounen;
-correctName[exports.Genre.ShounenAi] = "Shounen Ai";
-correctName[exports.Genre.SliceOfLife] = "Slice of Life";
-correctName[exports.Genre.Smut] = exports.Genre.Smut;
-correctName[exports.Genre.Sports] = exports.Genre.Sports;
-correctName[exports.Genre.Supernatural] = exports.Genre.Supernatural;
-correctName[exports.Genre.Tragedy] = exports.Genre.Tragedy;
-correctName[exports.Genre.Yaoi] = exports.Genre.Yaoi;
-correctName[exports.Genre.Yuri] = exports.Genre.Yuri;
-var processFilter = function (mangafilter) {
-    var filter = procFilter(mangafilter);
-    var search = filter.search, page = filter.page;
-    var filterType = null;
-    var filterName = filter.search.name && filter.search.name.name || filter.search.name;
-    var filterAuthor = null;
-    var filterArtist = null;
-    var filterReleased = null;
-    var status = null;
-    var methodName = "cw";
-    var methodAuthor = "cw";
-    var methodArtist = "cw";
-    var methodReleased = "eq";
-    var inGenres = [];
-    var outGenres = [];
-    if (search) {
-        var name = search.name, author_1 = search.author, artist_1 = search.artist, rating = search.rating, released = search.released, type_1 = search.type, genre = search.genre;
-        filterType = resolveType(type_1) || filterType;
-        if (name) {
-            methodName = searchMethod(name.condition) || methodName;
-        }
-        if (search.status) {
-            status = resolveStatus(search.status) || status;
-        }
-        if (author_1) {
-            filterAuthor = author_1.name || filterAuthor;
-            methodAuthor = searchMethod(author_1.condition) || methodAuthor;
-        }
-        if (artist_1) {
-            filterArtist = artist_1.name || filterArtist;
-            methodArtist = searchMethod(artist_1.condition) || methodArtist;
-        }
-        if (released) {
-            filterReleased = released.value || filterReleased;
-            methodReleased = searchMethod(released.condition) || methodReleased;
-        }
-        if (genre) {
-            inGenres = genre.inGenres;
-            outGenres = genre.outGenres;
-        }
-    }
-    var type = "direction=" + (filterType || "");
-    var nameMethod = "name_method=" + methodName; // NOTE name search set to contains
-    var mangaName = "name=" + (filterName || "");
-    var authorMethod = "author_method=" + methodAuthor;
-    var author = "author=" + (filterAuthor || "");
-    var artistMethod = "artist_method=" + methodArtist;
-    var artist = "artist=" + (filterArtist || "");
-    var genreFilter = lodash.map(Supported, function (x) { return "genres%5B" + correctName[x].replace(/ /g, "+") + "%5D=" + inOutGenre(x, inGenres, outGenres); }).join("&");
-    var releaseMethod = "released_method=" + methodReleased;
-    var release = "released=" + (filterReleased || "");
-    var completed = "is_completed=" + (status || "");
-    var advopts = "advopts=1"; // NOTE not sure what is this
-    if (page) {
-        advopts += "&page=" + page;
-    }
-    return {
-        src: url.resolve(config.site, "/search.php?" + [nameMethod, mangaName,
-            type,
-            authorMethod, author,
-            artistMethod, artist,
-            genreFilter,
-            releaseMethod, release,
-            completed, advopts].join("&"))
-    };
-};
+}
 function resolveType(type) {
     switch (type) {
         case exports.Type.Manga:
@@ -1505,27 +197,47 @@ function resolveType(type) {
 function resolveStatus(status) {
     switch (status) {
         case exports.FilterStatus.Ongoing:
-            return 0;
+            return "0";
         case exports.FilterStatus.Complete:
-            return 1;
+            return "1";
         default:
-            return null;
+            return "";
     }
 }
-function searchMethod(condition) {
+function yearSearchMethod(condition) {
     switch (condition) {
-        case exports.FilterCondition.Contains:
-            return "cw";
-        case exports.FilterCondition.StartsWith:
-            return "bw";
-        case exports.FilterCondition.EndsWith:
-            return "ew";
-        case exports.FilterCondition.Equal:
-            return "eq";
         case exports.FilterCondition.LessThan:
             return "lt";
         case exports.FilterCondition.GreaterThan:
             return "gt";
+        case exports.FilterCondition.Equal:
+        default:
+            return "eq";
+    }
+}
+function searchMethod(condition) {
+    // switch (condition) {
+    //     case FilterCondition.Contains:
+    //         return "cw";
+    //     case FilterCondition.StartsWith:
+    //         return "bw";
+    //     case FilterCondition.EndsWith:
+    //         return "ew";
+    //     case FilterCondition.Equal:
+    //         return "eq";
+    //     case FilterCondition.LessThan:
+    //         return "lt";
+    //     case FilterCondition.GreaterThan:
+    //         return "gt";
+    //     default:
+    //         return "cw";
+    // }
+    switch (condition) {
+        case exports.FilterCondition.StartsWith:
+            return "bw";
+        case exports.FilterCondition.EndsWith:
+            return "ew";
+        case exports.FilterCondition.Contains:
         default:
             return "cw";
     }
@@ -1540,97 +252,1129 @@ function inOutGenre(genre, inGenre, outGenre) {
     return 0;
 }
 
-var SITES = exports.gin.SITES;
-var MangaHere = /** @class */ (function (_super) {
-    __extends(MangaHere, _super);
-    function MangaHere() {
-        return _super.call(this, SITES.MANGAHERE, config, new Parser(), new Helper()) || this;
+const supported = {
+    [exports.Genre.Action]: exports.Genre.Action,
+    [exports.Genre.Adventure]: exports.Genre.Adventure,
+    [exports.Genre.Comedy]: exports.Genre.Comedy,
+    [exports.Genre.Doujinshi]: exports.Genre.Doujinshi,
+    [exports.Genre.Drama]: exports.Genre.Drama,
+    [exports.Genre.Ecchi]: exports.Genre.Ecchi,
+    [exports.Genre.Fantasy]: exports.Genre.Fantasy,
+    [exports.Genre.GenderBender]: exports.Genre.GenderBender,
+    [exports.Genre.Harem]: exports.Genre.Harem,
+    [exports.Genre.Historical]: exports.Genre.Historical,
+    [exports.Genre.Horror]: exports.Genre.Horror,
+    [exports.Genre.Josei]: exports.Genre.Josei,
+    [exports.Genre.MartialArts]: exports.Genre.MartialArts,
+    [exports.Genre.Mature]: exports.Genre.Mature,
+    [exports.Genre.Mecha]: exports.Genre.Mecha,
+    [exports.Genre.Mystery]: exports.Genre.Mystery,
+    [exports.Genre.Oneshot]: exports.Genre.Oneshot,
+    [exports.Genre.Psychological]: exports.Genre.Psychological,
+    [exports.Genre.Romance]: exports.Genre.Romance,
+    [exports.Genre.SchoolLife]: exports.Genre.SchoolLife,
+    [exports.Genre.SciFi]: exports.Genre.SciFi,
+    [exports.Genre.Seinen]: exports.Genre.Seinen,
+    [exports.Genre.Shoujo]: exports.Genre.Shoujo,
+    [exports.Genre.ShoujoAi]: exports.Genre.ShoujoAi,
+    [exports.Genre.Shounen]: exports.Genre.Shounen,
+    [exports.Genre.ShounenAi]: exports.Genre.ShounenAi,
+    [exports.Genre.SliceOfLife]: exports.Genre.SliceOfLife,
+    [exports.Genre.Sports]: exports.Genre.Sports,
+    [exports.Genre.Supernatural]: exports.Genre.Supernatural,
+    [exports.Genre.Tragedy]: exports.Genre.Tragedy,
+    [exports.Genre.Yaoi]: exports.Genre.Yaoi,
+    [exports.Genre.Yuri]: exports.Genre.Yuri,
+};
+const ginGenres = {
+    [exports.Genre.Action]: exports.Genre.Action,
+    [exports.Genre.Adventure]: exports.Genre.Adventure,
+    [exports.Genre.Comedy]: exports.Genre.Comedy,
+    [exports.Genre.Doujinshi]: exports.Genre.Doujinshi,
+    [exports.Genre.Drama]: exports.Genre.Drama,
+    [exports.Genre.Ecchi]: exports.Genre.Ecchi,
+    [exports.Genre.Fantasy]: exports.Genre.Fantasy,
+    [exports.Genre.GenderBender]: exports.Genre.GenderBender,
+    [exports.Genre.Harem]: exports.Genre.Harem,
+    [exports.Genre.Historical]: exports.Genre.Historical,
+    [exports.Genre.Horror]: exports.Genre.Horror,
+    [exports.Genre.Josei]: exports.Genre.Josei,
+    [exports.Genre.MartialArts]: exports.Genre.MartialArts,
+    [exports.Genre.Mature]: exports.Genre.Mature,
+    [exports.Genre.Mecha]: exports.Genre.Mecha,
+    [exports.Genre.Mystery]: exports.Genre.Mystery,
+    [exports.Genre.Oneshot]: "One Shot",
+    [exports.Genre.Psychological]: exports.Genre.Psychological,
+    [exports.Genre.Romance]: exports.Genre.Romance,
+    [exports.Genre.SchoolLife]: exports.Genre.SchoolLife,
+    [exports.Genre.SciFi]: exports.Genre.SciFi,
+    [exports.Genre.Seinen]: exports.Genre.Seinen,
+    [exports.Genre.Shoujo]: exports.Genre.Shoujo,
+    [exports.Genre.ShoujoAi]: exports.Genre.ShoujoAi,
+    [exports.Genre.Shounen]: exports.Genre.Shounen,
+    [exports.Genre.ShounenAi]: exports.Genre.ShounenAi,
+    [exports.Genre.SliceOfLife]: exports.Genre.SliceOfLife,
+    [exports.Genre.Sports]: exports.Genre.Sports,
+    [exports.Genre.Supernatural]: exports.Genre.Supernatural,
+    [exports.Genre.Tragedy]: exports.Genre.Tragedy,
+    [exports.Genre.Yaoi]: exports.Genre.Yaoi,
+    [exports.Genre.Yuri]: exports.Genre.Yuri,
+};
+const mangaHereGenres = Object.keys(ginGenres)
+    .map(k => ({ k, v: ginGenres[k] }))
+    .reduce((c, v) => {
+    c[v.v] = v.k;
+    return c;
+}, {});
+class MangaHereGenre {
+    constructor() {
+        this._site = mangaHereGenres;
+        this._gin = ginGenres;
+        this._supported = supported;
     }
-    MangaHere.prototype.filter = function (filter) {
-        return __awaiter(this, void 0, void 0, function () {
-            var search, doc, mangas;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.debug("filter mangas with: %o", filter);
-                        search = processFilter(filter);
-                        return [4 /*yield*/, this.getDoc(search.src)];
-                    case 1:
-                        doc = _a.sent();
-                        return [4 /*yield*/, this.parser.filter(doc)];
-                    case 2:
-                        mangas = _a.sent();
-                        this.debug("mangas: " + mangas.results.length);
-                        return [2 /*return*/, mangas];
-                }
-            });
-        });
+    fromSiteGenre(genre) {
+        return this._site[genre];
+    }
+    toSiteGenre(genre) {
+        return this._gin[genre];
+    }
+    isSupported(genre) {
+        return !!this._supported[genre];
+    }
+    supported() {
+        return Object.keys(this._gin);
+    }
+}
+
+const project = "gin-downloader";
+const loggerFactory = (site) => ({
+    debug: require("debug")([project, site].join(":")),
+    verbose: require("debug")([project, site, "verbose"].join(":")),
+    error: require("debug")([project, site, "error"].join(":"))
+});
+
+class MangaRequestResult {
+    constructor(_uri, _html) {
+        this._uri = _uri;
+        this._html = _html;
+    }
+    get uri() {
+        return this._uri;
+    }
+    get html() {
+        return this._html;
+    }
+    get $() {
+        return this._$ || (this._$ = cheerio.load(this.html));
+    }
+}
+var MangaSite;
+(function (MangaSite) {
+    MangaSite["MangaHere"] = "mangahere";
+})(MangaSite || (MangaSite = {}));
+//
+// export class SuperMangaSite {
+//
+//     constructor(private _config: IMangaConfig, private _requestFactory: IMangaRequestFactory, private _parser: IMangaParser, private _visitor: IMangaVisitor) {
+//
+//     }
+//
+//     mangas(): Promise<IMangaExtended[]> {
+//         return null;
+//     }
+//
+//     async latest(): Promise<IChapterExtended> {
+//         // const self = this;
+//
+//         // return co(function* () {
+//         //
+//         //     for (const c of self._visitor.latest()) {
+//         //         yield *
+//         //     }
+//         //
+//         // });
+//
+//
+//         const it = await this.latestProc(this._config.latestUrl);
+//
+//         it.map(x => new SuperMangaChapter())
+//
+//
+//     }
+//
+//     async latestProc(src: string) {
+//         const result = await this._requestFactory.request({
+//             uri: src
+//         });
+//
+//         return [...this._parser.latest(result)];
+//     }
+//
+//     /*
+//         async* latest(): Promise<Iterable<IChapterExtended>> {
+//             const latestUrl = this._config.latestUrl;
+//
+//             const result = await this._requestFactory.request({
+//                 uri: latestUrl
+//             });
+//
+//
+//             for (const c of this._parser.latest(result)) {
+//
+//                 // yield new
+//             }
+//
+//
+//         }*/
+//
+//
+//     async allImagesResolver(chapterSrc: string): Promise<ILazy<Promise<ImageSource>>[]> {
+//         let href = url.resolve(this._config.site, chapterSrc).toString();
+//         let result = await this._requestFactory.request({uri: href});
+//
+//         const paths = this._parser.imagesPaths(result);
+//         paths.next(); // skip first, because we requested that already
+//
+//         let src = this._parser.image(result);
+//
+//         const promises = [
+//             new Lazy<Promise<ImageSource>>(() => Promise.resolve({
+//                 name: url.parse(src).pathname.split("/").reverse()[0],
+//                 src
+//             }))
+//         ];
+//
+//
+//         const promiseRequest = async (s): Promise<ImageSource> => {
+//             const h = url.resolve(href, s).toString();
+//             const result = await this._requestFactory.request({uri: h})
+//             const src = this._parser.image(result);
+//
+//             return {
+//                 name: url.parse(src).pathname.split("/").reverse()[0],
+//                 src
+//             };
+//         };
+//
+//
+//         for (const it of paths) {
+//             promises.push(new Lazy<Promise<ImageSource>>(() => promiseRequest(it.src)));
+//         }
+//
+//
+//         return promises;
+//     }
+//
+//
+//     * allImagesResolver2(chapterSrc: string) {
+//         const it = this._imagesResolver(chapterSrc);
+//
+//         it.next(); // first request
+//
+//         yield* it;
+//     }
+//
+//     _request(href) {
+//         return this._requestFactory.request({uri: href});
+//     }
+//
+//
+//     * _imagesResolver(chapterSrc: string) {
+//         let href = url.resolve(this._config.site, chapterSrc).toString();
+//         let result = yield this._requestFactory.request({uri: href});
+//
+//         const paths = this._parser.imagesPaths(result);
+//         paths.next(); // skip first, because we requested that already
+//
+//         let src = this._parser.image(result);
+//
+//
+//         yield new Lazy<Promise<ImageSource>>(() => Promise.resolve({
+//             name: url.parse(src).pathname.split("/").reverse()[0],
+//             src
+//         }))
+//
+//
+//         const promiseRequest = async (s): Promise<ImageSource> => {
+//             const h = url.resolve(href, s).toString();
+//             const result = await this._requestFactory.request({uri: h})
+//             const src = this._parser.image(result);
+//
+//             return {
+//                 name: url.parse(src).pathname.split("/").reverse()[0],
+//                 src
+//             };
+//         };
+//
+//
+//         for (const it of paths) {
+//             yield new Lazy<Promise<ImageSource>>(() => promiseRequest(it.src));
+//         }
+//
+//     }
+//
+//
+//     //
+//     // async* imagesResolver2(chapterSrc: string): Iterable<ImageSource> {
+//     //     let href = url.resolve(this._config.site, chapterSrc).toString();
+//     //
+//     //     let result = await this._requestFactory.request({uri: href});
+//     //
+//     //     const paths = this._parser.imagesPaths(result);
+//     //     paths.next(); // skip first, because we requested that already
+//     //
+//     //
+//     //     let src = this._parser.image(result);
+//     //
+//     //     yield {
+//     //         name: url.parse(src).pathname.split("/").reverse()[0],
+//     //         src
+//     //     };
+//     //
+//     //
+//     //     for (const p of paths) {
+//     //         const h = url.resolve(href, p.src).toString();
+//     //         result = await this._requestFactory.request({uri: h})
+//     //         src = this._parser.image(result);
+//     //
+//     //         yield {
+//     //             name: url.parse(src).pathname.split("/").reverse()[0],
+//     //             src
+//     //         };
+//     //     }
+//     //
+//     // }
+//
+// }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+const mangahereLogger = loggerFactory(MangaSite.MangaHere);
+
+class MangaHereVisitor {
+    constructor(dependencies) {
+        this._config = dependencies.config;
+    }
+    *latest() {
+        const total = 100;
+        const latest = this._config.latestUrl;
+        yield {
+            href: latest,
+            page: 1,
+            total
+        };
+        for (let i = 2; i <= total; ++i) {
+            yield {
+                href: url.resolve(this._config.latestUrl, i.toString()),
+                page: i,
+                total
+            };
+        }
+    }
+    *mangas() {
+        yield {
+            href: this._config.mangasUrl,
+            page: 1,
+            total: 1
+        };
+    }
+}
+
+class MangaHereConfig {
+    get name() {
+        return "MangaHere";
+    }
+    get site() {
+        return "http://www.mangahere.cc";
+    }
+    get mangasUrl() {
+        return url.resolve(this.site, "/mangalist/");
+    }
+    get latestUrl() {
+        return url.resolve(this.site, "/latest/");
+    }
+    get filterUrl() {
+        return url.resolve(this.site, "/search.php");
+    }
+}
+
+/* LicencedError */
+function LicencedError(mangaSite, mangaName) {
+    const instance = new Error(`${mangaSite} has '${mangaName}' licenced.`);
+    instance.mangaSite = mangaSite;
+    instance.mangaName = mangaName;
+    Object.setPrototypeOf(instance, Object.getPrototypeOf(this));
+    if (Error.captureStackTrace) {
+        Error.captureStackTrace(instance, LicencedError);
+    }
+    return instance;
+}
+LicencedError.prototype = Object.create(Error.prototype, {
+    constructor: {
+        value: Error,
+        enumerable: false,
+        writable: true,
+        configurable: true
+    }
+});
+if (Object.setPrototypeOf) {
+    Object.setPrototypeOf(LicencedError, Error);
+}
+else {
+    // LicencedError.__proto__ = Error;
+}
+/* /LicencedError */
+/* ImageNotFoundError */
+function ImageNotFoundError(mangaSite, uri, errorId) {
+    const instance = new Error(`Image not found: ${errorId}`);
+    instance.mangaSite = mangaSite;
+    instance.errorId = errorId;
+    instance.uri = uri;
+    Object.setPrototypeOf(instance, Object.getPrototypeOf(this));
+    if (Error.captureStackTrace) {
+        Error.captureStackTrace(instance, ImageNotFoundError);
+    }
+    return instance;
+}
+ImageNotFoundError.prototype = Object.create(Error.prototype, {
+    constructor: {
+        value: Error,
+        enumerable: false,
+        writable: true,
+        configurable: true
+    }
+});
+if (Object.setPrototypeOf) {
+    Object.setPrototypeOf(ImageNotFoundError, Error);
+}
+else {
+    // ImageNotFoundError.__proto__ = Error;
+}
+/* /LicencedError */
+
+const regexLastDigit = /\d+(\.\d{1,3})?$/;
+const regexFirstDigit = /\d+(\.\d{1,3})?/;
+const lastDigit = (s) => {
+    const match = s.match(regexLastDigit);
+    if (!match) { // can't be to smart if the last digit is 0
+        return null;
+    }
+    return +match[0];
+};
+const firstDigit = (s) => {
+    const match = s.match(regexFirstDigit);
+    if (!match) { // can't be to smart if the last digit is 0
+        return null;
+    }
+    return +match[0];
+};
+const leftTrim = (s) => {
+    return s.replace(/^\s+/, "");
+};
+String.prototype.lastDigit = function () {
+    return lastDigit(this);
+};
+String.prototype.firstDigit = function () {
+    return firstDigit(this);
+};
+String.prototype.leftTrim = function () {
+    return leftTrim(this);
+};
+String.prototype.decodeEscapeSequence = function () {
+    return this.replace(/\\x([0-9A-Fa-f]{2})/g, function () {
+        return String.fromCharCode(parseInt(arguments[1], 16));
+    });
+};
+String.prototype.getMatches = function (regex, index) {
+    index || (index = 1); // default to the first capturing group
+    let matches = [];
+    let match;
+    while (match = regex.exec(this)) {
+        matches.push(match[index]);
+    }
+    return matches;
+};
+
+const sanitizeChildren = (children) => children.filter(x => x.type !== "text");
+
+class MangaHereParser {
+    constructor(dependencies) {
+        this._logger = dependencies.logger;
+        this._config = dependencies.config;
+        this._genreSite = dependencies.genre;
+    }
+    *mangas(mangaRequest) {
+        const { $, uri, html } = mangaRequest;
+        this._logger.debug("parsing mangas:\n\turl:%s", uri);
+        this._logger.verbose("parsing mangas:\n\turl:%s\n\thtml:\n%s", uri, html);
+        const elements = $(".manga_info").toArray();
+        this._logger.debug("processing %d elements", elements.length);
+        this._logger.verbose("processing elements:\n%j", elements);
+        for (const item of elements) {
+            this._logger.verbose("processing element: %j", item);
+            const result = {
+                name: item.lastChild.nodeValue,
+                src: url.resolve(this._config.site, item.attribs["href"]),
+            };
+            this._logger.debug("processed with: %o", result);
+            this._logger.verbose("element %j converted to %o", result);
+            yield result;
+        }
+    }
+    *latest(mangaRequest) {
+        const { $, uri, html } = mangaRequest;
+        this._logger.debug("parsing latest:\n\turl:%s", uri);
+        this._logger.verbose("parsing latest:\n\turl:%s\n\thtml:\n%s", uri, html);
+        const elements = $(".manga_updates > dl").toArray();
+        this._logger.debug("processing %d elements", elements.length);
+        this._logger.verbose("processing elements:\n%j", elements);
+        for (const item of elements) {
+            this._logger.verbose("processing element: %j", item);
+            const divChildren = sanitizeChildren(item.children);
+            const aManga = divChildren[0].children.find(x => x.name === "a");
+            const mangaSrc = url.resolve(this._config.site, aManga.attribs.href);
+            const mangaName = aManga.lastChild.nodeValue;
+            const date = divChildren[0].children.find(x => x.name === "span").lastChild.nodeValue;
+            const dts = sanitizeChildren(divChildren.slice(1));
+            this._logger.debug("found [%s] with [%d] chapters", mangaName, dts.length);
+            this._logger.verbose("found [%s] with [%d] chapters", mangaName, dts.length);
+            for (const dt of dts) {
+                this._logger.verbose("processing child element: %j", dt);
+                const a = dt.children.find(x => x.name === "a");
+                const src = url.resolve(this._config.site, a.attribs.href);
+                const title = a.lastChild.nodeValue;
+                const chapNumber = lastDigit(title);
+                const result = {
+                    name: mangaName,
+                    src: src,
+                    chap_number: chapNumber.toString(),
+                    dateAdded: date,
+                    mangaSrc,
+                };
+                this._logger.debug("processed [%s] with: %o", mangaName, result);
+                this._logger.verbose("element %j converted to %o", dt, result);
+                yield result;
+            }
+        }
+    }
+    info(mangaRequest) {
+        const { $, uri, html } = mangaRequest;
+        this._logger.debug("parsing manga:\n\turl:%s", uri);
+        this._logger.verbose("parsing manga:\n\turl:%s\n\thtml:\n%s", uri, html);
+        const image = $("img.img").attr("src");
+        const title = $("div.title > h3").text().slice(5, -7);
+        const li = $(".detail_topText > li").toArray();
+        const synonyms = li[2].lastChild.nodeValue.split("; ").map(resolveSynonym);
+        const genres = li[3].lastChild.nodeValue.split(", ").map(x => this._genreSite.fromSiteGenre(x));
+        const authors = li[4].children.filter(x => x.name === "a").map(x => x.lastChild.nodeValue);
+        const artists = li[5].children.filter(x => x.name === "a").map(x => x.lastChild.nodeValue);
+        const status = li[6].children[0].next.nodeValue.trim() === "Ongoing"
+            ? exports.FilterStatus.Ongoing
+            : exports.FilterStatus.Complete;
+        const synopsis = li.reverse()[0].children.reverse().find(x => x.name === "p").children[0].nodeValue;
+        const licensed = $("#main > article > div > div.manga_detail > div.detail_list > div > strong").length > 0;
+        const result = {
+            image,
+            title,
+            synonyms,
+            authors,
+            artists,
+            genres,
+            synopsis,
+            status,
+            licensed
+        };
+        this._logger.debug("processed with: %o", result);
+        this._logger.verbose("element %j converted to %o", result);
+        return result;
+    }
+    *chapters(mangaRequest) {
+        const { $, uri, html } = mangaRequest;
+        this._logger.debug("parsing chapter:\n\turl:%s", uri);
+        this._logger.verbose("parsing chapter:\n\turl:%s\n\thtml:\n%s", uri, html);
+        const elements = $("span.left > a").toArray();
+        this._logger.debug("processing %d elements", elements.length);
+        this._logger.verbose("processing elements:\n%j", elements);
+        for (const item of elements) {
+            this._logger.verbose("processing element: %j", item);
+            const span = item.parent;
+            const li = span.parent;
+            const liChildren = sanitizeChildren(li.children);
+            const a = item;
+            const date = liChildren[liChildren.length - 1].lastChild.nodeValue;
+            const aText = a.lastChild.nodeValue.trim(); // chapter number
+            const name = (span && span.lastChild.nodeValue) || aText; // does it has a name or we use the chapter number
+            const href = a.attribs.href;
+            const chap_number = aText.lastDigit().toString();
+            const result = {
+                chap_number,
+                name,
+                src: url.resolve(this._config.site, href),
+                dateAdded: date
+            };
+            this._logger.debug("processed with: %o", result);
+            this._logger.verbose("element %j converted to %o", item, result);
+            yield result;
+        }
+    }
+    *imagesPaths(mangaRequest) {
+        const { $, uri, html } = mangaRequest;
+        this._logger.debug("parsing images paths:\n\turl:%s", uri);
+        this._logger.verbose("parsing images paths:\n\turl:%s\n\thtml:\n%s", uri, html);
+        const licensed = $("body > section > div.mangaread_error > div.mt10.color_ff00.mb10.center > strong").text();
+        if (licensed) {
+            this._logger.debug("Is licensed %s", licensed);
+            this._logger.verbose("Is licensed %s", licensed);
+            throw LicencedError(this._config.name, licensed);
+        }
+        const elements = $("body > section.readpage_top > div.go_page.clearfix > span > select > option").toArray();
+        this._logger.debug("processing %d elements", elements.length);
+        this._logger.verbose("processing elements:\n%j", elements);
+        for (const item of elements) {
+            this._logger.verbose("processing element: %j", item);
+            const src = item.attribs.value;
+            const name = item.lastChild.nodeValue;
+            // NOTE mangahere inserts Feature image at the end with 'Ad'
+            if (name === "Featured") {
+                this._logger.debug("skipping [Feature] because is an Ad");
+                this._logger.verbose("skipping [Feature] because is an Ad");
+                continue;
+            }
+            const result = { src, name };
+            this._logger.debug("processed with: %o", result);
+            this._logger.verbose("element %j converted to %o", item, result);
+            yield result;
+        }
+    }
+    image(mangaRequest) {
+        const { uri, html } = mangaRequest;
+        this._logger.debug("parsing image:\n\turl:%s", uri);
+        this._logger.verbose("parsing image:\n\turl:%s\n\thtml:\n%s", uri, html);
+        const match = html.match(/(?:src=")([^"]*)(?:.*id="image")/m);
+        if (!match) {
+            this._logger.debug("Image not found, please check if the url is correct and if it works on your browser.");
+            this._logger.verbose("Image not found, please check if the url is correct and if it works on your browser.");
+            throw ImageNotFoundError(this._config.name, uri, "ADB0");
+        }
+        const result = match[1];
+        this._logger.debug("resolved with: %o", result);
+        this._logger.verbose("resolved with: %o", result);
+        return result;
+    }
+    filterPage(mangaRequest) {
+        const { $, uri, html } = mangaRequest;
+        this._logger.debug("get filter current page:\n\turl:%s", uri);
+        this._logger.verbose("get filter current page:\n\turl:%s\n\thtml:\n%s", uri, html);
+        let page = 1;
+        let query = url.parse(uri).query;
+        if (query) {
+            this._logger.verbose("using query to retrieve current page", uri, html);
+            const m = query.toString().match(/(?:page=)(\d+)/);
+            if (m) {
+                this._logger.verbose("page found in query with value %s", m[0]);
+                this._logger.verbose("setting page to [%s] with %d", m[1], m[1]);
+                page = +m[1];
+            }
+        }
+        else {
+            this._logger.verbose("query not found setting page to 1");
+        }
+        const lastPageElement = $("div.next-page > a").slice(-2, -1);
+        this._logger.verbose("resolved last element %j", lastPageElement);
+        const lastPage = lastPageElement && lastPageElement[0]
+            ? +lastPageElement.text()
+            : 1;
+        const result = {
+            page: page,
+            total: lastPage
+        };
+        this._logger.debug("resolved with: %o", result);
+        this._logger.verbose("resolved with: %o", result);
+        return result;
+    }
+}
+const regexSynonymLang = /\((.*)\)$/;
+const defaultLang = "";
+const resolveSynonym = (dirtyTitle) => {
+    const match = dirtyTitle.match(regexSynonymLang);
+    if (match) {
+        const language = match[1];
+        const title = dirtyTitle.replace(` ${match[0]}`, "");
+        return {
+            title,
+            language
+        };
+    }
+    return {
+        title: dirtyTitle,
+        language: defaultLang,
     };
-    return MangaHere;
-}(MangaSite));
-var mangahere = new MangaHere();
+};
 
-// import {manga as mangafox} from "./sites/mangafox/index";
-// import {manga as mangahere} from "./sites/mangahere/index";
-// import {manga as mangapanda} from "./sites/mangapanda/index";
-// import {manga as kissmanga} from "./sites/kissmanga/index";
-// export {manga as batoto} from "./sites/batoto/index";
+class MangaHereBuilder {
+    build(di) {
+        const { requestFactory } = di;
+        if (!requestFactory) {
+            throw new Error("Please provide request factory");
+        }
+        const logger = di.logger || mangahereLogger;
+        const genre = di.genre || new MangaHereGenre();
+        const config = di.config || new MangaHereConfig();
+        const filter = di.filter || new MangaHereFilter({ genre });
+        const parser = di.parser || new MangaHereParser({ logger, config, genre });
+        const visitor = di.visitor || new MangaHereVisitor({ config });
+        return {
+            requestFactory,
+            logger,
+            genre,
+            config,
+            filter,
+            parser,
+            visitor
+        };
+    }
+}
 
-// export {SuperChapter, SuperObject} from "./super_obj";
-// export {ginConfig} from "./config";
-// export {parseDoc} from "./util";
-//
-// export {RequestCloudFlareStrategy, RequestRetryStrategy} from "./request/index";
-// export {request} from "./request/pool";
-// export const gin = {
-//   // mangafox,
-//   // mangahere,
-//   // mangapanda,
-//   // kissmanga,
-//   batoto,
-// };
-//
-// import {LoginSite, Site} from "src/interface";
-//
-// const enum sites {
-//   mangafox = "mangafox",
-//   mangapanga = "mangapanga",
-//   mangahere = "mangahere",
-//   kissmanga = "kissmanga",
-//   batoto = "batoto",
-// }
-//
-// export class GinDownloader {
-//   private _mangafox: Site;
-//   private _mangapanga: Site;
-//   private _mangahere: Site;
-//   private _kissmanga: Site;
-//   private _batoto: Site;
-//
-//   private static resolveSite(site: sites)  {
-//     return require(`./sites/${site}/index`).default;
-//   }
-//
-//   get mangafox(): Site{
-//     return this._mangafox || (this._mangafox = GinDownloader.resolveSite(sites.mangafox));
-//   }
-//   get mangapanga(): Site{
-//     return this._mangapanga || (this._mangapanga = GinDownloader.resolveSite(sites.mangapanga));
-//   }
-//   get mangahere(): Site{
-//     return this._mangahere || (this._mangahere = GinDownloader.resolveSite(sites.mangahere));
-//   }
-//   get kissmanga(): Site{
-//     return this._kissmanga || (this._kissmanga = GinDownloader.resolveSite(sites.kissmanga));
-//   }
-//   get batoto(): LoginSite {
-//     return this._batoto || (this._batoto = GinDownloader.resolveSite(sites.batoto));
-//   }
-//
-// }
-//
-//
-// const gin = new GinDownloader();
-// export default gin;
+class MangaObject {
+    constructor(dependencies, _src, _manga) {
+        this._src = _src;
+        this._manga = _manga;
+        this._chapterResolver = dependencies.chapterResolver;
+        this._infoResolver = dependencies.infoResolver;
+        this._imageResolver = dependencies.imageResolver;
+    }
+    get name() {
+        return this._manga.name;
+    }
+    get status() {
+        return this._manga.status;
+    }
+    get mature() {
+        return this._manga.mature;
+    }
+    get image() {
+        return this._manga.image;
+    }
+    async chapters() {
+        const chapters = await this._chapterResolver.chapters(this._src);
+        this._chapters = chapters;
+        return chapters.map(x => (Object.assign({}, x, { src: undefined })));
+    }
+    async images(chapter) {
+        const { chap_number } = chapter;
+        // resolve chapters if not resolved yet
+        if (!this._chapters) {
+            await this.chapters();
+        }
+        const chapters = this._chapters;
+        const chap = chapters.find(x => x.chap_number === chap_number);
+        if (!chap) {
+            throw new Error("Chapter not found");
+        }
+        const src = chap.src;
+        return this._imageResolver.images(src);
+    }
+    info() {
+        return this._info || (this._info = this._infoResolver.info(this._src));
+    }
+}
 
-exports.mangahere = mangahere;
+const sanitizeFilter = (condition) => {
+    const search = {};
+    const result = { search };
+    if (condition) {
+        if (typeof condition === "string") {
+            search.name = sanitizeName(condition);
+        }
+        else {
+            // const ns: filter.Search = (condition && condition.search) || undefined as any;
+            search.name = sanitizeName(condition.name);
+            if (condition.search) {
+                const { genre, name, author, artist, released, rating, mature, type, status } = condition.search;
+                search.genre = sanitizeGenre(genre);
+                /*if (typeof name === "string") {
+                    search.name = {
+                        name: name as string
+                    };
+                }
+
+
+                if (typeof author === "string") {
+                    search.author = {
+                        name: author as string
+                    };
+                }
+                if (typeof artist === "string") {
+                    search.artist = {
+                        name: artist as string
+                    };
+                }
+*/
+                if (name) {
+                    search.name = sanitizeName(name);
+                }
+                if (author) {
+                    search.author = sanitizeName(author);
+                }
+                if (artist) {
+                    search.artist = sanitizeName(artist);
+                }
+                /*
+                                    if (typeof released === "number") {
+                                        search.released = {
+                                            value: released as number
+                                        };
+                                    }
+
+                                    if (typeof rating === "number") {
+                                        search.rating = {
+                                            from: rating as number
+                                        };
+                                    }
+                                    */
+                if (released) {
+                    search.released = sanitizeReleased(released);
+                }
+                if (rating) {
+                    search.rating = sanitizeRating(rating);
+                }
+                if (typeof mature === "boolean") {
+                    search.mature = mature;
+                }
+                if (!!exports.Type[type]) {
+                    search.type = type;
+                }
+                if (!!exports.FilterStatus[status]) {
+                    search.status = status;
+                }
+            }
+        }
+    }
+    return result;
+};
+const sanitizeGenre = (genre) => {
+    const result = {
+        inGenres: [],
+        outGenres: [],
+        condition: exports.GenreCondition.And
+    };
+    if (genre) {
+        if (Array.isArray(genre)) { // is array of ['Comedy', 'Action'], as default sets as InGenre
+            result.inGenres.push(...genre);
+        }
+        else { // if genre is an object
+            const g = genre;
+            if (!!g.inGenres) {
+                if (Array.isArray(g.inGenres)) {
+                    // add only valid gin genres
+                    result.inGenres.push(...g.inGenres.filter(isValidGenre));
+                }
+                else {
+                    const s = g.inGenres.toString();
+                    if (isValidGenre(s)) {
+                        result.inGenres.push(s);
+                    }
+                }
+            }
+            if (!!g.outGenres) {
+                if (Array.isArray(g.outGenres)) {
+                    // add only valid gin genres
+                    result.outGenres.push(...g.outGenres.filter(isValidGenre));
+                }
+                else {
+                    const s = g.outGenres.toString();
+                    if (isValidGenre(s)) {
+                        result.outGenres.push(s);
+                    }
+                }
+            }
+        }
+        // if genre condition is invalid we set to be GenreCondition.And
+        if (exports.GenreCondition[genre.condition]) {
+            result.condition = genre.condition;
+        }
+    }
+    return result;
+};
+const isValidGenre = (s) => !!exports.Genre[s];
+const sanitizeName = (name) => {
+    const result = {
+        name: "",
+        condition: exports.FilterCondition.Contains
+    };
+    if (typeof name === "string" || typeof name === "object") {
+        if (typeof name === "string") {
+            result.name = name;
+        }
+        else {
+            if (typeof name.name === "string") {
+                result.name = name.name;
+            }
+            if (!!exports.FilterCondition[name.condition]) {
+                result.condition = name.condition;
+            }
+        }
+    }
+    return result;
+};
+const sanitizeRating = (rating) => {
+    const result = {};
+    if (rating) {
+        if (typeof rating === "number") {
+            result.from = rating;
+        }
+        else {
+            if (typeof rating === "string" || typeof rating === "object") {
+                if (!!rating.from || !rating.to) {
+                    const from = +rating.from;
+                    const to = +rating.to;
+                    if (!isNaN(from)) {
+                        result.from = from;
+                    }
+                    if (!isNaN(to)) {
+                        result.to = to;
+                    }
+                }
+                else {
+                    const n = +rating; // in case rating is a string convert to number
+                    if (!isNaN(n)) {
+                        result.from = n;
+                    }
+                }
+            }
+        }
+    }
+    return result;
+};
+const sanitizeReleased = (released) => {
+    const result = {
+        value: null,
+        condition: exports.FilterCondition.Equal
+    };
+    if (released) {
+        if (typeof released === "number" || typeof released === "string") {
+            const value = +released;
+            if (!isNaN(value)) {
+                result.value = value;
+            }
+        }
+        else {
+            if (typeof released === "object") {
+                if (released.value) {
+                    const value = +released.value;
+                    if (!isNaN(value)) {
+                        result.value = value;
+                    }
+                }
+                if (released.condition && exports.FilterCondition[released.condition]) {
+                    result.condition = released.condition;
+                }
+            }
+        }
+    }
+    return result;
+};
+
+const builder = new MangaHereBuilder();
+class MangaHere {
+    constructor(dependencies) {
+        this.buildManga = (_a) => {
+            var { src } = _a, manga = __rest(_a, ["src"]);
+            return new MangaObject(this._resolvers, src, manga);
+        };
+        const di = builder.build(dependencies);
+        this._requestFactory = dependencies.requestFactory;
+        this._logger = di.logger;
+        this._genre = di.genre;
+        this._config = di.config;
+        this._filter = di.filter;
+        this._parser = di.parser;
+        this._visitor = di.visitor;
+        this._resolvers = dependencies.resolverFactory.build(di);
+    }
+    async mangas() {
+        const pages = Array.from(this._visitor.mangas()).slice(0, 5); // limit to 5 pages tops
+        const pMangas = pages.map(x => this._requestFactory.request({ uri: x.href }))
+            .map(r => r.then(x => Array.from(this._parser.mangas(x))));
+        const mangas = await Promise.all(pMangas);
+        // TODO this should return MangaObject!
+        return mangas.reduce((c, v) => {
+            c.push(...v);
+            return c;
+        }, [])
+            .map(this.buildManga);
+    }
+    async latest() {
+        const pages = Array.from(this._visitor.latest()).slice(0, 5); // limit to 5 pages tops
+        const pMangas = pages.map(x => this._requestFactory.request({ uri: x.href }))
+            .map(r => r.then(x => Array.from(this._parser.latest(x))));
+        const mangas = await Promise.all(pMangas);
+        // TODO this should return Chapter with MangaObject
+        return mangas.reduce((c, v) => {
+            c.push(...v);
+            return c;
+        }, []);
+    }
+    async filter(filter) {
+        const f = sanitizeFilter(filter);
+        const processed = this._filter.process(f);
+        const uri = url.resolve(this._config.mangasUrl, processed.src);
+        const response = await this._requestFactory.request({ uri, qs: processed.params });
+        const mangas = Array.from(this._parser.mangas(response)).map(this.buildManga);
+        const filterResult = this._parser.filterPage(response);
+        return Object.assign({}, filterResult, { results: mangas });
+    }
+}
+
+const requestRetry = require("requestretry");
+// specific options for requestretry lib
+const DefaultOptions = {
+    retryStrategy: requestRetry.RetryStrategies.HTTPOrNetworkError,
+    fullResponse: true
+};
+const maxAttempts = 20, retryDelay = 300;
+// retries if the request fails
+class RequestRetryStrategy {
+    constructor(_maxAttempts = maxAttempts, _retryDelay = retryDelay) {
+        this._maxAttempts = _maxAttempts;
+        this._retryDelay = _retryDelay;
+    }
+    request(options) {
+        const opts = Object.assign({}, options, DefaultOptions, { maxAttempts: this._maxAttempts, retryDelay: this._retryDelay });
+        return requestRetry(opts);
+    }
+}
+
+class ConcurrentQueueRequestFactory {
+    constructor(_requestStrategy, _queue) {
+        this._requestStrategy = _requestStrategy;
+        this._queue = _queue;
+    }
+    request(options) {
+        return this._queue.add(() => this._requestStrategy.request(options)
+            .then(response => new MangaRequestResult(options.uri.toString(), response.body.toString())));
+    }
+}
+
+class Lazy {
+    constructor(_func) {
+        this._func = _func;
+    }
+    get value() {
+        return this._value || (this._value = this._func());
+    }
+}
+
+class ImageResolver {
+    constructor(dependencies) {
+        this._parser = dependencies.parser;
+        this._config = dependencies.config;
+        this._requestFactory = dependencies.requestFactory;
+    }
+    async images(chapterSrc) {
+        let href = url.resolve(this._config.site, chapterSrc).toString();
+        let result = await this._requestFactory.request({ uri: href });
+        const paths = this._parser.imagesPaths(result);
+        paths.next(); // skip first, because we requested that already
+        let src = this._parser.image(result);
+        const promises = [
+            new Lazy(() => Promise.resolve({
+                name: url.parse(src).pathname.split("/").reverse()[0],
+                src
+            }))
+        ];
+        const promiseRequest = async (s) => {
+            const h = url.resolve(href, s).toString();
+            const result = await this._requestFactory.request({ uri: h });
+            const src = this._parser.image(result);
+            return {
+                name: url.parse(src).pathname.split("/").reverse()[0],
+                src
+            };
+        };
+        for (const it of paths) {
+            promises.push(new Lazy(() => promiseRequest(it.src)));
+        }
+        return promises;
+    }
+}
+
+class ChapterResolver {
+    constructor(dependencies) {
+        this._parser = dependencies.parser;
+        this._requestFactory = dependencies.requestFactory;
+    }
+    async chapters(src) {
+        const result = await this._requestFactory.request({ uri: src });
+        return Array.from(this._parser.chapters(result));
+    }
+}
+
+class InfoResolver {
+    constructor(dependencies) {
+        this._parser = dependencies.parser;
+        this._config = dependencies.config;
+        this._requestFactory = dependencies.requestFactory;
+    }
+    async info(src) {
+        return this._requestFactory.request({ uri: src })
+            .then(x => this._parser.info(x));
+    }
+}
+
+class DefaultResolverFactory {
+    build(di) {
+        const imageResolver = new ImageResolver(di);
+        const chapterResolver = new ChapterResolver(di);
+        const infoResolver = new InfoResolver(di);
+        return {
+            imageResolver,
+            chapterResolver,
+            infoResolver,
+        };
+    }
+}
+
+const Queue = require("promise-queue");
+class GinBuilder {
+    get mangahere() {
+        return this._mangahere || (this._mangahere = this.buildMangaHere());
+    }
+    constructor(dependencies = {}) {
+        this._requestStrategy = new RequestRetryStrategy();
+        this._resolverFactory = new DefaultResolverFactory();
+        this._requestFactory = new ConcurrentQueueRequestFactory(this._requestStrategy, new Queue(20));
+        this._mangaHereBuilder = new MangaHereBuilder();
+    }
+    buildMangaHere() {
+        return new MangaHere({ requestFactory: this._requestFactory, resolverFactory: this._resolverFactory });
+    }
+}
+
+//
+// const Queue = require("promise-queue");
+//
+//
+// const requestStrategy = new RequestRetryStrategy();
+// const resolverFactory = new DefaultResolverFactory();
+// const requestFactory = new ConcurrentQueueRequestFactory(requestStrategy, new Queue(20));
+//
+//
+// export const mangahere = new MangaHere({requestFactory, resolverFactory});
+const gin = new GinBuilder();
+
+exports.gin = gin;
+exports.GinBuilder = GinBuilder;

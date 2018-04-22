@@ -1,17 +1,16 @@
 import {
     IImageResolver,
-    ImageCollection,
+    ImageCollection, ImageSource,
     IMangaConfigDependency,
     IMangaParserDependency,
     IMangaRequestFactoryDependency
 } from "../interface";
 import {IMangaConfig, IMangaParser, IMangaRequestFactory} from "../manga/interface";
-import {ImageSource} from "../old v2/declarations";
 import {Lazy} from "../util/lazy";
 import * as url from "url";
 
 
-type di = IMangaParserDependency & IMangaConfigDependency & IMangaRequestFactoryDependency;
+export type ImageResolverDependencies = IMangaParserDependency & IMangaConfigDependency & IMangaRequestFactoryDependency;
 
 
 export class ImageResolver implements IImageResolver {
@@ -19,7 +18,7 @@ export class ImageResolver implements IImageResolver {
     private _config: IMangaConfig;
     private _requestFactory: IMangaRequestFactory;
 
-    constructor(dependencies: di) {
+    constructor(dependencies: ImageResolverDependencies) {
         this._parser = dependencies.parser;
         this._config = dependencies.config;
         this._requestFactory = dependencies.requestFactory;

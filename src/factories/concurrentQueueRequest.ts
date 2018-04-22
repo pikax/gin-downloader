@@ -3,6 +3,7 @@ import {IMangaRequest, IMangaRequestFactory, MangaRequestResult} from "../manga/
 import {OptionsWithUri} from "request";
 
 
+
 export class ConcurrentQueueRequestFactory implements IMangaRequestFactory {
     constructor(private _requestStrategy: IRequestStrategy, private _queue: { add: (f) => any }) {
 

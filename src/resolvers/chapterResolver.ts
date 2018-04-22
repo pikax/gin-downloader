@@ -3,13 +3,13 @@ import {IMangaParser, IMangaRequestFactory} from "../manga/interface";
 
 
 
-type di = IMangaParserDependency & IMangaRequestFactoryDependency;
+export type ChapterResolverDependencies = IMangaParserDependency & IMangaRequestFactoryDependency;
 
 export class ChapterResolver implements IChapterResolver {
     private _parser: IMangaParser;
     private _requestFactory: IMangaRequestFactory;
 
-    constructor(dependencies: di) {
+    constructor(dependencies: ChapterResolverDependencies) {
         this._parser = dependencies.parser;
         this._requestFactory = dependencies.requestFactory;
     }

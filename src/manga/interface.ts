@@ -2,15 +2,15 @@ import {
     IChapter,
     MangaCollection,
     MangaInfo,
-    ChapterSource} from "../interface";
+    ChapterSource
+} from "../interface";
 import {filter, FilteredResults, MangaSource} from "../filter";
 import FilterSupport = filter.FilterSupport;
-import * as cheerio from "cheerio";
 
 import {Genre} from "../enum";
 import {OptionsWithUri} from "request";
 
-
+import * as cheerio from "cheerio";
 
 
 export interface IMangaLogin {
@@ -36,9 +36,9 @@ export interface IMangaLatest {
 }
 
 export interface IMangaVisitor {
-    latest(): Iterable<{ href: string, page: number; total: number }>;
+    latest(): IterableIterator<{ href: string, page: number; total: number }>;
 
-    mangas(): Iterable<{ href: string, page: number; total: number }>;
+    mangas(): IterableIterator<{ href: string, page: number; total: number }>;
 }
 
 export interface IMangaRequest {
@@ -46,7 +46,7 @@ export interface IMangaRequest {
 
     readonly html: string;
 
-    readonly $: cheerio;
+    readonly $: CheerioStatic;
 }
 
 export interface IMangaRequestFactory {
@@ -55,7 +55,7 @@ export interface IMangaRequestFactory {
 
 
 export class MangaRequestResult implements IMangaRequest {
-    private _$: cheerio;
+    private _$: CheerioStatic;
 
     get uri() {
         return this._uri;
@@ -75,20 +75,20 @@ export class MangaRequestResult implements IMangaRequest {
 
 
 export interface IMangaParser {
-    mangas(mangaRequest: IMangaRequest): Iterable<MangaSource>;
+    mangas(mangaRequest: IMangaRequest): IterableIterator<MangaSource>;
 
     // latest chapters
-    latest(mangaRequest: IMangaRequest): Iterable<IChapter & { src: string }>;
+    latest(mangaRequest: IMangaRequest): IterableIterator<IChapter & { src: string }>;
 
     // info manga
     info(mangaRequest: IMangaRequest): MangaInfo;
 
     // chapters
-    chapters(mangaRequest: IMangaRequest): Iterable<ChapterSource>;
+    chapters(mangaRequest: IMangaRequest): IterableIterator<ChapterSource>;
 
 
     // image urls
-    imagesPaths(mangaRequest: IMangaRequest): Iterable<{ name: string; src: string }>;
+    imagesPaths(mangaRequest: IMangaRequest): IterableIterator<{ name: string; src: string }>;
 
     // single image
     image(mangaRequest: IMangaRequest): string;
@@ -132,7 +132,6 @@ export interface IGenreSite {
 
     supported(): Genre[];
 }
-
 
 
 //
