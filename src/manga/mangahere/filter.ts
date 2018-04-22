@@ -41,7 +41,7 @@ export class MangaHereFilter implements IFilterSource {
             filterType = resolveType(type) || filterType;
 
             if (name) {
-                methodName = searchMethod(name.condition) || methodName;
+                methodName = searchMethod(name.condition);
             }
 
             if (search.status) {
@@ -49,18 +49,18 @@ export class MangaHereFilter implements IFilterSource {
             }
 
             if (author) {
-                filterAuthor = author.name || filterAuthor;
-                methodAuthor = searchMethod(author.condition) || methodAuthor;
+                filterAuthor = author.name;
+                methodAuthor = searchMethod(author.condition);
             }
 
             if (artist) {
-                filterArtist = artist.name || filterArtist;
-                methodArtist = searchMethod(artist.condition) || methodArtist;
+                filterArtist = artist.name;
+                methodArtist = searchMethod(artist.condition);
             }
 
             if (released) {
-                filterReleased = released.value || filterReleased;
-                methodReleased = yearSearchMethod(released.condition) || methodReleased;
+                filterReleased = released.value;
+                methodReleased = yearSearchMethod(released.condition);
             }
             if (genre) {
                 inGenres = genre.inGenres;
