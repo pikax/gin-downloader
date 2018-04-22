@@ -1,4 +1,4 @@
-import {MangaSite} from "../manga/interface";
+import {MangaSite} from "../enum";
 
 const project = "gin-downloader";
 

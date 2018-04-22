@@ -23,6 +23,22 @@ yarn add gin-downloader
 
 
 
+# v2@beta-5
+
+The difference between v2@beta-4 and v2@beta-5 is just too much, I basically rewrote most of the code.
+
+I introduced MangaObject to enable to resolve chapters and images easily.
+
+Hopefully this big change will allow me improve the library easily in the future.
+
+
+
+### NOTE
+This is not the final revision, I'm open to recomendations on how the API should be accessible.
+
+
+
+
 ## **v1 is Currently deprecated, please use @beta version**
 
 
@@ -36,9 +52,9 @@ The focus on this v2 is to support a small number of websites and implement an e
 
 
 ### Supported websites
+- [x] MangaHere
 - [ ] MangaFox
 - [ ] MangaPanda
-- [x] MangaHere
 - [ ] KissManga
 - [ ] BatoTo (`new`)
 
