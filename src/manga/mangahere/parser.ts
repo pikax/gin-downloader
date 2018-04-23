@@ -190,7 +190,7 @@ export class MangaHereParser implements IMangaParser {
         try {
 
 
-            const elements = $("span.left > a").toArray();
+            const elements = $("span.left > a.color_0077").toArray();
             this._logger.debug("processing %d elements", elements.length);
             this._logger.verbose("processing elements:\n%j", elements);
 
@@ -205,8 +205,10 @@ export class MangaHereParser implements IMangaParser {
 
                 const date = liChildren[liChildren.length - 1].lastChild.nodeValue;
                 const aText = a.lastChild.nodeValue.trim(); // chapter number
-                const name = sanitizeText(span) || aText; // does it has a name or we use the chapter number
                 const href = a.attribs.href;
+
+                const volume = liChildren[0].children.filter(x => x.attribs && x.attribs.class === "mr6").map(x => x.lastChild && x.lastChild.nodeValue).filter(x => !!x)[0];
+                const name = liChildren[0].children.slice(4).map(sanitizeText).join("") || aText;
 
                 const chap_number = aText.lastDigit().toString();
 
@@ -216,6 +218,10 @@ export class MangaHereParser implements IMangaParser {
                     src: url.resolve(this._config.site, href),
                     dateAdded: date
                 };
+
+                if (volume) {
+                    (result as IChapter).volume = volume;
+                }
 
                 this._logger.debug("processed with: %o", result);
                 this._logger.verbose("element %j converted to %o", item, result);
@@ -350,13 +356,14 @@ export class MangaHereParser implements IMangaParser {
 }
 
 
-const regexSynonymLang = /\((.*)\)$/;
+// const regexSynonymLang = /\((.*)\)$/;
+const regexSynonymLang = /\s\((\w+)\)$/;
 const defaultLang = "";
 const resolveSynonym = (dirtyTitle: string): Synonym => {
     const match = dirtyTitle.match(regexSynonymLang);
     if (match) {
         const language = match[1];
-        const title = dirtyTitle.replace(` ${match[0]}`, "");
+        const title = dirtyTitle.replace(`${match[0]}`, "");
 
         return {
             title,
@@ -372,7 +379,7 @@ const resolveSynonym = (dirtyTitle: string): Synonym => {
 
 
 const sanitizeText = (element: CheerioElement) => {
-    if(!element){
+    if (!element) {
         return null;
     }
 

@@ -85891,6 +85891,187 @@ Object {
 }
 `;
 
+exports[`mangahere parser offline should parse Konbini DMZ chapters (email encryption on name) 1`] = `
+Array [
+  Object {
+    "chap_number": "11",
+    "dateAdded": "Oct 21, 2015",
+    "name": "Getaway@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c011/",
+  },
+  Object {
+    "chap_number": "10",
+    "dateAdded": "Oct 3, 2015",
+    "name": "Community â¤(Love)@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c010/",
+  },
+  Object {
+    "chap_number": "9",
+    "dateAdded": "Sep 30, 2015",
+    "name": "The SV is Special!?@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c009/",
+  },
+  Object {
+    "chap_number": "8",
+    "dateAdded": "Sep 17, 2015",
+    "name": "THE ODEN@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c008/",
+  },
+  Object {
+    "chap_number": "7",
+    "dateAdded": "Aug 23, 2015",
+    "name": "Mekong Blend@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c007/",
+  },
+  Object {
+    "chap_number": "6",
+    "dateAdded": "Aug 13, 2015",
+    "name": "The Stylish Sniper Returns@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c006/",
+  },
+  Object {
+    "chap_number": "5",
+    "dateAdded": "Aug 10, 2015",
+    "name": "The Stylish Sniper@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c005/",
+  },
+  Object {
+    "chap_number": "4",
+    "dateAdded": "Aug 7, 2015",
+    "name": "Masaru-kun's Debut@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c004/",
+  },
+  Object {
+    "chap_number": "3",
+    "dateAdded": "Aug 4, 2015",
+    "name": "Umaike?@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c003/",
+  },
+  Object {
+    "chap_number": "2",
+    "dateAdded": "Jul 23, 2015",
+    "name": "Payment is by Yen@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c002/",
+  },
+  Object {
+    "chap_number": "1",
+    "dateAdded": "Jul 16, 2015",
+    "name": "Konbini@DMZ",
+    "src": "http://www.mangahere.cc/manga/konbini_dmz/c001/",
+  },
+]
+`;
+
+exports[`mangahere parser offline should parse Love Blog chapters (Volume and '@_@') 1`] = `
+Array [
+  Object {
+    "chap_number": "15",
+    "dateAdded": "Oct 25, 2012",
+    "name": "Love Blog!! 15",
+    "src": "http://www.mangahere.cc/manga/love_blog/v03/c015/",
+    "volume": "Vol 03",
+  },
+  Object {
+    "chap_number": "14",
+    "dateAdded": "Oct 25, 2012",
+    "name": "Love Blog!! 14",
+    "src": "http://www.mangahere.cc/manga/love_blog/v03/c014/",
+    "volume": "Vol 03",
+  },
+  Object {
+    "chap_number": "13",
+    "dateAdded": "Oct 8, 2012",
+    "name": "Love Blog!! 13",
+    "src": "http://www.mangahere.cc/manga/love_blog/v03/c013/",
+    "volume": "Vol 03",
+  },
+  Object {
+    "chap_number": "12",
+    "dateAdded": "Oct 8, 2012",
+    "name": "Love Blog!! 12",
+    "src": "http://www.mangahere.cc/manga/love_blog/v03/c012/",
+    "volume": "Vol 03",
+  },
+  Object {
+    "chap_number": "11",
+    "dateAdded": "Oct 8, 2012",
+    "name": "Love Blog!! 11",
+    "src": "http://www.mangahere.cc/manga/love_blog/v03/c011/",
+    "volume": "Vol 03",
+  },
+  Object {
+    "chap_number": "10",
+    "dateAdded": "Sep 24, 2012",
+    "name": "Love Blog!! 10",
+    "src": "http://www.mangahere.cc/manga/love_blog/v02/c010/",
+    "volume": "Vol 02",
+  },
+  Object {
+    "chap_number": "9",
+    "dateAdded": "Jul 10, 2012",
+    "name": "Love Blog!! 9",
+    "src": "http://www.mangahere.cc/manga/love_blog/v02/c009/",
+    "volume": "Vol 02",
+  },
+  Object {
+    "chap_number": "8",
+    "dateAdded": "Jul 9, 2012",
+    "name": "Love Blog!! 8",
+    "src": "http://www.mangahere.cc/manga/love_blog/v02/c008/",
+    "volume": "Vol 02",
+  },
+  Object {
+    "chap_number": "7",
+    "dateAdded": "Jul 9, 2012",
+    "name": "Love Blog!! 7",
+    "src": "http://www.mangahere.cc/manga/love_blog/v02/c007/",
+    "volume": "Vol 02",
+  },
+  Object {
+    "chap_number": "6",
+    "dateAdded": "Jul 15, 2010",
+    "name": "Love Blog!! 6",
+    "src": "http://www.mangahere.cc/manga/love_blog/v02/c006/",
+    "volume": "Vol 02",
+  },
+  Object {
+    "chap_number": "5",
+    "dateAdded": "Mar 6, 2009",
+    "name": "5 Hit: A Ceremony Called Sex (+_+)",
+    "src": "http://www.mangahere.cc/manga/love_blog/v01/c005/",
+    "volume": "Vol 01",
+  },
+  Object {
+    "chap_number": "4",
+    "dateAdded": "Feb 4, 2009",
+    "name": "4 Hit: Love's Lock, (-_-) Relationship's Chain",
+    "src": "http://www.mangahere.cc/manga/love_blog/v01/c004/",
+    "volume": "Vol 01",
+  },
+  Object {
+    "chap_number": "3",
+    "dateAdded": "Jan 15, 2009",
+    "name": "3 Hit: Rationality And Instincts, Male And Female (@_@)",
+    "src": "http://www.mangahere.cc/manga/love_blog/v01/c003/",
+    "volume": "Vol 01",
+  },
+  Object {
+    "chap_number": "2",
+    "dateAdded": "Dec 18, 2008",
+    "name": "2 Hit. \\"Lies\\" is it really intolerable?",
+    "src": "http://www.mangahere.cc/manga/love_blog/v01/c002/",
+    "volume": "Vol 01",
+  },
+  Object {
+    "chap_number": "1",
+    "dateAdded": "Nov 25, 2008",
+    "name": "1 Hit: \\"Fate\\" Can it be opened up?! \\\\(><)/",
+    "src": "http://www.mangahere.cc/manga/love_blog/v01/c001/",
+    "volume": "Vol 01",
+  },
+]
+`;
+
 exports[`mangahere parser offline should parse Psyren info 1`] = `
 Object {
   "artists": Array [

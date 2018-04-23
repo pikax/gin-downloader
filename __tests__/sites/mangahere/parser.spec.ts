@@ -79,6 +79,34 @@ describe("mangahere parser", () => {
         });
 
 
+
+        it("should parse Konbini DMZ chapters (email encryption on name)", () => {
+            const html = provider.getFile("konbini_dmz.html");
+
+            // TODO MOCK MangaRequestResult
+            const result = new MangaRequestResult("https://www.mangahere.cc/manga/konbini_dmz/", html);
+
+            const chapters = parser.chapters(result);
+            const array = Array.from(chapters);
+
+            expect(array).toMatchSnapshot();
+        });
+
+
+
+        it("should parse Love Blog chapters (Volume and '@_@')", () => {
+            const html = provider.getFile("love_blog.html");
+
+            // TODO MOCK MangaRequestResult
+            const result = new MangaRequestResult("https://www.mangahere.cc/manga/love_blog/", html);
+
+            const chapters = parser.chapters(result);
+            const array = Array.from(chapters);
+
+            expect(array).toMatchSnapshot();
+        });
+
+
         it("should throw licence error when getting imagePaths", () => {
             const html = provider.getFile("one_piece_chapter.html");
 
@@ -223,10 +251,11 @@ describe("mangahere parser", () => {
 
             const pg = parser.info(result);
 
-            expect(pg.synonyms).toContain({
+            expect(pg.synonyms).toContainEqual({
                 title: "Ganma (OGINO Jun)",
                 language: ""
             });
+
 
         });
 

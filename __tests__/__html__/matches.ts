@@ -11,6 +11,10 @@ export const FileMatches: { [id: string]: RegExp } = {
 
     "mangahere/days_of_jupiter_the_idolmaster.html" : /www\.mangahere\.cc\/manga\/d_ys_of_jupiter_the_idolm_ster\//,
 
+    "mangahere/konbini_dmz" : /www\.mangahere\.cc\/manga\/konbini_dmz\//,
+
+    "mangahere/love_blog.html": /www\.mangahere\.cc\/manga\/love_blog\//,
+
 
 };
 
@@ -27,6 +31,9 @@ export const HtmlToFile: { [id: string]: string } = {
 
     "https://www.mangahere.cc/manga/d_ys_of_jupiter_the_idolm_ster/" : "mangahere/days_of_jupiter_the_idolmaster.html"
 
+    "https://www.mangahere.cc/manga/konbini_dmz/" : "mangahere/konbini_dmz.html",
+
+    "www.mangahere.cc/manga/love_blog/" : "mangahere/love_blog.html"
 
 };
 
