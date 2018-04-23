@@ -133,7 +133,7 @@ export class MangaHereParser implements IMangaParser {
 
         try {
             const image = $("img.img").attr("src");
-            const title = sanitizeText($("div.title > h3").get()[0]).slice(5, -7);
+            const title = sanitizeText($("div.title > h3").get()[0] as any).slice(5, -7);
             // const title = $("div.title > h3").text().slice(5, -7);
 
             const li: CheerioElement[] = $(".detail_topText > li").toArray();

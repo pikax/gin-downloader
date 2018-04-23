@@ -794,16 +794,12 @@ var MangaHereParser = /** @class */ (function () {
         this._logger.verbose("parsing manga:\n\turl:%s\n\thtml:\n%s", uri, html);
         try {
             var image = $("img.img").attr("src");
-            var title = $("div.title > h3").text().slice(5, -7);
+            var title = sanitizeText($("div.title > h3").get()[0]).slice(5, -7);
+            // const title = $("div.title > h3").text().slice(5, -7);
             var li = $(".detail_topText > li").toArray();
-            var synonymsChildren = li[2].children;
-            var encriptedSynonym = "";
-            // mangahere encripts 'email' like strings;
-            if (synonymsChildren.length > 2) {
-                var emailA = synonymsChildren[2];
-                encriptedSynonym = testEmail(emailA.attribs["data-cfemail"]);
-            }
-            var synonymCsv = synonymsChildren[1].nodeValue + encriptedSynonym;
+            var synonymsChildren = li[2].children.slice(1);
+            // const synonymCsv = synonymsChildren.map(x => x.nodeValue || (x.attribs["data-cfemail"] && testEmail(x.attribs["data-cfemail"])) || "").join("");
+            var synonymCsv = synonymsChildren.map(sanitizeText).join("");
             var synonyms = synonymCsv.split("; ").map(resolveSynonym);
             var genres = li[3].lastChild.nodeValue.split(", ").map(function (x) { return _this._genreSite.fromSiteGenre(x); });
             var authors = li[4].children.filter(function (x) { return x.name === "a"; }).filter(function (x) { return !!x.lastChild; }).map(function (x) { return x.lastChild.nodeValue; });
@@ -834,7 +830,7 @@ var MangaHereParser = /** @class */ (function () {
         }
     };
     MangaHereParser.prototype.chapters = function (mangaRequest) {
-        var $, uri, html, elements, elements_3, elements_3_1, item, span, li, liChildren, a, date, aText, name, href, chap_number, result, e_6_1, e_7, e_6, _a;
+        var $, uri, html, elements, elements_3, elements_3_1, item, span, li, liChildren, a, date, aText, href, volume, name, chap_number, result, e_6_1, e_7, e_6, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -844,7 +840,7 @@ var MangaHereParser = /** @class */ (function () {
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 10, , 11]);
-                    elements = $("span.left > a").toArray();
+                    elements = $("span.left > a.color_0077").toArray();
                     this._logger.debug("processing %d elements", elements.length);
                     this._logger.verbose("processing elements:\n%j", elements);
                     _b.label = 2;
@@ -862,8 +858,9 @@ var MangaHereParser = /** @class */ (function () {
                     a = item;
                     date = liChildren[liChildren.length - 1].lastChild.nodeValue;
                     aText = a.lastChild.nodeValue.trim();
-                    name = (span && span.lastChild.nodeValue) || aText;
                     href = a.attribs.href;
+                    volume = liChildren[0].children.filter(function (x) { return x.attribs && x.attribs.class === "mr6"; }).map(function (x) { return x.lastChild && x.lastChild.nodeValue; }).filter(function (x) { return !!x; })[0];
+                    name = liChildren[0].children.slice(4).map(sanitizeText).join("") || aText;
                     chap_number = aText.lastDigit().toString();
                     result = {
                         chap_number: chap_number,
@@ -871,6 +868,9 @@ var MangaHereParser = /** @class */ (function () {
                         src: url.resolve(this._config.site, href),
                         dateAdded: date
                     };
+                    if (volume) {
+                        result.volume = volume;
+                    }
                     this._logger.debug("processed with: %o", result);
                     this._logger.verbose("element %j converted to %o", item, result);
                     return [4 /*yield*/, result];
@@ -1027,13 +1027,14 @@ var MangaHereParser = /** @class */ (function () {
     };
     return MangaHereParser;
 }());
-var regexSynonymLang = /\((.*)\)$/;
+// const regexSynonymLang = /\((.*)\)$/;
+var regexSynonymLang = /\s\((\w+)\)$/;
 var defaultLang = "";
 var resolveSynonym = function (dirtyTitle) {
     var match = dirtyTitle.match(regexSynonymLang);
     if (match) {
         var language = match[1];
-        var title = dirtyTitle.replace(" " + match[0], "");
+        var title = dirtyTitle.replace("" + match[0], "");
         return {
             title: title,
             language: language
@@ -1043,6 +1044,22 @@ var resolveSynonym = function (dirtyTitle) {
         title: dirtyTitle,
         language: defaultLang,
     };
+};
+var sanitizeText = function (element) {
+    if (!element) {
+        return null;
+    }
+    if (element.nodeValue) {
+        return element.nodeValue;
+    }
+    var cfemail = element.attribs["data-cfemail"];
+    if (cfemail) {
+        return testEmail(cfemail);
+    }
+    if (!element.children) {
+        return null;
+    }
+    return element.children.map(sanitizeText).join("");
 };
 var testEmail = function (cfemail) {
     /*!function() {
