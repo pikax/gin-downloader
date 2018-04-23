@@ -91,6 +91,8 @@
     "typescript": "^2.8.3"
   },
   "optionalDependencies": {
-    "cross-env": "^5.1.4"
+    "cross-env": "^5.1.4",
+    "sprintf-js": "^1.1.1",
+    "sanitize-filename": "^1.6.1"
   }
 }
