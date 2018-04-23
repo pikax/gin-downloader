@@ -137,21 +137,10 @@ export class MangaHereParser implements IMangaParser {
 
             const li: CheerioElement[] = $(".detail_topText > li").toArray();
 
-            const synonymsChildren = li[2].children;
+            const synonymsChildren = li[2].children.slice(1);
 
-
-            let encriptedSynonym = "";
-
-            // mangahere encripts 'email' like strings;
-            if (synonymsChildren.length > 2) {
-                const emailA = synonymsChildren[2];
-
-                encriptedSynonym = testEmail(emailA.attribs["data-cfemail"]);
-            }
-
-            const synonymCsv = synonymsChildren[1].nodeValue + encriptedSynonym;
+            const synonymCsv = synonymsChildren.map(x => x.nodeValue || (x.attribs["data-cfemail"] && testEmail(x.attribs["data-cfemail"])) || "").join("");
             const synonyms: Synonym[] = synonymCsv.split("; ").map(resolveSynonym);
-
 
             const genres = li[3].lastChild.nodeValue.split(", ").map(x => this._genreSite.fromSiteGenre(x));
 

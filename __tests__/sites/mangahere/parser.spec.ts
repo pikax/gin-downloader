@@ -193,6 +193,17 @@ describe("mangahere parser", () => {
         });
 
 
+        it("should parse D@ys of Jupiter - The Idolm@ster info (email like synonym)", () => {
+            const html = provider.getFile("days_of_jupiter_the_idolmaster.html");
+
+            const uri = "https://www.mangahere.cc/manga/d_ys_of_jupiter_the_idolm_ster/";
+            const result = new MangaRequestResult(uri, html);
+
+            const pg = parser.info(result);
+            expect(pg).toMatchSnapshot();
+        });
+
+
         it("should parse D.Gray-man DJ (invalid csv artists)", () => {
             const html = provider.getFile("dgray_man_dj.html");
 
@@ -201,6 +212,22 @@ describe("mangahere parser", () => {
 
             const pg = parser.info(result);
             expect(pg).toMatchSnapshot();
+        });
+
+
+        it("should parse Ganma (invalid synonym language)", () => {
+            const html = provider.getFile("ganma.html");
+
+            const uri = "http://www.mangahere.cc/manga/ganma/";
+            const result = new MangaRequestResult(uri, html);
+
+            const pg = parser.info(result);
+
+            expect(pg.synonyms).toContain({
+                title: "Ganma (OGINO Jun)",
+                language: ""
+            });
+
         });
 
 

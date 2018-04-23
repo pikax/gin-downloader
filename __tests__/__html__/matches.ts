@@ -9,6 +9,8 @@ export const FileMatches: { [id: string]: RegExp } = {
     "mangahere/dgray_man_dj.html" : /www\.mangahere\.cc\/manga\/d_gray_man_dj_phantom_gray\//,
 
 
+    "mangahere/days_of_jupiter_the_idolmaster.html" : /www\.mangahere\.cc\/manga\/d_ys_of_jupiter_the_idolm_ster\//,
+
 
 };
 
@@ -23,6 +25,7 @@ export const HtmlToFile: { [id: string]: string } = {
     "https://www.mangahere.cc/manga/wild_damon/": "mangahere/wild_damon.html",
     "https://www.mangahere.cc/manga/d_gray_man_dj_phantom_gray/" : "mangahere/dgray_man_dj.html",
 
+    "https://www.mangahere.cc/manga/d_ys_of_jupiter_the_idolm_ster/" : "mangahere/days_of_jupiter_the_idolmaster.html"
 
 
 };

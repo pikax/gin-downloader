@@ -417,6 +417,9 @@ var MangaHereGenre = /** @class */ (function () {
         this._supported = supported;
     }
     MangaHereGenre.prototype.fromSiteGenre = function (genre) {
+        if (genre === "Slice Of Life") {
+            genre = exports.Genre.SliceOfLife;
+        }
         return this._site[genre];
     };
     MangaHereGenre.prototype.toSiteGenre = function (genre) {
@@ -635,23 +638,26 @@ var MangaHereParser = /** @class */ (function () {
         this._genreSite = dependencies.genre;
     }
     MangaHereParser.prototype.mangas = function (mangaRequest) {
-        var $, uri, html, elements, elements_1, elements_1_1, item, result, e_1_1, e_1, _a;
+        var $, uri, html, elements, elements_1, elements_1_1, item, result, e_1_1, e_2, e_1, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     $ = mangaRequest.$, uri = mangaRequest.uri, html = mangaRequest.html;
                     this._logger.debug("parsing mangas:\n\turl:%s", uri);
                     this._logger.verbose("parsing mangas:\n\turl:%s\n\thtml:\n%s", uri, html);
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 10, , 11]);
                     elements = $(".manga_info").toArray();
                     this._logger.debug("processing %d elements", elements.length);
                     this._logger.verbose("processing elements:\n%j", elements);
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 6, 7, 8]);
-                    elements_1 = __values(elements), elements_1_1 = elements_1.next();
                     _b.label = 2;
                 case 2:
-                    if (!!elements_1_1.done) return [3 /*break*/, 5];
+                    _b.trys.push([2, 7, 8, 9]);
+                    elements_1 = __values(elements), elements_1_1 = elements_1.next();
+                    _b.label = 3;
+                case 3:
+                    if (!!elements_1_1.done) return [3 /*break*/, 6];
                     item = elements_1_1.value;
                     this._logger.verbose("processing element: %j", item);
                     result = {
@@ -661,45 +667,53 @@ var MangaHereParser = /** @class */ (function () {
                     this._logger.debug("processed with: %o", result);
                     this._logger.verbose("element %j converted to %o", result);
                     return [4 /*yield*/, result];
-                case 3:
-                    _b.sent();
-                    _b.label = 4;
                 case 4:
+                    _b.sent();
+                    _b.label = 5;
+                case 5:
                     elements_1_1 = elements_1.next();
-                    return [3 /*break*/, 2];
-                case 5: return [3 /*break*/, 8];
-                case 6:
+                    return [3 /*break*/, 3];
+                case 6: return [3 /*break*/, 9];
+                case 7:
                     e_1_1 = _b.sent();
                     e_1 = { error: e_1_1 };
-                    return [3 /*break*/, 8];
-                case 7:
+                    return [3 /*break*/, 9];
+                case 8:
                     try {
                         if (elements_1_1 && !elements_1_1.done && (_a = elements_1.return)) _a.call(elements_1);
                     }
                     finally { if (e_1) throw e_1.error; }
                     return [7 /*endfinally*/];
-                case 8: return [2 /*return*/];
+                case 9: return [3 /*break*/, 11];
+                case 10:
+                    e_2 = _b.sent();
+                    this._logger.error("Parsing mangas exception:\n%o\nurl:%s", e_2, uri);
+                    throw e_2;
+                case 11: return [2 /*return*/];
             }
         });
     };
     MangaHereParser.prototype.latest = function (mangaRequest) {
-        var $, uri, html, elements, elements_2, elements_2_1, item, divChildren, aManga, mangaSrc, mangaName, date, dts, dts_1, dts_1_1, dt, a, src, title, chapNumber, result, e_2_1, e_3_1, e_3, _a, e_2, _b;
+        var $, uri, html, elements, elements_2, elements_2_1, item, divChildren, aManga, mangaSrc, mangaName, date, dts, dts_1, dts_1_1, dt, a, src, title, chapNumber, result, e_3_1, e_4_1, e_5, e_4, _a, e_3, _b;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
                     $ = mangaRequest.$, uri = mangaRequest.uri, html = mangaRequest.html;
                     this._logger.debug("parsing latest:\n\turl:%s", uri);
                     this._logger.verbose("parsing latest:\n\turl:%s\n\thtml:\n%s", uri, html);
+                    _c.label = 1;
+                case 1:
+                    _c.trys.push([1, 16, , 17]);
                     elements = $(".manga_updates > dl").toArray();
                     this._logger.debug("processing %d elements", elements.length);
                     this._logger.verbose("processing elements:\n%j", elements);
-                    _c.label = 1;
-                case 1:
-                    _c.trys.push([1, 12, 13, 14]);
-                    elements_2 = __values(elements), elements_2_1 = elements_2.next();
                     _c.label = 2;
                 case 2:
-                    if (!!elements_2_1.done) return [3 /*break*/, 11];
+                    _c.trys.push([2, 13, 14, 15]);
+                    elements_2 = __values(elements), elements_2_1 = elements_2.next();
+                    _c.label = 3;
+                case 3:
+                    if (!!elements_2_1.done) return [3 /*break*/, 12];
                     item = elements_2_1.value;
                     this._logger.verbose("processing element: %j", item);
                     divChildren = sanitizeChildren(item.children);
@@ -710,13 +724,13 @@ var MangaHereParser = /** @class */ (function () {
                     dts = sanitizeChildren(divChildren.slice(1));
                     this._logger.debug("found [%s] with [%d] chapters", mangaName, dts.length);
                     this._logger.verbose("found [%s] with [%d] chapters", mangaName, dts.length);
-                    _c.label = 3;
-                case 3:
-                    _c.trys.push([3, 8, 9, 10]);
-                    dts_1 = __values(dts), dts_1_1 = dts_1.next();
                     _c.label = 4;
                 case 4:
-                    if (!!dts_1_1.done) return [3 /*break*/, 7];
+                    _c.trys.push([4, 9, 10, 11]);
+                    dts_1 = __values(dts), dts_1_1 = dts_1.next();
+                    _c.label = 5;
+                case 5:
+                    if (!!dts_1_1.done) return [3 /*break*/, 8];
                     dt = dts_1_1.value;
                     this._logger.verbose("processing child element: %j", dt);
                     a = dt.children.find(function (x) { return x.name === "a"; });
@@ -733,38 +747,43 @@ var MangaHereParser = /** @class */ (function () {
                     this._logger.debug("processed [%s] with: %o", mangaName, result);
                     this._logger.verbose("element %j converted to %o", dt, result);
                     return [4 /*yield*/, result];
-                case 5:
-                    _c.sent();
-                    _c.label = 6;
                 case 6:
+                    _c.sent();
+                    _c.label = 7;
+                case 7:
                     dts_1_1 = dts_1.next();
-                    return [3 /*break*/, 4];
-                case 7: return [3 /*break*/, 10];
-                case 8:
-                    e_2_1 = _c.sent();
-                    e_2 = { error: e_2_1 };
-                    return [3 /*break*/, 10];
+                    return [3 /*break*/, 5];
+                case 8: return [3 /*break*/, 11];
                 case 9:
+                    e_3_1 = _c.sent();
+                    e_3 = { error: e_3_1 };
+                    return [3 /*break*/, 11];
+                case 10:
                     try {
                         if (dts_1_1 && !dts_1_1.done && (_b = dts_1.return)) _b.call(dts_1);
                     }
-                    finally { if (e_2) throw e_2.error; }
+                    finally { if (e_3) throw e_3.error; }
                     return [7 /*endfinally*/];
-                case 10:
+                case 11:
                     elements_2_1 = elements_2.next();
-                    return [3 /*break*/, 2];
-                case 11: return [3 /*break*/, 14];
-                case 12:
-                    e_3_1 = _c.sent();
-                    e_3 = { error: e_3_1 };
-                    return [3 /*break*/, 14];
+                    return [3 /*break*/, 3];
+                case 12: return [3 /*break*/, 15];
                 case 13:
+                    e_4_1 = _c.sent();
+                    e_4 = { error: e_4_1 };
+                    return [3 /*break*/, 15];
+                case 14:
                     try {
                         if (elements_2_1 && !elements_2_1.done && (_a = elements_2.return)) _a.call(elements_2);
                     }
-                    finally { if (e_3) throw e_3.error; }
+                    finally { if (e_4) throw e_4.error; }
                     return [7 /*endfinally*/];
-                case 14: return [2 /*return*/];
+                case 15: return [3 /*break*/, 17];
+                case 16:
+                    e_5 = _c.sent();
+                    this._logger.error("Parsing latest exception:\n%o\nurl:%s", e_5, uri);
+                    throw e_5;
+                case 17: return [2 /*return*/];
             }
         });
     };
@@ -773,51 +792,68 @@ var MangaHereParser = /** @class */ (function () {
         var $ = mangaRequest.$, uri = mangaRequest.uri, html = mangaRequest.html;
         this._logger.debug("parsing manga:\n\turl:%s", uri);
         this._logger.verbose("parsing manga:\n\turl:%s\n\thtml:\n%s", uri, html);
-        var image = $("img.img").attr("src");
-        var title = $("div.title > h3").text().slice(5, -7);
-        var li = $(".detail_topText > li").toArray();
-        var synonyms = li[2].lastChild.nodeValue.split("; ").map(resolveSynonym);
-        var genres = li[3].lastChild.nodeValue.split(", ").map(function (x) { return _this._genreSite.fromSiteGenre(x); });
-        var authors = li[4].children.filter(function (x) { return x.name === "a"; }).map(function (x) { return x.lastChild.nodeValue; });
-        var artists = li[5].children.filter(function (x) { return x.name === "a"; }).map(function (x) { return x.lastChild.nodeValue; });
-        var status = li[6].children[0].next.nodeValue.trim() === "Ongoing"
-            ? exports.FilterStatus.Ongoing
-            : exports.FilterStatus.Complete;
-        var synopsis = li.reverse()[0].children.reverse().find(function (x) { return x.name === "p"; }).children[0].nodeValue;
-        var licensed = $("#main > article > div > div.manga_detail > div.detail_list > div > strong").length > 0;
-        var result = {
-            image: image,
-            title: title,
-            synonyms: synonyms,
-            authors: authors,
-            artists: artists,
-            genres: genres,
-            synopsis: synopsis,
-            status: status,
-            licensed: licensed
-        };
-        this._logger.debug("processed with: %o", result);
-        this._logger.verbose("element %j converted to %o", result);
-        return result;
+        try {
+            var image = $("img.img").attr("src");
+            var title = $("div.title > h3").text().slice(5, -7);
+            var li = $(".detail_topText > li").toArray();
+            var synonymsChildren = li[2].children;
+            var encriptedSynonym = "";
+            // mangahere encripts 'email' like strings;
+            if (synonymsChildren.length > 2) {
+                var emailA = synonymsChildren[2];
+                encriptedSynonym = testEmail(emailA.attribs["data-cfemail"]);
+            }
+            var synonymCsv = synonymsChildren[1].nodeValue + encriptedSynonym;
+            var synonyms = synonymCsv.split("; ").map(resolveSynonym);
+            var genres = li[3].lastChild.nodeValue.split(", ").map(function (x) { return _this._genreSite.fromSiteGenre(x); });
+            var authors = li[4].children.filter(function (x) { return x.name === "a"; }).filter(function (x) { return !!x.lastChild; }).map(function (x) { return x.lastChild.nodeValue; });
+            var artists = li[5].children.filter(function (x) { return x.name === "a"; }).filter(function (x) { return !!x.lastChild; }).map(function (x) { return x.lastChild.nodeValue; });
+            var status = li[6].children[0].next.nodeValue.trim() === "Ongoing"
+                ? exports.FilterStatus.Ongoing
+                : exports.FilterStatus.Complete;
+            var synopsis = li.reverse()[0].children.reverse().find(function (x) { return x.name === "p"; }).children[0].nodeValue;
+            var licensed = $("#main > article > div > div.manga_detail > div.detail_list > div > strong").length > 0;
+            var result = {
+                image: image,
+                title: title,
+                synonyms: synonyms,
+                authors: authors,
+                artists: artists,
+                genres: genres,
+                synopsis: synopsis,
+                status: status,
+                licensed: licensed
+            };
+            this._logger.debug("processed with: %o", result);
+            this._logger.verbose("element %j converted to %o", result);
+            return result;
+        }
+        catch (e) {
+            this._logger.error("Parsing info exception:\n%o\nurl:%s", e, uri);
+            throw e;
+        }
     };
     MangaHereParser.prototype.chapters = function (mangaRequest) {
-        var $, uri, html, elements, elements_3, elements_3_1, item, span, li, liChildren, a, date, aText, name, href, chap_number, result, e_4_1, e_4, _a;
+        var $, uri, html, elements, elements_3, elements_3_1, item, span, li, liChildren, a, date, aText, name, href, chap_number, result, e_6_1, e_7, e_6, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     $ = mangaRequest.$, uri = mangaRequest.uri, html = mangaRequest.html;
                     this._logger.debug("parsing chapter:\n\turl:%s", uri);
                     this._logger.verbose("parsing chapter:\n\turl:%s\n\thtml:\n%s", uri, html);
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 10, , 11]);
                     elements = $("span.left > a").toArray();
                     this._logger.debug("processing %d elements", elements.length);
                     this._logger.verbose("processing elements:\n%j", elements);
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 6, 7, 8]);
-                    elements_3 = __values(elements), elements_3_1 = elements_3.next();
                     _b.label = 2;
                 case 2:
-                    if (!!elements_3_1.done) return [3 /*break*/, 5];
+                    _b.trys.push([2, 7, 8, 9]);
+                    elements_3 = __values(elements), elements_3_1 = elements_3.next();
+                    _b.label = 3;
+                case 3:
+                    if (!!elements_3_1.done) return [3 /*break*/, 6];
                     item = elements_3_1.value;
                     this._logger.verbose("processing element: %j", item);
                     span = item.parent;
@@ -838,35 +874,43 @@ var MangaHereParser = /** @class */ (function () {
                     this._logger.debug("processed with: %o", result);
                     this._logger.verbose("element %j converted to %o", item, result);
                     return [4 /*yield*/, result];
-                case 3:
-                    _b.sent();
-                    _b.label = 4;
                 case 4:
+                    _b.sent();
+                    _b.label = 5;
+                case 5:
                     elements_3_1 = elements_3.next();
-                    return [3 /*break*/, 2];
-                case 5: return [3 /*break*/, 8];
-                case 6:
-                    e_4_1 = _b.sent();
-                    e_4 = { error: e_4_1 };
-                    return [3 /*break*/, 8];
+                    return [3 /*break*/, 3];
+                case 6: return [3 /*break*/, 9];
                 case 7:
+                    e_6_1 = _b.sent();
+                    e_6 = { error: e_6_1 };
+                    return [3 /*break*/, 9];
+                case 8:
                     try {
                         if (elements_3_1 && !elements_3_1.done && (_a = elements_3.return)) _a.call(elements_3);
                     }
-                    finally { if (e_4) throw e_4.error; }
+                    finally { if (e_6) throw e_6.error; }
                     return [7 /*endfinally*/];
-                case 8: return [2 /*return*/];
+                case 9: return [3 /*break*/, 11];
+                case 10:
+                    e_7 = _b.sent();
+                    this._logger.error("Parsing chapters exception:\n%o\nurl:%s", e_7, uri);
+                    throw e_7;
+                case 11: return [2 /*return*/];
             }
         });
     };
     MangaHereParser.prototype.imagesPaths = function (mangaRequest) {
-        var $, uri, html, licensed, elements, elements_4, elements_4_1, item, src, name, result, e_5_1, e_5, _a;
+        var $, uri, html, licensed, elements, elements_4, elements_4_1, item, src, name, result, e_8_1, e_9, e_8, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     $ = mangaRequest.$, uri = mangaRequest.uri, html = mangaRequest.html;
                     this._logger.debug("parsing images paths:\n\turl:%s", uri);
                     this._logger.verbose("parsing images paths:\n\turl:%s\n\thtml:\n%s", uri, html);
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 10, , 11]);
                     licensed = $("body > section > div.mangaread_error > div.mt10.color_ff00.mb10.center > strong").text();
                     if (licensed) {
                         this._logger.debug("Is licensed %s", licensed);
@@ -876,13 +920,13 @@ var MangaHereParser = /** @class */ (function () {
                     elements = $("body > section.readpage_top > div.go_page.clearfix > span > select > option").toArray();
                     this._logger.debug("processing %d elements", elements.length);
                     this._logger.verbose("processing elements:\n%j", elements);
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 6, 7, 8]);
-                    elements_4 = __values(elements), elements_4_1 = elements_4.next();
                     _b.label = 2;
                 case 2:
-                    if (!!elements_4_1.done) return [3 /*break*/, 5];
+                    _b.trys.push([2, 7, 8, 9]);
+                    elements_4 = __values(elements), elements_4_1 = elements_4.next();
+                    _b.label = 3;
+                case 3:
+                    if (!!elements_4_1.done) return [3 /*break*/, 6];
                     item = elements_4_1.value;
                     this._logger.verbose("processing element: %j", item);
                     src = item.attribs.value;
@@ -891,30 +935,35 @@ var MangaHereParser = /** @class */ (function () {
                     if (name === "Featured") {
                         this._logger.debug("skipping [Feature] because is an Ad");
                         this._logger.verbose("skipping [Feature] because is an Ad");
-                        return [3 /*break*/, 4];
+                        return [3 /*break*/, 5];
                     }
                     result = { src: src, name: name };
                     this._logger.debug("processed with: %o", result);
                     this._logger.verbose("element %j converted to %o", item, result);
                     return [4 /*yield*/, result];
-                case 3:
-                    _b.sent();
-                    _b.label = 4;
                 case 4:
+                    _b.sent();
+                    _b.label = 5;
+                case 5:
                     elements_4_1 = elements_4.next();
-                    return [3 /*break*/, 2];
-                case 5: return [3 /*break*/, 8];
-                case 6:
-                    e_5_1 = _b.sent();
-                    e_5 = { error: e_5_1 };
-                    return [3 /*break*/, 8];
+                    return [3 /*break*/, 3];
+                case 6: return [3 /*break*/, 9];
                 case 7:
+                    e_8_1 = _b.sent();
+                    e_8 = { error: e_8_1 };
+                    return [3 /*break*/, 9];
+                case 8:
                     try {
                         if (elements_4_1 && !elements_4_1.done && (_a = elements_4.return)) _a.call(elements_4);
                     }
-                    finally { if (e_5) throw e_5.error; }
+                    finally { if (e_8) throw e_8.error; }
                     return [7 /*endfinally*/];
-                case 8: return [2 /*return*/];
+                case 9: return [3 /*break*/, 11];
+                case 10:
+                    e_9 = _b.sent();
+                    this._logger.error("Parsing images exception:\n%o\nurl:%s", e_9, uri);
+                    throw e_9;
+                case 11: return [2 /*return*/];
             }
         });
     };
@@ -922,47 +971,59 @@ var MangaHereParser = /** @class */ (function () {
         var uri = mangaRequest.uri, html = mangaRequest.html;
         this._logger.debug("parsing image:\n\turl:%s", uri);
         this._logger.verbose("parsing image:\n\turl:%s\n\thtml:\n%s", uri, html);
-        var match = html.match(/(?:src=")([^"]*)(?:.*id="image")/m);
-        if (!match) {
-            this._logger.debug("Image not found, please check if the url is correct and if it works on your browser.");
-            this._logger.verbose("Image not found, please check if the url is correct and if it works on your browser.");
-            throw ImageNotFoundError(this._config.name, uri, "ADB0");
+        try {
+            var match = html.match(/(?:src=")([^"]*)(?:.*id="image")/m);
+            if (!match) {
+                this._logger.debug("Image not found, please check if the url is correct and if it works on your browser.");
+                this._logger.verbose("Image not found, please check if the url is correct and if it works on your browser.");
+                throw ImageNotFoundError(this._config.name, uri, "ADB0");
+            }
+            var result = match[1];
+            this._logger.debug("resolved with: %o", result);
+            this._logger.verbose("resolved with: %o", result);
+            return result;
         }
-        var result = match[1];
-        this._logger.debug("resolved with: %o", result);
-        this._logger.verbose("resolved with: %o", result);
-        return result;
+        catch (e) {
+            this._logger.error("Parsing image exception:\n%o\nurl:%s", e, uri);
+            throw e;
+        }
     };
     MangaHereParser.prototype.filterPage = function (mangaRequest) {
         var $ = mangaRequest.$, uri = mangaRequest.uri, html = mangaRequest.html;
         this._logger.debug("get filter current page:\n\turl:%s", uri);
         this._logger.verbose("get filter current page:\n\turl:%s\n\thtml:\n%s", uri, html);
-        var page = 1;
-        var query = url.parse(uri).query;
-        if (query) {
-            this._logger.verbose("using query to retrieve current page", uri, html);
-            var m = query.toString().match(/(?:page=)(\d+)/);
-            if (m) {
-                this._logger.verbose("page found in query with value %s", m[0]);
-                this._logger.verbose("setting page to [%s] with %d", m[1], m[1]);
-                page = +m[1];
+        try {
+            var page = 1;
+            var query = url.parse(uri).query;
+            if (query) {
+                this._logger.verbose("using query to retrieve current page", uri, html);
+                var m = query.toString().match(/(?:page=)(\d+)/);
+                if (m) {
+                    this._logger.verbose("page found in query with value %s", m[0]);
+                    this._logger.verbose("setting page to [%s] with %d", m[1], m[1]);
+                    page = +m[1];
+                }
             }
+            else {
+                this._logger.verbose("query not found setting page to 1");
+            }
+            var lastPageElement = $("div.next-page > a").slice(-2, -1);
+            this._logger.verbose("resolved last element %j", lastPageElement);
+            var lastPage = lastPageElement && lastPageElement[0]
+                ? +lastPageElement.text()
+                : 1;
+            var result = {
+                page: page,
+                total: lastPage
+            };
+            this._logger.debug("resolved with: %o", result);
+            this._logger.verbose("resolved with: %o", result);
+            return result;
         }
-        else {
-            this._logger.verbose("query not found setting page to 1");
+        catch (e) {
+            this._logger.error("Parsing filter page exception:\n%o\nurl:%s", e, uri);
+            throw e;
         }
-        var lastPageElement = $("div.next-page > a").slice(-2, -1);
-        this._logger.verbose("resolved last element %j", lastPageElement);
-        var lastPage = lastPageElement && lastPageElement[0]
-            ? +lastPageElement.text()
-            : 1;
-        var result = {
-            page: page,
-            total: lastPage
-        };
-        this._logger.debug("resolved with: %o", result);
-        this._logger.verbose("resolved with: %o", result);
-        return result;
     };
     return MangaHereParser;
 }());
@@ -982,6 +1043,84 @@ var resolveSynonym = function (dirtyTitle) {
         title: dirtyTitle,
         language: defaultLang,
     };
+};
+var testEmail = function (cfemail) {
+    /*!function() {
+        "use strict";
+           function t(e) {
+            return i.innerHTML = '<a href="' + e.replace(/"/g, "&quot;") + '"></a>',
+            i.childNodes[0].getAttribute("href") || ""
+        }
+        function r(e, t) {
+            var r = e.substr(t, 2);
+            return parseInt(r, 16)
+        }
+        function n(n, o) {
+            for (var c = "", a = r(n, o), i = o + 2; i < n.length; i += 2) {
+                var f = r(n, i) ^ a;
+                c += String.fromCharCode(f)
+            }
+            try {
+                c = decodeURIComponent(escape(c))
+            } catch (l) {
+                e(l)
+            }
+            return t(c)
+        }
+        var o = "/cdn-cgi/l/email-protection#"
+            , c = ".__cf_email__"
+            , a = "data-cfemail"
+            , i = document.createElement("div");
+        !function() {
+            for (var t = document.getElementsByTagName("a"), r = 0; r < t.length; r++)
+                try {
+                    var c = t[r]
+                        , a = c.href.indexOf(o);
+                    a > -1 && (c.href = "mailto:" + n(c.href, a + o.length))
+                } catch (i) {
+                    e(i)
+                }
+        }(),
+            function() {
+                for (var t = document.querySelectorAll(c), r = 0; r < t.length; r++)
+                    try {
+                        var o = t[r]
+                            , i = o.parentNode
+                            , f = o.getAttribute(a);
+                        if (f) {
+                            var l = n(f, 0)
+                                , u = document.createTextNode(l);
+                            i.replaceChild(u, o)
+                        }
+                    } catch (d) {
+                        e(d)
+                    }
+            }()
+    }();*/
+    function r(e, t) {
+        var r = e.substr(t, 2);
+        return parseInt(r, 16);
+    }
+    function n(n, o) {
+        for (var c = "", a = r(n, o), i = o + 2; i < n.length; i += 2) {
+            var f = r(n, i) ^ a;
+            c += String.fromCharCode(f);
+        }
+        try {
+            c = decodeURIComponent(escape(c));
+        }
+        catch (l) {
+            console.log(l);
+        }
+        return t(c);
+    }
+    function t(e) {
+        return e;
+    }
+    var p = function (cfemail) {
+        return n(cfemail, 0);
+    };
+    return p(cfemail);
 };
 
 var MangaHereBuilder = /** @class */ (function () {

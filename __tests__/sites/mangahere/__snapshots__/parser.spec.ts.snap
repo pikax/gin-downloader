@@ -81696,6 +81696,38 @@ Object {
 }
 `;
 
+exports[`mangahere parser offline should parse D@ys of Jupiter - The Idolm@ster info (email like synonym) 1`] = `
+Object {
+  "artists": Array [
+    "Asa Natsumi",
+  ],
+  "authors": Array [
+    "Asa Natsumi",
+  ],
+  "genres": Array [
+    "Comedy",
+    "Shoujo",
+    "Slice of Life",
+  ],
+  "image": "https://mangatown.secure.footprint.net/store/manga/11679/cover.jpg?token=b9a2b656a63d57720ccf82ed7f50cb594d55ac00&ttl=1524564000&v=1493075831",
+  "licensed": false,
+  "status": "Ongoing",
+  "synonyms": Array [
+    Object {
+      "language": "",
+      "title": "D@ys of Jupiter",
+    },
+    Object {
+      "language": "",
+      "title": "D@ys of Jupiter ~The Idolm@ster~",
+    },
+  ],
+  "synopsis": "From Red Scarlet Dots:
+                            In an era of competitive Idols, there's one idol group that gazes over all of them, overwhelming the masses and leading the idol world, the incarnation of Zeus himself… “Jupiter”. ",
+  "title": "D@ys of Jupiter - The Idolm@ster Manga Summary: From Red Scarlet Dots: In an era of competitive Idols, there's one idol group that gazes over all of them, overwhelming the masses and leading the idol world, the incarnation of Zeus himself… “Jupiter”.",
+}
+`;
+
 exports[`mangahere parser offline should parse Gintama chapters 1`] = `
 Array [
   Object {
