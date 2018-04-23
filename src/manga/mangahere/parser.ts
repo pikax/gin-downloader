@@ -59,7 +59,7 @@ export class MangaHereParser implements IMangaParser {
                 yield result;
             }
         } catch (e) {
-            this._logger.error("Exception:\n%o\nurl:%s\nhtml:%s", e, uri, html);
+            this._logger.error("Parsing mangas exception:\n%o\nurl:%s", e, uri);
 
             throw e;
         }
@@ -118,7 +118,7 @@ export class MangaHereParser implements IMangaParser {
                 }
             }
         } catch (e) {
-            this._logger.error("Exception:\n%o\nurl:%s\nhtml:%s", e, uri, html);
+            this._logger.error("Parsing latest exception:\n%o\nurl:%s", e, uri);
 
             throw e;
         }
@@ -155,8 +155,8 @@ export class MangaHereParser implements IMangaParser {
 
             const genres = li[3].lastChild.nodeValue.split(", ").map(x => this._genreSite.fromSiteGenre(x));
 
-            const authors = li[4].children.filter(x => x.name === "a").map(x => x.lastChild.nodeValue);
-            const artists = li[5].children.filter(x => x.name === "a").map(x => x.lastChild.nodeValue);
+            const authors = li[4].children.filter(x => x.name === "a").filter(x => !!x.lastChild).map(x => x.lastChild.nodeValue);
+            const artists = li[5].children.filter(x => x.name === "a").filter(x => !!x.lastChild).map(x => x.lastChild.nodeValue);
 
             const status = li[6].children[0].next.nodeValue.trim() === "Ongoing"
                 ? FilterStatus.Ongoing
@@ -184,7 +184,7 @@ export class MangaHereParser implements IMangaParser {
             this._logger.verbose("element %j converted to %o", result);
             return result;
         } catch (e) {
-            this._logger.error("Exception:\n%o\nurl:%s\nhtml:%s", e, uri, html);
+            this._logger.error("Parsing info exception:\n%o\nurl:%s", e, uri);
 
             throw e;
         }
@@ -231,7 +231,7 @@ export class MangaHereParser implements IMangaParser {
                 yield result;
             }
         } catch (e) {
-            this._logger.error("Exception:\n%o\nurl:%s\nhtml:%s", e, uri, html);
+            this._logger.error("Parsing chapters exception:\n%o\nurl:%s", e, uri);
 
             throw e;
         }
@@ -278,7 +278,7 @@ export class MangaHereParser implements IMangaParser {
                 yield result;
             }
         } catch (e) {
-            this._logger.error("Exception:\n%o\nurl:%s\nhtml:%s", e, uri, html);
+            this._logger.error("Parsing images exception:\n%o\nurl:%s", e, uri);
 
             throw e;
         }
@@ -303,7 +303,7 @@ export class MangaHereParser implements IMangaParser {
             this._logger.verbose("resolved with: %o", result);
             return result;
         } catch (e) {
-            this._logger.error("Exception:\n%o\nurl:%s\nhtml:%s", e, uri, html);
+            this._logger.error("Parsing image exception:\n%o\nurl:%s", e, uri);
 
             throw e;
         }
@@ -351,7 +351,7 @@ export class MangaHereParser implements IMangaParser {
 
             return result;
         } catch (e) {
-            this._logger.error("Exception:\n%o\nurl:%s\nhtml:%s", e, uri, html);
+            this._logger.error("Parsing filter page exception:\n%o\nurl:%s", e, uri);
 
             throw e;
         }
