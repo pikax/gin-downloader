@@ -92,6 +92,10 @@ export class MangaHereGenre implements IGenreSite {
     }
 
     fromSiteGenre(genre: string): Genre {
+        if (genre === "Slice Of Life") {
+            genre = Genre.SliceOfLife;
+        }
+
         return this._site[genre];
     }
 
