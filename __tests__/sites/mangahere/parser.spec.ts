@@ -181,7 +181,20 @@ describe("mangahere parser", () => {
             expect(pg).toMatchSnapshot();
         });
 
+
+        it("should parse Wild Damon info", () => {
+            const html = provider.getFile("wild_damon.html");
+
+            const uri = "https://www.mangahere.cc/manga/wild_damon/";
+            const result = new MangaRequestResult(uri, html);
+
+            const pg = parser.info(result);
+            expect(pg).toMatchSnapshot();
+        });
+
+
     });
+
 
 });
 

@@ -85867,4 +85867,53 @@ Object {
 }
 `;
 
+exports[`mangahere parser offline should parse Wild Damon info 1`] = `
+Object {
+  "artists": Array [
+    "Andou Natsumi",
+  ],
+  "authors": Array [
+    "Andou Natsumi",
+  ],
+  "genres": Array [
+    "Comedy",
+    "Romance",
+    "Shoujo",
+  ],
+  "image": "https://mangatown.secure.footprint.net/store/manga/1039/cover.jpg?token=ba5dd3834c1aaa782a8336742f00a0931d447926&ttl=1524556800&v=1335581450",
+  "licensed": false,
+  "status": "Complete",
+  "synonyms": Array [
+    Object {
+      "language": "",
+      "title": "ワイルドだもん",
+    },
+    Object {
+      "language": "",
+      "title": "My Barbaric Boyfriend",
+    },
+    Object {
+      "language": "English",
+      "title": "Wild: My Prehistoric Protector",
+    },
+    Object {
+      "language": "",
+      "title": "Min barbariske kjæreste",
+    },
+    Object {
+      "language": "Norwegian",
+      "title": "Ville Damon",
+    },
+    Object {
+      "language": "",
+      "title": "Wild@Heart",
+    },
+  ],
+  "synopsis": "From Nagareboshi Manga:
+                            A girl's life is going to change because of her father who is an explorer. He found a boy living in a jungle and took him home. Now she has to take care of him and guide him as he tries to adapt to the city life.
+                            Read this manga from right to left ",
+  "title": "Wild Damon",
+}
+`;
+
 exports[`mangahere parser offline should throw licence error when getting imagePaths 1`] = `"MangaHere has 'One Piece' licenced."`;
