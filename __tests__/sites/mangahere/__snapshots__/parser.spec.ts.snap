@@ -81658,6 +81658,44 @@ Object {
 
 exports[`mangahere parser offline should not get image from one piece chapter 1`] = `"Image not found: ADB0"`;
 
+exports[`mangahere parser offline should parse D.Gray-man DJ (invalid csv artists) 1`] = `
+Object {
+  "artists": Array [
+    "Abarenbou Machi (hisamatsu Yunomi)",
+    "Air (sanada Kazufumi)",
+    "Akano 65",
+    "Akoyagai To Aumale Ebi (ooki Bonta)",
+    "Am (nanaka Amu)",
+    "Anachrojet (saika Mitsuro)",
+  ],
+  "authors": Array [
+    "Abarenbou Machi (hisamatsu Yunomi)",
+    "Air (sanada Kazufumi)",
+    "Akano 65",
+    "Akoyagai To Aumale Ebi (ooki Bonta)",
+    "Am (nanaka Amu)",
+    "Anachrojet (saika Mitsuro)",
+  ],
+  "genres": Array [
+    "Comedy",
+    "Doujinshi",
+    "Shounen Ai",
+    "Yaoi",
+  ],
+  "image": "https://mangatown.secure.footprint.net/store/manga/25245/cover.jpg?token=167adc522f7c88445a51af8642c781df11ed81f5&ttl=1524560400&v=1484374343",
+  "licensed": false,
+  "status": "Ongoing",
+  "synonyms": Array [
+    Object {
+      "language": "",
+      "title": "D.Gray-man dj - ファントムグレイ",
+    },
+  ],
+  "synopsis": "Pairings: Kanda x Allen, Allen x Kanda ",
+  "title": "D.Gray-man dj - Phantom Gray",
+}
+`;
+
 exports[`mangahere parser offline should parse Gintama chapters 1`] = `
 Array [
   Object {
@@ -85867,7 +85905,7 @@ Object {
 }
 `;
 
-exports[`mangahere parser offline should parse Wild Damon info 1`] = `
+exports[`mangahere parser offline should parse Wild Damon info (email like synonym) 1`] = `
 Object {
   "artists": Array [
     "Andou Natsumi",

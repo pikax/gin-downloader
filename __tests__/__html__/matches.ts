@@ -6,6 +6,9 @@ export const FileMatches: { [id: string]: RegExp } = {
     "mangahere/gintama_search.html" : /www\.mangahere\.cc\/search\.php\?.*name=gintama/,
 
     "mangahere/wild_damon.html" : /www\.mangahere\.cc\/manga\/wild_damon\//,
+    "mangahere/dgray_man_dj.html" : /www\.mangahere\.cc\/manga\/d_gray_man_dj_phantom_gray\//,
+
+
 
 };
 
@@ -18,6 +21,7 @@ export const HtmlToFile: { [id: string]: string } = {
 
 
     "https://www.mangahere.cc/manga/wild_damon/": "mangahere/wild_damon.html",
+    "https://www.mangahere.cc/manga/d_gray_man_dj_phantom_gray/" : "mangahere/dgray_man_dj.html",
 
 
 
