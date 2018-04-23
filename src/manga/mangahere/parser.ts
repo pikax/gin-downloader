@@ -133,13 +133,15 @@ export class MangaHereParser implements IMangaParser {
 
         try {
             const image = $("img.img").attr("src");
-            const title = $("div.title > h3").text().slice(5, -7);
+            const title = sanitizeText($("div.title > h3").get()[0]).slice(5, -7);
+            // const title = $("div.title > h3").text().slice(5, -7);
 
             const li: CheerioElement[] = $(".detail_topText > li").toArray();
 
             const synonymsChildren = li[2].children.slice(1);
 
-            const synonymCsv = synonymsChildren.map(x => x.nodeValue || (x.attribs["data-cfemail"] && testEmail(x.attribs["data-cfemail"])) || "").join("");
+            // const synonymCsv = synonymsChildren.map(x => x.nodeValue || (x.attribs["data-cfemail"] && testEmail(x.attribs["data-cfemail"])) || "").join("");
+            const synonymCsv = synonymsChildren.map(sanitizeText).join("");
             const synonyms: Synonym[] = synonymCsv.split("; ").map(resolveSynonym);
 
             const genres = li[3].lastChild.nodeValue.split(", ").map(x => this._genreSite.fromSiteGenre(x));
@@ -203,7 +205,7 @@ export class MangaHereParser implements IMangaParser {
 
                 const date = liChildren[liChildren.length - 1].lastChild.nodeValue;
                 const aText = a.lastChild.nodeValue.trim(); // chapter number
-                const name = (span && span.lastChild.nodeValue) || aText; // does it has a name or we use the chapter number
+                const name = sanitizeText(span) || aText; // does it has a name or we use the chapter number
                 const href = a.attribs.href;
 
                 const chap_number = aText.lastDigit().toString();
@@ -369,6 +371,27 @@ const resolveSynonym = (dirtyTitle: string): Synonym => {
 };
 
 
+const sanitizeText = (element: CheerioElement) => {
+    if(!element){
+        return null;
+    }
+
+    if (element.nodeValue) {
+        return element.nodeValue;
+    }
+
+    const cfemail = element.attribs["data-cfemail"];
+    if (cfemail) {
+        return testEmail(cfemail);
+    }
+
+    if (!element.children) {
+        return null;
+    }
+
+    return element.children.map(sanitizeText).join("");
+};
+
 const testEmail = (cfemail) => {
 
     /*!function() {
@@ -452,4 +475,6 @@ const testEmail = (cfemail) => {
 
     return p(cfemail);
 };
+
+
 
