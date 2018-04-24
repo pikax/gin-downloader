@@ -86118,6 +86118,30 @@ Object {
 }
 `;
 
+exports[`mangahere parser offline should parse Rec Mizu Asato info (no synonyms) 1`] = `
+Object {
+  "artists": Array [
+    "Milmake Orange",
+    "Mizu Asato",
+  ],
+  "authors": Array [
+    "Milmake Orange",
+    "Mizu Asato",
+  ],
+  "genres": Array [
+    "Doujinshi",
+    "Drama",
+    "Oneshot",
+  ],
+  "image": "https://mangatown.secure.footprint.net/store/manga/14891/cover.jpg?token=5074c43a33c7b4989ae8a066944e3930ea359bcf&ttl=1524636000&v=1403683509",
+  "licensed": false,
+  "status": "Complete",
+  "synonyms": Array [],
+  "synopsis": "A middle-aged man and a young school girl are sitting next to each other on a bed. The man puts his arm around her and whispers something in her ear to make her look into the camera in front of them. What kind of scene will this camera record? ",
+  "title": "●REC (Mizu Asato)",
+}
+`;
+
 exports[`mangahere parser offline should parse Wild Damon info (email like synonym) 1`] = `
 Object {
   "artists": Array [

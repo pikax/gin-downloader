@@ -140,9 +140,14 @@ export class MangaHereParser implements IMangaParser {
 
             const synonymsChildren = li[2].children.slice(1);
 
-            // const synonymCsv = synonymsChildren.map(x => x.nodeValue || (x.attribs["data-cfemail"] && testEmail(x.attribs["data-cfemail"])) || "").join("");
+            // const synonymCsv = synonymsChildren.map(x => x.nodeValue || (x.attribs["data-cfemail"] && decryptEmail(x.attribs["data-cfemail"])) || "").join("");
             const synonymCsv = synonymsChildren.map(sanitizeText).join("");
             const synonyms: Synonym[] = synonymCsv.split("; ").map(resolveSynonym);
+
+            if (synonyms.length === 1 && synonyms[0].title === "None") {
+                synonyms.splice(0);
+            }
+
 
             const genres = li[3].lastChild.nodeValue.split(", ").map(x => this._genreSite.fromSiteGenre(x));
 
@@ -389,7 +394,7 @@ const sanitizeText = (element: CheerioElement) => {
 
     const cfemail = element.attribs["data-cfemail"];
     if (cfemail) {
-        return testEmail(cfemail);
+        return decryptEmail(cfemail);
     }
 
     if (!element.children) {
@@ -399,60 +404,9 @@ const sanitizeText = (element: CheerioElement) => {
     return element.children.map(sanitizeText).join("");
 };
 
-const testEmail = (cfemail) => {
+const decryptEmail = (cfemail) => {
+    // www.mangahere.cc/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js
 
-    /*!function() {
-        "use strict";
-           function t(e) {
-            return i.innerHTML = '<a href="' + e.replace(/"/g, "&quot;") + '"></a>',
-            i.childNodes[0].getAttribute("href") || ""
-        }
-        function r(e, t) {
-            var r = e.substr(t, 2);
-            return parseInt(r, 16)
-        }
-        function n(n, o) {
-            for (var c = "", a = r(n, o), i = o + 2; i < n.length; i += 2) {
-                var f = r(n, i) ^ a;
-                c += String.fromCharCode(f)
-            }
-            try {
-                c = decodeURIComponent(escape(c))
-            } catch (l) {
-                e(l)
-            }
-            return t(c)
-        }
-        var o = "/cdn-cgi/l/email-protection#"
-            , c = ".__cf_email__"
-            , a = "data-cfemail"
-            , i = document.createElement("div");
-        !function() {
-            for (var t = document.getElementsByTagName("a"), r = 0; r < t.length; r++)
-                try {
-                    var c = t[r]
-                        , a = c.href.indexOf(o);
-                    a > -1 && (c.href = "mailto:" + n(c.href, a + o.length))
-                } catch (i) {
-                    e(i)
-                }
-        }(),
-            function() {
-                for (var t = document.querySelectorAll(c), r = 0; r < t.length; r++)
-                    try {
-                        var o = t[r]
-                            , i = o.parentNode
-                            , f = o.getAttribute(a);
-                        if (f) {
-                            var l = n(f, 0)
-                                , u = document.createTextNode(l);
-                            i.replaceChild(u, o)
-                        }
-                    } catch (d) {
-                        e(d)
-                    }
-            }()
-    }();*/
     function r(e, t) {
         var r = e.substr(t, 2);
         return parseInt(r, 16)
@@ -461,10 +415,10 @@ const testEmail = (cfemail) => {
     function n(n, o) {
         for (var c = "", a = r(n, o), i = o + 2; i < n.length; i += 2) {
             var f = r(n, i) ^ a;
-            c += String.fromCharCode(f)
+            c += String.fromCharCode(f);
         }
         try {
-            c = decodeURIComponent(escape(c))
+            c = decodeURIComponent(escape(c));
         } catch (l) {
             console.log(l);
         }

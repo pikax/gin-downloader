@@ -62,9 +62,22 @@ describe("mangahere parser", () => {
             // TODO MOCK MangaRequestResult
             const result = new MangaRequestResult("test", html);
 
-            const gintama = parser.info(result);
-            expect(gintama).toMatchSnapshot();
+            const psyren = parser.info(result);
+            expect(psyren).toMatchSnapshot();
         });
+
+        it("should parse Rec Mizu Asato info (no synonyms)", () => {
+            const html = provider.getFile("rec_mizu_asato.html");
+
+            // TODO MOCK MangaRequestResult
+            const result = new MangaRequestResult("https://www.mangahere.cc/manga/rec_mizu_asato/", html);
+
+            const rec = parser.info(result);
+            expect(rec).toMatchSnapshot();
+
+            expect(rec.synonyms).toHaveLength(0);
+        });
+
 
         it("should parse Gintama chapters", () => {
             const html = provider.getFile("gintama.html");

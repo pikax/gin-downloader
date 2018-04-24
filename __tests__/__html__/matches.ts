@@ -15,6 +15,9 @@ export const FileMatches: { [id: string]: RegExp } = {
 
     "mangahere/love_blog.html": /www\.mangahere\.cc\/manga\/love_blog\//,
 
+     "mangahere/rec_mizu_asato.html": /www\.mangahere\.cc\/manga\/rec_mizu_asato\//,
+
+
 
 };
 
@@ -33,7 +36,9 @@ export const HtmlToFile: { [id: string]: string } = {
 
     "https://www.mangahere.cc/manga/konbini_dmz/" : "mangahere/konbini_dmz.html",
 
-    "www.mangahere.cc/manga/love_blog/" : "mangahere/love_blog.html"
+    "https://www.mangahere.cc/manga/love_blog/" : "mangahere/love_blog.html",
+
+    "https://www.mangahere.cc/manga/rec_mizu_asato/" : "mangahere/rec_mizu_asato.html"
 
 };
 
