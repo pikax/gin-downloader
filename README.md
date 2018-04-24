@@ -10,6 +10,8 @@
 [![Discord](https://img.shields.io/badge/discord-chat-blue.svg)][discord]
 
 
+[changelog](#changelog)
+
 npm
 ``` bash
 npm install gin-downloader --save
@@ -372,6 +374,20 @@ ginDownloader.mangahere.filter("gintama")
 ```
 
 
+
+
+# Changelog
+All notable changes to this project will be documented in this file.
+
+## [2.0.0-beta.6] 2018-04-24
+- Fixes on mangahere parser
+- Added 'invalid' list of mangas for mangahere and filter them automatically (ex: [Dragon Ball Super][mangahereDBS])
+
+
+## [2.0.0-beta.5] 2018-04-22
+- Major code restruct
+- Add support to mangahere
+
 ## Disclaimer
 
 The developer of this application does not have any affiliation with the content providers provide.
@@ -384,3 +400,10 @@ The developer of this application does not have any affiliation with the content
 [dependencies]: https://david-dm.org/pikax/gin-downloader
 [devDependencies]: https://david-dm.org/pikax/gin-downloader?type=dev
 [snyk]: https://snyk.io/test/npm/gin-downloader
+
+
+
+
+
+[mangahereDBS]: https://www.mangahere.cc/manga/dragon_ball_super/
+
