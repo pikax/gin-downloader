@@ -49,7 +49,7 @@ export class MangaHereParser implements IMangaParser {
             for (const item of elements) {
                 this._logger.verbose("processing element: %j", item);
                 const result = {
-                    name: item.lastChild.nodeValue,
+                    name: sanitizeText(item),
                     src: url.resolve(this._config.site, item.attribs["href"]),
                 };
 

@@ -12,6 +12,7 @@ import {
 import {FilteredResults, MangaFilter, MangaSource} from "../../filter";
 import {MangaObject} from "../../manga";
 import {sanitizeFilter} from "../../util/filter";
+import {MangaHereMangaValidator} from "./invalid";
 
 
 const builder = new MangaHereBuilder();
@@ -30,7 +31,11 @@ export class MangaHere {
 
     private _di: IMangaDependencies;
     private _resolvers: IMangaResolvers;
+    private _mangaValidator: MangaHereMangaValidator;
 
+
+    // TODO expose this or change to ignore on dependency
+    private _useValidator = true;
 
     constructor(dependencies: MangaHereDependencies) {
         const di = builder.build(dependencies);
@@ -41,6 +46,10 @@ export class MangaHere {
         this._filter = di.filter;
         this._parser = di.parser;
         this._visitor = di.visitor;
+
+
+        // TODO change to di
+        this._mangaValidator = new MangaHereMangaValidator();
 
 
         this._resolvers = dependencies.resolverFactory.build(di);
@@ -57,11 +66,11 @@ export class MangaHere {
         const mangas = await Promise.all(pMangas);
 
 
-        // TODO this should return MangaObject!
         return mangas.reduce((c, v) => {
             c.push(...v);
             return c;
         }, [])
+            .filter((x, i) => this._mangaValidator.isValid(x.src))
             .map(this.buildManga)
             ;
     }
@@ -92,7 +101,9 @@ export class MangaHere {
 
         const response = await this._requestFactory.request({uri, qs: processed.params});
 
-        const mangas = Array.from(this._parser.mangas(response)).map(this.buildManga);
+        const mangas = Array.from(this._parser.mangas(response))
+            .filter(x => this._mangaValidator.isValid(x.src))
+            .map(this.buildManga);
         const filterResult = this._parser.filterPage(response);
 
 

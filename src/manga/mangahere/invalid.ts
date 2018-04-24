@@ -1,5 +1,3 @@
-
-
 // not found mangas
 const invalidMangas = [
     "www.mangahere.cc/manga/a_method_to_make_the_world_gentle/",
@@ -34,3 +32,15 @@ const invalidMangas = [
     "www.mangahere.cc/manga/tsukiatte_kudasai/",
     "www.mangahere.cc/manga/yagyu_jubei_dies/",
 ];
+
+
+const invalidSet = new Set(invalidMangas);
+
+
+export class MangaHereMangaValidator {
+    isValid(src: string) {
+        // TODO improve performance
+        return !invalidMangas.find(x => src.endsWith(x));
+    }
+}
+
