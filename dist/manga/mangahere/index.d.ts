@@ -12,6 +12,8 @@ export declare class MangaHere {
     private _visitor;
     private _di;
     private _resolvers;
+    private _mangaValidator;
+    private _useValidator;
     constructor(dependencies: MangaHereDependencies);
     mangas(): Promise<MangaObject[]>;
     latest(): Promise<IChapter[]>;

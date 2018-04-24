@@ -661,7 +661,7 @@ var MangaHereParser = /** @class */ (function () {
                     item = elements_1_1.value;
                     this._logger.verbose("processing element: %j", item);
                     result = {
-                        name: item.lastChild.nodeValue,
+                        name: sanitizeText(item),
                         src: url.resolve(this._config.site, item.attribs["href"]),
                     };
                     this._logger.debug("processed with: %o", result);
@@ -798,9 +798,12 @@ var MangaHereParser = /** @class */ (function () {
             // const title = $("div.title > h3").text().slice(5, -7);
             var li = $(".detail_topText > li").toArray();
             var synonymsChildren = li[2].children.slice(1);
-            // const synonymCsv = synonymsChildren.map(x => x.nodeValue || (x.attribs["data-cfemail"] && testEmail(x.attribs["data-cfemail"])) || "").join("");
+            // const synonymCsv = synonymsChildren.map(x => x.nodeValue || (x.attribs["data-cfemail"] && decryptEmail(x.attribs["data-cfemail"])) || "").join("");
             var synonymCsv = synonymsChildren.map(sanitizeText).join("");
             var synonyms = synonymCsv.split("; ").map(resolveSynonym);
+            if (synonyms.length === 1 && synonyms[0].title === "None") {
+                synonyms.splice(0);
+            }
             var genres = li[3].lastChild.nodeValue.split(", ").map(function (x) { return _this._genreSite.fromSiteGenre(x); });
             var authors = li[4].children.filter(function (x) { return x.name === "a"; }).filter(function (x) { return !!x.lastChild; }).map(function (x) { return x.lastChild.nodeValue; });
             var artists = li[5].children.filter(function (x) { return x.name === "a"; }).filter(function (x) { return !!x.lastChild; }).map(function (x) { return x.lastChild.nodeValue; });
@@ -1054,66 +1057,15 @@ var sanitizeText = function (element) {
     }
     var cfemail = element.attribs["data-cfemail"];
     if (cfemail) {
-        return testEmail(cfemail);
+        return decryptEmail(cfemail);
     }
     if (!element.children) {
         return null;
     }
     return element.children.map(sanitizeText).join("");
 };
-var testEmail = function (cfemail) {
-    /*!function() {
-        "use strict";
-           function t(e) {
-            return i.innerHTML = '<a href="' + e.replace(/"/g, "&quot;") + '"></a>',
-            i.childNodes[0].getAttribute("href") || ""
-        }
-        function r(e, t) {
-            var r = e.substr(t, 2);
-            return parseInt(r, 16)
-        }
-        function n(n, o) {
-            for (var c = "", a = r(n, o), i = o + 2; i < n.length; i += 2) {
-                var f = r(n, i) ^ a;
-                c += String.fromCharCode(f)
-            }
-            try {
-                c = decodeURIComponent(escape(c))
-            } catch (l) {
-                e(l)
-            }
-            return t(c)
-        }
-        var o = "/cdn-cgi/l/email-protection#"
-            , c = ".__cf_email__"
-            , a = "data-cfemail"
-            , i = document.createElement("div");
-        !function() {
-            for (var t = document.getElementsByTagName("a"), r = 0; r < t.length; r++)
-                try {
-                    var c = t[r]
-                        , a = c.href.indexOf(o);
-                    a > -1 && (c.href = "mailto:" + n(c.href, a + o.length))
-                } catch (i) {
-                    e(i)
-                }
-        }(),
-            function() {
-                for (var t = document.querySelectorAll(c), r = 0; r < t.length; r++)
-                    try {
-                        var o = t[r]
-                            , i = o.parentNode
-                            , f = o.getAttribute(a);
-                        if (f) {
-                            var l = n(f, 0)
-                                , u = document.createTextNode(l);
-                            i.replaceChild(u, o)
-                        }
-                    } catch (d) {
-                        e(d)
-                    }
-            }()
-    }();*/
+var decryptEmail = function (cfemail) {
+    // www.mangahere.cc/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js
     function r(e, t) {
         var r = e.substr(t, 2);
         return parseInt(r, 16);
@@ -1199,6 +1151,13 @@ var MangaObject = /** @class */ (function () {
     Object.defineProperty(MangaObject.prototype, "image", {
         get: function () {
             return this._manga.image;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MangaObject.prototype, "src", {
+        get: function () {
+            return this._src;
         },
         enumerable: true,
         configurable: true
@@ -1464,10 +1423,56 @@ var sanitizeReleased = function (released) {
     return result;
 };
 
+// not found mangas
+var invalidMangas = [
+    "www.mangahere.cc/manga/a_method_to_make_the_world_gentle/",
+    "www.mangahere.cc/manga/a_trail_of_blood/",
+    "www.mangahere.cc/manga/acma_game/",
+    "www.mangahere.cc/manga/assassination_classroom_extra/",
+    "www.mangahere.cc/manga/assassins_pride/",
+    "www.mangahere.cc/manga/blue_cat_happy/",
+    "www.mangahere.cc/manga/chaos_theory/",
+    "www.mangahere.cc/manga/dragon_ball_super/",
+    "www.mangahere.cc/manga/fairy_tail_blue_mistral_wendel_s_adventure/",
+    "www.mangahere.cc/manga/fairy_tail_omake/",
+    "www.mangahere.cc/manga/fairy_tail_sabertooth/",
+    "www.mangahere.cc/manga/forest_of_drizzling_rain/",
+    "www.mangahere.cc/manga/heavenly_executioner_chiwoo/",
+    "www.mangahere.cc/manga/i_female_robot/",
+    "www.mangahere.cc/manga/itsuka_no_seishun/",
+    "www.mangahere.cc/manga/kashikoi_ken_lilienthal/",
+    "www.mangahere.cc/manga/life_and_death_hei_ye_zhi_ge/",
+    "www.mangahere.cc/manga/nanatsu_no_taizai_seven_days/",
+    "www.mangahere.cc/manga/one_piece_colored/",
+    "www.mangahere.cc/manga/one_shot_meteor_syndrome/",
+    "www.mangahere.cc/manga/rurouni_kenshin_to_rule_flame/",
+    "www.mangahere.cc/manga/suzuki_san_no_suzuki_kun/",
+    "www.mangahere.cc/manga/the_end_of_elysion/",
+    "www.mangahere.cc/manga/the_scholar_who_walks_the_night/",
+    "www.mangahere.cc/manga/the_seven_deadly_sins_side_story/",
+    "www.mangahere.cc/manga/the_seven_deadly_sins_side_story_the_young_girl_s_unbearable_dream/",
+    "www.mangahere.cc/manga/to_the_abandoned_sacred_beasts/",
+    "www.mangahere.cc/manga/tokyo_alien_bros/",
+    "www.mangahere.cc/manga/toukaido_hisame/",
+    "www.mangahere.cc/manga/tsukiatte_kudasai/",
+    "www.mangahere.cc/manga/yagyu_jubei_dies/",
+];
+var MangaHereMangaValidator = /** @class */ (function () {
+    function MangaHereMangaValidator() {
+    }
+    MangaHereMangaValidator.prototype.isValid = function (src) {
+        // TODO improve performance
+        return !invalidMangas.find(function (x) { return src.endsWith(x); });
+    };
+    return MangaHereMangaValidator;
+}());
+
 var builder = new MangaHereBuilder();
 var MangaHere = /** @class */ (function () {
     function MangaHere(dependencies) {
         var _this = this;
+        // TODO expose this or change to ignore on dependency
+        this._useValidator = true;
         this.buildManga = function (_a) {
             var src = _a.src, manga = __rest(_a, ["src"]);
             return new MangaObject(_this._resolvers, src, manga);
@@ -1480,6 +1485,8 @@ var MangaHere = /** @class */ (function () {
         this._filter = di.filter;
         this._parser = di.parser;
         this._visitor = di.visitor;
+        // TODO change to di
+        this._mangaValidator = new MangaHereMangaValidator();
         this._resolvers = dependencies.resolverFactory.build(di);
     }
     MangaHere.prototype.mangas = function () {
@@ -1495,11 +1502,11 @@ var MangaHere = /** @class */ (function () {
                         return [4 /*yield*/, Promise.all(pMangas)];
                     case 1:
                         mangas = _a.sent();
-                        // TODO this should return MangaObject!
                         return [2 /*return*/, mangas.reduce(function (c, v) {
                                 c.push.apply(c, __spread(v));
                                 return c;
                             }, [])
+                                .filter(function (x, i) { return _this._mangaValidator.isValid(x.src); })
                                 .map(this.buildManga)];
                 }
             });
@@ -1529,6 +1536,7 @@ var MangaHere = /** @class */ (function () {
     };
     MangaHere.prototype.filter = function (filter) {
         return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
             var f, processed, uri, response, mangas, filterResult;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -1539,7 +1547,9 @@ var MangaHere = /** @class */ (function () {
                         return [4 /*yield*/, this._requestFactory.request({ uri: uri, qs: processed.params })];
                     case 1:
                         response = _a.sent();
-                        mangas = Array.from(this._parser.mangas(response)).map(this.buildManga);
+                        mangas = Array.from(this._parser.mangas(response))
+                            .filter(function (x) { return _this._mangaValidator.isValid(x.src); })
+                            .map(this.buildManga);
                         filterResult = this._parser.filterPage(response);
                         return [2 /*return*/, __assign({}, filterResult, { results: mangas })];
                 }
