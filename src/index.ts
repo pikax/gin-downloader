@@ -1,13 +1,13 @@
 export * from "./interface";
 
 import {GinBuilder} from "./builder";
-export {GinBuilder, MangaHereBuilder} from "./builder";
+export {GinBuilder, GinBuilderDependencies} from "./builder";
 
 export * from "./enum";
 export * from "./filter";
 
 
-export  * from "./parser";
+// export  * from "./parser";
 
 export const gindownloader = new GinBuilder();
 
