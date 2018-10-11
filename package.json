@@ -71,7 +71,7 @@
     "no-case": "^2.3.2",
     "promise-queue": "^2.2.5",
     "qs": "^6.5.1",
-    "request": "^2.85.0",
+    "request": "^2.87.0",
     "requestretry": "^1.13.0"
   },
   "devDependencies": {
